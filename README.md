@@ -4,7 +4,7 @@
 </p>
 
 <div align="middle">:warning::zap: using EOS :zap::warning: </div>
-<div align="middle"><img src="https://github.com/soma-boomable/integrated-repo/blob/master/eos.jpg" style="max-width: 30%;"/></div>
+<div align="middle" style="max-width:30%;"><img src="https://github.com/soma-boomable/integrated-repo/blob/master/eos.jpg" style="max-width:30%;"/></div>
 <div align="middle"><img src="https://github.com/soma-boomable/integrated-repo/blob/master/IPFS.png?raw=true" style="width:100px;" /></div>
 
 ## License
