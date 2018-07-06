@@ -5,8 +5,8 @@
 </p>
 
 :warning::zap: using EOS :zap::warning: 
-<img src="https://github.com/soma-boomable/integrated/blob/master/eos.jpg?raw=true" style="width:888;" />
-<img src="https://github.com/soma-boomable/integrated/blob/master/IPFS.png?raw=true" style="width:888;" />
+<img src="https://github.com/soma-boomable/integrated-repo/blob/master/eos.jpg?raw=true" style="width:888;" />
+<img src="https://github.com/soma-boomable/integrated-repo/blob/master/IPFS.png?raw=true" style="width:888;" />
 
 ## License
 
