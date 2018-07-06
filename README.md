@@ -4,8 +4,8 @@
 </p>
 
 <div align="middle">:warning::zap: using EOS :zap::warning: </div>
-<div align="middle" style="width:100;" ><img src="https://github.com/soma-boomable/integrated-repo/blob/master/eos.jpg"/></div>
-<div align="middle"><img src="https://github.com/soma-boomable/integrated-repo/blob/master/IPFS.png?raw=true" style="width:100;" /></div>
+<div align="middle"><img src="https://github.com/soma-boomable/integrated-repo/blob/master/eos.jpg" style="width:100px;"/></div>
+<div align="middle"><img src="https://github.com/soma-boomable/integrated-repo/blob/master/IPFS.png?raw=true" style="width:100px;" /></div>
 
 ## License
 
