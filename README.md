@@ -4,7 +4,7 @@
 	<a href="https://github.com/DdukTwiSun/server/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>	
 </p>
 
-:warning::zap: using eos :zap::warning: 
+:warning::zap: using EOS :zap::warning: 
 ## License
 
 * [MIT License](LICENSE)
