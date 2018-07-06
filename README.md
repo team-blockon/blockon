@@ -5,8 +5,8 @@
 </p>
 
 :warning::zap: using EOS :zap::warning: 
-<img src="https://github.com/DdukTwiSun/server/blob/master/eos.jpg?raw=true" style="width:888;>
-<img src="https://github.com/DdukTwiSun/server/blob/master/ipfs.jpeg?raw=true" style="width:888;>
+<img src="https://github.com/DdukTwiSun/server/blob/master/eos.jpg?raw=true" style="width:888;/>
+<img src="https://github.com/DdukTwiSun/server/blob/master/ipfs.jpeg?raw=true" style="width:888;/>
 
 ## License
 
