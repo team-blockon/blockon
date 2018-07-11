@@ -1,0 +1,303 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://boomable.io'
+info:
+  description: BooMaBle API 인터페이스 정의서
+  version: "1.0.0"
+  title: BooMaBle API
+externalDocs:
+  description: GitHub Repository
+  url: https://github.com/soma-boomable/integrated-repo
+tags:
+  - name: contracts
+    description: 부동산 계약
+  - name: maemul
+    description: 부동산 매물
+  - name: files
+    description: 계약서 파일
+  - name: send
+    description: 계약 상태 변경 알림
+  - name: users
+    description: 회원 관리
+paths:
+  /contracts:
+    get:
+      tags:
+        - contracts
+      summary: 계약 작성
+      operationId: getContract
+      description: |
+        먼저 부동산매매계약서, 부동산임대차계약서 중 선택하여
+        작성할 수 있도록 개발<br>
+        거래 기능 개발 후, 실제 매물 계약 버튼을 통해서만 접근 가능
+      responses:
+        '200':
+          description: 계약서 폼 로드 성공
+    post:
+      tags:
+        - contracts
+      summary: 계약 등록
+      operationId: addContract
+      description: |
+        작성한 계약서 형식을 검증하고 PDF로 변환한 후, 업로드를 위해 `/files` 호출<br>
+        업로드가 끝나면, 해시값이 포함된 Contract 객체를 이용하여 스마트 컨트랙트 작성
+      responses:
+        '200':
+          description: 계약서가 성공적으로 등록되었습니다.
+        '400':
+          description: 계약서 등록에 실패하였습니다.
+        '409':
+          description: 이미 진행중인 계약이 있습니다.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contract'
+        description: Contract 객체를 만든다.
+    delete:
+      tags:
+        - contracts
+      summary: 계약 파기하기
+      operationId: deleteContract
+      description: 계약시 정한 위약금액만큼, 계약 파기시 스마트 컨트랙트에 의하여 자동으로 위약금이 송금됩니다.
+      parameters:
+        - in: header
+          name: contractId
+          description: 파기할 계약 ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 계약이 파기되었습니다.
+  /contracts/send:
+    get:
+      tags:
+        - contracts
+      summary: 계약 보내기
+      operationId: sendContract
+      description: 작성한 계약을 전송합니다.
+      responses:
+        '200':
+          description: 계약이 전송되었습니다.
+  /contracts/receive:
+    get:
+      tags:
+        - contracts
+      summary: 계약 받기
+      operationId: receiveContract
+      description: 수신받은 계약 목록을 조회합니다.
+      responses:
+        '200':
+          description: 수신받은 계약 목록 로드 성공
+  /contracts/accept:
+    post:
+      tags:
+        - contracts
+      summary: 계약 수락하기
+      operationId: acceptContract
+      description: 계약이 수락되면, 스마트 컨트랙트에 의한 자동 송금
+      responses:
+        '200':
+          description: 계약 수락 성공
+  /contracts/list:
+    get:
+      tags:
+        - contracts
+      summary: 계약 목록 보기
+      description: 진행 중인 계약 목록을 조회합니다.
+      responses:
+        '200':
+          description: 계약 목록 로드 성공
+  /maemul:
+    post:
+      tags:
+        - maemul
+      summary: 매물 등록하기
+      operationId: addMaemul
+      description: 매도자가 매물을 등록합니다.
+      responses:
+        '200':
+          description: 매물 등록 성공
+    get:
+      tags:
+        - maemul
+      summary: 매물 목록 보기
+      operationId: listMaemul
+      description: 등록된 매물 목록을 조회합니다.
+      responses:
+        '200':
+          description: 매물 목록 로드 성공
+  /files:
+    post:
+      tags:
+        - files
+      summary: 계약서 파일 및 첨부서류 업로드
+      description: 계약서(.pdf) 및 첨부서류 파일을 IPFS에 업로드하고, 그 해시값을 Contract 객체에 담아줍니다.
+      responses:
+        '200':
+          description: 계약서가 성공적으로 업로드되었습니다.
+    get:
+      tags:
+        - files
+      summary: 계약서 파일 및 첨부서류 다운로드
+      description: 해시와 일치하는 계약서 및 첨부서류 파일을 IPFS에서 다운로드합니다.
+      responses:
+        '200':
+          description: 계약서 다운로드 성공
+  /send/push:
+    post:
+      tags:
+        - send
+      description: 계약 상태(도착, 완료) 변경 푸시 알림
+      parameters:
+        - in: header
+          name: userIdList
+          schema:
+            type: array
+            items:
+              type: string
+          description: 알림을 수신받는 사용자의 고유 ID 리스트     
+          required: true
+      summary: 푸시 알림 보내기
+      responses:
+        '200':
+          description: 푸시 알람 성공
+  /send/mail:
+    post:
+      tags:
+        - send
+      description: 계약 상태(도착, 완료) 변경 메일 알림
+      parameters:
+        - in: header
+          name: userIdList
+          schema:
+            type: array
+            items:
+              type: string
+          description: 알림을 수신받는 사용자의 고유 ID 리스트     
+          required: true
+      summary: 메일 알림 보내기
+      responses:
+        '200':
+          description: 메일 알람 성공
+  /users/register:
+    get:
+      tags:
+        - users
+      summary: 회원가입 View
+      responses:
+        '200':
+          description: 회원가입 폼 로드 성공
+    post:
+      tags:
+        - users
+      summary: 회원가입 Controller
+      responses:
+        '200':
+          description: 회원가입 성공
+  /users/login:
+    get:
+      tags:
+        - users
+      summary: 로그인 View
+      responses:
+        '200':
+          description: 로그인 폼 로드 성공
+    post:
+      tags:
+        - users
+      summary: 로그인 Controller
+      parameters:
+        - in: header
+          name: userId
+          schema:
+            type: string
+          description: 아이디
+        - in: header
+          name: userPw
+          schema:
+            type: string
+          description: 비밀번호
+      responses:
+        '200':
+          description: 로그인 성공
+  /users/logout:
+    post:
+      tags:
+        - users
+      summary: 로그아웃하기
+      responses:
+        '200':
+          description: 로그아웃 성공
+  /users/reset:
+    post:
+      tags:
+        - users
+      summary: 비밀번호 초기화
+      description: 임시 비밀번호 이메일 발송
+      responses:
+        '200':
+          description: 비밀번호 초기화 성공
+  /users/{userid}:
+    delete:
+      tags:
+        - users
+      summary:  회원탈퇴
+      description: 진행 중인 계약이 있는 경우, 탈퇴 불가
+      parameters:
+        - in: path
+          name: userid
+          schema:
+            type: string
+          description: 유저 ID
+          required: true
+      responses:
+        '200':
+          description: 회원탈퇴 성공
+components:
+  schemas:
+    Contract:
+      required:
+        - sender
+        - receiver
+        - path
+        - files
+        - contractDate
+      properties:
+        sender:
+          $ref: '#/components/schemas/User'
+        receiver:
+          $ref: '#/components/schemas/User'
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+        contractDate:
+          type: string
+    File:
+      required:
+        - fileHash
+        - filePath
+        - fileName
+      properties:
+        fileHash:
+          type: string
+        filePath:
+          type: string
+        fileName:
+          type: string
+      type: object
+    User:
+      required:
+        - userId
+        - userPw
+        - email
+      properties:
+        userId:
+          type: string
+        userPw:
+          type: string
+        email:
+          type: string
+      type: object
