@@ -1,5 +1,4 @@
 import React from "react";
-import queryString from "query-string";
 import ContractPaper from "components/ContractPaper";
 
 /**
@@ -7,8 +6,8 @@ import ContractPaper from "components/ContractPaper";
  * @param location URL 쿼리 정보를 담고 있는 객체
  */
 const Contract = ({ location }) => {
-  const query = queryString.parse(location.search);
-  const type = query.type;
+  const query = new URLSearchParams(location.search);
+  const type = query.get("type");
 
   return (
     <div>

@@ -11,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
  */
 const NumberFormatCustom = props => {
   // other에 props의 나머지 요소들을 다 할당받음
-  const { inputRef, onChange, ...other } = props;
+  const { id, inputRef, onChange, ...other } = props;
 
   return (
     <NumberFormat
@@ -20,6 +20,7 @@ const NumberFormatCustom = props => {
       onValueChange={values => {
         onChange({
           target: {
+            id: id,
             value: values.value
           }
         });
@@ -33,7 +34,7 @@ const NumberFormatCustom = props => {
  * 부동산임대차계약서 폼 컴포넌트
  * @param step props에서 step만 가져옴
  */
-const RentForm = ({ step }) => {
+const RentForm = ({ step, handleChange }) => {
   switch (step) {
     case 0:
       return (
@@ -44,6 +45,7 @@ const RentForm = ({ step }) => {
               id="location"
               label="소재지"
               placeholder="소재지"
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
@@ -59,6 +61,7 @@ const RentForm = ({ step }) => {
               id="seller"
               label="임대인"
               placeholder="임대인"
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
@@ -67,6 +70,7 @@ const RentForm = ({ step }) => {
               id="buyer"
               label="임차인"
               placeholder="임차인"
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
@@ -96,6 +100,7 @@ const RentForm = ({ step }) => {
                   InputLabelProps={{
                     shrink: true
                   }}
+                  onChange={handleChange}
                   margin="normal"
                 />
               </FormControl>
@@ -118,6 +123,7 @@ const RentForm = ({ step }) => {
                   InputLabelProps={{
                     shrink: true
                   }}
+                  onChange={handleChange}
                   margin="normal"
                 />
               </FormControl>
@@ -140,6 +146,7 @@ const RentForm = ({ step }) => {
               InputLabelProps={{
                 shrink: true
               }}
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
@@ -160,6 +167,7 @@ const RentForm = ({ step }) => {
               InputLabelProps={{
                 shrink: true
               }}
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
@@ -180,6 +188,7 @@ const RentForm = ({ step }) => {
               InputLabelProps={{
                 shrink: true
               }}
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
@@ -199,6 +208,7 @@ const RentForm = ({ step }) => {
               InputLabelProps={{
                 shrink: true
               }}
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>

@@ -9,7 +9,7 @@ import NumberFormat from "react-number-format";
  * @param props 부모 컴포넌트로부터 넘겨받는 값
  */
 const NumberFormatCustom = props => {
-  const { inputRef, onChange, ...other } = props;
+  const { id, inputRef, onChange, ...other } = props;
 
   return (
     <NumberFormat
@@ -18,6 +18,7 @@ const NumberFormatCustom = props => {
       onValueChange={values => {
         onChange({
           target: {
+            id: id,
             value: values.value
           }
         });
@@ -31,7 +32,7 @@ const NumberFormatCustom = props => {
  * 부동산매매계약서 폼 컴포넌트
  * @param step props에서 step만 가져옴
  */
-const TradeForm = ({ step }) => {
+const TradeForm = ({ step, handleChange }) => {
   switch (step) {
     case 0:
       return (
@@ -42,6 +43,7 @@ const TradeForm = ({ step }) => {
               id="location"
               label="소재지"
               placeholder="소재지"
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
@@ -57,6 +59,8 @@ const TradeForm = ({ step }) => {
               id="seller"
               label="매도인"
               placeholder="매도인"
+              onChange={handleChange}
+              defaultValue=""
               margin="normal"
             />
           </FormControl>
@@ -65,6 +69,7 @@ const TradeForm = ({ step }) => {
               id="buyer"
               label="매수인"
               placeholder="매수인"
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
@@ -92,6 +97,7 @@ const TradeForm = ({ step }) => {
               InputLabelProps={{
                 shrink: true
               }}
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
@@ -112,6 +118,7 @@ const TradeForm = ({ step }) => {
               InputLabelProps={{
                 shrink: true
               }}
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
@@ -132,6 +139,7 @@ const TradeForm = ({ step }) => {
               InputLabelProps={{
                 shrink: true
               }}
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
@@ -151,6 +159,7 @@ const TradeForm = ({ step }) => {
               InputLabelProps={{
                 shrink: true
               }}
+              onChange={handleChange}
               margin="normal"
             />
           </FormControl>
