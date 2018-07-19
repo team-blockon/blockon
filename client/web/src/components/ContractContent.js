@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import TradeForm from "./TradeForm";
 import RentForm from "./RentForm";
+import * as api from "lib/api";
 
 const styles = theme => ({
   root: {
@@ -31,12 +32,13 @@ function getSteps() {
  * 계약 타입에 따른 조건부 렌더링
  * @param type 매매인지 전월세인지를 나타내는 타입
  * @param step 어느 step을 출력해야 하는지 props로 넘겨줌
+ * @param storeData submit될 때 사용하는 input 데이터를 담기 위한 함수
  */
-function getStepContent(type, step, handleChange) {
+function getStepContent(type, step, storeData) {
   if (type === "rent") {
-    return <RentForm step={step} handleChange={handleChange} />;
+    return <RentForm step={step} storeData={storeData} />;
   } else {
-    return <TradeForm step={step} handleChange={handleChange} />;
+    return <TradeForm step={step} storeData={storeData} />;
   }
 }
 
@@ -44,11 +46,6 @@ function getStepContent(type, step, handleChange) {
  * 계약서 내용을 나타내는 컴포넌트
  */
 class ContractContent extends Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
   // state에 있는 값이 바뀌면 리렌더링
   state = {
     activeStep: 0
@@ -74,18 +71,31 @@ class ContractContent extends Component {
     });
   };
 
-  /* 얘는 수동 바인딩 */
-  handleChange(event) {
-    const id = event.target.id;
-    const value = event.target.value;
+  getFilledPDF = async data => {
+    try {
+      const response = await api.getFilledPDF(data);
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-    this.props.onChange({ id, value });
-  }
+  /**
+   * input에 사용자 입력이 발생할 때마다 호출되는 이벤트 핸들러
+   * @param event
+   */
+  storeData = data => {
+    console.log("Contract form state", data);
+    this.setState({ formData: data });
+  };
 
-  /* 화살표 함수는 자동으로 this 바인딩 */
+  /**
+   * form에 submit 이벤트가 발생하면 호출되는 이벤트 핸들러
+   * @param event
+   */
   handleSubmit = event => {
     event.preventDefault();
-    this.props.onSubmit();
+    this.getFilledPDF(this.state.formData);
   };
 
   render() {
@@ -115,7 +125,7 @@ class ContractContent extends Component {
               </div>
             ) : (
               <div>
-                {getStepContent(this.props.type, activeStep, this.handleChange)}
+                {getStepContent(this.props.type, activeStep, this.storeData)}
                 <div>
                   <Button
                     disabled={activeStep === 0}

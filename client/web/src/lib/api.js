@@ -6,7 +6,7 @@ import axios from "axios";
  */
 export function getFilledPDF(data) {
   return axios
-    .post("http://localhost:3000/api/pdf", data, {
+    .post("http://localhost:8000/api/pdf", data, {
       // raw data로 응답받음. 데이터 조작이 필요하지 않으므로 arraybuffer 대신 blob 사용
       responseType: "blob"
     })

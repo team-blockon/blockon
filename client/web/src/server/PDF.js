@@ -26,7 +26,7 @@ const save = async json => {
     interceptedRequest.continue(data);
   });
 
-  await page.goto("http://localhost:3000/fillPDF", {
+  await page.goto("http://localhost:8000/fillPDF", {
     waitUntil: "networkidle2"
   });
   await page.pdf({ path: "contract.pdf", format: "A4" });

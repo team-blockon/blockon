@@ -4,9 +4,10 @@ const PDF = require("./PDF");
 const IPFS = require("./IPFS");
 const fs = require("fs");
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
-const port = 3000;
+const port = 8000;
 
 // 리액트 서버 사이드 렌더링
 app.set("views", path.join(__dirname, "views"));
@@ -17,10 +18,15 @@ app.engine("jsx", require("express-react-views").createEngine());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/", express.static(path.resolve(__dirname, "../../build")));
+/* build */
+// app.use("/", express.static(path.resolve(__dirname, "../../build")));
+
+/* development */
+app.use("/", express.static(path.resolve(__dirname, "../../public")));
+app.use(cors());  // cross-origin 요청 허용
 
 app.post("/api/pdf", (req, res) => {
-  console.log('/api/pdf', req.body);
+  console.log("/api/pdf", req.body);
   // 1. 로컬에 PDF 저장
   PDF.save(req.body).then(() => {
     // 2.IPFS에 PDF 저장
