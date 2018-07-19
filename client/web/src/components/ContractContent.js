@@ -71,18 +71,9 @@ class ContractContent extends Component {
     });
   };
 
-  getFilledPDF = async data => {
-    try {
-      const response = await api.getFilledPDF(data);
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   /**
-   * input에 사용자 입력이 발생할 때마다 호출되는 이벤트 핸들러
-   * @param event
+   * 자식 컴포넌트에서 input에 사용자 입력이 발생할 때마다 호출되는 함수
+   * @param data submit될 때 사용하는 input 데이터
    */
   storeData = data => {
     console.log("Contract form state", data);
@@ -94,8 +85,9 @@ class ContractContent extends Component {
    * @param event
    */
   handleSubmit = event => {
+    const { formData } = this.state;
     event.preventDefault();
-    this.getFilledPDF(this.state.formData);
+    api.getFilledPDF(formData);
   };
 
   render() {

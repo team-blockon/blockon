@@ -5,7 +5,7 @@ import axios from "axios";
  * @param data 계약서 폼 데이터
  */
 export function getFilledPDF(data) {
-  return axios
+  axios
     .post("http://localhost:8000/api/pdf", data, {
       // raw data로 응답받음. 데이터 조작이 필요하지 않으므로 arraybuffer 대신 blob 사용
       responseType: "blob"
