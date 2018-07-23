@@ -29,7 +29,7 @@ const save = async json => {
   await page.goto("http://localhost:8000/fillPDF", {
     waitUntil: "networkidle2"
   });
-  await page.pdf({ path: "contract.pdf", format: "A4" });
+  await page.pdf({ path: "src/server/contract.pdf", format: "A4" });
 
   await browser.close();
 };
