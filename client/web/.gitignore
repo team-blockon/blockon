@@ -8,6 +8,10 @@
 
 # production
 /build
+.idea/
+
+#pdf
+*.pdf
 
 # misc
 .DS_Store
