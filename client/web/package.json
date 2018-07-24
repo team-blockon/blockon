@@ -10,6 +10,7 @@
     "express": "^4.16.3",
     "express-react-views": "^0.10.5",
     "ipfs-daemon": "^0.3.1",
+    "mongoose": "^5.2.5",
     "nodemon": "^1.18.3",
     "puppeteer": "^1.6.0",
     "react": "^16.4.1",

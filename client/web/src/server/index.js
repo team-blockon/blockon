@@ -2,12 +2,16 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const PDF = require("./PDF");
 const IPFS = require("./IPFS");
+const Mongoose = require("./mongo/Mongoose");
 const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
 
 const app = express();
 const port = 8000;
+
+
+const sign = require('./sign');
 
 // 리액트 서버 사이드 렌더링
 app.set("views", path.join(__dirname, "views"));
@@ -18,12 +22,23 @@ app.engine("jsx", require("express-react-views").createEngine());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+/* database */
+app.use(Mongoose.connection());
+
+
+
 /* build */
 // app.use("/", express.static(path.resolve(__dirname, "../../build")));
 
 /* development */
 app.use("/", express.static(path.resolve(__dirname, "../../public")));
 app.use(cors());  // cross-origin 요청 허용
+
+
+/* sign */
+app.use('/sign', sign);
+
 
 app.post("/api/pdf", (req, res) => {
   console.log("/api/pdf", req.body);
