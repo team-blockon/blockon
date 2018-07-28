@@ -1,0 +1,27 @@
+.Header {
+  background: #22b8cf;
+  height: 4rem;
+  display: flex;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  .side {
+    width: 300px;
+    display: flex;
+    align-items: center;
+    &.right {
+      justify-content: flex-end;
+    }
+  }
+  .middle {
+    flex: 1;
+    font-weight: 600;
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

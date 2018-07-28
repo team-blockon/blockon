@@ -1,0 +1,29 @@
+.Button {
+  // 공용 스타일
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  border: none;
+  outline: none;
+  font-size: 0.875rem;
+  border-radius: 2px;
+  cursor: pointer;
+  // 테마들을 선언
+  &.default {
+    color: #0c8599;
+    background: #f1f3f5;
+    &:hover {
+      background: #f8f9fa;
+    }
+    &:active {
+      background: #e9ecef;
+    }
+  }
+  &.outline {
+    border: 1px solid #495057;
+    background: transparent;
+    &:hover {
+      background: #495057;
+      color: white;
+    }
+  }
+}

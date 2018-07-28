@@ -7,6 +7,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import "./ContractCardList.scss";
 
 const styles = {
   card: {
@@ -28,16 +29,16 @@ const contracts = [
 ];
 
 /**
- * / 라우트에서 보여지는 계약서 메뉴 컴포넌트
+ * / 라우트에서 보여지는 계약서 카드 리스트 컴포넌트
  * 먼저 매매계약서, 임대차계약서 중 선택
- * 
+ *
  * @param props 부모 컴포넌트로부터 넘겨받는 값
  */
-const Menu = props => {
+const ContractCardList = props => {
   const { classes } = props;
 
   return (
-    <div>
+    <div className="ContractCardList">
       <Grid container spacing={24}>
         {contracts.map((contract, index) => {
           return (
@@ -66,4 +67,4 @@ const Menu = props => {
   );
 };
 
-export default withStyles(styles)(Menu);
+export default withStyles(styles)(ContractCardList);
