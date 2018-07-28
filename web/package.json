@@ -39,6 +39,7 @@
     "node-sass": "^4.9.2",
     "nodemon": "^1.18.3",
     "object-assign": "4.1.1",
+    "open-color": "^1.6.3",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",

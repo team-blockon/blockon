@@ -1,0 +1,28 @@
+@import "~open-color/open-color";
+@import "lib/StyleUtils.scss";
+
+.AuthButton {
+  margin-top: 1rem;
+  padding-top: 0.6rem;
+  padding-bottom: 0.5rem;
+
+  background: $oc-red-6;
+  color: white;
+
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+
+  cursor: pointer;
+  user-select: none; /* 텍스트 드래그 방지 */
+  transition: 0.2s all;
+
+  &:hover {
+    background: $oc-red-5;
+    box-shadow: shadow(1);
+  }
+
+  &:active {
+    background: $oc-red-7;
+  }
+}
