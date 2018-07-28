@@ -26,3 +26,5 @@ yarn-error.log*
 
 # ipfs
 **/ipfs
+
+.env

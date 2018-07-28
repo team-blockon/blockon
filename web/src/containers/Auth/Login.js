@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AuthContent from "components/AuthContent";
 import InputWithLabel from "components/InputWithLabel";
 import AuthButton from "components/AuthButton";
+import * as AuthAPI from "lib/api/auth";
 
 class Login extends Component {
   state = {
@@ -21,6 +22,11 @@ class Login extends Component {
   handleLogin = event => {
     const { email, password } = this.state;
     event.preventDefault();
+    AuthAPI.login({ email, password }).then(res => {
+      const { token } = res.data;
+      localStorage.setItem("token", token);
+      window.location = "/contract";
+    });
   };
 
   render() {

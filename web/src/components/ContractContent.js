@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import TradeForm from "./TradeForm";
 import RentForm from "./RentForm";
-import * as api from "lib/api";
+import * as PdfAPI from "lib/api/pdf";
 
 const styles = theme => ({
   root: {
@@ -87,7 +87,7 @@ class ContractContent extends Component {
   handleSubmit = event => {
     const { formData } = this.state;
     event.preventDefault();
-    api.getFilledPDF(formData);
+    PdfAPI.getFilledPDF(formData);
   };
 
   render() {

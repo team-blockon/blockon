@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AuthContent from "components/AuthContent";
 import InputWithLabel from "components/InputWithLabel";
 import AuthButton from "components/AuthButton";
+import * as AuthAPI from "lib/api/auth";
 
 class Register extends Component {
   state = {
@@ -21,6 +22,7 @@ class Register extends Component {
   handleSubmit = event => {
     const { email, password } = this.state;
     event.preventDefault();
+    AuthAPI.register({ email, password }).then(() => (window.location = "/"));
   };
 
   render() {

@@ -19,12 +19,12 @@ const contracts = [
   {
     title: "매매",
     subtitle: "부동산매매계약서",
-    link: "contract?type=trade"
+    link: "contract/edit?type=trade"
   },
   {
     title: "전월세",
     subtitle: "부동산임대차계약서",
-    link: "contract?type=rent"
+    link: "contract/edit?type=rent"
   }
 ];
 
