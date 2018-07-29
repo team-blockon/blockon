@@ -98,7 +98,7 @@ exports.login = (req, res) => {
             },
             (err, token) => {
               if (err) reject(err);
-              resolve(token);
+              resolve({token,email});
             }
           );
         });
@@ -110,10 +110,11 @@ exports.login = (req, res) => {
   };
 
   // token 응답
-  const respond = token => {
+  const respond = ({token,email}) => {
     res.json({
       message: "logged in successfully",
-      token
+        token: token,
+        email: email
     });
   };
 
@@ -129,15 +130,4 @@ exports.login = (req, res) => {
     .then(check)
     .then(respond)
     .catch(onError);
-};
-
-/*
-    GET /api/auth/check
-*/
-exports.check = (req, res) => {
-  // 미들웨어에서 이미 검증된 token, 디코드된 token을 응답
-  res.json({
-    success: true,
-    info: req.decoded
-  });
 };

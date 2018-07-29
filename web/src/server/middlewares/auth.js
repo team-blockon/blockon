@@ -12,9 +12,10 @@ const authMiddleware = (req, res, next) => {
 
   // JWT 토큰이 존재하지 않으면, 로그인되지 않았다고 JSON 응답
   if (!token) {
-    return res.status(403).json({
+    return res.json({
       success: false,
-      message: "not logged in"
+      message: "not logged in",
+        info: undefined
     });
   }
 
@@ -30,7 +31,8 @@ const authMiddleware = (req, res, next) => {
   const onError = error => {
     res.status(403).json({
       success: false,
-      message: error.message
+      message: error.message,
+        info: undefined
     });
   };
 
@@ -38,7 +40,11 @@ const authMiddleware = (req, res, next) => {
   p
     // resolve()의 결과 값 decoded를 decoded로 받음
     .then(decoded => {
-      req.decoded = decoded;
+        res.json({
+            success: true,
+            message: "logged in",
+            info : decoded.email
+        });
       next(); // 다음 미들웨어 실행
     })
     // reject()의 결과 값 err을 error로 받음

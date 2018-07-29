@@ -24,8 +24,9 @@ class Login extends Component {
     const { email, password } = this.state;
     event.preventDefault();
     AuthAPI.login({ email, password }).then(res => {
-      const { token } = res.data;
+      const { token, email } = res.data;
       localStorage.setItem("token", token);
+      localStorage.setItem("email", email);
       window.location = "/contract";
     });
   };
