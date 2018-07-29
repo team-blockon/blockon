@@ -1,0 +1,11 @@
+@import "~open-color/open-color";
+
+.AuthLink {
+  margin-top: 1rem;
+  text-align: center;
+  color: $oc-indigo-7;
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}

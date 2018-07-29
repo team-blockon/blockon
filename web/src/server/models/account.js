@@ -20,7 +20,7 @@ function hash(password) {
 
 /* 모델 메소드
  - statics: this는 모델 자체
- - methods: this는 데이터 인스턴스
+ - methods : this는 데이터 인스턴스
 */
 
 // Account 도큐먼트 생성
@@ -35,7 +35,7 @@ Account.statics.create = function(email, password) {
 };
 
 Account.statics.findByEmail = function(email) {
-  return this.findOne({ email }).exec();
+  return this.findOne({ email });
 };
 
 Account.methods.validatePassword = function(password) {

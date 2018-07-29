@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AuthContent from "components/AuthContent";
 import InputWithLabel from "components/InputWithLabel";
 import AuthButton from "components/AuthButton";
+import AuthLink from "components/AuthLink";
 import * as AuthAPI from "lib/api/auth";
 
 class Login extends Component {
@@ -51,6 +52,7 @@ class Login extends Component {
           onChange={this.handleChange}
         />
         <AuthButton onClick={this.handleLogin}>로그인</AuthButton>
+        <AuthLink to="/auth/register">회원가입</AuthLink>
       </AuthContent>
     );
   }
