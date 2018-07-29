@@ -1,5 +1,7 @@
+@import "~open-color/open-color";
+
 .Header {
-  background: #22b8cf;
+  background: $oc-indigo-5;
   height: 4rem;
   display: flex;
   padding-left: 1rem;
@@ -7,21 +9,28 @@
   position: fixed;
   width: 100%;
   top: 0;
-  .side {
-    width: 300px;
-    display: flex;
-    align-items: center;
-    &.right {
-      justify-content: flex-end;
-    }
-  }
-  .middle {
-    flex: 1;
+  .logo {
     font-weight: 600;
     color: white;
     font-size: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    &.right {
+      justify-content: flex-end;
+    }
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
   }
 }

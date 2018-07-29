@@ -1,3 +1,5 @@
+@import "~open-color/open-color";
+
 .Button {
   // 공용 스타일
   padding: 0.5rem 1rem;
@@ -9,7 +11,7 @@
   cursor: pointer;
   // 테마들을 선언
   &.default {
-    color: #0c8599;
+    color: $oc-indigo-7;
     background: #f1f3f5;
     &:hover {
       background: #f8f9fa;

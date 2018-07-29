@@ -1,0 +1,29 @@
+@import "~open-color/open-color";
+
+.HeaderNav {
+  display: flex;
+  height: 100%;
+  .HeaderNavItem {
+    display: flex;
+    color: rgba(255, 255, 255, 0.75);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    align-items: center;
+    line-height: 1rem;
+    font-size: 1rem;
+    border-bottom: 4px solid transparent;
+    cursor: pointer;
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    &.active {
+      font-weight: 500;
+      color: white;
+      border-bottom: 4px solid $oc-indigo-8;
+    }
+    .icon {
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+    }
+  }
+}

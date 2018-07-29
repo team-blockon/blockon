@@ -6,23 +6,24 @@
   padding-top: 0.6rem;
   padding-bottom: 0.5rem;
 
-  background: $oc-red-6;
+  background: $oc-indigo-5;
   color: white;
 
   text-align: center;
   font-size: 1.25rem;
   font-weight: 500;
+  border-radius: 2px;
 
   cursor: pointer;
   user-select: none; /* 텍스트 드래그 방지 */
   transition: 0.2s all;
 
   &:hover {
-    background: $oc-red-5;
+    background: $oc-indigo-4;
     box-shadow: shadow(1);
   }
 
   &:active {
-    background: $oc-red-7;
+    background: $oc-indigo-6;
   }
 }

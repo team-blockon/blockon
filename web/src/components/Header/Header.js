@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import "./Header.scss";
 
 class Header extends Component {
@@ -6,8 +7,10 @@ class Header extends Component {
     const { left, right } = this.props;
     return (
       <div className="Header">
+        <div className="logo">
+          <Link to="/contract">부마블</Link>
+        </div>
         <div className="side left">{left}</div>
-        <div className="middle">부마블</div>
         <div className="side right">{right}</div>
       </div>
     );
