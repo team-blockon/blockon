@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Button from "@material-ui/core/Button";
+import {
+  Stepper,
+  Step,
+  StepLabel,
+  StepContent,
+  Button,
+  Typography
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import TradeForm from "./TradeForm";
 import RentForm from "./RentForm";
@@ -12,12 +16,15 @@ const styles = theme => ({
   root: {
     width: "90%"
   },
-  backButton: {
-    marginRight: theme.spacing.unit
-  },
-  instructions: {
+  button: {
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit
+  },
+  actionsContainer: {
+    marginBottom: theme.spacing.unit * 2
+  },
+  pdfContainer: {
+    padding: theme.spacing.unit * 3
   }
 });
 
@@ -98,46 +105,56 @@ class ContractContent extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="{classes.root}">
-          <Stepper activeStep={activeStep} alternativeLabel>
+          <Stepper activeStep={activeStep} orientation="vertical">
             {steps.map(label => {
               return (
                 <Step key={label}>
                   <StepLabel>{label}</StepLabel>
+                  <StepContent>
+                    <Typography>
+                      {getStepContent(
+                        this.props.type,
+                        activeStep,
+                        this.storeData
+                      )}
+                    </Typography>
+                    <div className={classes.actionsContainer}>
+                      <div>
+                        <Button
+                          disabled={activeStep === 0}
+                          onClick={this.handleBack}
+                          className={classes.button}
+                        >
+                          이전
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={this.handleNext}
+                          className={classes.button}
+                        >
+                          {activeStep === steps.length - 1 ? "완료" : "다음"}
+                        </Button>
+                      </div>
+                    </div>
+                  </StepContent>
                 </Step>
               );
             })}
           </Stepper>
-          <div>
-            {this.state.activeStep === steps.length ? (
-              <div>
-                <p>계약서 작성을 완료하였습니다.</p>
-                <Button type="submit" variant="contained" color="primary">
-                  PDF 생성
-                </Button>
-              </div>
-            ) : (
-              <div>
-                {getStepContent(this.props.type, activeStep, this.storeData)}
-                <div>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={this.handleBack}
-                    className={classes.button}
-                  >
-                    이전
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={this.handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? "완료" : "다음"}
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
+          {activeStep === steps.length && (
+            <div className={classes.pdfContainer}>
+              <Typography>계약서 작성을 완료하였습니다.</Typography>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.button}
+              >
+                PDF 생성
+              </Button>
+            </div>
+          )}
         </div>
       </form>
     );
