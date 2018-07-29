@@ -50,6 +50,7 @@
     "react": "^16.4.1",
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.4.1",
+    "react-icons": "^2.2.7",
     "react-number-format": "^3.4.3",
     "react-router-dom": "^4.3.1",
     "resolve": "1.6.0",
