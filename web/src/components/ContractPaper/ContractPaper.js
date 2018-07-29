@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import ContractContent from "./ContractContent";
+import ContractContent from "../ContractContent";
+import "./ContractPaper.scss";
 
 const styles = theme => ({
   root: {
@@ -19,7 +20,7 @@ const styles = theme => ({
 class ContractPaper extends Component {
   render() {
     return (
-      <div>
+      <div className="ContractPaper">
         <Paper className={this.props.classes.root} elevation={1}>
           <Typography variant="headline" component="h3">
             {this.props.type === "rent"
