@@ -28,6 +28,7 @@ app.use(morgan("dev"));
 app.use("/", express.static(path.resolve(__dirname, "../../public")));
 app.use(cors()); // cross-origin 요청 허용
 
+app.use(express.static("./routes/util"));
 app.use("/api", require("./routes/api"));
 
 /**

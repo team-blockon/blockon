@@ -1,7 +1,8 @@
 const Account = require("../../../models/account");
+const CryptoUtil = require("../../util/CryptoUtil");
 
 exports.save = (req, res) => {
-    const { address, seller, consumer} = req.body;
+    const { address, seller, consumer } = req.body;
 
     const isRightEmail = (email)=> {
         return new Promise((resolve, reject) => {
@@ -17,6 +18,13 @@ exports.save = (req, res) => {
         });
     };
 
+
+    const saveContract = () => {
+        const sellerHash = CryptoUtil.hashing(seller);
+        const consumerHash = CryptoUtil.hashing(consumer);
+
+    };
+
     const respond = () => {
         res.json({
             message: "registered successfully"
@@ -30,7 +38,8 @@ exports.save = (req, res) => {
         });
     };
 
-        Promise.all([isRightEmail(seller), isRightEmail(consumer)])
+    Promise.all([isRightEmail(seller), isRightEmail(consumer)])
+        .then(saveContract)
         .then(respond)
         .catch(onError);
 };
