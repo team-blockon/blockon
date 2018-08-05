@@ -1,4 +1,4 @@
-const React = require("react");
+const React = require('react');
 
 /**
  * 계약서 템플릿 컴포넌트

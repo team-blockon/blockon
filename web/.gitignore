@@ -9,6 +9,7 @@
 # production
 /build
 .idea/
+.vscode
 
 #pdf
 *.pdf

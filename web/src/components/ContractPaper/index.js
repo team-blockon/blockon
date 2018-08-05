@@ -1,1 +1,1 @@
-export { default } from "./ContractPaper";
+export { default } from './ContractPaper';

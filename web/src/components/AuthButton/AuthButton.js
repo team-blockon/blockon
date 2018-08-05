@@ -1,5 +1,5 @@
-import React from "react";
-import "./AuthButton.scss";
+import React from 'react';
+import './AuthButton.scss';
 
 const AuthButton = ({ children, onClick }) => {
   return (

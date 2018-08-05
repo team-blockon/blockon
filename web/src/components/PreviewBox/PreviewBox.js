@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import CloseIcon from "react-icons/lib/md/close";
-import "./PreviewBox.scss";
+import React, { Component } from 'react';
+import CloseIcon from 'react-icons/lib/md/close';
+import './PreviewBox.scss';
 
 class PreviewBox extends Component {
   render() {

@@ -1,15 +1,15 @@
-import React from "react";
-import classNames from "classnames";
-import ContractIcon from "react-icons/lib/md/settings";
-import MessageIcon from "react-icons/lib/md/message";
-import "./HeaderNav.scss";
+import React from 'react';
+import classNames from 'classnames';
+import ContractIcon from 'react-icons/lib/md/settings';
+import MessageIcon from 'react-icons/lib/md/message';
+import './HeaderNav.scss';
 
 const HeaderNavItem = ({ children, selected, tab, iconType, onSelect }) => {
   const icon = iconType ? React.createElement(iconType) : null;
 
   return (
     <div
-      className={classNames("HeaderNavItem", {
+      className={classNames('HeaderNavItem', {
         active: selected === tab
       })}
       onClick={() => onSelect(tab)}

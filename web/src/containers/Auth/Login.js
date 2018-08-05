@@ -1,14 +1,16 @@
-import React, { Component } from "react";
-import AuthContent from "components/AuthContent";
-import InputWithLabel from "components/InputWithLabel";
-import AuthButton from "components/AuthButton";
-import AuthLink from "components/AuthLink";
-import * as AuthAPI from "lib/api/auth";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import AuthContent from 'components/AuthContent';
+import InputWithLabel from 'components/InputWithLabel';
+import AuthButton from 'components/AuthButton';
+import AuthLink from 'components/AuthLink';
+import * as AuthAPI from 'lib/api/auth';
+import * as userActions from 'store/modules/user';
 
 class Login extends Component {
   state = {
-    email: "",
-    password: ""
+    email: '',
+    password: ''
   };
 
   handleChange = event => {
@@ -21,14 +23,23 @@ class Login extends Component {
   };
 
   handleLogin = event => {
+    const { setLoggedInfo, history } = this.props;
     const { email, password } = this.state;
-    event.preventDefault();
+
     AuthAPI.login({ email, password }).then(res => {
-      const { token, email } = res.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("email", email);
-      window.location = "/contract";
+      const loggedInfo = res.data;
+      setLoggedInfo(loggedInfo);
+
+      localStorage.setItem('loggedInfo', JSON.stringify(loggedInfo));
+      history.push('/contract');
     });
+  };
+
+  handleKeyPress = event => {
+    // 엔터가 입력되면 로그인 진행
+    if (event.charCode === 13) {
+      this.handleLogin();
+    }
   };
 
   render() {
@@ -51,6 +62,7 @@ class Login extends Component {
           value={password}
           placeholder="비밀번호"
           onChange={this.handleChange}
+          onKeyPress={this.handleKeyPress}
         />
         <AuthButton onClick={this.handleLogin}>로그인</AuthButton>
         <AuthLink to="/auth/register">회원가입</AuthLink>
@@ -59,4 +71,11 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = dispatch => ({
+  setLoggedInfo: () => dispatch(userActions.setLoggedInfo())
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);

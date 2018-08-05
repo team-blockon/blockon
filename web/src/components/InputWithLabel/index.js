@@ -1,1 +1,1 @@
-export { default } from "./InputWithLabel";
+export { default } from './InputWithLabel';

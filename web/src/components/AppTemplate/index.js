@@ -1,1 +1,1 @@
-export { default } from "./AppTemplate";
+export { default } from './AppTemplate';

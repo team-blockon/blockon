@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./AuthLink.scss";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './AuthLink.scss';
 
 const AuthLink = ({ to, children }) => {
   return (

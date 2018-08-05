@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import NumberFormat from "react-number-format";
+import React, { Component } from 'react';
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import NumberFormat from 'react-number-format';
 
 /**
  * 숫자 세자리마다 콤마 찍기
@@ -36,13 +36,13 @@ const NumberFormatCustom = props => {
  */
 class TradeForm extends Component {
   state = {
-    location: "",
-    seller: "",
-    buyer: "",
-    downPayment: "",
-    middlePayment: "",
-    balance: "",
-    contractDate: "2018-01-01"
+    location: '',
+    seller: '',
+    buyer: '',
+    downPayment: '',
+    middlePayment: '',
+    balance: '',
+    contractDate: '2018-01-01'
   };
 
   /**
@@ -72,145 +72,145 @@ class TradeForm extends Component {
     } = this.state;
 
     switch (this.props.step) {
-      case 0:
-        return (
-          <div>
-            <p>등기부등본의 표시란과 동일하게 적어주세요.</p>
-            <FormControl fullWidth>
-              <TextField
-                name="location"
-                value={location}
-                label="소재지"
-                placeholder="소재지"
-                onChange={this.handleChange}
-                margin="normal"
-              />
-            </FormControl>
-          </div>
-        );
+    case 0:
+      return (
+        <div>
+          <p>등기부등본의 표시란과 동일하게 적어주세요.</p>
+          <FormControl fullWidth>
+            <TextField
+              name="location"
+              value={location}
+              label="소재지"
+              placeholder="소재지"
+              onChange={this.handleChange}
+              margin="normal"
+            />
+          </FormControl>
+        </div>
+      );
 
-      case 1:
-        return (
-          <div>
-            <p>매도인과 매수인을 적어주세요.</p>
-            <FormControl fullWidth>
-              <TextField
-                name="seller"
-                value={seller}
-                label="매도인"
-                placeholder="매도인"
-                onChange={this.handleChange}
-                margin="normal"
-              />
-            </FormControl>
-            <FormControl fullWidth>
-              <TextField
-                name="buyer"
-                value={buyer}
-                label="매수인"
-                placeholder="매수인"
-                onChange={this.handleChange}
-                margin="normal"
-              />
-            </FormControl>
-          </div>
-        );
+    case 1:
+      return (
+        <div>
+          <p>매도인과 매수인을 적어주세요.</p>
+          <FormControl fullWidth>
+            <TextField
+              name="seller"
+              value={seller}
+              label="매도인"
+              placeholder="매도인"
+              onChange={this.handleChange}
+              margin="normal"
+            />
+          </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              name="buyer"
+              value={buyer}
+              label="매수인"
+              placeholder="매수인"
+              onChange={this.handleChange}
+              margin="normal"
+            />
+          </FormControl>
+        </div>
+      );
 
-      case 2:
-        return (
-          <div>
-            <p>매매대금과 그 지급날짜를 적어주세요.</p>
-            <FormControl fullWidth>
-              <TextField
-                name="downPayment"
-                value={downPayment}
-                label="계약금"
-                placeholder="계약금"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">금액</InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">원</InputAdornment>
-                  ),
-                  inputComponent: NumberFormatCustom
-                }}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={this.handleChange}
-                margin="normal"
-              />
-            </FormControl>
-            <FormControl fullWidth>
-              <TextField
-                name="middlePayment"
-                value={middlePayment}
-                label="중도금"
-                placeholder="중도금"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">금액</InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">원</InputAdornment>
-                  ),
-                  inputComponent: NumberFormatCustom
-                }}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={this.handleChange}
-                margin="normal"
-              />
-            </FormControl>
-            <FormControl fullWidth>
-              <TextField
-                name="balance"
-                value={balance}
-                label="잔금"
-                placeholder="잔금"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">금액</InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">원</InputAdornment>
-                  ),
-                  inputComponent: NumberFormatCustom
-                }}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={this.handleChange}
-                margin="normal"
-              />
-            </FormControl>
-          </div>
-        );
+    case 2:
+      return (
+        <div>
+          <p>매매대금과 그 지급날짜를 적어주세요.</p>
+          <FormControl fullWidth>
+            <TextField
+              name="downPayment"
+              value={downPayment}
+              label="계약금"
+              placeholder="계약금"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">금액</InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">원</InputAdornment>
+                ),
+                inputComponent: NumberFormatCustom
+              }}
+              InputLabelProps={{
+                shrink: true
+              }}
+              onChange={this.handleChange}
+              margin="normal"
+            />
+          </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              name="middlePayment"
+              value={middlePayment}
+              label="중도금"
+              placeholder="중도금"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">금액</InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">원</InputAdornment>
+                ),
+                inputComponent: NumberFormatCustom
+              }}
+              InputLabelProps={{
+                shrink: true
+              }}
+              onChange={this.handleChange}
+              margin="normal"
+            />
+          </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              name="balance"
+              value={balance}
+              label="잔금"
+              placeholder="잔금"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">금액</InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">원</InputAdornment>
+                ),
+                inputComponent: NumberFormatCustom
+              }}
+              InputLabelProps={{
+                shrink: true
+              }}
+              onChange={this.handleChange}
+              margin="normal"
+            />
+          </FormControl>
+        </div>
+      );
 
-      case 3:
-        return (
-          <div>
-            <p>계약을 맺은 날짜를 적어주세요.</p>
-            <FormControl fullWidth>
-              <TextField
-                name="contractDate"
-                value={contractDate}
-                type="date"
-                label="계약일"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={this.handleChange}
-                margin="normal"
-              />
-            </FormControl>
-          </div>
-        );
+    case 3:
+      return (
+        <div>
+          <p>계약을 맺은 날짜를 적어주세요.</p>
+          <FormControl fullWidth>
+            <TextField
+              name="contractDate"
+              value={contractDate}
+              type="date"
+              label="계약일"
+              InputLabelProps={{
+                shrink: true
+              }}
+              onChange={this.handleChange}
+              margin="normal"
+            />
+          </FormControl>
+        </div>
+      );
 
-      default:
-        return "Unknown step";
+    default:
+      return 'Unknown step';
     }
   }
 }

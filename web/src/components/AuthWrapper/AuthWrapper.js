@@ -1,5 +1,5 @@
-import React from "react";
-import "./AuthWrapper.scss";
+import React from 'react';
+import './AuthWrapper.scss';
 
 const AuthWrapper = ({ children }) => {
   return (

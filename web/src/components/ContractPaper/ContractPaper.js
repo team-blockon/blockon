@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import ContractContent from "../ContractContent";
-import "./ContractPaper.scss";
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import ContractContent from '../ContractContent';
+import './ContractPaper.scss';
 
 const styles = theme => ({
   root: {
@@ -15,7 +15,6 @@ const styles = theme => ({
 
 /**
  * 계약서 종이를 나타내는 컴포넌트
- * @param props 부모 컴포넌트로부터 넘겨받는 값
  */
 class ContractPaper extends Component {
   render() {
@@ -23,9 +22,9 @@ class ContractPaper extends Component {
       <div className="ContractPaper">
         <Paper className={this.props.classes.root} elevation={1}>
           <Typography variant="headline" component="h3">
-            {this.props.type === "rent"
-              ? "부동산임대차계약서"
-              : "부동산매매계약서"}
+            {this.props.type === 'rent'
+              ? '부동산임대차계약서'
+              : '부동산매매계약서'}
           </Typography>
           <ContractContent type={this.props.type} />
         </Paper>

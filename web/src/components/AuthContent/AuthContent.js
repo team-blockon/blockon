@@ -1,5 +1,5 @@
-import React from "react";
-import "./AuthContent.scss";
+import React from 'react';
+import './AuthContent.scss';
 
 const AuthContent = ({ title, children }) => {
   return (

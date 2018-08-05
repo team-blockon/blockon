@@ -1,11 +1,15 @@
-import React, { Component } from "react";
-import { Route, Link } from "react-router-dom";
-import { Contract, Auth } from "pages";
-import ContractCardList from "components/ContractCardList";
-import AppTemplate from "components/AppTemplate";
-import Header from "components/Header";
-import HeaderNav from "components/HeaderNav";
-import Button from "components/Button";
+import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { Home, Contract, Auth } from 'pages';
+import ContractCardList from 'components/ContractCardList';
+import AppTemplate from 'components/AppTemplate';
+import HeaderNav from 'components/HeaderNav';
+import HeaderContainer from 'containers/HeaderContainer';
+import PrivateRoute from 'components/PrivateRoute';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as userActions from 'store/modules/user';
 
 /**
  * 서버와 클라이언트에서 공용으로 사용하는 컴포넌트
@@ -15,37 +19,70 @@ class App extends Component {
     tab: null
   };
 
+  // 새로고침시 로그인 유지
+  initializeUserInfo = () => {
+    const loggedInfo = JSON.parse(localStorage.getItem('loggedInfo'));
+    if (!loggedInfo) return;
+
+    const { UserActions } = this.props;
+    UserActions.setLoggedInfo(loggedInfo);
+  };
+
   handleSelectTab = tab => {
     this.setState({
       tab
     });
   };
 
-  render() {
-    const { tab } = this.state;
+  componentDidMount() {
+    this.initializeUserInfo();
+  }
 
-    const loginButton = (
-      <Link to="/auth/login">
-        <Button>로그인</Button>
-      </Link>
-    );
+  render() {
+    const { isLogged } = this.props;
+    const { tab } = this.state;
 
     return (
       <AppTemplate
         header={
-          <Header
+          <HeaderContainer
             left={<HeaderNav tab={tab} onSelect={this.handleSelectTab} />}
-            right={loginButton}
           />
         }
       >
-        {/* 라우트에 맞춰서 컴포넌트를 보여줌 */}
-        <Route exact path="/contract" component={ContractCardList} />
-        <Route path="/contract/edit" component={Contract} />
-        <Route path="/auth" component={Auth} />
+        <Switch>
+          {/* 라우트에 맞춰서 컴포넌트를 보여줌 */}
+          <Route exact path="/" component={Home} />
+          <PrivateRoute
+            exact
+            path="/contract"
+            component={ContractCardList}
+            isLogged={isLogged}
+          />
+          <PrivateRoute
+            path="/contract/edit"
+            component={Contract}
+            isLogged={isLogged}
+          />
+          <Route path="/auth" component={Auth} />
+        </Switch>
       </AppTemplate>
     );
   }
 }
 
-export default App;
+// 스토어의 state를 props로 넣어주는 함수
+const mapStateToProps = ({ user }) => ({
+  isLogged: user.isLogged
+});
+
+// 액션을 dispatch하는 함수를 props로 넣어주는 함수
+const mapDispatchToProps = dispatch => ({
+  UserActions: bindActionCreators(userActions, dispatch)
+});
+
+// connect 함수로 컴포넌트에 스토어 연동
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

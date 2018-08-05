@@ -1,9 +1,13 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const crypto = require("crypto");
+const crypto = require('crypto');
 
 // 계정 컬렉션 데이터 스키마
 const Account = new Schema({
+  profile: {
+    username: String,
+    profile: String
+  },
   email: String,
   password: String,
   admin: { type: Boolean, default: false }, // 관리자 여부
@@ -13,9 +17,9 @@ const Account = new Schema({
 // HMAC SHA256 해싱
 function hash(password) {
   return crypto
-    .createHmac("sha512", process.env.SECRET_KEY)
+    .createHmac('sha512', process.env.SECRET_KEY)
     .update(password)
-    .digest("base64");
+    .digest('base64');
 }
 
 /* 모델 메소드
@@ -24,8 +28,11 @@ function hash(password) {
 */
 
 // Account 도큐먼트 생성
-Account.statics.create = function(email, password) {
+Account.statics.create = function(username, email, password) {
   const account = new this({
+    profile: {
+      username
+    },
     email,
     password: hash(password)
   });
@@ -43,4 +50,4 @@ Account.methods.validatePassword = function(password) {
   return this.password === hashed;
 };
 
-module.exports = mongoose.model("Account", Account);
+module.exports = mongoose.model('Account', Account);

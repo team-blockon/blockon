@@ -1,5 +1,5 @@
-import React from "react";
-import "./InputWithLabel.scss";
+import React from 'react';
+import './InputWithLabel.scss';
 
 const InputWithLabel = ({ label, ...rest }) => {
   return (

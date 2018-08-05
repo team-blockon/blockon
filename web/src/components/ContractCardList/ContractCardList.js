@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import PreviewBox from "../PreviewBox";
-import "./ContractCardList.scss";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import PreviewBox from '../PreviewBox';
+import './ContractCardList.scss';
 
 const styles = {
   card: {
@@ -18,22 +18,20 @@ const styles = {
 
 const contracts = [
   {
-    title: "매매",
-    subtitle: "부동산매매계약서",
-    link: "contract/edit?type=trade"
+    title: '매매',
+    subtitle: '부동산매매계약서',
+    link: 'contract/edit?type=trade'
   },
   {
-    title: "전월세",
-    subtitle: "부동산임대차계약서",
-    link: "contract/edit?type=rent"
+    title: '전월세',
+    subtitle: '부동산임대차계약서',
+    link: 'contract/edit?type=rent'
   }
 ];
 
 /**
- * / 라우트에서 보여지는 계약서 카드 리스트 컴포넌트
+ * /contract 라우트에서 보여지는 계약서 카드 리스트 컴포넌트
  * 먼저 매매계약서, 임대차계약서 중 선택
- *
- * @param props 부모 컴포넌트로부터 넘겨받는 값
  */
 class ContractCardList extends Component {
   state = {

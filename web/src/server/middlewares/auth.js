@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 /**
  * JWT 토큰을 필요로 하는 요청에 토큰을 검증하는 미들웨어
@@ -7,15 +7,14 @@ const jwt = require("jsonwebtoken");
  * @param next 토큰 검증에 성공했을 때, 다음 미들웨어를 실행하는 함수
  */
 const authMiddleware = (req, res, next) => {
-  // 헤더나 쿼리 파라미터에서 JWT 토큰 읽기
-  const token = req.headers["x-access-token"] || req.query.token;
+  // 쿠키에서 JWT 토큰 읽기
+  const token = req.cookie.access_token;
 
   // JWT 토큰이 존재하지 않으면, 로그인되지 않았다고 JSON 응답
   if (!token) {
     return res.json({
       success: false,
-      message: "not logged in",
-        info: undefined
+      message: 'not logged in'
     });
   }
 
@@ -31,8 +30,7 @@ const authMiddleware = (req, res, next) => {
   const onError = error => {
     res.status(403).json({
       success: false,
-      message: error.message,
-        info: undefined
+      message: error.message
     });
   };
 
@@ -40,11 +38,10 @@ const authMiddleware = (req, res, next) => {
   p
     // resolve()의 결과 값 decoded를 decoded로 받음
     .then(decoded => {
-        res.json({
-            success: true,
-            message: "logged in",
-            info : decoded.email
-        });
+      res.json({
+        success: true,
+        message: 'logged in'
+      });
       next(); // 다음 미들웨어 실행
     })
     // reject()의 결과 값 err을 error로 받음

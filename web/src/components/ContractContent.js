@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Stepper,
   Step,
@@ -6,15 +6,15 @@ import {
   StepContent,
   Button,
   Typography
-} from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import TradeForm from "./TradeForm";
-import RentForm from "./RentForm";
-import * as PdfAPI from "lib/api/pdf";
+} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import TradeForm from './TradeForm';
+import RentForm from './RentForm';
+import * as PdfAPI from 'lib/api/pdf';
 
 const styles = theme => ({
   root: {
-    width: "90%"
+    width: '90%'
   },
   button: {
     marginTop: theme.spacing.unit,
@@ -32,7 +32,7 @@ const styles = theme => ({
  * 계약서 상단에 보여주는 스텝
  */
 function getSteps() {
-  return ["부동산의 표시", "당사자의 표시", "매매대금", "날짜 및 서명날인"];
+  return ['부동산의 표시', '당사자의 표시', '매매대금', '날짜 및 서명날인'];
 }
 
 /**
@@ -42,7 +42,7 @@ function getSteps() {
  * @param storeData submit될 때 사용하는 input 데이터를 담기 위한 함수
  */
 function getStepContent(type, step, storeData) {
-  if (type === "rent") {
+  if (type === 'rent') {
     return <RentForm step={step} storeData={storeData} />;
   } else {
     return <TradeForm step={step} storeData={storeData} />;
@@ -83,7 +83,7 @@ class ContractContent extends Component {
    * @param data submit될 때 사용하는 input 데이터
    */
   storeData = data => {
-    console.log("Contract form state", data);
+    console.log('Contract form state', data);
     this.setState({ formData: data });
   };
 
@@ -133,7 +133,7 @@ class ContractContent extends Component {
                           onClick={this.handleNext}
                           className={classes.button}
                         >
-                          {activeStep === steps.length - 1 ? "완료" : "다음"}
+                          {activeStep === steps.length - 1 ? '완료' : '다음'}
                         </Button>
                       </div>
                     </div>

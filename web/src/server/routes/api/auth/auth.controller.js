@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const Account = require("../../../models/account");
+const jwt = require('jsonwebtoken');
+const Account = require('../../../models/account');
 
 /*
     POST /api/auth/register
@@ -10,15 +10,15 @@ const Account = require("../../../models/account");
 */
 
 exports.register = (req, res) => {
-  const { email, password } = req.body;
+  const { username, email, password } = req.body;
   let newAccount = null;
 
   // 유저가 존재하지 않으면 새 유저 생성
   const create = account => {
     if (account) {
-      throw new Error("username exists");
+      throw new Error('username exists');
     } else {
-      return Account.create(email, password);
+      return Account.create(username, email, password);
     }
   };
 
@@ -41,7 +41,7 @@ exports.register = (req, res) => {
   // 클라이언트에게 응답
   const respond = isAdmin => {
     res.json({
-      message: "registered successfully",
+      message: 'registered successfully',
       admin: isAdmin ? true : false
     });
   };
@@ -76,9 +76,11 @@ exports.login = (req, res) => {
 
   // 유저의 정보를 확인하고, token 발급
   const check = account => {
+    const { profile } = account;
+
     if (!account) {
       // 유저가 존재하지 않음
-      throw new Error("login failed");
+      throw new Error('login failed');
     } else {
       // 유저가 존재하면, 비밀번호 확인
       if (account.validatePassword(password)) {
@@ -87,35 +89,34 @@ exports.login = (req, res) => {
           jwt.sign(
             {
               _id: account._id,
-              email: account.email,
               admin: account.admin
             },
             secret,
             {
-              expiresIn: "7d",
-              issuer: "boomable.io",
-              subject: "userInfo"
+              expiresIn: '7d',
+              issuer: 'boomable.io',
+              subject: 'userInfo'
             },
             (err, token) => {
               if (err) reject(err);
-              resolve({token,email});
+              resolve({ token, profile });
             }
           );
         });
         return p;
       } else {
-        throw new Error("login failed");
+        throw new Error('login failed');
       }
     }
   };
 
   // token 응답
-  const respond = ({token,email}) => {
-    res.json({
-      message: "logged in successfully",
-        token: token,
-        email: email
+  const respond = ({ token, profile }) => {
+    res.cookie('access_token', token, {
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 유효기간 7일
+      httpOnly: true
     });
+    res.json(profile);
   };
 
   // 에러 발생
@@ -130,4 +131,13 @@ exports.login = (req, res) => {
     .then(check)
     .then(respond)
     .catch(onError);
+};
+
+/*
+    POST /api/auth/logout
+*/
+
+exports.logout = (req, res) => {
+  res.clearCookie('access-token');
+  res.status(204).end(); // 데이터 없이 응답
 };

@@ -1,5 +1,5 @@
-import React from "react";
-import "./AppTemplate.scss";
+import React from 'react';
+import './AppTemplate.scss';
 
 const AppTemplate = ({ header, children }) => {
   return (
