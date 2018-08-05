@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { Home, Contract, Auth } from 'pages';
 import ContractCardList from 'components/ContractCardList';
 import AppTemplate from 'components/AppTemplate';
@@ -81,8 +81,11 @@ const mapDispatchToProps = dispatch => ({
   UserActions: bindActionCreators(userActions, dispatch)
 });
 
-// connect 함수로 컴포넌트에 스토어 연동
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+// withRouter: 라우트가 변경될 때마다 render가 호출되게 함
+export default withRouter(
+  // connect 함수로 컴포넌트에 스토어 연동
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(App)
+);
