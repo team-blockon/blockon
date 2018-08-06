@@ -10,7 +10,7 @@ const Account = require('../../../models/account');
 */
 
 exports.register = (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, isJunggae } = req.body;
   let newAccount = null;
 
   // 유저가 존재하지 않으면 새 유저 생성
@@ -18,7 +18,7 @@ exports.register = (req, res) => {
     if (account) {
       throw new Error('username exists');
     } else {
-      return Account.create(username, email, password);
+      return Account.create(username, email, password, isJunggae);
     }
   };
 

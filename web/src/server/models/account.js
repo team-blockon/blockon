@@ -10,6 +10,7 @@ const Account = new Schema({
   },
   email: String,
   password: String,
+  isJunggae: { type: Number, default: 0 }, // 중개인 여부
   admin: { type: Boolean, default: false }, // 관리자 여부
   createdAt: { type: Date, default: Date.now } // 계정이 생성된 시각
 });
@@ -28,13 +29,14 @@ function hash(password) {
 */
 
 // Account 도큐먼트 생성
-Account.statics.create = function(username, email, password) {
+Account.statics.create = function(username, email, password, isJunggae) {
   const account = new this({
     profile: {
       username
     },
     email,
-    password: hash(password)
+    password: hash(password),
+    isJunggae
   });
 
   // Promise 반환
