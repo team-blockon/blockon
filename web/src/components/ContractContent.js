@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import TradeForm from './TradeForm';
+import RentForm from './RentForm';
+import * as PdfAPI from 'lib/api/pdf';
+import { withStyles } from '@material-ui/core/styles';
 import {
   Stepper,
   Step,
@@ -7,10 +11,6 @@ import {
   Button,
   Typography
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import TradeForm from './TradeForm';
-import RentForm from './RentForm';
-import * as PdfAPI from 'lib/api/pdf';
 
 const styles = theme => ({
   root: {
@@ -41,11 +41,11 @@ function getSteps() {
  * @param step 어느 step을 출력해야 하는지 props로 넘겨줌
  * @param storeData submit될 때 사용하는 input 데이터를 담기 위한 함수
  */
-function getStepContent(type, step, storeData) {
+function getStepContent(type, step, storeData, formData) {
   if (type === 'rent') {
-    return <RentForm step={step} storeData={storeData} />;
+    return <RentForm step={step} storeData={storeData} formData={formData} />;
   } else {
-    return <TradeForm step={step} storeData={storeData} />;
+    return <TradeForm step={step} storeData={storeData} formData={formData} />;
   }
 }
 
@@ -55,7 +55,18 @@ function getStepContent(type, step, storeData) {
 class ContractContent extends Component {
   // state에 있는 값이 바뀌면 리렌더링
   state = {
-    activeStep: 0
+    activeStep: 0,
+    formData: {
+      location: '',
+      seller: '',
+      buyer: '',
+      deposit: '',
+      monthlyRent: '',
+      downPayment: '',
+      middlePayment: '',
+      balance: '',
+      contractDate: '2018-01-01'
+    }
   };
 
   /**
@@ -83,8 +94,15 @@ class ContractContent extends Component {
    * @param data submit될 때 사용하는 input 데이터
    */
   storeData = data => {
-    console.log('Contract form state', data);
-    this.setState({ formData: data });
+    this.setState(
+      {
+        formData: {
+          ...this.state.formData,
+          [data.name]: data.value
+        }
+      },
+      () => console.log(this.state.formData)
+    );
   };
 
   /**
@@ -98,9 +116,9 @@ class ContractContent extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { type, classes } = this.props;
+    const { formData, activeStep } = this.state;
     const steps = getSteps();
-    const { activeStep } = this.state;
 
     return (
       <form onSubmit={this.handleSubmit}>
@@ -111,31 +129,23 @@ class ContractContent extends Component {
                 <Step key={label}>
                   <StepLabel>{label}</StepLabel>
                   <StepContent>
-                    <Typography>
-                      {getStepContent(
-                        this.props.type,
-                        activeStep,
-                        this.storeData
-                      )}
-                    </Typography>
+                    {getStepContent(type, activeStep, this.storeData, formData)}
                     <div className={classes.actionsContainer}>
-                      <div>
-                        <Button
-                          disabled={activeStep === 0}
-                          onClick={this.handleBack}
-                          className={classes.button}
-                        >
-                          이전
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={this.handleNext}
-                          className={classes.button}
-                        >
-                          {activeStep === steps.length - 1 ? '완료' : '다음'}
-                        </Button>
-                      </div>
+                      <Button
+                        disabled={activeStep === 0}
+                        onClick={this.handleBack}
+                        className={classes.button}
+                      >
+                        이전
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                      >
+                        {activeStep === steps.length - 1 ? '완료' : '다음'}
+                      </Button>
                     </div>
                   </StepContent>
                 </Step>
