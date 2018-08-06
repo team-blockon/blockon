@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import ContractIcon from 'react-icons/lib/md/settings';
-import MessageIcon from 'react-icons/lib/md/message';
+import SearchIcon from 'react-icons/lib/md/home';
+import MyPageIcon from 'react-icons/lib/md/info';
 import './HeaderNav.scss';
 
 const HeaderNavItem = ({ children, selected, tab, iconType, onSelect }) => {
@@ -29,20 +29,20 @@ const HeaderNav = ({ tab, onSelect }) => {
   return (
     <div className="HeaderNav">
       <HeaderNavItem
-        iconType={ContractIcon}
+        iconType={SearchIcon}
         tab="contract"
         selected={tab}
         onSelect={onSelect}
       >
-        계약관리
+        중개사 찾기
       </HeaderNavItem>
       <HeaderNavItem
-        iconType={MessageIcon}
+        iconType={MyPageIcon}
         tab="message"
         selected={tab}
         onSelect={onSelect}
       >
-        메시지
+        마이페이지
       </HeaderNavItem>
     </div>
   );
