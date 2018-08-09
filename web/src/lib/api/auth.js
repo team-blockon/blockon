@@ -13,7 +13,7 @@ export const login = ({ email, password }) => {
   return axios.post('http://localhost:8000/api/auth/login', {
     email,
     password
-  });
+  }, { withCredentials: true });
 };
 
 export const logout = () => {

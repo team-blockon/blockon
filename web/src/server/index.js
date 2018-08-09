@@ -29,8 +29,19 @@ app.use(morgan('dev'));
 
 /* development */
 app.use('/', express.static(path.resolve(__dirname, '../../public')));
-app.use(cors()); // cross-origin 요청 허용
 
+/*
+-------------------------
+빌드시 삭제
+ */
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true
+};
+app.use(cors(corsOptions)); // cross-origin 요청 허용
+/*
+--------------------------
+ */
 app.use(express.static("./routes/util"));
 app.use("/api", require("./routes/api"));
 

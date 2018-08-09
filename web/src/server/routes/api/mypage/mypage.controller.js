@@ -10,11 +10,10 @@ const CryptoUtil = require("../../util/CryptoUtil");
  */
 exports.authPassword = (req, res) => {
     const { token, password } = req.body;
-    let passwordHash = CryptoUtil.hashing(password);
 
     const correctPassword = (tokenPassword, inputPassword) => {
         return new Promise((resolve, reject) => {
-            if(tokenPassword != inputPassword){
+            if(tokenPassword !== inputPassword){
                 reject(new Error("wrong password"));
             }else{
                 resolve(true);
@@ -24,6 +23,7 @@ exports.authPassword = (req, res) => {
 
     const respond = () => {
         res.json({
+            result : true,
             message: "registered successfully"
         });
     };
@@ -31,6 +31,7 @@ exports.authPassword = (req, res) => {
     // 에러가 있을 때 실행되는 함수 (이미 존재하는 email)
     const onError = error => {
         res.status(409).json({
+            result : false,
             message: error.message
         });
     };
@@ -40,8 +41,13 @@ exports.authPassword = (req, res) => {
             return Account.findByEmail(decodedToken.email);
         })
         .then((account) => {
-           return correctPassword(account.password, passwordHash);
+            let passwordHash = CryptoUtil.hashing(password);
+            return correctPassword(account.password, passwordHash);
         })
         .then(respond)
         .catch(onError);
+};
+
+exports.authBudongsan = (req, res) => {
+
 };
