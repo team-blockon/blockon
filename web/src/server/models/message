@@ -1,0 +1,25 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const Message = new Schema({
+   to : String,
+   from : String,
+   info : String,
+   time : Date
+});
+
+Message.statics.send = function(to, from, info){
+    const message = new this({
+        to : to,
+        from : from,
+        info : info,
+        time : new Date()
+    });
+    return message.save();
+};
+
+Message.statics.read = function(to, from){
+    return this.find({to: to, from: from});
+};
+
+module.exports = mongoose.model('Message', Message);
