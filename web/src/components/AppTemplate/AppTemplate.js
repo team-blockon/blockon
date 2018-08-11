@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from 'components/Footer';
 import './AppTemplate.scss';
 
 const AppTemplate = ({ header, children }) => {
@@ -6,6 +7,7 @@ const AppTemplate = ({ header, children }) => {
     <div className="AppTemplate">
       {header}
       <main>{children}</main>
+      <Footer />
     </div>
   );
 };

@@ -6,11 +6,11 @@ const crypto = require('crypto');
 const Account = new Schema({
   profile: {
     username: String,
-    profile: String
+    thumbnail: String // 프로필 사진
   },
   email: String,
   password: String,
-  isJunggae: { type: Number, default: 0 }, // 중개인 여부
+  isJunggae: { type: Boolean, default: false }, // 중개인 여부
   admin: { type: Boolean, default: false }, // 관리자 여부
   createdAt: { type: Date, default: Date.now } // 계정이 생성된 시각
 });

@@ -31,7 +31,8 @@ class Register extends Component {
 
   handleRegister = event => {
     const { history } = this.props;
-    const { username, email, password, isJunggae } = this.state;
+    const { username, email, password } = this.state;
+    const isJunggae = this.state.isJunggae === 1;
 
     AuthAPI.register({ username, email, password, isJunggae }).then(() => {
       history.push('/');

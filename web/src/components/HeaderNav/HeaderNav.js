@@ -1,50 +1,57 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import SearchIcon from 'react-icons/lib/md/home';
-import MyPageIcon from 'react-icons/lib/md/info';
 import './HeaderNav.scss';
 
-const HeaderNavItem = ({ children, selected, tab, iconType, onSelect }) => {
-  const icon = iconType ? React.createElement(iconType) : null;
-
+export const HeaderNavItem = ({ children, selected, item, onSelect, to }) => {
   return (
-    <div
-      className={classNames('HeaderNavItem', {
-        active: selected === tab
+    <li
+      className={classNames({
+        active: selected === item
       })}
-      onClick={() => onSelect(tab)}
+      onClick={() => onSelect(item)}
     >
-      <div className="icon">{icon}</div>
-      <div className="text">{children}</div>
-    </div>
+      <Link to={to}>{children}</Link>
+    </li>
   );
 };
 
 /**
- * 헤더 탭 컴포넌트
- * @param tab 현재 선택된 탭
- * @param onSelect 탭 선택 함수
+ * 헤더 아이템 컴포넌트
+ * @param activeItem 현재 선택된 아이템
+ * @param onSelect 아이템 선택 함수
  */
-const HeaderNav = ({ tab, onSelect }) => {
+const HeaderNav = ({ activeItem, onSelect, userButtons }) => {
   return (
-    <div className="HeaderNav">
-      <HeaderNavItem
-        iconType={SearchIcon}
-        tab="contract"
-        selected={tab}
-        onSelect={onSelect}
-      >
-        중개사 찾기
-      </HeaderNavItem>
-      <HeaderNavItem
-        iconType={MyPageIcon}
-        tab="message"
-        selected={tab}
-        onSelect={onSelect}
-      >
-        마이페이지
-      </HeaderNavItem>
-    </div>
+    <nav className="HeaderNav">
+      <ul>
+        <HeaderNavItem
+          item="about"
+          selected={activeItem}
+          onSelect={onSelect}
+          to="/"
+        >
+          소개
+        </HeaderNavItem>
+        <HeaderNavItem
+          item="message"
+          selected={activeItem}
+          onSelect={onSelect}
+          to="/search"
+        >
+          부동산 검색
+        </HeaderNavItem>
+        <HeaderNavItem
+          item="help"
+          selected={activeItem}
+          onSelect={onSelect}
+          to="/help"
+        >
+          고객센터
+        </HeaderNavItem>
+        {userButtons}
+      </ul>
+    </nav>
   );
 };
 

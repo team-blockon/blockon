@@ -22,6 +22,7 @@ const initialState = {
     username: null,
     thumbnail: null
   },
+  isJunggae: false,
   isLogged: false, // 로그인 중인지
   validated: false // 서버측 검증했는지
 };
@@ -31,7 +32,8 @@ export default handleActions(
   {
     [SET_LOGGED_INFO]: (state, action) => ({
       ...state,
-      loggedInfo: { ...action.payload },
+      loggedInfo: { ...action.payload.profile },
+      isJunggae: action.payload.isJunggae,
       isLogged: true
     }),
     [LOGOUT]: (state, action) => ({

@@ -1,6 +1,224 @@
-.HomeWrapper {
-  width: 768px;
-  margin: 0 auto;
-  padding-top: 4rem;
+.cover {
+  height: 613px;
+  color: #333;
+  background-image: url("../../static/images/cover.png");
+  background-size: cover;
+
+  .logo {
+    position: absolute;
+    left: 310px;
+    top: 170px;
+
+    img {
+      height: 73px;
+    }
+  }
+
+  .subtitle {
+    position: absolute;
+    left: 310px;
+    top: 330px;
+    font-size: 1.4rem;
+  }
+
+  .search {
+    position: absolute;
+    left: 310px;
+    top: 400px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #333;
+
+    input {
+      font-size: 1.7rem;
+      border: none;
+      background: none;
+      outline: none;
+      color: #333;
+
+      &::placeholder {
+        color: #333;
+      }
+    }
+  }
+
+  .action {
+    position: absolute;
+    left: 310px;
+    top: 500px;
+
+    button {
+      width: 160px;
+      background: none;
+      border: none;
+      padding-top: 0.6rem;
+      padding-bottom: 0.6rem;
+      color: white;
+      font-size: 1.3rem;
+      border-radius: 10px;
+
+      & + button {
+        margin-left: 20px;
+      }
+
+      &.outline {
+        border: 2px solid #fff;
+      }
+      &.black {
+        background-color: #333;
+      }
+    }
+  }
+}
+
+section {
+  font-size: 1.2rem;
   text-align: center;
+  padding-top: 70px;
+  padding-bottom: 70px;
+  color: #333;
+}
+
+section .logo {
+  height: 120px;
+  margin-bottom: 0.5rem;
+}
+
+section p {
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+section.feature {
+  display: flex;
+  justify-content: space-around;
+  width: 70%;
+  margin: 0 auto;
+  padding-top: 0;
+
+  img {
+    height: 100px;
+    padding-bottom: 1rem;
+  }
+}
+
+section.app {
+  font-size: 1.9rem;
+  position: relative;
+  padding: 0;
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+
+  img {
+    width: 550px;
+  }
+
+  .image {
+    position: absolute; // 상위 객체 기준
+    top: -90px;
+  }
+
+  .content {
+    background-image: url("../../static/images/cover-app.png");
+    background-size: cover;
+    padding-top: 70px;
+    padding-bottom: 70px;
+
+    .button {
+      width: 250px;
+      background: none;
+      padding-top: 0.7rem;
+      padding-bottom: 0.7rem;
+      color: white;
+      font-size: 1.3rem;
+      border-radius: 5px;
+      border: 2px solid #fff;
+      margin-top: 1rem;
+      display: inline-block;
+    }
+  }
+}
+
+section.contact {
+  position: relative;
+  top: 6rem;
+  margin: auto;
+  padding: 15px;
+  display: flex;
+  align-items: stretch;
+  text-align: left;
+  width: 61%;
+  overflow: auto;
+
+  .form {
+    float: left;
+    width: 62%;
+    padding: 6rem 8rem;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+
+    label,
+    input,
+    textarea {
+      display: block;
+      width: 21.5rem;
+    }
+
+    label {
+      font-size: 1rem;
+      color: #333;
+      padding-bottom: 5px;
+    }
+
+    input {
+      font-size: 1.3rem;
+      border: none;
+      background: none;
+      outline: none;
+      color: #333;
+      border-bottom: 2px solid #333;
+      padding-bottom: 5px;
+
+      & + label {
+        margin-top: 2rem;
+      }
+    }
+
+    textarea {
+      font-size: 1.3rem;
+      border: none;
+      background: none;
+      outline: none;
+      color: #333;
+      border: 2px solid #333;
+      padding: 5px;
+    }
+  }
+
+  .info {
+    float: left;
+    width: 38%;
+    background-color: #ffda44;
+    padding: 6rem 3rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+
+    h2 {
+      text-align: center;
+      margin: 0;
+      margin-bottom: 3rem;
+    }
+
+    img {
+      width: 30px;
+      margin-right: 1.2rem;
+    }
+
+    div {
+      margin-top: 3rem;
+      display: flex;
+      align-items: center;
+    }
+  }
 }

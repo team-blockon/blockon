@@ -76,7 +76,11 @@ exports.login = (req, res) => {
 
   // 유저의 정보를 확인하고, token 발급
   const check = account => {
-    const { profile } = account;
+    const { profile, isJunggae } = account;
+    const loggedInfo = {
+      profile,
+      isJunggae
+    };
 
     if (!account) {
       // 유저가 존재하지 않음
@@ -99,7 +103,7 @@ exports.login = (req, res) => {
             },
             (err, token) => {
               if (err) reject(err);
-              resolve({ token, profile });
+              resolve({ token, loggedInfo });
             }
           );
         });
@@ -111,12 +115,12 @@ exports.login = (req, res) => {
   };
 
   // token 응답
-  const respond = ({ token, profile }) => {
+  const respond = ({ token, loggedInfo }) => {
     res.cookie('access_token', token, {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 유효기간 7일
       httpOnly: true
     });
-    res.json(profile);
+    res.json(loggedInfo);
   };
 
   // 에러 발생

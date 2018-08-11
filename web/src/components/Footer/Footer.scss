@@ -1,0 +1,52 @@
+footer {
+  padding-top: 10rem;
+  padding-bottom: 3rem;
+  background-color: #353a4c;
+  color: #fff;
+
+  .footer-top {
+    display: flex;
+
+    .company {
+      padding-left: 5.5rem;
+
+      img {
+        height: 148px;
+      }
+    }
+
+    nav {
+      flex-grow: 1;
+      display: flex;
+      justify-content: space-around;
+      padding-left: 4rem;
+      padding-right: 4rem;
+      font-size: 1.1rem;
+
+      ul {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+
+        li {
+          list-style: none;
+
+          & + li {
+            padding-top: 0.8rem;
+          }
+        }
+      }
+    }
+  }
+
+  hr {
+    border: none;
+    border-top: 2px solid #fff;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .copyright {
+    text-align: center;
+  }
+}
