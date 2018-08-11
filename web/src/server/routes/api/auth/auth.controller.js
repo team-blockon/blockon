@@ -93,7 +93,8 @@ exports.login = (req, res) => {
           jwt.sign(
             {
               _id: account._id,
-              admin: account.admin
+              admin: account.admin,
+              email: email
             },
             secret,
             {
