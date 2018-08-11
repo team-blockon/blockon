@@ -7,14 +7,18 @@ import { Route, Redirect } from 'react-router-dom';
  */
 class PrivateRoute extends Component {
   render() {
-    const { component: Component, isLogged, ...rest } = this.props;
+    const { component: Component, isLogged, isJunggae, ...rest } = this.props;
 
     return (
       <Route
         {...rest}
         render={props =>
-          isLogged ? <Component {...props} /> : <Redirect to="/auth/login" />
-        }
+          isLogged ? (
+            <Component isJunggae={isJunggae} {...props} />
+          ) : (
+            <Redirect to="/auth/login" />
+          )
+        } // history, location, match를 props 인자로 전달받음
       />
     );
   }

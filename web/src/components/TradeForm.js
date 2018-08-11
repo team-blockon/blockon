@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import NumberFormat from 'react-number-format';
+import { FormControl, TextField, InputAdornment } from '@material-ui/core';
 
 /**
  * 숫자 세자리마다 콤마 찍기
@@ -35,23 +33,13 @@ const NumberFormatCustom = props => {
  * @param step props에서 step만 가져옴
  */
 class TradeForm extends Component {
-  state = {
-    location: '',
-    seller: '',
-    buyer: '',
-    downPayment: '',
-    middlePayment: '',
-    balance: '',
-    contractDate: '2018-01-01'
-  };
-
   /**
    * input에 사용자 입력이 발생할 때마다 호출되는 이벤트 핸들러
    * @param event
    */
   handleChange = event => {
-    let name = event.target.name;
-    let value = event.target.value;
+    const name = event.target.name;
+    const value = event.target.value;
 
     // setState: 비동기로 state를 업데이트한 후,
     // 두 번째 파라미터로 받는 콜백 함수 호출
@@ -69,7 +57,7 @@ class TradeForm extends Component {
       middlePayment,
       balance,
       contractDate
-    } = this.state;
+    } = this.props.formData;
 
     switch (this.props.step) {
     case 0:

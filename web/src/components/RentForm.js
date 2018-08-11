@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import NumberFormat from 'react-number-format';
-import Grid from '@material-ui/core/Grid';
+import {
+  FormControl,
+  TextField,
+  InputAdornment,
+  Grid
+} from '@material-ui/core';
 
 /**
  * 숫자 세자리마다 콤마 찍기
@@ -37,29 +39,15 @@ const NumberFormatCustom = props => {
  * @param step props에서 step만 가져옴
  */
 class RentForm extends Component {
-  state = {
-    location: '',
-    seller: '',
-    buyer: '',
-    downPayment: '',
-    middlePayment: '',
-    balance: '',
-    contractDate: '2018-01-01'
-  };
-
   /**
    * input에 사용자 입력이 발생할 때마다 호출되는 이벤트 핸들러
    * @param event
    */
   handleChange = event => {
-    let name = event.target.name;
-    let value = event.target.value;
+    const name = event.target.name;
+    const value = event.target.value;
 
-    // setState: 비동기로 state를 업데이트한 후,
-    // 두 번째 파라미터로 받는 콜백 함수 호출
-    this.setState({ [name]: value }, () => {
-      this.props.storeData(this.state);
-    });
+    this.props.storeData({ name, value });
   };
 
   render() {
@@ -68,11 +56,12 @@ class RentForm extends Component {
       seller,
       buyer,
       deposit,
+      monthlyRent,
       downPayment,
       middlePayment,
       balance,
       contractDate
-    } = this.state;
+    } = this.props.formData;
 
     switch (this.props.step) {
     case 0:
@@ -81,7 +70,7 @@ class RentForm extends Component {
           <p>등기부등본의 표시란과 동일하게 적어주세요.</p>
           <FormControl fullWidth>
             <TextField
-              id="location"
+              name="location"
               value={location}
               label="소재지"
               placeholder="소재지"
@@ -98,7 +87,7 @@ class RentForm extends Component {
           <p>임대인과 임차인을 적어주세요.</p>
           <FormControl fullWidth>
             <TextField
-              id="seller"
+              name="seller"
               value={seller}
               label="임대인"
               placeholder="임대인"
@@ -108,7 +97,7 @@ class RentForm extends Component {
           </FormControl>
           <FormControl fullWidth>
             <TextField
-              id="buyer"
+              name="buyer"
               value={buyer}
               label="임차인"
               placeholder="임차인"
@@ -127,7 +116,7 @@ class RentForm extends Component {
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <TextField
-                  id="deposit"
+                  name="deposit"
                   value={deposit}
                   label="보증금"
                   placeholder="보증금"
@@ -151,7 +140,8 @@ class RentForm extends Component {
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <TextField
-                  id="deposit"
+                  name="monthlyRent"
+                  value={monthlyRent}
                   label="월세"
                   placeholder="월세"
                   InputProps={{
@@ -174,7 +164,7 @@ class RentForm extends Component {
           </Grid>
           <FormControl fullWidth>
             <TextField
-              id="downPayment"
+              name="downPayment"
               value={downPayment}
               label="계약금"
               placeholder="계약금"
@@ -196,7 +186,7 @@ class RentForm extends Component {
           </FormControl>
           <FormControl fullWidth>
             <TextField
-              id="middlePayment"
+              name="middlePayment"
               value={middlePayment}
               label="중도금"
               placeholder="중도금"
@@ -218,7 +208,7 @@ class RentForm extends Component {
           </FormControl>
           <FormControl fullWidth>
             <TextField
-              id="balance"
+              name="balance"
               value={balance}
               label="잔금"
               placeholder="잔금"
@@ -247,11 +237,10 @@ class RentForm extends Component {
           <p>계약을 맺은 날짜를 적어주세요.</p>
           <FormControl fullWidth>
             <TextField
-              id="contractDate"
+              name="contractDate"
               value={contractDate}
               type="date"
               label="계약일"
-              defaultValue="2018-01-01"
               InputLabelProps={{
                 shrink: true
               }}

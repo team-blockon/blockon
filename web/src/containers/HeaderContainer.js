@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Button from 'components/Button';
-import Header, { LoginButton } from 'components/Header';
+import Header from 'components/Header';
+import LoggedInNav from 'components/HeaderNav/LoggedInNav';
+import LoggedOutNav from 'components/HeaderNav/LoggedOutNav';
 import { bindActionCreators } from 'redux';
 import * as userActions from 'store/modules/user';
 import * as AuthAPI from 'lib/api/auth';
@@ -25,20 +26,20 @@ class HeaderContainer extends Component {
   };
 
   render() {
-    const { isLogged, left } = this.props;
+    const { isLogged, navItem } = this.props;
 
     /**
      * 로그인 여부에 따라 로그인/로그아웃 버튼 조건부 렌더링
      */
-    const getLoginButton = () => {
+    const getUserButtons = () => {
       if (isLogged) {
-        return <Button onClick={this.handleLogout}>로그아웃</Button>;
+        return <LoggedInNav handleLogout={this.handleLogout} />;
       } else {
-        return <LoginButton to="/auth/login">로그인</LoginButton>;
+        return <LoggedOutNav />;
       }
     };
 
-    return <Header left={left} right={getLoginButton()} />;
+    return <Header navItem={navItem} userButtons={getUserButtons()} />;
   }
 }
 

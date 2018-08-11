@@ -1,12 +1,12 @@
-import axios from 'axios';
+import defaultClient from 'lib/defaultClient';
 
 /**
  * 바이너리 PDF 파일을 반환받는다.
  * @param data 계약서 폼 데이터
  */
 export function getFilledPDF(data) {
-  axios
-    .post('http://localhost:8000/api/pdf', data, {
+  defaultClient
+    .post('/api/pdf', data, {
       // raw data로 응답받음. 데이터 조작이 필요하지 않으므로 arraybuffer 대신 blob 사용
       responseType: 'blob'
     })

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { Home, Contract, Auth } from 'pages';
+import { Home, MyPage, Contract, Auth } from 'pages';
 import ContractCardList from 'components/ContractCardList';
 import AppTemplate from 'components/AppTemplate';
 import HeaderNav from 'components/HeaderNav';
@@ -16,7 +16,7 @@ import * as userActions from 'store/modules/user';
  */
 class App extends Component {
   state = {
-    tab: null
+    activeItem: null
   };
 
   // 새로고침시 로그인 유지
@@ -28,9 +28,9 @@ class App extends Component {
     UserActions.setLoggedInfo(loggedInfo);
   };
 
-  handleSelectTab = tab => {
+  handleSelectNav = activeItem => {
     this.setState({
-      tab
+      activeItem
     });
   };
 
@@ -39,20 +39,32 @@ class App extends Component {
   }
 
   render() {
-    const { isLogged } = this.props;
-    const { tab } = this.state;
+    const { isLogged, isJunggae } = this.props;
+    const { activeItem } = this.state;
 
     return (
       <AppTemplate
         header={
           <HeaderContainer
-            left={<HeaderNav tab={tab} onSelect={this.handleSelectTab} />}
+            navItem={
+              <HeaderNav
+                activeItem={activeItem}
+                onSelect={this.handleSelectNav}
+              />
+            }
           />
         }
       >
         <Switch>
           {/* 라우트에 맞춰서 컴포넌트를 보여줌 */}
           <Route exact path="/" component={Home} />
+          <PrivateRoute
+            exact
+            path="/mypage"
+            component={MyPage}
+            isLogged={isLogged}
+            isJunggae={isJunggae}
+          />
           <PrivateRoute
             exact
             path="/contract"
@@ -73,7 +85,8 @@ class App extends Component {
 
 // 스토어의 state를 props로 넣어주는 함수
 const mapStateToProps = ({ user }) => ({
-  isLogged: user.isLogged
+  isLogged: user.isLogged,
+  isJunggae: user.isJunggae
 });
 
 // 액션을 dispatch하는 함수를 props로 넣어주는 함수

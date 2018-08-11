@@ -72,7 +72,7 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  setLoggedInfo: () => dispatch(userActions.setLoggedInfo())
+  setLoggedInfo: loggedInfo => dispatch(userActions.setLoggedInfo(loggedInfo))
 });
 
 export default connect(

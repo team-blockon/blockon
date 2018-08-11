@@ -50,38 +50,48 @@ class ContractCardList extends Component {
     const { previewBox } = this.state;
 
     return (
-      <div className="ContractCardList">
-        <Grid container spacing={24}>
-          {contracts.map((contract, index) => {
-            return (
-              <Grid item xs={12} sm={6} key={index}>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Typography gutterBottom variant="headline" component="h2">
-                      {contract.title}
-                    </Typography>
-                    <Typography component="p">{contract.subtitle}</Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      component={Link}
-                      to="#"
-                      color="primary"
-                      onClick={this.handleTogglePreviewBox}
-                    >
-                      미리보기
-                    </Button>
-                    <Button component={Link} to={contract.link} color="primary">
-                      작성하기
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            );
-          })}
-        </Grid>
-        {/*모달 상태가 true일 때만 렌더링*/}
-        {previewBox && <PreviewBox onClose={this.handleTogglePreviewBox} />}
+      <div className="container content">
+        <div className="ContractCardList">
+          <Grid container spacing={24}>
+            {contracts.map((contract, index) => {
+              return (
+                <Grid item xs={12} sm={6} key={index}>
+                  <Card className={classes.card}>
+                    <CardContent>
+                      <Typography
+                        gutterBottom
+                        variant="headline"
+                        component="h2"
+                      >
+                        {contract.title}
+                      </Typography>
+                      <Typography component="p">{contract.subtitle}</Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button
+                        component={Link}
+                        to="#"
+                        color="primary"
+                        onClick={this.handleTogglePreviewBox}
+                      >
+                        미리보기
+                      </Button>
+                      <Button
+                        component={Link}
+                        to={contract.link}
+                        color="primary"
+                      >
+                        작성하기
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
+          </Grid>
+          {/*모달 상태가 true일 때만 렌더링*/}
+          {previewBox && <PreviewBox onClose={this.handleTogglePreviewBox} />}
+        </div>
       </div>
     );
   }

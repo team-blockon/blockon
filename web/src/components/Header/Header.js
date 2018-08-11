@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Logo from 'static/images/logo.png';
 import './Header.scss';
 
 class Header extends Component {
   render() {
-    const { left, right, children } = this.props;
+    const { navItem, userButtons } = this.props;
+
     return (
-      <div className="Header">
-        <div className="logo">
-          <Link to="/">blockon</Link>
+      <header>
+        <div className="menu container">
+          <Link to="/">
+            <img src={Logo} className="logo" alt="logo" />
+          </Link>
+
+          {React.cloneElement(navItem, { userButtons })}
         </div>
-        <div className="side left">{left}</div>
-        <div className="side right">{right}</div>
-        {children}
-      </div>
+      </header>
     );
   }
 }

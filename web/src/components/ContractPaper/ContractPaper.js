@@ -19,15 +19,17 @@ const styles = theme => ({
 class ContractPaper extends Component {
   render() {
     return (
-      <div className="ContractPaper">
-        <Paper className={this.props.classes.root} elevation={1}>
-          <Typography variant="headline" component="h3">
-            {this.props.type === 'rent'
-              ? '부동산임대차계약서'
-              : '부동산매매계약서'}
-          </Typography>
-          <ContractContent type={this.props.type} />
-        </Paper>
+      <div className="container content">
+        <div className="ContractPaper">
+          <Paper className={this.props.classes.root} elevation={1}>
+            <Typography variant="headline" component="h3">
+              {this.props.type === 'rent'
+                ? '부동산임대차계약서'
+                : '부동산매매계약서'}
+            </Typography>
+            <ContractContent type={this.props.type} />
+          </Paper>
+        </div>
       </div>
     );
   }

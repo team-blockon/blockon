@@ -1,18 +1,18 @@
 @import "lib/StyleUtils.scss";
 
 .AuthWrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  padding-top: 6.2rem;
+  padding-bottom: 6.2rem;
 
   .shadowedBox {
     width: 500px;
     box-shadow: shadow(3);
+    border-radius: 4px;
   }
 
   .contents {
-    background: white;
     padding: 2rem;
   }
 }

@@ -6,7 +6,7 @@
   padding-top: 0.6rem;
   padding-bottom: 0.5rem;
 
-  background: $oc-indigo-5;
+  background: $oc-yellow-5;
   color: white;
 
   text-align: center;
@@ -19,11 +19,11 @@
   transition: 0.2s all;
 
   &:hover {
-    background: $oc-indigo-4;
+    background: $oc-yellow-4;
     box-shadow: shadow(1);
   }
 
   &:active {
-    background: $oc-indigo-6;
+    background: $oc-yellow-6;
   }
 }
