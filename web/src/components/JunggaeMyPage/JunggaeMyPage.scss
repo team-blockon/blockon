@@ -1,0 +1,66 @@
+@import "~open-color/open-color";
+
+.JunggaeMyPage {
+  ul {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 1.5rem;
+
+    li {
+      display: inline-block;
+      font-size: 1.2rem;
+      list-style: none;
+      cursor: pointer;
+      color: $oc-gray-5;
+
+      &.active {
+        color: #000;
+      }
+
+      & + li {
+        margin-left: 30px;
+      }
+    }
+  }
+
+  .card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+      margin-bottom: 6rem;
+
+      .content {
+        padding: 2rem 3.5rem;
+      }
+
+      .action {
+        display: flex;
+
+        div {
+          flex: 1;
+          text-align: center;
+          background-color: #353a4c;
+          color: #fff;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #ffda44;
+            color: #333;
+          }
+
+          & + div {
+            border-left: 1px solid $oc-gray-6;
+          }
+        }
+      }
+    }
+  }
+}
