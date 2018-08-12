@@ -8,6 +8,7 @@ import mapIcon from 'static/images/icon/map.png';
 import mailIcon from 'static/images/icon/message.png';
 import phoneIcon from 'static/images/icon/phone.png';
 import phone from 'static/images/phone.png';
+import sendIcon from 'static/images/icon/send.png';
 import './HomeWrapper.scss';
 
 const HomeWrapper = () => {
@@ -113,6 +114,9 @@ const HomeWrapper = () => {
           <input type="tel" id="phone" />
           <label htmlFor="feedback">문의사항</label>
           <textarea id="feedback" rows="6" cols="80" />
+          <button type="button">
+            <img src={sendIcon} alt="send" />
+          </button>
         </div>
         <div className="info">
           <h2>Contact US</h2>
