@@ -16,7 +16,7 @@ import * as userActions from 'store/modules/user';
  */
 class App extends Component {
   state = {
-    activeItem: null
+    activeItem: 'about'
   };
 
   // 새로고침시 로그인 유지
