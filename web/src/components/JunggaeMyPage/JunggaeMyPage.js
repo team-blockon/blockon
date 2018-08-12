@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import MaemulImage from 'static/images/maemul.png';
 import './JunggaeMyPage.scss';
 
-class JunggaeMyPage extends Component {
-  state = {
-    activeTab: 0
-  };
+const MyPageTab = ({ activeTab, item, handleSelect, children }) => {
+  return (
+    <li
+      className={classNames({ active: activeTab === item })}
+      onClick={() => handleSelect(item)}
+    >
+      {children}
+    </li>
+  );
+};
 
+class JunggaeMyPage extends Component {
   getCards = () => {
     const cards = [];
     const card = (
@@ -32,13 +40,33 @@ class JunggaeMyPage extends Component {
   };
 
   render() {
+    const { activeTab, handleSelect } = this.props;
+
     return (
       <div className="JunggaeMyPage">
         <div className="container content">
           <ul>
-            <li className="active">진행중거래 (9건)</li>
-            <li>완료된거래 (20건)</li>
-            <li>평점및리뷰 (30건)</li>
+            <MyPageTab
+              item={0}
+              activeTab={activeTab}
+              handleSelect={handleSelect}
+            >
+              진행중거래 (9건)
+            </MyPageTab>
+            <MyPageTab
+              item={1}
+              activeTab={activeTab}
+              handleSelect={handleSelect}
+            >
+              완료된거래 (20건)
+            </MyPageTab>
+            <MyPageTab
+              item={2}
+              activeTab={activeTab}
+              handleSelect={handleSelect}
+            >
+              평점및리뷰 (30건)
+            </MyPageTab>
           </ul>
           <div className="card-wrapper">{this.getCards()}</div>
         </div>
