@@ -9,6 +9,12 @@
     core-js "^2.5.7"
     regenerator-runtime "^0.12.0"
 
+"@babel/runtime@^7.0.0-rc.1":
+  version "7.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0-rc.1.tgz#42f36fc5817911c89ea75da2b874054922967616"
+  dependencies:
+    regenerator-runtime "^0.12.0"
+
 "@material-ui/core@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-1.4.0.tgz#e535fef84576b096c46e1fb7d6c4c61895155fd3"
@@ -41,6 +47,10 @@
     recompose "^0.27.0"
     scroll "^2.0.3"
     warning "^4.0.1"
+
+"@tanem/svg-injector@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@tanem/svg-injector/-/svg-injector-1.2.1.tgz#3120e90246d0eb3c4fc6c61586a6f028a3c658ae"
 
 "@types/jss@^9.5.3":
   version "9.5.3"
@@ -11439,6 +11449,21 @@ react-router@^4.3.1:
     path-to-regexp "^1.7.0"
     prop-types "^15.6.1"
     warning "^4.0.1"
+
+react-star-rating-component@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-star-rating-component/-/react-star-rating-component-1.4.1.tgz#74dc1c73493f088013331c234190b8cccad31f6b"
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.6.1"
+
+react-svg@^5.0.16:
+  version "5.0.16"
+  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-5.0.16.tgz#169906aebacf0c668bccfc3fa25c516d33a58f9a"
+  dependencies:
+    "@babel/runtime" "^7.0.0-rc.1"
+    "@tanem/svg-injector" "^1.2.1"
+    prop-types "^15.6.2"
 
 react-transition-group@^2.2.1:
   version "2.4.0"

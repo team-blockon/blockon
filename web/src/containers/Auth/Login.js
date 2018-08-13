@@ -31,7 +31,7 @@ class Login extends Component {
       setLoggedInfo(loggedInfo);
 
       localStorage.setItem('loggedInfo', JSON.stringify(loggedInfo));
-      history.push('/contract');
+      history.push('/');
     });
   };
 

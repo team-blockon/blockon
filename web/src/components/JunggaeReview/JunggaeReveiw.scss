@@ -1,0 +1,124 @@
+@import "~open-color/open-color";
+
+.JunggaeReview {
+  h1 {
+    border-bottom: 1px solid #000;
+    font-size: 1.1rem;
+    padding-bottom: 0.5rem;
+    font-weight: normal;
+  }
+
+  .point-average {
+    display: flex;
+    background-color: $oc-gray-0;
+    padding: 2rem 3rem;
+    margin-bottom: 5rem;
+
+    img {
+      width: 200px;
+    }
+
+    .stars {
+      display: flex;
+      padding-bottom: 1rem;
+      font-size: 1.5rem;
+      align-items: center;
+    }
+
+    span {
+      display: inline-block;
+      background-color: white;
+      border-radius: 15px;
+      padding: 0.5rem 1rem;
+      margin-left: 0.5rem;
+      margin-right: 2rem;
+      font-weight: 800;
+    }
+  }
+
+  .reviews {
+    display: flex;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid $oc-gray-3;
+
+    .point {
+      h2 {
+        font-size: 2rem;
+        text-align: center;
+        margin-top: 0;
+      }
+    }
+
+    .review {
+      p {
+        margin-top: 0;
+        font-size: 1.1rem;
+      }
+
+      .content {
+        margin-bottom: 1rem;
+      }
+    }
+
+    .l {
+      display: inline-block;
+      border-left: 1px solid #333;
+      border-bottom: 1px solid #333;
+      width: 25px;
+      height: 15px;
+      margin-right: 0.5rem;
+    }
+
+    span {
+      background-color: $oc-gray-9;
+      color: $oc-gray-0;
+      padding: 0.3rem 0.6rem;
+      border-radius: 10px;
+      font-size: 0.7rem;
+    }
+
+    .point {
+      flex-shrink: 0;
+      margin-left: 1.5rem;
+      margin-right: 3.5rem;
+    }
+
+    .answer {
+      background-color: $oc-gray-0;
+      padding: 1rem;
+
+      .title {
+        display: flex;
+      }
+
+      .content {
+        margin-left: calc(25px + 0.5rem);
+        margin-right: calc(25px + 0.5rem);
+        padding-top: 1rem;
+      }
+    }
+  }
+
+  ul.pagination {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    margin-top: 1.5rem;
+    cursor: pointer;
+
+    li {
+      display: inline-block;
+      list-style: none;
+      color: $oc-gray-6;
+
+      &.active {
+        color: #ffda44;
+      }
+
+      & + li {
+        margin-left: 30px;
+      }
+    }
+  }
+}

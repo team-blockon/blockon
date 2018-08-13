@@ -3,12 +3,15 @@ import logo from 'static/images/logo.png';
 import coverLogo from 'static/images/logo-cover.png';
 import chattingIcon from 'static/images/icon/chatting.png';
 import contractIcon from 'static/images/icon/contract.png';
-import realestateIcon from 'static/images/icon/realestate.png';
+import gradeIcon from 'static/images/icon/grade.png';
 import mapIcon from 'static/images/icon/map.png';
 import mailIcon from 'static/images/icon/message.png';
 import phoneIcon from 'static/images/icon/phone.png';
 import phone from 'static/images/phone.png';
 import sendIcon from 'static/images/icon/send.png';
+import facebookIcon from 'static/images/icon/facebook.png';
+import googleIcon from 'static/images/icon/google.png';
+import instagramIcon from 'static/images/icon/instagram.png';
 import './HomeWrapper.scss';
 
 const HomeWrapper = () => {
@@ -18,27 +21,20 @@ const HomeWrapper = () => {
         <div className="logo">
           <img src={coverLogo} alt="logo" />
         </div>
-        <div className="subtitle">
-          매수인, 매도인, 중개인 모두의 거래과정을 맑게 투명하게 자신있게
-        </div>
+        <div className="subtitle">믿을 수 있는 중개인을 만나보세요.</div>
         <div className="search">
-          <input type="text" placeholder="부동산을 검색하세요" />
-        </div>
-        <div className="action">
-          <button type="button" className="outline">
-            로그인
-          </button>
-          <button type="button" className="black">
-            회원가입
-          </button>
+          <input
+            type="text"
+            placeholder="관심지역 또는 공인중개소를 검색해보세요."
+          />
         </div>
       </div>
 
-      <section>
+      <section className="blockon">
         <img src={logo} className="logo" alt="logo" />
         <p>
           BLOCKON은 부동산 계약을 더욱 투명하게 하기 위한 블록체인 기반&nbsp;
-          <strong>부동산 계약</strong> 시스템입니다.
+          <strong>부동산 평판</strong> 시스템입니다.
         </p>
         <p>
           부동산 검색은 더욱 쉽게, 거래과정을 명확하게, 소통은 원할하게 이용하실
@@ -50,7 +46,7 @@ const HomeWrapper = () => {
       <section className="feature">
         <div>
           <div>
-            <img src={chattingIcon} alt="chatting" />
+            <img src={gradeIcon} alt="chatting" />
           </div>
           부동산의 평점을
           <br />
@@ -71,7 +67,7 @@ const HomeWrapper = () => {
         </div>
         <div>
           <div>
-            <img src={realestateIcon} alt="realestate" />
+            <img src={chattingIcon} alt="realestate" />
           </div>
           매수인, 개인, 매도인 간의
           <br />
@@ -87,19 +83,14 @@ const HomeWrapper = () => {
         </div>
         <div className="content">
           <p>
-            이제 손쉽게&nbsp;
-            <strong>BLOCKON</strong>을
+            <strong>BLOCKON</strong> 모바일앱이
           </p>
-          <p>모바일 앱으로 만나보세요.</p>
-          <div>
-            <a className="button" href="https://www.apple.com/ios/app-store">
-              APP STORE
-            </a>
-          </div>
-          <div>
-            <a className="button" href="https://play.google.com/store">
-              PLAY STORE
-            </a>
+          <p>10월 31일에 출시될 예정입니다.</p>
+          <p className="email">메일을 적어주시면 출시 전에 알려드려요.</p>
+
+          <div className="input-wrapper">
+            <input type="email" placeholder="이메일을 입력해주세요." />
+            <button type="submit">보내기</button>
           </div>
         </div>
       </section>
@@ -113,7 +104,7 @@ const HomeWrapper = () => {
           <label htmlFor="phone">핸드폰</label>
           <input type="tel" id="phone" />
           <label htmlFor="feedback">문의사항</label>
-          <textarea id="feedback" rows="6" cols="80" />
+          <textarea id="feedback" rows="3" cols="80" />
           <button type="button">
             <img src={sendIcon} alt="send" />
           </button>
@@ -121,7 +112,7 @@ const HomeWrapper = () => {
         <div className="info">
           <h2>Contact US</h2>
           <div>
-            <img src={mapIcon} alt="map" />
+            <img src={mapIcon} alt="map" style={{ width: '22px' }} />
             경기 성남시 분당구 판교로289길 4층 BLOCKON
           </div>
           <div>
@@ -131,6 +122,11 @@ const HomeWrapper = () => {
           <div>
             <img src={phoneIcon} alt="phone" />
             031-214-8698
+          </div>
+          <div>
+            <img src={facebookIcon} alt="facebook" />
+            <img src={googleIcon} alt="google" />
+            <img src={instagramIcon} alt="instagram" />
           </div>
         </div>
       </section>

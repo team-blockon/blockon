@@ -3,7 +3,7 @@ import './AuthContent.scss';
 
 const AuthContent = ({ title, children }) => {
   return (
-    <div>
+    <div className="AuthContent">
       <div className="title">{title}</div>
       {children}
     </div>

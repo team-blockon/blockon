@@ -1,7 +1,7 @@
 @import "~open-color/open-color";
 
 .JunggaeMyPage {
-  ul {
+  ul.tab {
     margin: 0;
     padding: 0;
     padding-bottom: 1.5rem;
@@ -34,9 +34,14 @@
       border-radius: 10px 10px 0 0;
       box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
       margin-bottom: 6rem;
+      max-width: 300px;
 
       .content {
-        padding: 2rem 3.5rem;
+        padding: 1rem 3.5rem;
+
+        img {
+          width: 200px;
+        }
       }
 
       .action {

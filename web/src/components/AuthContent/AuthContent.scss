@@ -1,8 +1,10 @@
 @import "~open-color/open-color";
 
-.title {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: $oc-gray-8;
-  margin-bottom: 1rem;
+.AuthContent {
+  .title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: $oc-gray-8;
+    margin-bottom: 1rem;
+  }
 }

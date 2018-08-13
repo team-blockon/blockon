@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import MaemulImage from 'static/images/maemul.png';
 import './JunggaeMyPage.scss';
+import JunggaeReview from '../JunggaeReview';
 
 const MyPageTab = ({ activeTab, item, handleSelect, children }) => {
   return (
@@ -22,7 +23,7 @@ class JunggaeMyPage extends Component {
         <div className="content">
           <img src={MaemulImage} alt="maemul" />
           <p>준영타워팰리스</p>
-          <p>영통구 이의동 센트럴타운로 76</p>
+          <p>영통구 이의동 센트럴타운로</p>
           <p>잔금처리진행중</p>
         </div>
         <div className="action">
@@ -39,13 +40,26 @@ class JunggaeMyPage extends Component {
     return cards;
   };
 
+  getTabContent = activeTab => {
+    switch (activeTab) {
+    case 0:
+      return <div className="card-wrapper">{this.getCards()}</div>;
+    case 1:
+      return '완료된거래';
+    case 2:
+      return <JunggaeReview />;
+    default:
+      return '유효하지 않은 탭입니다.';
+    }
+  };
+
   render() {
     const { activeTab, handleSelect } = this.props;
 
     return (
       <div className="JunggaeMyPage">
         <div className="container content">
-          <ul>
+          <ul className="tab">
             <MyPageTab
               item={0}
               activeTab={activeTab}
@@ -68,7 +82,8 @@ class JunggaeMyPage extends Component {
               평점및리뷰 (30건)
             </MyPageTab>
           </ul>
-          <div className="card-wrapper">{this.getCards()}</div>
+
+          {this.getTabContent(activeTab)}
         </div>
       </div>
     );

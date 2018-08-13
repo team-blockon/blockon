@@ -8,10 +8,10 @@ footer {
     display: flex;
 
     .company {
-      padding-left: 5.5rem;
+      padding-left: 3rem;
 
       img {
-        height: 148px;
+        height: 122px;
       }
     }
 
@@ -19,9 +19,7 @@ footer {
       flex-grow: 1;
       display: flex;
       justify-content: space-around;
-      padding-left: 4rem;
-      padding-right: 4rem;
-      font-size: 1.1rem;
+      padding-left: 8rem;
 
       ul {
         display: inline-block;

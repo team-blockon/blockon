@@ -55,6 +55,8 @@
     "react-number-format": "^3.4.3",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
+    "react-star-rating-component": "^1.4.1",
+    "react-svg": "^5.0.16",
     "redux": "^4.0.0",
     "redux-actions": "^2.6.1",
     "resolve": "1.6.0",

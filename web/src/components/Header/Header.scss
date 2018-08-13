@@ -1,12 +1,14 @@
 @import "~open-color/open-color";
 
 header {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 13px;
+  padding-bottom: 13px;
   display: flex;
+  background-image: url(../../static/images/cover.png);
+  background-size: cover;
 
   .logo {
-    height: 60px;
+    height: 40px;
   }
 }
 

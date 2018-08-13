@@ -1,13 +1,15 @@
+@import "~open-color/open-color";
+
 .cover {
-  height: 613px;
+  height: 540px;
   color: #333;
   background-image: url("../../static/images/cover.png");
   background-size: cover;
 
   .logo {
     position: absolute;
-    left: 310px;
-    top: 170px;
+    left: 400px;
+    top: 185px;
 
     img {
       height: 73px;
@@ -16,77 +18,60 @@
 
   .subtitle {
     position: absolute;
-    left: 310px;
-    top: 330px;
-    font-size: 1.4rem;
+    left: 400px;
+    top: 310px;
+    font-size: 2rem;
+    font-weight: 700;
   }
 
   .search {
     position: absolute;
-    left: 310px;
-    top: 400px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-bottom: 2px solid #333;
+    left: 400px;
+    top: 415px;
+    padding: 1rem;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    border-radius: 5px;
 
     input {
-      font-size: 1.7rem;
+      font-size: 1.3rem;
       border: none;
       background: none;
       outline: none;
       color: #333;
+      width: 500px;
+      background-image: url("../../static/images/icon/search.png");
+      background-position: 7px 4px;
+      background-repeat: no-repeat;
+      background-size: 18px;
+      padding-left: 35px;
 
       &::placeholder {
-        color: #333;
-      }
-    }
-  }
-
-  .action {
-    position: absolute;
-    left: 310px;
-    top: 500px;
-
-    button {
-      width: 160px;
-      background: none;
-      border: none;
-      padding-top: 0.6rem;
-      padding-bottom: 0.6rem;
-      color: white;
-      font-size: 1.3rem;
-      border-radius: 10px;
-
-      & + button {
-        margin-left: 20px;
-      }
-
-      &.outline {
-        border: 2px solid #fff;
-      }
-      &.black {
-        background-color: #333;
+        color: $oc-gray-5;
       }
     }
   }
 }
 
 section {
-  font-size: 1.2rem;
   text-align: center;
   padding-top: 70px;
   padding-bottom: 70px;
   color: #333;
 }
 
-section .logo {
-  height: 120px;
-  margin-bottom: 0.5rem;
-}
+section.blockon {
+  font-size: 1.2rem;
 
-section p {
-  margin-top: 0.8rem;
-  margin-bottom: 0.8rem;
+  .logo {
+    height: 120px;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
 }
 
 section.feature {
@@ -96,9 +81,13 @@ section.feature {
   margin: 0 auto;
   padding-top: 0;
 
-  img {
-    height: 100px;
-    padding-bottom: 1rem;
+  div {
+    line-height: 1.6;
+
+    img {
+      height: 170px;
+      padding-bottom: 1rem;
+    }
   }
 }
 
@@ -110,31 +99,57 @@ section.app {
   margin-bottom: 4rem;
 
   img {
-    width: 550px;
+    width: 516px;
   }
 
   .image {
     position: absolute; // 상위 객체 기준
-    top: -90px;
+    top: -84px;
+    left: 260px;
   }
 
   .content {
     background-image: url("../../static/images/cover-app.png");
     background-size: cover;
-    padding-top: 70px;
-    padding-bottom: 70px;
+    padding-top: 69px;
+    padding-bottom: 69px;
+    height: 381px;
+    text-align: left;
+    padding-left: 740px;
 
-    .button {
-      width: 250px;
-      background: none;
-      padding-top: 0.7rem;
-      padding-bottom: 0.7rem;
-      color: white;
+    p {
+      margin: 0;
+      margin-bottom: 0.9rem;
+    }
+
+    p.email {
       font-size: 1.3rem;
-      border-radius: 5px;
-      border: 2px solid #fff;
-      margin-top: 1rem;
-      display: inline-block;
+      margin: 2.5rem 0;
+    }
+
+    .input-wrapper {
+      display: flex;
+      width: 51%;
+
+      input {
+        flex: 1;
+        border: none;
+        font-size: 1rem;
+        padding: 1rem;
+        border-radius: 5px 0 0 5px;
+      }
+
+      button {
+        display: inline-block;
+        padding-top: 0.7rem;
+        padding-bottom: 0.7rem;
+        background: #353a4c;
+        color: white;
+        font-size: 1rem;
+        border-radius: 0 5px 5px 0;
+        flex: 0 0 150px;
+        border: none;
+      }
     }
   }
 }
@@ -169,7 +184,6 @@ section.contact {
     label {
       font-size: 1rem;
       color: #333;
-      padding-bottom: 5px;
     }
 
     input {
@@ -194,10 +208,13 @@ section.contact {
       color: #333;
       border: 2px solid #333;
       padding: 5px;
+      margin-top: 5px;
     }
 
     button {
+      background: none;
       border: none;
+      outline: none;
       padding: 0;
       position: absolute;
       bottom: 2rem;
@@ -224,7 +241,7 @@ section.contact {
     }
 
     img {
-      width: 30px;
+      width: 28px;
       margin-right: 1.2rem;
     }
 
