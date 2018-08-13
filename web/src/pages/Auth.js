@@ -10,7 +10,7 @@ class Auth extends Component {
     const { isLogged } = this.props;
 
     // 이미 로그인되어 있으면 리다이렉트
-    if (isLogged) return <Redirect to="/contract" />;
+    if (isLogged) return <Redirect to="/mypage" />;
 
     return (
       <AuthWrapper>
