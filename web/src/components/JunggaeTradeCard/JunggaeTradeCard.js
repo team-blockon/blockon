@@ -1,0 +1,33 @@
+import React from 'react';
+import maemulImage from 'static/images/maemul.png';
+import './JunggaeTradeCard.scss';
+
+const getCards = () => {
+  const cards = [];
+  const card = (
+    <div className="card">
+      <div className="content">
+        <img src={maemulImage} alt="maemul" />
+        <p>준영타워팰리스</p>
+        <p>영통구 이의동 센트럴타운로</p>
+        <p>잔금처리진행중</p>
+      </div>
+      <div className="action">
+        <div>매도인에게</div>
+        <div>매수인에게</div>
+      </div>
+    </div>
+  );
+
+  for (let i = 0; i < 9; i++) {
+    cards.push(card);
+  }
+
+  return cards;
+};
+
+const JunggaeTradeCard = () => {
+  return <div className="card-wrapper">{getCards()}</div>;
+};
+
+export default JunggaeTradeCard;

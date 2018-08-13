@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import MaemulImage from 'static/images/maemul.png';
+import {
+  TiThMenu as ListIcon,
+  TiThLarge as CardIcon
+} from 'react-icons/lib/ti';
 import './JunggaeMyPage.scss';
 import JunggaeReview from '../JunggaeReview';
+import JunggaeTradeCard from '../JunggaeTradeCard/JunggaeTradeCard';
+import JunggaeTradeList from '../JunggaeTradeList/JunggaeTradeList';
 
-const MyPageTab = ({ activeTab, item, handleSelect, children }) => {
+const MyPageTab = ({ activeItem, item, handleSelect, children }) => {
   return (
     <li
-      className={classNames({ active: activeTab === item })}
+      className={classNames({ active: activeItem === item })}
       onClick={() => handleSelect(item)}
     >
       {children}
@@ -16,34 +21,14 @@ const MyPageTab = ({ activeTab, item, handleSelect, children }) => {
 };
 
 class JunggaeMyPage extends Component {
-  getCards = () => {
-    const cards = [];
-    const card = (
-      <div className="card">
-        <div className="content">
-          <img src={MaemulImage} alt="maemul" />
-          <p>준영타워팰리스</p>
-          <p>영통구 이의동 센트럴타운로</p>
-          <p>잔금처리진행중</p>
-        </div>
-        <div className="action">
-          <div>매도인에게</div>
-          <div>매수인에게</div>
-        </div>
-      </div>
-    );
-
-    for (let i = 0; i < 9; i++) {
-      cards.push(card);
-    }
-
-    return cards;
-  };
-
-  getTabContent = activeTab => {
+  getTabContent = (activeTab, activeType) => {
     switch (activeTab) {
     case 0:
-      return <div className="card-wrapper">{this.getCards()}</div>;
+      if (activeType === 0) {
+        return <JunggaeTradeCard />;
+      } else {
+        return <JunggaeTradeList />;
+      }
     case 1:
       return '완료된거래';
     case 2:
@@ -54,36 +39,62 @@ class JunggaeMyPage extends Component {
   };
 
   render() {
-    const { activeTab, handleSelect } = this.props;
+    const {
+      activeTab,
+      activeType,
+      handleTabSelect,
+      handleTypeSelect
+    } = this.props;
 
     return (
       <div className="JunggaeMyPage">
         <div className="container content">
-          <ul className="tab">
-            <MyPageTab
-              item={0}
-              activeTab={activeTab}
-              handleSelect={handleSelect}
-            >
-              진행중거래 (9건)
-            </MyPageTab>
-            <MyPageTab
-              item={1}
-              activeTab={activeTab}
-              handleSelect={handleSelect}
-            >
-              완료된거래 (20건)
-            </MyPageTab>
-            <MyPageTab
-              item={2}
-              activeTab={activeTab}
-              handleSelect={handleSelect}
-            >
-              평점및리뷰 (30건)
-            </MyPageTab>
-          </ul>
+          <div className="control">
+            <ul className="tab">
+              <MyPageTab
+                item={0}
+                activeItem={activeTab}
+                handleSelect={handleTabSelect}
+              >
+                진행중거래 (9건)
+              </MyPageTab>
+              <MyPageTab
+                item={1}
+                activeItem={activeTab}
+                handleSelect={handleTabSelect}
+              >
+                완료된거래 (20건)
+              </MyPageTab>
+              <MyPageTab
+                item={2}
+                activeItem={activeTab}
+                handleSelect={handleTabSelect}
+              >
+                평점및리뷰 (30건)
+              </MyPageTab>
+            </ul>
 
-          {this.getTabContent(activeTab)}
+            {activeTab !== 2 && (
+              <ul className="type">
+                <MyPageTab
+                  item={0}
+                  activeItem={activeType}
+                  handleSelect={handleTypeSelect}
+                >
+                  <CardIcon />
+                </MyPageTab>
+                <MyPageTab
+                  item={1}
+                  activeItem={activeType}
+                  handleSelect={handleTypeSelect}
+                >
+                  <ListIcon />
+                </MyPageTab>
+              </ul>
+            )}
+          </div>
+
+          {this.getTabContent(activeTab, activeType)}
         </div>
       </div>
     );

@@ -34,7 +34,7 @@ const HeaderNav = ({ activeItem, onSelect, userButtons }) => {
           소개
         </HeaderNavItem>
         <HeaderNavItem
-          item="message"
+          item="search"
           selected={activeItem}
           onSelect={onSelect}
           to="/search"

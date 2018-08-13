@@ -3,21 +3,33 @@ import JunggaeMyPage from 'components/JunggaeMyPage';
 
 class MyPage extends Component {
   state = {
-    activeTab: 0
+    activeTab: 0,
+    activeType: 0
   };
 
-  handleSelect = activeTab => {
+  handleTabSelect = activeTab => {
     this.setState({
       activeTab
     });
   };
 
+  handleTypeSelect = activeType => {
+    this.setState({
+      activeType
+    });
+  };
+
   render() {
     const { isJunggae } = this.props;
-    const { activeTab } = this.state;
+    const { activeTab, activeType } = this.state;
 
     return isJunggae ? (
-      <JunggaeMyPage activeTab={activeTab} handleSelect={this.handleSelect} />
+      <JunggaeMyPage
+        activeTab={activeTab}
+        activeType={activeType}
+        handleTabSelect={this.handleTabSelect}
+        handleTypeSelect={this.handleTypeSelect}
+      />
     ) : null;
   }
 }

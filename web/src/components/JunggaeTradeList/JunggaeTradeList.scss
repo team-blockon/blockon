@@ -1,0 +1,17 @@
+.list-wrapper {
+  flex-direction: column;
+
+  .card {
+    .content {
+      padding: 3rem 10rem;
+
+      .detail {
+        display: flex;
+
+        .image {
+          margin-right: 4rem;
+        }
+      }
+    }
+  }
+}
