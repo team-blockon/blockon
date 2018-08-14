@@ -8,7 +8,7 @@
     //background-image: none;
     background-image: url("../../static/images/cover.png");
     background-size: cover;
-    height: 150px;
+    height: 240px;
 
     .logo{
       img{
@@ -19,14 +19,14 @@
   .subtitle {
     position: absolute;
     left: 30px;
-    top: 70px;
-    font-size: 1rem;
+    top: 110px;
+    font-size: 1.3rem;
     font-weight: 600;
   }
   .search {
     position: absolute;
     left: 30px;
-    top: 90px;
+    top: 160px;
     padding: 1rem;
     box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
     background-color: #fff;
