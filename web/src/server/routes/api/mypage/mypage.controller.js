@@ -68,8 +68,8 @@ exports.sendAuthEmail = (req, res) => {
         from: process.env.email_id,
         to: email,
         subject: '안녕하세요, BlockOne 입니다. 이메일 인증을 해주세요.',
-        html: '<p>BlockOne Email 인증</p>' +
-        "<a href='"+ process.env.blockone_uri +"/api/mypage/authEmail/?email="+ email +"&token=" + randomstring.generate(8) + "'>인증하기</a>"
+        html: '<p>BlockOn Email 인증</p>' +
+        "<a href='"+ process.env.blockon_uri +"/api/mypage/authEmail/?email="+ email +"&token=" + randomstring.generate(8) + "'>인증하기</a>"
     };
 
     transporter.sendMail(mailOptions, (err, info) =>{
