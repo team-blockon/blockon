@@ -3,15 +3,12 @@ import AuthContent from 'components/AuthContent';
 import InputWithLabel from 'components/InputWithLabel';
 import AuthButton from 'components/AuthButton';
 import * as AuthAPI from 'lib/api/auth';
-import { Tabs, Tab } from '@material-ui/core';
 
 class Register extends Component {
   state = {
+    profile: '',
     username: '',
-    email: '',
-    password: '',
-    passwordCheck: '',
-    isJunggae: 0
+    email: ''
   };
 
   handleChange = event => {
@@ -20,12 +17,6 @@ class Register extends Component {
 
     this.setState({
       [name]: value
-    });
-  };
-
-  handleTabChange = (event, value) => {
-    this.setState({
-      isJunggae: value
     });
   };
 
@@ -47,15 +38,16 @@ class Register extends Component {
   };
 
   render() {
-    const { isJunggae } = this.state;
-
     return (
       <AuthContent title="회원가입">
-        <Tabs value={isJunggae} onChange={this.handleTabChange}>
-          <Tab label="매도 / 매수인" />
-          <Tab label="공인중개사" />
-        </Tabs>
-
+        <InputWithLabel
+          label="프로필 사진"
+          type="text"
+          name="username"
+          value={this.state.profile}
+          placeholder="프로필 사진"
+          onChange={this.handleChange}
+        />
         <InputWithLabel
           label="이름"
           type="text"
@@ -72,25 +64,6 @@ class Register extends Component {
           placeholder="이메일"
           onChange={this.handleChange}
         />
-        <InputWithLabel
-          label="비밀번호"
-          type="password"
-          name="password"
-          value={this.state.password}
-          placeholder="비밀번호"
-          onChange={this.handleChange}
-        />
-        <InputWithLabel
-          label="비밀번호 확인"
-          type="password"
-          name="passwordCheck"
-          value={this.state.passwordCheck}
-          placeholder="비밀번호 확인"
-          onChange={this.handleChange}
-          onKeyPress={this.handleKeyPress}
-        />
-
-        {isJunggae === 1 && <div>중개인 인증</div>}
 
         <AuthButton onClick={this.handleRegister}>회원가입</AuthButton>
       </AuthContent>

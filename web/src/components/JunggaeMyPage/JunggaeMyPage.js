@@ -8,6 +8,7 @@ import './JunggaeMyPage.scss';
 import JunggaeReview from '../JunggaeReview';
 import JunggaeTradeCard from '../JunggaeTradeCard/JunggaeTradeCard';
 import JunggaeTradeList from '../JunggaeTradeList/JunggaeTradeList';
+import JunggaeTradeModal from '../JunggaeTradeModal';
 
 const MyPageTab = ({ activeItem, item, handleSelect, children }) => {
   return (
@@ -21,13 +22,23 @@ const MyPageTab = ({ activeItem, item, handleSelect, children }) => {
 };
 
 class JunggaeMyPage extends Component {
+  state = {
+    tradeModal: false
+  };
+
+  handleToggleModal = () => {
+    this.setState({
+      tradeModal: !this.state.tradeModal
+    });
+  };
+
   getTabContent = (activeTab, activeType) => {
     switch (activeTab) {
     case 0:
       if (activeType === 0) {
         return <JunggaeTradeCard />;
       } else {
-        return <JunggaeTradeList />;
+        return <JunggaeTradeList handleSelect={this.handleToggleModal} />;
       }
     case 1:
       return '완료된거래';
@@ -45,6 +56,7 @@ class JunggaeMyPage extends Component {
       handleTabSelect,
       handleTypeSelect
     } = this.props;
+    const { tradeModal } = this.state;
 
     return (
       <div className="JunggaeMyPage">
@@ -95,6 +107,7 @@ class JunggaeMyPage extends Component {
           </div>
 
           {this.getTabContent(activeTab, activeType)}
+          {tradeModal && <JunggaeTradeModal onClose={this.handleToggleModal} />}
         </div>
       </div>
     );

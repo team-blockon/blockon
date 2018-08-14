@@ -299,20 +299,21 @@ section.contact {
   position: relative;
   top: 6rem;
   margin: auto;
-  padding: 15px;
+  padding: 0;
   display: flex;
   align-items: stretch;
   text-align: left;
   width: 61%;
   overflow: auto;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
 
   .form {
     float: left;
     width: 62%;
     padding: 6rem 8rem;
-    border-radius: 10px;
+    border-radius: 10px 0 0 10px;
     background-color: #fff;
-    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
     position: relative;
 
     label,
@@ -325,16 +326,21 @@ section.contact {
     label {
       font-size: 1rem;
       color: #333;
+      margin-bottom: 0.5rem;
     }
 
     input {
-      font-size: 1.3rem;
+      font-size: 1rem;
       border: none;
       background: none;
       outline: none;
       color: #333;
       border-bottom: 2px solid #333;
       padding-bottom: 5px;
+
+      &::placeholder {
+        color: $oc-gray-4;
+      }
 
       & + label {
         margin-top: 2rem;
@@ -372,8 +378,7 @@ section.contact {
     width: 38%;
     background-color: #ffda44;
     padding: 6rem 3rem;
-    border-radius: 10px;
-    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+    border-radius: 0 10px 10px 0;
 
     h2 {
       text-align: center;

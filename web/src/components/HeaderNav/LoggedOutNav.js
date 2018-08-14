@@ -1,12 +1,9 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
 
 const LoggedOutNav = () => {
   return (
     <Fragment>
-      <li>
-        <Link to="/auth/login">로그인</Link>
-      </li>
+      <li>로그인</li>
     </Fragment>
   );
 };
