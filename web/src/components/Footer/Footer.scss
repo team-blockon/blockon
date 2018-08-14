@@ -4,12 +4,27 @@ footer {
   background-color: #353a4c;
   color: #fff;
 
+  @media only screen and (max-width: 980px) {
+    .footer-top {
+      display: block;
+
+      .company {
+        padding-left: 0;
+        text-align: center;
+      }
+    }
+  }
+  @media only screen and (min-width: 981px) {
+    .footer-top {
+      display: flex;
+
+      .company {
+        padding-left: 3rem;
+      }
+    }
+  }
   .footer-top {
-    display: flex;
-
     .company {
-      padding-left: 3rem;
-
       img {
         height: 122px;
       }
@@ -35,6 +50,17 @@ footer {
         }
       }
     }
+    @media only screen and (max-width: 980px) {
+      nav{
+        display: none;
+      }
+    }
+    @media only screen and (min-width: 981px) {
+      nav{
+        display: flex;
+      }
+    }
+
   }
 
   hr {
