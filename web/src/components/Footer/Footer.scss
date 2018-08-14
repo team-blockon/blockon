@@ -6,7 +6,8 @@ footer {
 
   @media only screen and (max-width: 980px) {
     .footer-top {
-      display: block;
+      //display: block;           1st option
+      flex-flow: column wrap;   //second option
 
       .company {
         padding-left: 0;
@@ -32,9 +33,6 @@ footer {
 
     nav {
       flex-grow: 1;
-      display: flex;
-      justify-content: space-around;
-      padding-left: 8rem;
 
       ul {
         display: inline-block;
@@ -52,12 +50,20 @@ footer {
     }
     @media only screen and (max-width: 980px) {
       nav{
-        display: none;
+        //display none            1st option
+        display: flex;            //second option
+        justify-content: center;
+        padding-top: 3rem;
+        div{
+          padding: 1rem;
+        }                         //through here
       }
     }
     @media only screen and (min-width: 981px) {
       nav{
         display: flex;
+        padding-left: 8rem;
+        justify-content: space-around;
       }
     }
 
