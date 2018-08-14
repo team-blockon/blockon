@@ -34,11 +34,11 @@ const HomeWrapper = () => {
         <img src={logo} className="logo" alt="logo" />
         <p>
           BLOCKON은 부동산 계약을 더욱 투명하게 하기 위한 블록체인 기반&nbsp;
-          <strong>부동산 평판</strong> 시스템입니다.
+          '공인중개사 평판' 시스템입니다.
         </p>
         <p>
-          부동산 검색은 더욱 쉽게, 거래과정을 명확하게, 소통은 원할하게 이용하실
-          수 있습니다.
+          공인중개사 검색은 더욱 쉽게, 거래과정을 명확하게, 소통은 원활하게
+          이용하실 수 있습니다.
         </p>
         <p>이제 BLOCKON으로 안심하고 거래하세요.</p>
       </section>
@@ -48,7 +48,7 @@ const HomeWrapper = () => {
           <div>
             <img src={gradeIcon} alt="chatting" />
           </div>
-          부동산의 평점을
+          공인중개사의 평점을
           <br />
           위치 기반으로 편리하게
           <br />
@@ -69,7 +69,7 @@ const HomeWrapper = () => {
           <div>
             <img src={chattingIcon} alt="realestate" />
           </div>
-          매수인, 개인, 매도인 간의
+          매수인, 중개인, 매도인 간의
           <br />
           실시간 채팅서비스로
           <br />
@@ -102,11 +102,11 @@ const HomeWrapper = () => {
           <label htmlFor="email">이메일</label>
           <input type="email" id="email" />
           <label htmlFor="phone">핸드폰</label>
-          <input type="tel" id="phone" />
+          <input type="tel" id="phone" placeholder="예) 010-0000-0000" />
           <label htmlFor="feedback">문의사항</label>
           <textarea id="feedback" rows="3" cols="80" />
           <button type="button">
-            <img src={sendIcon} alt="send" />
+            <img src={sendIcon} alt="send" placeholder="문의사항" />
           </button>
         </div>
         <div className="info">

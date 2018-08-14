@@ -1,9 +1,12 @@
+@import "~open-color/open-color";
+
 .list-wrapper {
   flex-direction: column;
 
   .card {
     .content {
       padding: 3rem 10rem;
+      padding-bottom: 1.5rem;
 
       .detail {
         display: flex;
@@ -11,6 +14,102 @@
         .image {
           margin-right: 4rem;
         }
+      }
+    }
+  }
+}
+
+.progressbar-wrapper {
+  width: 80%;
+  margin: 0 auto;
+  padding-bottom: 1rem;
+
+  .progressbar {
+    display: flex;
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      flex: 1;
+      position: relative;
+      text-align: center;
+
+      &::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        display: block; /* li 위로 올라가도록 */
+        text-align: center;
+        margin: 11px auto 19px auto; /* 가운데로 오도록 적절히 조정. 40 = 10 + (11 + 19) */
+        border-radius: 50%; /* 원으로 만들기 */
+        background-color: #353a4c; /* z-index와 함께 선 overlap 막기 */
+      }
+
+      /* 스텝간 연결선 */
+      &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background-color: $oc-gray-2;
+        top: 15px; /* 세로 가운데에 위치하도록 30의 절반 */
+        left: -50%;
+        z-index: -1;
+      }
+
+      /* 첫번째 녀석은 왼쪽에 연결선이 없어야 */
+      &:first-child::after {
+        content: none;
+      }
+
+      &:not(.first-not-active) {
+        color: $oc-gray-5;
+      }
+
+      &.active::before {
+        background: none;
+        background-image: url(../../static/images/icon/check.png);
+        background-size: 25px;
+        background-repeat: no-repeat;
+        width: 25px;
+        height: 25px;
+        padding: 0;
+        margin: 3px auto 12px auto;
+      }
+
+      /* active된 li의 바로 다음 li의 after 연결선도 */
+      &.active + li::after {
+        background-color: #ffda44;
+      }
+
+      &.first-not-active::before {
+        background: none;
+        background-image: url(../../static/images/icon/doing.png);
+        background-size: 30px;
+        background-repeat: no-repeat;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        margin: 0 auto 10px auto;
+        box-shadow: 0 0 0 rgba(204, 169, 44, 0.4);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+        }
+      }
+
+      &.first-not-active::after {
+        background-color: #ffda44;
       }
     }
   }

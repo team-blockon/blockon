@@ -2,7 +2,7 @@ import React from 'react';
 import maemulImage from 'static/images/maemul.png';
 import './JunggaeTradeList.scss';
 
-const getLists = () => {
+const getLists = handleSelect => {
   const cards = [];
   const card = (
     <div className="card">
@@ -15,10 +15,31 @@ const getLists = () => {
             <p>준영타워팰리스</p>
             <p>단독주택</p>
             <p>수원시 영통구 이의동 센트럴타운로 76</p>
-            <p>매매</p>
-            <p>매매가 10억</p>
+            <p>매매 / 10억</p>
           </div>
         </div>
+      </div>
+      <div className="progressbar-wrapper">
+        <ul className="progressbar">
+          <li
+            className="active"
+            onClick={() => {
+              console.log(handleSelect);
+              handleSelect();
+              console.log('clicked');
+            }}
+          >
+            계약금
+          </li>
+          <li className="active" onClick={handleSelect}>
+            중도금
+          </li>
+          <li className="first-not-active" onClick={handleSelect}>
+            잔금처리
+          </li>
+          <li onClick={handleSelect}>등기신청</li>
+          <li onClick={handleSelect}>완료</li>
+        </ul>
       </div>
       <div className="action">
         <div>매도인에게</div>
@@ -34,8 +55,8 @@ const getLists = () => {
   return cards;
 };
 
-const JunggaeTradeList = () => {
-  return <div className="list-wrapper">{getLists()}</div>;
+const JunggaeTradeList = ({ handleSelect }) => {
+  return <div className="list-wrapper">{getLists(handleSelect)}</div>;
 };
 
 export default JunggaeTradeList;
