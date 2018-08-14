@@ -1,35 +1,149 @@
 @import "~open-color/open-color";
 
-nav.HeaderNav {
-  align-self: center;
+.nav-mobile {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  //background: #ffffff;
+  height: 70px;
+  width: 70px;
+}
 
-  ul {
-    padding: 0;
-    margin: 0;
-
-    li {
-      display: inline-block;
-      font-size: 1.1rem;
-      color: #fff;
+  #nav-toggle {
+    position: absolute;
+    left: 18px;
+    top: 22px;
+    cursor: pointer;
+    padding: 10px 35px 16px 0;
+    span,
+    span:before,
+    span:after {
       cursor: pointer;
-      box-sizing: content-box;
+      border-radius: 1px;
+      height: 5px;
+      width: 35px;
+      background: #ffffff;
+      position: absolute;
+      display: block;
+      content: '';
+      transition: all 300ms ease-in-out;
+    }
+    span:before {
+      top: -10px;
+    }
+    span:after {
+      bottom: -10px;
+    }
 
-      & + li {
-        margin-left: 30px;
+    &.active span {
+      background-color: transparent !important;
+      &:before,
+      &:after {
+        top: 0;
+      }
+      &:before {
+        transform: rotate(45deg);
+      }
+      &:after {
+        transform: rotate(-45deg);
+      }
+    }
+  }
+
+
+@media only screen and (max-width: 750px){
+  .nav-mobile {
+    display: block;
+  }
+
+  nav.HeaderNav {
+    width: 100%;
+    align-self: center;
+
+    ul {
+      display: none;
+      list-style: none;
+
+      &.active {
+        display: block;
+        padding: 0;
+        margin: 0;
       }
 
-      &.active,
-      &:hover {
-        position: relative;
+      li {
+        float: none;
+        font-size: 1.1rem;
+        color: #fff;
+        cursor: pointer;
+        box-sizing: content-box;
 
-        &::after {
-          position: absolute;
-          background-color: #fff;
-          content: "";
-          left: 0;
-          bottom: -2px;
-          width: 100%;
-          height: 2px;
+        & + li {
+          margin-left: 30px;
+        }
+
+        &.active,
+        &:hover {
+          position: relative;
+
+          &::after {
+            position: absolute;
+            background-color: #fff;
+            content: "";
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            height: 2px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 751px){
+  .nav-list {
+    display: block !important;
+  }
+
+  .nav-mobile {
+    display: none;
+    position: absolute;
+  }
+  nav.HeaderNav {
+    align-self: center;
+    display: block;
+
+    ul {
+      display: inline;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        display: inline-block;
+        font-size: 1.1rem;
+        color: #fff;
+        cursor: pointer;
+        box-sizing: content-box;
+
+        & + li {
+          margin-left: 30px;
+        }
+
+        &.active,
+        &:hover {
+          position: relative;
+
+          &::after {
+            position: absolute;
+            background-color: #fff;
+            content: "";
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            height: 2px;
+          }
         }
       }
     }

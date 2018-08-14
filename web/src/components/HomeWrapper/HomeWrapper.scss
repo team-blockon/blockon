@@ -1,21 +1,129 @@
 @import "~open-color/open-color";
 
-.cover {
-  height: 540px;
-  color: #333;
-  background-image: url("../../static/images/cover.png");
-  background-size: cover;
+/**
+  first section
+ */
+@media (min-width: 370px){
+  .cover {
+    //background-image: none;
+    background-image: url("../../static/images/cover.png");
+    background-size: cover;
+    height: 240px;
 
-  .logo {
-    position: absolute;
-    left: 400px;
-    top: 185px;
-
-    img {
-      height: 73px;
+    .logo{
+      img{
+        display: none;
+      }
     }
   }
+  .subtitle {
+    position: absolute;
+    left: 30px;
+    top: 110px;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  .search {
+    position: absolute;
+    left: 30px;
+    top: 160px;
+    padding: 1rem;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    border-radius: 5px;
 
+    input {
+      font-size: 1rem;
+      border: none;
+      background: none;
+      outline: none;
+      color: #333;
+      width: 270px;
+      background-image: url("../../static/images/icon/search.png");
+      background-position: 1px 1px;
+      background-repeat: no-repeat;
+      background-size: 15px;
+      padding-left: 35px;
+
+      &::placeholder {
+        color: $oc-gray-5;
+        font-size: 10pt;
+      }
+    }
+  }
+}
+@media (min-width: 750px) {
+  .cover {
+    //background-image: none;
+    background-image: url("../../static/images/cover.png");
+    background-size: cover;
+    height: 250px;
+
+    .logo{
+      position: absolute;
+      left: 120px;
+      top: 95px;
+      img {
+        display: block;
+        height: 43px;
+      }
+    }
+  }
+  .subtitle {
+    position: absolute;
+    left: 120px;
+    top: 150px;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  .search {
+    position: absolute;
+    left: 120px;
+    top: 190px;
+    padding: 1rem;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    border-radius: 5px;
+
+    input {
+      font-size: 1rem;
+      border: none;
+      background: none;
+      outline: none;
+      color: #333;
+      width: 500px;
+      background-image: url("../../static/images/icon/search.png");
+      background-position: 7px 4px;
+      background-repeat: no-repeat;
+      background-size: 18px;
+      padding-left: 35px;
+
+      &::placeholder {
+        color: $oc-gray-5;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 981px) {
+  .cover {
+    height: 540px;
+    color: #333;
+    background-image: url("../../static/images/cover.png");
+    background-size: cover;
+
+    .logo {
+      position: absolute;
+      left: 400px;
+      top: 185px;
+
+      img {
+        display: block;
+        height: 73px;
+      }
+    }
+  }
   .subtitle {
     position: absolute;
     left: 400px;
@@ -48,11 +156,16 @@
 
       &::placeholder {
         color: $oc-gray-5;
+        font-size: 1rem;
       }
     }
   }
 }
 
+
+/**
+  second section
+ */
 section {
   text-align: center;
   padding-top: 70px;
