@@ -82,11 +82,13 @@ const HomeWrapper = () => {
           <img src={phone} alt="phone" />
         </div>
         <div className="content">
-          <p>
-            <strong>BLOCKON</strong> 모바일앱이
-          </p>
-          <p>10월 31일에 출시될 예정입니다.</p>
-          <p className="email">메일을 적어주시면 출시 전에 알려드려요.</p>
+          <div className="input-text">
+            <p>
+              <strong>BLOCKON</strong> 모바일앱이
+            </p>
+            <p>10월 31일에 출시될 예정입니다.</p>
+            <p className="email">메일을 적어주시면 출시 전에 알려드려요.</p>
+          </div>
 
           <div className="input-wrapper">
             <input type="email" placeholder="이메일을 입력해주세요." />

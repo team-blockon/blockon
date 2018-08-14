@@ -184,11 +184,14 @@ section.blockon {
   p {
     margin-top: 0.8rem;
     margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 
 section.feature {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   width: 70%;
   margin: 0 auto;
@@ -205,30 +208,37 @@ section.feature {
 }
 
 section.app {
-  font-size: 1.9rem;
+  background-image: url("../../static/images/cover-app.png");
+  background-size: cover;
+  display: flex;
+  flex-wrap: wrap;
+  //justify-content: space-around;
+  font-size: 1.5rem;
+  font-weight: 600;
   position: relative;
   padding: 0;
   margin-top: 3rem;
   margin-bottom: 4rem;
 
-  img {
-    width: 516px;
-  }
-
   .image {
     position: absolute; // 상위 객체 기준
     top: -84px;
-    left: 260px;
+    left: 5%;
   }
 
   .content {
-    background-image: url("../../static/images/cover-app.png");
-    background-size: cover;
+    position: relative;
     padding-top: 69px;
     padding-bottom: 69px;
+    flex-flow: column wrap;
+
     height: 381px;
+    width: 350px;
     text-align: left;
-    padding-left: 740px;
+    float: right;
+    left: 50%;
+    right: 0;
+    //padding-left: 740px;
 
     p {
       margin: 0;
@@ -263,6 +273,24 @@ section.app {
         flex: 0 0 150px;
         border: none;
       }
+    }
+  }
+
+  @media only screen and (max-width: 875px) {
+    img {
+      width: 0;
+    }
+    .content{
+      left: 20%;
+    }
+  }
+
+  @media only screen and (min-width: 876px) {
+    img {
+      width: 516px;
+    }
+    .content{
+      left: 50%;
     }
   }
 }
