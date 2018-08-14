@@ -1,19 +1,56 @@
 @import "~open-color/open-color";
 
-header {
-  padding-top: 13px;
-  padding-bottom: 13px;
-  display: flex;
-  background-image: url(../../static/images/cover.png);
-  background-size: cover;
+@media (max-width: 750px){
+  header {
+    padding-top: 13px;
+    padding-bottom: 13px;
+    display: flex;
+    background-image: url(../../static/images/cover.png);
+    background-size: cover;
 
-  .logo {
-    height: 40px;
+    //navbar가 상단고정.
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+
+    .logo {
+      height: 40px;
+    }
   }
+
+  .menu.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 30px;
+  }
+
 }
 
-.menu.container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+@media (min-width: 751px){
+  header {
+    padding-top: 13px;
+    padding-bottom: 13px;
+    display: flex;
+    background-image: url(../../static/images/cover.png);
+    background-size: cover;
+
+    //navbar가 상단고정.
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+
+
+    .logo {
+      height: 40px;
+    }
+  }
+
+  .menu.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+  }
+
 }
