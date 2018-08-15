@@ -59,7 +59,14 @@ class JunggaeMyPage extends Component {
     const { tradeModal } = this.state;
 
     return (
-      <div className="JunggaeMyPage">
+      <div
+        className="JunggaeMyPage"
+        style={
+          activeTab === 2
+            ? { backgroundColor: '#fff' }
+            : { backgroundColor: '#fafafa' }
+        }
+      >
         <div className="container content">
           <div className="control">
             <ul className="tab">

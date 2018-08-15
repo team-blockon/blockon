@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import maemulImage from 'static/images/maemul.png';
 import './JunggaeTradeList.scss';
 
@@ -21,14 +22,7 @@ const getLists = handleSelect => {
       </div>
       <div className="progressbar-wrapper">
         <ul className="progressbar">
-          <li
-            className="active"
-            onClick={() => {
-              console.log(handleSelect);
-              handleSelect();
-              console.log('clicked');
-            }}
-          >
+          <li className="active" onClick={handleSelect}>
             계약금
           </li>
           <li className="active" onClick={handleSelect}>
@@ -41,10 +35,6 @@ const getLists = handleSelect => {
           <li onClick={handleSelect}>완료</li>
         </ul>
       </div>
-      <div className="action">
-        <div>매도인에게</div>
-        <div>매수인에게</div>
-      </div>
     </div>
   );
 
@@ -56,7 +46,16 @@ const getLists = handleSelect => {
 };
 
 const JunggaeTradeList = ({ handleSelect }) => {
-  return <div className="list-wrapper">{getLists(handleSelect)}</div>;
+  return (
+    <div className="JunggaeTradeList">
+      <div className="list-wrapper">{getLists(handleSelect)}</div>
+      <div>
+        <button>
+          <Link to="/contract/edit">계약 올리기</Link>
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default JunggaeTradeList;

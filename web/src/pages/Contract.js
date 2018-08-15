@@ -1,19 +1,37 @@
-import React from 'react';
-import ContractPaper from 'components/ContractPaper';
+import React, { Component } from 'react';
+import JunggaeMyPage from 'components/JunggaeMyPage';
 
-/**
- * /contract/edit 라우트에서 보여지는 계약 컴포넌트
- * @param location URL 쿼리 정보를 담고 있는 객체
- */
-const Contract = ({ location }) => {
-  const query = new URLSearchParams(location.search);
-  const type = query.get('type');
+class MyPage extends Component {
+  state = {
+    activeTab: 0,
+    activeType: 0
+  };
 
-  return (
-    <div>
-      <ContractPaper type={type} className="Contract" />
-    </div>
-  );
-};
+  handleTabSelect = activeTab => {
+    this.setState({
+      activeTab
+    });
+  };
 
-export default Contract;
+  handleTypeSelect = activeType => {
+    this.setState({
+      activeType
+    });
+  };
+
+  render() {
+    const { isJunggae } = this.props;
+    const { activeTab, activeType } = this.state;
+
+    return isJunggae ? (
+      <JunggaeMyPage
+        activeTab={activeTab}
+        activeType={activeType}
+        handleTabSelect={this.handleTabSelect}
+        handleTypeSelect={this.handleTypeSelect}
+      />
+    ) : null;
+  }
+}
+
+export default MyPage;

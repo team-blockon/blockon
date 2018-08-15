@@ -1,18 +1,22 @@
 @import "~open-color/open-color";
 
-.list-wrapper {
-  flex-direction: column;
+.JunggaeTradeList {
+  display: flex;
 
-  .card {
-    .content {
-      padding: 3rem 10rem;
-      padding-bottom: 1.5rem;
+  .list-wrapper {
+    flex-direction: column;
 
-      .detail {
-        display: flex;
+    .card {
+      .content {
+        padding: 3rem 10rem;
+        padding-bottom: 1.5rem;
 
-        .image {
-          margin-right: 4rem;
+        .detail {
+          display: flex;
+
+          .image {
+            margin-right: 4rem;
+          }
         }
       }
     }
@@ -44,6 +48,8 @@
         margin: 11px auto 19px auto; /* 가운데로 오도록 적절히 조정. 40 = 10 + (11 + 19) */
         border-radius: 50%; /* 원으로 만들기 */
         background-color: #353a4c; /* z-index와 함께 선 overlap 막기 */
+        position: relative;
+        z-index: 2;
       }
 
       /* 스텝간 연결선 */
@@ -55,7 +61,7 @@
         background-color: $oc-gray-2;
         top: 15px; /* 세로 가운데에 위치하도록 30의 절반 */
         left: -50%;
-        z-index: -1;
+        z-index: 1;
       }
 
       /* 첫번째 녀석은 왼쪽에 연결선이 없어야 */

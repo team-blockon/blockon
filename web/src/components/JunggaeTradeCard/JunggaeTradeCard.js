@@ -12,10 +12,6 @@ const getCards = () => {
         <p>영통구 이의동 센트럴타운로</p>
         <p>잔금처리진행중</p>
       </div>
-      <div className="action">
-        <div>매도인에게</div>
-        <div>매수인에게</div>
-      </div>
     </div>
   );
 

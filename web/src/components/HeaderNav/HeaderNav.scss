@@ -53,7 +53,7 @@
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1040px) {
   .nav-mobile {
     display: block;
   }
@@ -72,6 +72,7 @@
         padding: 0;
         margin: 0;
         position: absolute;
+        left: 0;
         margin-top: 13px;
         width: 100%;
       }
@@ -95,7 +96,7 @@
   }
 }
 
-@media (min-width: 901px) {
+@media (min-width: 1041px) {
   .nav-list {
     display: block !important;
   }

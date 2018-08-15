@@ -6,4 +6,16 @@
   main {
     flex: 1;
   }
+
+  @media (max-width: 1040px) {
+    main {
+      margin-top: 61px;
+    }
+  }
+
+  @media (min-width: 1041px) {
+    main {
+      margin-top: 71px;
+    }
+  }
 }

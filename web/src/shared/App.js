@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { Home, MyPage, Contract, Auth } from 'pages';
-import ContractCardList from 'components/ContractCardList';
+import { Home, Contract, ContractEdit, Auth } from 'pages';
 import AppTemplate from 'components/AppTemplate';
 import HeaderNav from 'components/HeaderNav';
 import HeaderContainer from 'containers/HeaderContainer';
@@ -60,20 +59,14 @@ class App extends Component {
           <Route exact path="/" component={Home} />
           <PrivateRoute
             exact
-            path="/mypage"
-            component={MyPage}
+            path="/contract"
+            component={Contract}
             isLogged={isLogged}
             isJunggae={isJunggae}
           />
           <PrivateRoute
-            exact
-            path="/contract"
-            component={ContractCardList}
-            isLogged={isLogged}
-          />
-          <PrivateRoute
             path="/contract/edit"
-            component={Contract}
+            component={ContractEdit}
             isLogged={isLogged}
           />
           <Route path="/auth" component={Auth} />

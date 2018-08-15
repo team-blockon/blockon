@@ -325,8 +325,8 @@ section.contact {
 
   .form {
     float: left;
-    width: 62%;
-    padding: 6rem 4rem;
+    width: 100%;
+    padding: 6rem 8rem;
     border-radius: 10px 0 0 10px;
     background-color: #fff;
     position: relative;
@@ -335,7 +335,7 @@ section.contact {
     input,
     textarea {
       display: block;
-      width: 21.5rem;
+      width: 100%;
     }
 
     label {
@@ -379,8 +379,8 @@ section.contact {
       outline: none;
       padding: 0;
       position: absolute;
-      bottom: 2rem;
-      right: 5rem;
+      bottom: 4.5rem;
+      right: 6.5rem;
 
       img {
         width: 48px;
@@ -390,7 +390,7 @@ section.contact {
 
   .info {
     float: left;
-    width: 38%;
+    width: 65%;
     background-color: #ffda44;
     padding: 6rem 2rem;
     border-radius: 0 10px 10px 0;
@@ -422,7 +422,7 @@ section.contact {
     .form {
       float: left;
       width: 100%;
-      padding: 3rem 2rem;
+      padding: 3rem 3rem;
       border-radius: 10px;
       background-color: #fff;
       position: relative;
@@ -445,7 +445,7 @@ section.contact {
       }
 
       button {
-        bottom: 0;
+        bottom: 27px;
         right: 2rem;
 
         img {

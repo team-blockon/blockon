@@ -9,36 +9,13 @@
   .card {
     display: flex;
     flex-direction: column;
-    border-radius: 10px 10px 0 0;
-    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ebebeb;
     margin-bottom: 6rem;
+    background-color: #fff;
 
     .content {
       img {
         width: 153px;
-      }
-    }
-
-    .action {
-      display: flex;
-
-      div {
-        flex: 1;
-        text-align: center;
-        background-color: #353a4c;
-        color: #fff;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        cursor: pointer;
-
-        &:hover {
-          background-color: #ffda44;
-          color: #333;
-        }
-
-        & + div {
-          border-left: 1px solid $oc-gray-6;
-        }
       }
     }
   }
