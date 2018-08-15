@@ -222,7 +222,6 @@ section.app {
 
     .input-wrapper {
       display: flex;
-      width: 51%;
 
       input {
         flex: 1;
@@ -230,17 +229,18 @@ section.app {
         font-size: 1rem;
         padding: 1rem;
         border-radius: 5px 0 0 5px;
+        min-width: 0; // flex에서 input이 줄어들게 함
       }
 
       button {
-        display: inline-block;
         padding-top: 0.7rem;
         padding-bottom: 0.7rem;
         background: #353a4c;
         color: white;
         font-size: 1rem;
         border-radius: 0 5px 5px 0;
-        flex: 0 0 150px;
+        flex: 0 1 150px;
+        min-width: 100px;
         border: none;
       }
     }
@@ -262,6 +262,7 @@ section.app {
     }
     .content {
       left: 5%;
+      right: 5%;
     }
   }
 }
