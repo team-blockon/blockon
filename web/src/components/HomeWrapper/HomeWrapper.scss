@@ -7,8 +7,8 @@
   .cover {
     //background-image: none;
     background-image: url("../../static/images/cover.png");
-    background-size: cover;
-    height: 240px;
+    background-size: 100%;
+    background-attachment: fixed;
 
     .logo {
       img {

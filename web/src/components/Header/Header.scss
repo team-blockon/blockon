@@ -5,8 +5,9 @@
     padding-top: 13px;
     padding-bottom: 13px;
     display: flex;
-    background-image: url(../../static/images/cover.png);
-    background-size: cover;
+    background-image: url(/static/media/cover.da095e16.png);
+    background-size: 100%;
+    background-attachment: fixed;
 
     //navbar가 상단고정.
     position: fixed;
