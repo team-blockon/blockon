@@ -6,25 +6,25 @@
   top: 0;
   right: 0;
   //background: #ffffff;
-  height: 70px;
-  width: 70px;
+  height: 63px;
+  width: 63px;
   //float: right;
 }
 
 #nav-toggle {
   position: absolute;
   left: 18px;
-  top: 22px;
+  top: 18px;
   cursor: pointer;
-  padding: 10px 35px 16px 0;
+  padding: 10px 28px 14px 0;
 
   span,
   span:before,
   span:after {
     cursor: pointer;
     border-radius: 1px;
-    height: 5px;
-    width: 35px;
+    height: 3px;
+    width: 28px;
     background: #ffffff;
     position: absolute;
     display: block;

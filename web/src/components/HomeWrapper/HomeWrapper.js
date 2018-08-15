@@ -21,7 +21,7 @@ const HomeWrapper = () => {
         <div className="logo">
           <img src={coverLogo} alt="logo" />
         </div>
-        <div className="subtitle">믿을 수 있는 중개인을 만나보세요.</div>
+        <div className="subtitle">믿을 수 있는 중개인을 만나보세요</div>
         <div className="search">
           <input
             type="text"
@@ -87,7 +87,7 @@ const HomeWrapper = () => {
               <strong>BLOCKON</strong> 모바일앱이
             </p>
             <p>10월 31일에 출시될 예정입니다.</p>
-            <p className="email">메일을 적어주시면 출시 전에 알려드려요.</p>
+            <p className="email">이메일을 적어주시면 출시 전에 알려드려요.</p>
           </div>
 
           <div className="input-wrapper">

@@ -6,6 +6,7 @@
 @media (min-width: 370px) {
   .cover {
     //background-image: none;
+    height: 220px;
     background-image: url("../../static/images/cover.png");
     background-size: 100%;
     background-attachment: fixed;
@@ -19,17 +20,22 @@
 
   .subtitle {
     position: absolute;
-    left: 30px;
-    top: 110px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    top: 90px;
     font-size: 1.3rem;
-    font-weight: 600;
+    font-weight: 100;
   }
 
   .search {
     position: absolute;
-    left: 30px;
-    top: 160px;
-    padding: 1rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 80%;
+    top: 140px;
+    padding: 0.8rem 1rem;
     box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
     background-color: #fff;
     border-radius: 5px;
@@ -42,7 +48,7 @@
       color: #333;
       width: 270px;
       background-image: url("../../static/images/icon/search.png");
-      background-position: 1px 1px;
+      background-position: 1px 2px;
       background-repeat: no-repeat;
       background-size: 15px;
       padding-left: 35px;
@@ -73,12 +79,18 @@
 
   .subtitle {
     left: 120px;
+    right: auto;
+    text-align: left;
     top: 160px;
     font-size: 1.5rem;
+    font-weight: 600;
   }
 
   .search {
     left: 120px;
+    right: auto;
+    margin: 0;
+    width: auto;
     top: 210px;
 
     input {
@@ -139,36 +151,65 @@ section {
   color: #333;
 }
 
-section.blockon {
-  font-size: 1.2rem;
+@media (min-width: 370px) {
+  section.blockon {
+    font-size: 1rem;
+    line-height: 1.7;
 
-  .logo {
-    height: 120px;
-    margin-bottom: 0.5rem;
-  }
+    .logo {
+      height: 101px;
+      margin-bottom: 2.5rem;
+    }
 
-  p {
-    margin-top: 0.8rem;
-    margin-bottom: 0.8rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    p {
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
   }
 }
 
-section.feature {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  width: 70%;
-  margin: 0 auto;
-  padding-top: 0;
+@media (min-width: 750px) {
+  section.blockon {
+    font-size: 1.2rem;
 
-  div {
-    line-height: 1.6;
+    .logo {
+      height: 120px;
+      margin-bottom: 1.5rem;
+    }
 
-    img {
-      height: 170px;
-      padding-bottom: 1rem;
+    p {
+      margin-top: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+  }
+}
+
+@media (min-width: 370px) {
+  section.feature {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 70%;
+    margin: 0 auto;
+    padding-top: 0;
+
+    > div {
+      margin-bottom: 4rem;
+
+      img {
+        height: 170px;
+        padding-bottom: 1rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 750px) {
+  section.feature {
+    > div {
+      margin-bottom: 0;
     }
   }
 }
@@ -216,7 +257,8 @@ section.app {
     }
 
     p.email {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
+      font-weight: 100;
       margin: 2.5rem 0;
     }
 

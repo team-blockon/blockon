@@ -5,7 +5,7 @@
     padding-top: 13px;
     padding-bottom: 13px;
     display: flex;
-    background-image: url(/static/media/cover.da095e16.png);
+    background-image: url(../../static/images/cover.png);
     background-size: 100%;
     background-attachment: fixed;
 
@@ -15,7 +15,8 @@
     width: 100%;
 
     .logo {
-      height: 40px;
+      height: 30px;
+      margin-left: 1rem;
     }
   }
 
@@ -23,7 +24,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: space-between;
     //margin: 0 30px;
   }
