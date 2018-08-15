@@ -455,6 +455,8 @@ section.contact {
     }
 
     .info {
+      display: none;
+      /*
       display: flex;
       flex-flow: column wrap;
       width: 100%;
@@ -464,6 +466,7 @@ section.contact {
         text-align: center;
         margin-bottom: 1rem;
       }
+      */
     }
   }
 }
