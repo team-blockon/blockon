@@ -27,5 +27,6 @@ blockchain/history
 yarn.lock
 package-lock.json
 
+.idea
 
 # End of https://www.gitignore.io/api/soliditytruffle
