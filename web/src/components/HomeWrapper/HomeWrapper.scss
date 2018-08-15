@@ -304,14 +304,15 @@ section.contact {
   align-items: stretch;
   text-align: left;
   width: 61%;
-  overflow: auto;
+  //overflow: auto;
+  //z-index: auto;
   box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
   border-radius: 10px;
 
   .form {
     float: left;
     width: 62%;
-    padding: 6rem 8rem;
+    padding: 6rem 4rem;
     border-radius: 10px 0 0 10px;
     background-color: #fff;
     position: relative;
@@ -377,13 +378,12 @@ section.contact {
     float: left;
     width: 38%;
     background-color: #ffda44;
-    padding: 6rem 3rem;
+    padding: 6rem 2rem;
     border-radius: 0 10px 10px 0;
 
     h2 {
       text-align: center;
-      margin: 0;
-      margin-bottom: 3rem;
+      margin: 0 0 3rem;
     }
 
     img {
@@ -398,3 +398,59 @@ section.contact {
     }
   }
 }
+@media only screen and (max-width: 1165px) {
+  section.contact {
+    display: flex;
+    flex-flow: column wrap;
+    width: 50%;
+
+    .form {
+      float: left;
+      width: 100%;
+      padding: 3rem 2rem;
+      border-radius: 10px;
+      background-color: #fff;
+      position: relative;
+
+      label,
+      input,
+      textarea {
+        display: block;
+        width: 100%;
+      }
+
+      input {
+        font-size: 12pt;
+        padding-bottom: 1px;
+      }
+
+      textarea {
+        font-size: 12pt;
+        padding: 1px;
+      }
+
+      button {
+        bottom: 0;
+        right: 2rem;
+
+        img {
+          width: 40px;
+        }
+      }
+    }
+
+    .info {
+      display: flex;
+      flex-flow: column wrap;
+      width: 100%;
+      border-radius: 10px;
+      padding: 2rem 2rem;
+      h2 {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+
