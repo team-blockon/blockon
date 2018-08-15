@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import './HeaderNav.scss';
@@ -37,8 +37,9 @@ export const HeaderNavItem = ({ children, selected, item, onSelect, to }) => {
  */
 class HeaderNav extends Component {
   state = {
-    toggled: false,
+    toggled: false
   };
+
   //nav 클릭시 토클 변수를 추가해서 변수에 따라 메뉴가 나오고 사라질 수 있게 한다.
   nav_click = () => {
     this.setState({
@@ -57,11 +58,17 @@ class HeaderNav extends Component {
 
     return (
       <nav className="HeaderNav">
-        <div className="nav-mobile" >
-          <a id="nav-toggle" href="#!" onClick={this.nav_click} className={toggled && 'active'}>
-            <span></span>
+        <div className="nav-mobile">
+          <a
+            id="nav-toggle"
+            href="#!"
+            onClick={this.nav_click}
+            className={toggled && 'active'}
+          >
+            <span />
           </a>
         </div>
+
         <ul className={toggled && 'active'}>
           <HeaderNavItem
             item="about"

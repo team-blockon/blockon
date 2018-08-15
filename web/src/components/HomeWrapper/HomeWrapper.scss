@@ -256,6 +256,10 @@ section.app {
   }
 
   @media only screen and (max-width: 750px) {
+    & {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
     .content {
       left: 5%;
     }

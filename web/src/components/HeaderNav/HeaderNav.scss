@@ -11,49 +11,49 @@
   //float: right;
 }
 
-  #nav-toggle {
-    position: absolute;
-    left: 18px;
-    top: 22px;
-    cursor: pointer;
-    padding: 10px 35px 16px 0;
-    span,
-    span:before,
-    span:after {
-      cursor: pointer;
-      border-radius: 1px;
-      height: 5px;
-      width: 35px;
-      background: #ffffff;
-      position: absolute;
-      display: block;
-      content: '';
-      transition: all 300ms ease-in-out;
-    }
-    span:before {
-      top: -10px;
-    }
-    span:after {
-      bottom: -10px;
-    }
+#nav-toggle {
+  position: absolute;
+  left: 18px;
+  top: 22px;
+  cursor: pointer;
+  padding: 10px 35px 16px 0;
 
-    &.active span {
-      background-color: transparent !important;
-      &:before,
-      &:after {
-        top: 0;
-      }
-      &:before {
-        transform: rotate(45deg);
-      }
-      &:after {
-        transform: rotate(-45deg);
-      }
-    }
+  span,
+  span:before,
+  span:after {
+    cursor: pointer;
+    border-radius: 1px;
+    height: 5px;
+    width: 35px;
+    background: #ffffff;
+    position: absolute;
+    display: block;
+    content: "";
+    transition: all 300ms ease-in-out;
+  }
+  span:before {
+    top: -10px;
+  }
+  span:after {
+    bottom: -10px;
   }
 
+  &.active span {
+    background-color: transparent !important;
+    &:before,
+    &:after {
+      top: 0;
+    }
+    &:before {
+      transform: rotate(45deg);
+    }
+    &:after {
+      transform: rotate(-45deg);
+    }
+  }
+}
 
-@media only screen and (max-width: 750px){
+@media only screen and (max-width: 900px) {
   .nav-mobile {
     display: block;
   }
@@ -65,11 +65,15 @@
     ul {
       display: none;
       list-style: none;
+      background-color: #353a4c;
 
       &.active {
         display: block;
         padding: 0;
         margin: 0;
+        position: absolute;
+        margin-top: 13px;
+        width: 100%;
       }
 
       li {
@@ -78,31 +82,20 @@
         color: #fff;
         cursor: pointer;
         box-sizing: content-box;
-
-        & + li {
-          margin-left: 30px;
-        }
+        padding: 14px 16px;
 
         &.active,
         &:hover {
           position: relative;
-
-          &::after {
-            position: absolute;
-            background-color: #fff;
-            content: "";
-            left: 0;
-            bottom: -2px;
-            width: 100%;
-            height: 2px;
-          }
+          background-color: #ffda44;
+          color: #353a4c;
         }
       }
     }
   }
 }
 
-@media (min-width: 751px){
+@media (min-width: 901px) {
   .nav-list {
     display: block !important;
   }
@@ -111,6 +104,7 @@
     display: none;
     position: absolute;
   }
+
   nav.HeaderNav {
     align-self: center;
     display: block;
