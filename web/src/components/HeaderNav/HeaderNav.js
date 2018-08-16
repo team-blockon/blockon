@@ -84,7 +84,7 @@ class HeaderNav extends Component {
             onSelect={onSelect}
             to="/search"
           >
-            중개소 검색
+            평점검색
           </HeaderNavItem>
           <HeaderNavItem
             item="help"
