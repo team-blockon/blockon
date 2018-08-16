@@ -96,8 +96,9 @@
 
     input {
       width: 500px;
-      background-position: 7px 4px;
+      background-position: 3px 1px;
       background-size: 18px;
+      padding-left: 35px;
 
       &::placeholder {
         font-size: 1rem;
@@ -138,6 +139,7 @@
       width: 500px;
       background-position: 7px 4px;
       background-size: 18px;
+      padding-left: 45px;
     }
   }
 }
