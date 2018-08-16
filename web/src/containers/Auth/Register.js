@@ -7,7 +7,7 @@ import * as AuthAPI from 'lib/api/auth';
 class Register extends Component {
   state = {
     profile: '',
-    username: '',
+    thumbnail: '',
     email: ''
   };
 
@@ -22,10 +22,10 @@ class Register extends Component {
 
   handleRegister = event => {
     const { history } = this.props;
-    const { username, email, password } = this.state;
-    const isJunggae = this.state.isJunggae === 1;
+    const { thumbnail, username, email } = this.state;
+    const ethAddress = window.web3.eth.defaultAccount;
 
-    AuthAPI.register({ username, email, password, isJunggae }).then(() => {
+    AuthAPI.register({ ethAddress, thumbnail, username, email }).then(() => {
       history.push('/');
     });
   };
@@ -43,8 +43,8 @@ class Register extends Component {
         <InputWithLabel
           label="프로필 사진"
           type="text"
-          name="username"
-          value={this.state.profile}
+          name="thumbnail"
+          value={this.state.thumbnail}
           placeholder="프로필 사진"
           onChange={this.handleChange}
         />

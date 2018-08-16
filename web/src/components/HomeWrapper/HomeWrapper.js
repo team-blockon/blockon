@@ -119,7 +119,7 @@ const HomeWrapper = () => {
           </div>
           <div>
             <img src={mailIcon} alt="mail" />
-            BLOCKON@gmail.com
+            talentx.blockon@gmail.com
           </div>
           <div>
             <img src={phoneIcon} alt="phone" />

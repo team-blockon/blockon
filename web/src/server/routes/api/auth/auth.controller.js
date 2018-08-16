@@ -10,7 +10,7 @@ const Account = require('../../../models/account');
 */
 
 exports.register = (req, res) => {
-  const { username, email, password, isJunggae } = req.body;
+  const { ethAddress, thumbnail, username, email } = req.body;
   let newAccount = null;
 
   // 유저가 존재하지 않으면 새 유저 생성
@@ -18,7 +18,7 @@ exports.register = (req, res) => {
     if (account) {
       throw new Error('username exists');
     } else {
-      return Account.create(username, email, password, isJunggae);
+      return Account.create(ethAddress, thumbnail, username, email);
     }
   };
 
@@ -54,7 +54,7 @@ exports.register = (req, res) => {
   };
 
   // email 중복 체크
-  Account.findByEmail(email)
+  Account.findByEthAddress(ethAddress)
     .then(create)
     .then(count)
     .then(assign)
@@ -71,7 +71,7 @@ exports.register = (req, res) => {
 */
 
 exports.login = (req, res) => {
-  const { email, password } = req.body;
+  const { ethAddress } = req.body;
   const secret = process.env.SECRET_KEY;
 
   // 유저의 정보를 확인하고, token 발급
@@ -86,32 +86,27 @@ exports.login = (req, res) => {
       // 유저가 존재하지 않음
       throw new Error('login failed');
     } else {
-      // 유저가 존재하면, 비밀번호 확인
-      if (account.validatePassword(password)) {
-        // JWT를 비동기적으로 생성하는 Promise 객체 생성
-        const p = new Promise((resolve, reject) => {
-          jwt.sign(
-            {
-              _id: account._id,
-              admin: account.admin,
-              email: email
-            },
-            secret,
-            {
-              expiresIn: '7d',
-              issuer: 'boomable.io',
-              subject: 'userInfo'
-            },
-            (err, token) => {
-              if (err) reject(err);
-              resolve({ token, loggedInfo });
-            }
-          );
-        });
-        return p;
-      } else {
-        throw new Error('login failed');
-      }
+      // 유저가 존재하면, JWT를 비동기적으로 생성하는 Promise 객체 생성
+      const p = new Promise((resolve, reject) => {
+        jwt.sign(
+          {
+            _id: account._id,
+            admin: account.admin,
+            ethAddress
+          },
+          secret,
+          {
+            expiresIn: '7d',
+            issuer: 'blockon.house',
+            subject: 'userInfo'
+          },
+          (err, token) => {
+            if (err) reject(err);
+            resolve({ token, loggedInfo });
+          }
+        );
+      });
+      return p;
     }
   };
 
@@ -132,7 +127,7 @@ exports.login = (req, res) => {
   };
 
   // 유저 찾기
-  Account.findByEmail(email)
+  Account.findByEthAddress(ethAddress)
     .then(check)
     .then(respond)
     .catch(onError);

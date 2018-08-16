@@ -1,18 +1,17 @@
 import defaultClient from 'lib/defaultClient';
 
-export const register = ({ username, email, password, isJunggae }) => {
+export const register = ({ ethAddress, thumbnail, username, email }) => {
   return defaultClient.post('/api/auth/register', {
+    ethAddress,
+    thumbnail,
     username,
-    email,
-    password,
-    isJunggae
+    email
   });
 };
 
-export const login = ({ email, password }) => {
+export const login = ethAddress => {
   return defaultClient.post('/api/auth/login', {
-    email,
-    password
+    ethAddress
   });
 };
 

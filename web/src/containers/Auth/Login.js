@@ -22,7 +22,7 @@ class Login extends Component {
     });
   };
 
-  handleLogin = event => {
+  handleLogin = () => {
     const { setLoggedInfo, history } = this.props;
     const { email, password } = this.state;
 
