@@ -79,4 +79,9 @@ footer {
   .copyright {
     text-align: center;
   }
+  @media only screen and (max-width: 980px) {
+    .copyright {
+      font-size: 9pt;
+    }
+  }
 }
