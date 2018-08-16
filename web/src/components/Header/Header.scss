@@ -1,13 +1,15 @@
 @import "~open-color/open-color";
 
+header{
+  background-size: 100%;
+  background: url(../../static/images/cover.png) fixed;
+}
+
 @media (max-width: 1040px) {
   header {
     padding-top: 13px;
     padding-bottom: 13px;
     display: flex;
-    background-image: url(../../static/images/cover.png);
-    background-size: 100%;
-    background-attachment: fixed;
 
     //navbar가 상단고정.
     position: fixed;
@@ -34,7 +36,6 @@
     padding-top: 13px;
     padding-bottom: 13px;
     display: flex;
-    background-image: url(../../static/images/cover.png);
     background-size: cover;
 
     //navbar가 상단고정.
