@@ -4,6 +4,7 @@ const crypto = require('crypto');
 
 // 계정 컬렉션 데이터 스키마
 const Account = new Schema({
+  publicAddress: String,
   profile: {
     username: String,
     thumbnail: String // 프로필 사진

@@ -15,6 +15,18 @@ class ContractEditForm extends Component {
     });
   };
 
+  handleSubmit = () => {
+    window.blockon.createContract.sendTransaction(
+      '0x2cacbe568e220d6cc7d4995455e1e1616b830bd0',
+      '0x97bf1acae54d933ede531c2ca4bedc341f6e5c15',
+      '0x736202c81da14abac98ea9cf3e3bf4b54e625e77',
+      1,
+      (err, res) => {
+        console.log(res);
+      }
+    );
+  };
+
   render() {
     const { status } = this.state;
 
@@ -115,7 +127,9 @@ class ContractEditForm extends Component {
           </div>
 
           <div className="action">
-            <button type="button">계약등록</button>
+            <button type="button" onClick={this.handleSubmit}>
+              계약등록
+            </button>
           </div>
         </div>
       </div>
