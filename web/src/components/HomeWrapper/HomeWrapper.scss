@@ -279,6 +279,7 @@ section.app {
 
         button {
           max-width: 100px;
+          cursor: pointer;
         }
       }
     }
@@ -401,6 +402,7 @@ section.contact {
       position: absolute;
       bottom: 4.5rem;
       right: 6.5rem;
+      cursor: pointer;
 
       img {
         width: 48px;
@@ -461,7 +463,6 @@ section.contact {
 
       textarea {
         font-size: 12pt;
-        padding: 1px;
       }
 
       button {

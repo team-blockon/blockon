@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import logo from 'static/images/logo.png';
 import coverLogo from 'static/images/logo-cover.png';
 import chattingIcon from 'static/images/icon/chatting.png';
@@ -12,71 +12,79 @@ import sendIcon from 'static/images/icon/send.png';
 import facebookIcon from 'static/images/icon/facebook.png';
 import googleIcon from 'static/images/icon/google.png';
 import instagramIcon from 'static/images/icon/instagram.png';
+import * as LandingAPI from 'lib/api/landing';
 import './HomeWrapper.scss';
 
-const HomeWrapper = () => {
+const BlockonSection = () => {
   return (
-    <Fragment>
-      <div className="cover">
-        <div className="logo">
-          <img src={coverLogo} alt="logo" />
+    <section className="blockon">
+      <img src={logo} className="logo" alt="logo" />
+      <p>
+        BLOCKON은 부동산 계약을 더욱 투명하게 하기 위한 블록체인 기반&nbsp;
+        '공인중개사 평판' 시스템입니다.
+      </p>
+      <p>
+        공인중개사 검색은 더욱 쉽게, 거래과정을 명확하게, 소통은 원활하게
+        이용하실 수 있습니다.
+      </p>
+      <p>이제 BLOCKON으로 안심하고 거래하세요.</p>
+    </section>
+  );
+};
+
+const FeatureSection = () => {
+  return (
+    <section className="feature">
+      <div>
+        <div>
+          <img src={gradeIcon} alt="chatting" />
         </div>
-        <div className="subtitle">믿을 수 있는 중개인을 만나보세요</div>
-        <div className="search">
-          <input
-            type="text"
-            placeholder="관심지역 또는 공인중개소를 검색해보세요."
-          />
-        </div>
+        공인중개사의 평점을
+        <br />
+        위치 기반으로 편리하게
+        <br />
+        검색할 수 있습니다.
       </div>
-
-      <section className="blockon">
-        <img src={logo} className="logo" alt="logo" />
-        <p>
-          BLOCKON은 부동산 계약을 더욱 투명하게 하기 위한 블록체인 기반&nbsp;
-          '공인중개사 평판' 시스템입니다.
-        </p>
-        <p>
-          공인중개사 검색은 더욱 쉽게, 거래과정을 명확하게, 소통은 원활하게
-          이용하실 수 있습니다.
-        </p>
-        <p>이제 BLOCKON으로 안심하고 거래하세요.</p>
-      </section>
-
-      <section className="feature">
+      <div>
         <div>
-          <div>
-            <img src={gradeIcon} alt="chatting" />
-          </div>
-          공인중개사의 평점을
-          <br />
-          위치 기반으로 편리하게
-          <br />
-          검색할 수 있습니다.
+          <img src={contractIcon} alt="contract" />
         </div>
+        블록체인으로 거래내역이
+        <br /> 투명하게 공개되어
+        <br />
+        위변조 및 대리계약의
+        <br />
+        가능성이 없습니다.
+      </div>
+      <div>
         <div>
-          <div>
-            <img src={contractIcon} alt="contract" />
-          </div>
-          블록체인으로 거래내역이
-          <br /> 투명하게 공개되어
-          <br />
-          위변조 및 대리계약의
-          <br />
-          가능성이 없습니다.
+          <img src={chattingIcon} alt="realestate" />
         </div>
-        <div>
-          <div>
-            <img src={chattingIcon} alt="realestate" />
-          </div>
-          매수인, 중개인, 매도인 간의
-          <br />
-          실시간 채팅서비스로
-          <br />
-          쉽고 빠르게 연락 가능합니다.
-        </div>
-      </section>
+        매수인, 중개인, 매도인 간의
+        <br />
+        실시간 채팅서비스로
+        <br />
+        쉽고 빠르게 연락 가능합니다.
+      </div>
+    </section>
+  );
+};
 
+class AppSection extends Component {
+  state = {
+    email: ''
+  };
+
+  handleChange = event => {
+    this.setState({
+      email: event.target.value
+    });
+  };
+
+  render() {
+    const { email } = this.state;
+
+    return (
       <section className="app">
         <div className="image">
           <img src={phone} alt="phone" />
@@ -91,23 +99,84 @@ const HomeWrapper = () => {
           </div>
 
           <div className="input-wrapper">
-            <input type="email" placeholder="이메일을 입력해주세요." />
+            <input
+              type="email"
+              value={email}
+              placeholder="이메일을 입력해주세요."
+              onChange={this.handleChange}
+            />
             <button type="submit">보내기</button>
           </div>
         </div>
       </section>
+    );
+  }
+}
 
+class ContactUsSection extends Component {
+  state = {
+    name: '',
+    email: '',
+    phone: '',
+    feedback: ''
+  };
+
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  };
+
+  handleSubmit = () => {
+    const { name, email, phone, feedback } = this.state;
+
+    LandingAPI.contactus({ name, email, phone, feedback }).then(res => {
+      console.log(res);
+      alert('컨택 성공');
+    });
+  };
+
+  render() {
+    const { name, email, phone, feedback } = this.state;
+
+    return (
       <section className="contact">
         <div className="form">
-          <label htmlFor="email">성함</label>
-          <input type="text" id="name" />
+          <label htmlFor="name">성함</label>
+          <input
+            type="text"
+            value={name}
+            id="name"
+            name="name"
+            onChange={this.handleChange}
+          />
           <label htmlFor="email">이메일</label>
-          <input type="email" id="email" />
+          <input
+            type="email"
+            value={email}
+            id="email"
+            name="email"
+            onChange={this.handleChange}
+          />
           <label htmlFor="phone">핸드폰</label>
-          <input type="tel" id="phone" placeholder="예) 010-0000-0000" />
+          <input
+            type="tel"
+            value={phone}
+            id="phone"
+            name="phone"
+            placeholder="예) 010-0000-0000"
+            onChange={this.handleChange}
+          />
           <label htmlFor="feedback">문의사항</label>
-          <textarea id="feedback" rows="3" cols="80" />
-          <button type="button">
+          <textarea
+            id="feedback"
+            name="feedback"
+            value={feedback}
+            rows="3"
+            cols="80"
+            onChange={this.handleChange}
+          />
+          <button type="button" onClick={this.handleSubmit}>
             <img src={sendIcon} alt="send" placeholder="문의사항" />
           </button>
         </div>
@@ -127,7 +196,7 @@ const HomeWrapper = () => {
           </div>
           <div>
             <a href="https://www.facebook.com/BLOCKON-635311476850026/">
-              <img src={facebookIcon} alt="facebook"/>
+              <img src={facebookIcon} alt="facebook" />
             </a>
             {/*Just for test. 일단 없애놨음. */}
             {/*<img src={googleIcon} alt="google" />
@@ -135,8 +204,34 @@ const HomeWrapper = () => {
           </div>
         </div>
       </section>
-    </Fragment>
-  );
-};
+    );
+  }
+}
+
+class HomeWrapper extends Component {
+  render() {
+    return (
+      <Fragment>
+        <div className="cover">
+          <div className="logo">
+            <img src={coverLogo} alt="logo" />
+          </div>
+          <div className="subtitle">믿을 수 있는 중개인을 만나보세요</div>
+          <div className="search">
+            <input
+              type="text"
+              placeholder="관심지역 또는 공인중개소를 검색해보세요."
+            />
+          </div>
+        </div>
+
+        <BlockonSection />
+        <FeatureSection />
+        <AppSection />
+        <ContactUsSection />
+      </Fragment>
+    );
+  }
+}
 
 export default HomeWrapper;
