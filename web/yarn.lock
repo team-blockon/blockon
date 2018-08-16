@@ -5754,6 +5754,10 @@ handlebars@^4.0.1, handlebars@^4.0.2, handlebars@^4.0.3:
   optionalDependencies:
     uglify-js "^2.6"
 
+hangul-js@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/hangul-js/-/hangul-js-0.2.5.tgz#de630731db3acced3d42eefbe8530851812f5e0f"
+
 hapi-set-header@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/hapi-set-header/-/hapi-set-header-1.0.2.tgz#2afae002c6719d6d54f3fa88462f822892d2df13"
