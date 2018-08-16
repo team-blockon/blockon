@@ -126,9 +126,12 @@ const HomeWrapper = () => {
             031-214-8698
           </div>
           <div>
-            <img src={facebookIcon} alt="facebook" />
-            <img src={googleIcon} alt="google" />
-            <img src={instagramIcon} alt="instagram" />
+            <a href="https://www.facebook.com/BLOCKON-635311476850026/">
+              <img src={facebookIcon} alt="facebook"/>
+            </a>
+            {/*Just for test. 일단 없애놨음. */}
+            {/*<img src={googleIcon} alt="google" />
+            <img src={instagramIcon} alt="instagram" />*/}
           </div>
         </div>
       </section>

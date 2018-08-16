@@ -17,10 +17,13 @@ footer {
   }
   @media only screen and (min-width: 981px) {
     .footer-top {
-      display: flex;
+      display: block;           //임시로 사용
+      //display: flex;          //just for test. 잠깐 없애놓기.
 
       .company {
-        padding-left: 3rem;
+        padding-left: 0;        //임시로 사용
+        text-align: center;     //임시로 사용
+        //padding-left: 3rem;   //just for test. 잠깐 없애놓기.
       }
     }
   }
@@ -62,9 +65,12 @@ footer {
     }
     @media only screen and (min-width: 981px) {
       nav{
+        display: none;                  //임시로 넣어논 것.
+        /*                              //just for test. 잠깐 없애놓기.
         display: flex;
         padding-left: 8rem;
         justify-content: space-around;
+        */
       }
     }
 

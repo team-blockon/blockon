@@ -69,6 +69,7 @@ class HeaderNav extends Component {
           </a>
         </div>
 
+        {/*Just for test. 잠깐 없애놓음.
         <ul className={toggled && 'active'}>
           <HeaderNavItem
             item="about"
@@ -96,6 +97,8 @@ class HeaderNav extends Component {
           </HeaderNavItem>
           {userButtons}
         </ul>
+                  */}
+
       </nav>
     );
   }
