@@ -85,11 +85,19 @@
         box-sizing: content-box;
         padding: 14px 16px;
 
+        a {
+          color: #fff;
+        }
+
         &.active,
         &:hover {
           position: relative;
           background-color: #ffda44;
           color: #353a4c;
+
+          a {
+            color: #353a4c;
+          }
         }
       }
     }
@@ -125,6 +133,11 @@
 
         & + li {
           margin-left: 30px;
+        }
+
+        a,
+        a:hover {
+          color: #fff;
         }
 
         &.active,

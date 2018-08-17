@@ -37,14 +37,18 @@ class App extends Component {
   };
 
   checkMetamask() {
-    if (!window.web3.currentProvider.isMetaMask) {
-      return '메타마스크 설치 안됨';
-    } else if (window.web3.eth.accounts.length === 0) {
-      return '메타마스크 로그인 안됨';
-    } /* else if (window.web3.version.network !== '1') {
+    try {
+      if (!window.web3.currentProvider.isMetaMask) {
+        return '메타마스크 설치 안됨';
+      } else if (window.web3.eth.accounts.length === 0) {
+        return '메타마스크 로그인 안됨';
+      } /* else if (window.web3.version.network !== '1') {
       return '메인넷 아님';
     } */ else {
-      return true;
+        return true;
+      }
+    } catch (e) {
+      return false;
     }
   }
 

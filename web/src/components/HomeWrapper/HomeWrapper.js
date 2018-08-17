@@ -13,7 +13,9 @@ import facebookIcon from 'static/images/icon/facebook.png';
 import googleIcon from 'static/images/icon/google.png';
 import instagramIcon from 'static/images/icon/instagram.png';
 import * as LandingAPI from 'lib/api/landing';
+import 'antd/dist/antd.css';
 import './HomeWrapper.scss';
+import { Button, notification } from 'antd';
 
 const BlockonSection = () => {
   return (
@@ -81,6 +83,19 @@ class AppSection extends Component {
     });
   };
 
+  handleSubmit = () => {
+    LandingAPI.subscribe(this.state.email);
+
+    notification.open({
+      message: '출시 사전알림이 예약되었습니다.',
+      duration: 3
+    });
+
+    this.setState({
+      email: ''
+    });
+  };
+
   render() {
     const { email } = this.state;
 
@@ -105,7 +120,9 @@ class AppSection extends Component {
               placeholder="이메일을 입력해주세요."
               onChange={this.handleChange}
             />
-            <button type="submit">보내기</button>
+            <button type="submit" onClick={this.handleSubmit}>
+              보내기
+            </button>
           </div>
         </div>
       </section>
@@ -131,8 +148,17 @@ class ContactUsSection extends Component {
     const { name, email, phone, feedback } = this.state;
 
     LandingAPI.contactus({ name, email, phone, feedback }).then(res => {
-      console.log(res);
-      alert('컨택 성공');
+      notification.open({
+        message: '문의사항이 접수되었습니다.',
+        duration: 2.5
+      });
+    });
+
+    this.setState({
+      name: '',
+      email: '',
+      phone: '',
+      feedback: ''
     });
   };
 
@@ -182,18 +208,18 @@ class ContactUsSection extends Component {
         </div>
         <div className="info">
           <h2>Contact US</h2>
-          <div>
+          {/* <div>
             <img src={mapIcon} alt="map" style={{ width: '22px' }} />
             경기 성남시 분당구 판교로289길 4층 BLOCKON
-          </div>
+          </div> */}
           <div>
             <img src={mailIcon} alt="mail" />
             talentx.blockon@gmail.com
           </div>
-          <div>
+          {/* <div>
             <img src={phoneIcon} alt="phone" />
             031-214-8698
-          </div>
+          </div> */}
           <div>
             <a href="https://www.facebook.com/BLOCKON-635311476850026/">
               <img src={facebookIcon} alt="facebook" />
@@ -217,12 +243,12 @@ class HomeWrapper extends Component {
             <img src={coverLogo} alt="logo" />
           </div>
           <div className="subtitle">믿을 수 있는 중개인을 만나보세요</div>
-          <div className="search">
+          {/* <div className="search">
             <input
               type="text"
               placeholder="관심지역 또는 공인중개소를 검색해보세요."
             />
-          </div>
+          </div> */}
         </div>
 
         <BlockonSection />
