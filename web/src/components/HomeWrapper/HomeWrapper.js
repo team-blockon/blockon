@@ -86,7 +86,7 @@ class AppSection extends Component {
   handleSubmit = () => {
     LandingAPI.subscribe(this.state.email);
 
-    notification.open({
+    notification['success']({
       message: '출시 사전알림이 예약되었습니다.',
       duration: 3
     });
@@ -148,7 +148,7 @@ class ContactUsSection extends Component {
     const { name, email, phone, feedback } = this.state;
 
     LandingAPI.contactus({ name, email, phone, feedback }).then(res => {
-      notification.open({
+      notification['success']({
         message: '문의사항이 접수되었습니다.',
         duration: 2.5
       });
