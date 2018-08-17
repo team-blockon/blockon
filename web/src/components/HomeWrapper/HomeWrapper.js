@@ -15,7 +15,7 @@ import instagramIcon from 'static/images/icon/instagram.png';
 import * as LandingAPI from 'lib/api/landing';
 import 'antd/dist/antd.css';
 import './HomeWrapper.scss';
-import { Button, notification } from 'antd';
+import { notification } from 'antd';
 
 const BlockonSection = () => {
   return (
@@ -208,18 +208,18 @@ class ContactUsSection extends Component {
         </div>
         <div className="info">
           <h2>Contact US</h2>
-          {/* <div>
+          <div>
             <img src={mapIcon} alt="map" style={{ width: '22px' }} />
             경기 성남시 분당구 판교로289길 4층 BLOCKON
-          </div> */}
+          </div>
           <div>
             <img src={mailIcon} alt="mail" />
             talentx.blockon@gmail.com
           </div>
-          {/* <div>
+          <div>
             <img src={phoneIcon} alt="phone" />
-            031-214-8698
-          </div> */}
+            031-698-3081
+          </div>
           <div>
             <a href="https://www.facebook.com/BLOCKON-635311476850026/">
               <img src={facebookIcon} alt="facebook" />
@@ -243,12 +243,12 @@ class HomeWrapper extends Component {
             <img src={coverLogo} alt="logo" />
           </div>
           <div className="subtitle">믿을 수 있는 중개인을 만나보세요</div>
-          {/* <div className="search">
+          <div className="search">
             <input
               type="text"
               placeholder="관심지역 또는 공인중개소를 검색해보세요."
             />
-          </div> */}
+          </div>
         </div>
 
         <BlockonSection />

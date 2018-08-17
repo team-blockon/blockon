@@ -10,8 +10,7 @@
 
 @media (min-width: 320px) {
   .cover {
-    // height: 159px;
-    height: 130px;
+    height: 159px;
 
     .logo {
       img {
@@ -50,7 +49,7 @@
       color: #333;
       width: 270px;
       background-image: url("../../static/images/icon/search.png");
-      background-position: 1px 2px;
+      background-position: 1px 4px;
       background-repeat: no-repeat;
       background-size: 15px;
       padding-left: 25px;
@@ -65,8 +64,7 @@
 
 @media (min-width: 750px) {
   .cover {
-    // height: 239px;
-    height: 190px;
+    height: 239px;
 
     .logo {
       position: absolute;
@@ -98,7 +96,7 @@
 
     input {
       width: 500px;
-      background-position: 3px 1px;
+      background-position: 3px 3px;
       background-size: 18px;
       padding-left: 35px;
 
@@ -111,8 +109,7 @@
 
 @media (min-width: 981px) {
   .cover {
-    // height: 540px;
-    height: 400px;
+    height: 540px;
 
     .logo {
       position: absolute;
@@ -140,7 +137,7 @@
     input {
       font-size: 1.3rem;
       width: 500px;
-      background-position: 7px 4px;
+      background-position: 7px 7px;
       background-size: 18px;
       padding-left: 45px;
     }
@@ -278,8 +275,6 @@ section.app {
         }
       }
       .input-wrapper {
-        max-width: 290px;
-
         button {
           max-width: 100px;
           cursor: pointer;
