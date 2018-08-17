@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^1.4.0",
     "antd": "^3.8.1",
+    "array-equal": "^1.0.0",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
     "babel-core": "6.26.0",
@@ -34,6 +35,7 @@
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "1.1.5",
     "fs-extra": "3.0.1",
+    "hangul-js": "^0.2.5",
     "html-webpack-plugin": "2.29.0",
     "ipfs-daemon": "^0.3.1",
     "jest": "20.0.4",
