@@ -1,21 +1,18 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Agent = new Schema({
-    name : [String],
-    address : String
+  name: [String],
+  address: String
 });
 
-Agent.statics.create = function(splitName, address){
-    let rating = new this({
-        name : splitName,
-        address : address
-    });
+Agent.statics.create = function(splitName, address) {
+  const rating = new this({
+    name: splitName, // 자동완성을 위해 자모음을 분리하여 저장한다.
+    address: address
+  });
 
-    return rating.save();
+  return rating.save();
 };
 
-
-
-
-module.exports = mongoose.model("Agent", Agent);
+module.exports = mongoose.model('Agent', Agent);

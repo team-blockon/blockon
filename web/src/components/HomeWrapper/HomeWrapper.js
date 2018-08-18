@@ -15,7 +15,7 @@ import instagramIcon from 'static/images/icon/instagram.png';
 import * as LandingAPI from 'lib/api/landing';
 import 'antd/dist/antd.css';
 import './HomeWrapper.scss';
-import { notification } from 'antd';
+import { AutoComplete, Input, notification } from 'antd';
 
 const BlockonSection = () => {
   return (
@@ -234,8 +234,34 @@ class ContactUsSection extends Component {
   }
 }
 
+const searchResult = value => {
+  return new Promise((resolve, reject) => {
+    LandingAPI.agentSearch(value).then(res => {
+      const agents = res.data.message;
+      resolve(agents.map(agent => agent.name));
+    });
+  });
+};
+
 class HomeWrapper extends Component {
+  state = {
+    dataSource: []
+  };
+
+  handleSearch = async value => {
+    this.setState(
+      {
+        dataSource: value ? await searchResult(value) : []
+      },
+      state => {
+        console.log(state);
+      }
+    );
+  };
+
   render() {
+    const { dataSource } = this.state;
+
     return (
       <Fragment>
         <div className="cover">
@@ -244,10 +270,12 @@ class HomeWrapper extends Component {
           </div>
           <div className="subtitle">믿을 수 있는 중개인을 만나보세요</div>
           <div className="search">
-            <input
-              type="text"
-              placeholder="관심지역 또는 공인중개소를 검색해보세요."
-            />
+            <AutoComplete dataSource={dataSource} onSearch={this.handleSearch}>
+              <input
+                placeholder="관심지역 또는 공인중개소를 검색해보세요."
+                className="agent"
+              />
+            </AutoComplete>
           </div>
         </div>
 
