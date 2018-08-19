@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 import logo from 'static/images/logo.png';
 import coverLogo from 'static/images/logo-cover.png';
 import chattingIcon from 'static/images/icon/chatting.png';
@@ -14,7 +15,7 @@ import googleIcon from 'static/images/icon/google.png';
 import instagramIcon from 'static/images/icon/instagram.png';
 import * as LandingAPI from 'lib/api/landing';
 import './HomeWrapper.scss';
-import { AutoComplete, notification } from 'antd';
+import { Input, Icon, AutoComplete, notification } from 'antd';
 
 const BlockonSection = () => {
   return (
@@ -244,7 +245,8 @@ const searchResult = value => {
 
 class HomeWrapper extends Component {
   state = {
-    dataSource: []
+    dataSource: [],
+    agent: ''
   };
 
   handleSearch = async value => {
@@ -258,8 +260,13 @@ class HomeWrapper extends Component {
     );
   };
 
+  handleKeyPress = event => {
+    const { history } = this.props;
+    history.push(`/search?q=${event.target.value}`);
+  };
+
   render() {
-    const { dataSource } = this.state;
+    const { dataSource, agent } = this.state;
 
     return (
       <Fragment>
@@ -270,9 +277,12 @@ class HomeWrapper extends Component {
           <div className="subtitle">믿을 수 있는 중개인을 만나보세요</div>
           <div className="search">
             <AutoComplete dataSource={dataSource} onSearch={this.handleSearch}>
-              <input
+              <Input
                 placeholder="관심지역 또는 공인중개소를 검색해보세요."
                 className="agent"
+                prefix={<Icon type="search" />}
+                value={agent}
+                onPressEnter={this.handleKeyPress}
               />
             </AutoComplete>
           </div>
@@ -287,4 +297,4 @@ class HomeWrapper extends Component {
   }
 }
 
-export default HomeWrapper;
+export default withRouter(HomeWrapper);
