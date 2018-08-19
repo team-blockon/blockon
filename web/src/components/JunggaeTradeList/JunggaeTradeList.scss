@@ -23,12 +23,17 @@
     }
   }
 
-  button {
-    border: none;
-    outline: none;
-    background-color: #353a4c;
-    color: #fff;
-    padding: 0.5rem 2rem;
+  .sidebar {
+    flex: 1;
+
+    button {
+      border: none;
+      outline: none;
+      background-color: #353a4c;
+      color: #fff;
+      padding: 0.5rem 2rem;
+      width: 100%;
+    }
   }
 }
 

@@ -1,13 +1,25 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { HeaderNavItem } from './HeaderNav';
 
-const LoggedInNav = ({ handleLogout }) => {
+const LoggedInNav = ({ activeItem, onSelect, handleLogout }) => {
   return (
     <Fragment>
-      <li>
-        <Link to="/contract">계약관리</Link>
-      </li>
-      <li>마이페이지</li>
+      <HeaderNavItem
+        item="contract"
+        activeItem={activeItem}
+        onSelect={onSelect}
+        to="/contract"
+      >
+        계약관리
+      </HeaderNavItem>
+      <HeaderNavItem
+        item="mypage"
+        activeItem={activeItem}
+        onSelect={onSelect}
+        to="/mypage"
+      >
+        마이페이지
+      </HeaderNavItem>
       <li onClick={handleLogout}>로그아웃</li>
     </Fragment>
   );

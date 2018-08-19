@@ -49,7 +49,7 @@ const JunggaeTradeList = ({ handleSelect }) => {
   return (
     <div className="JunggaeTradeList">
       <div className="list-wrapper">{getLists(handleSelect)}</div>
-      <div>
+      <div className="sidebar">
         <button>
           <Link to="/contract/edit">계약 올리기</Link>
         </button>

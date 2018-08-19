@@ -5,7 +5,7 @@ import './Header.scss';
 
 class Header extends Component {
   render() {
-    const { navItem, userButtons } = this.props;
+    const { navItem } = this.props;
 
     return (
       <header>
@@ -13,8 +13,7 @@ class Header extends Component {
           <Link to="/">
             <img src={Logo} className="logo" alt="logo" />
           </Link>
-
-          {React.cloneElement(navItem, { userButtons })}
+          {navItem}
         </div>
       </header>
     );
