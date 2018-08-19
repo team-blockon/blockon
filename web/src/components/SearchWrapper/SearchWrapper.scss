@@ -1,0 +1,54 @@
+@import "~open-color/open-color";
+
+.SearchWrapper {
+  .map-container {
+    display: flex;
+
+    #map {
+      flex: 1;
+    }
+
+    .agent-list {
+      overflow-y: auto;
+      position: relative;
+
+      .agent {
+        border: 1px solid $oc-gray-4;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+
+        & + .agent {
+          border-top: 0;
+        }
+
+        .circle {
+          width: 70px;
+          height: 70px;
+          border-radius: 50%;
+          border: 2px solid #ffda44;
+          margin-right: 2rem;
+          text-align: center;
+          line-height: 70px;
+
+          &.blue {
+            border: 2px solid $oc-blue-4;
+          }
+
+          &.red {
+            border: 2px solid $oc-red-4;
+          }
+        }
+
+        p {
+          font-size: 1rem;
+          margin: 0;
+
+          & + p {
+            margin-top: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}

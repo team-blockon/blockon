@@ -63,14 +63,14 @@ class HeaderNav extends Component {
             id="nav-toggle"
             href="#!"
             onClick={this.nav_click}
-            className={toggled && 'active'}
+            className={toggled ? 'active' : undefined}
           >
             <span />
           </a>
         </div>
 
         {/*Just for test. 잠깐 없애놓음.*/}
-        <ul className={toggled && 'active'}>
+        <ul className={toggled ? 'active' : undefined}>
           <HeaderNavItem
             item="about"
             selected={activeItem}

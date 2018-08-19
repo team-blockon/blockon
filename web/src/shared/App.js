@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { Home, Contract, ContractEdit, Auth } from 'pages';
+import { Home, Contract, ContractEdit, Auth, Search } from 'pages';
 import AppTemplate from 'components/AppTemplate';
 import HeaderNav from 'components/HeaderNav';
 import HeaderContainer from 'containers/HeaderContainer';
@@ -95,6 +95,7 @@ class App extends Component {
         <Switch>
           {/* 라우트에 맞춰서 컴포넌트를 보여줌 */}
           <Route exact path="/" component={Home} />
+          <Route path="/search" component={Search} />
           <PrivateRoute
             exact
             path="/contract"

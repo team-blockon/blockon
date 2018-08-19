@@ -15,7 +15,7 @@ import instagramIcon from 'static/images/icon/instagram.png';
 import * as LandingAPI from 'lib/api/landing';
 import 'antd/dist/antd.css';
 import './HomeWrapper.scss';
-import { AutoComplete, Input, notification } from 'antd';
+import { AutoComplete, notification } from 'antd';
 
 const BlockonSection = () => {
   return (
