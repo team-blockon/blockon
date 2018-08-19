@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 
 import Root from './client/Root';
 import registerServiceWorker from './registerServiceWorker';
+import 'antd/dist/antd.css';
 import './index.scss';
 
 // 리덕스 개발자 도구 적용
@@ -23,4 +24,3 @@ ReactDOM.render(
   document.getElementById('root')
 );
 registerServiceWorker();
-

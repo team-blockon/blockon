@@ -5,6 +5,7 @@
 
   .list-wrapper {
     flex-direction: column;
+    margin-right: 1rem;
 
     .card {
       .content {
@@ -20,6 +21,14 @@
         }
       }
     }
+  }
+
+  button {
+    border: none;
+    outline: none;
+    background-color: #353a4c;
+    color: #fff;
+    padding: 0.5rem 2rem;
   }
 }
 

@@ -103,9 +103,7 @@ export class SearchWrapper extends Component {
       <div className="SearchWrapper">
         <div className="map-container">
           <div id="map" ref="map" />
-          <div className="agent-list">
-            <div className="scroll">{this.getAgents()}</div>
-          </div>
+          <div className="agent-list">{this.getAgents()}</div>
         </div>
       </div>
     );

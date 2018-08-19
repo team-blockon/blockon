@@ -10,7 +10,7 @@
 
     .agent-list {
       overflow-y: auto;
-      position: relative;
+      height: calc(100vh - 66px);
 
       .agent {
         border: 1px solid $oc-gray-4;

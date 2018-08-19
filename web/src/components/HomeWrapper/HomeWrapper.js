@@ -13,7 +13,6 @@ import facebookIcon from 'static/images/icon/facebook.png';
 import googleIcon from 'static/images/icon/google.png';
 import instagramIcon from 'static/images/icon/instagram.png';
 import * as LandingAPI from 'lib/api/landing';
-import 'antd/dist/antd.css';
 import './HomeWrapper.scss';
 import { AutoComplete, notification } from 'antd';
 
