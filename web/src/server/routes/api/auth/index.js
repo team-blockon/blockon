@@ -5,6 +5,7 @@ const authMiddleware = require('../../../middlewares/auth');
 auth.post('/register', controller.register);
 auth.post('/login', controller.login);
 auth.post('/logout', controller.logout);
+auth.put('/:ethAddress', controller.updateAccountAddressByEthAddress);
 
 auth.use('/check', authMiddleware);
 auth.get('/check');

@@ -21,31 +21,26 @@ class Register extends Component {
   };
 
   handleRegister = event => {
-    const { history } = this.props;
     const { thumbnail, username, email } = this.state;
-    const ethAddress = window.web3.eth.defaultAccount;
+    const { web3, blockon } = window;
+    const ethAddress = web3.eth.defaultAccount;
 
-    window.blockon.createAccount.sendTransaction(
-      ethAddress,
-      email,
-      (err, txHash) => {
-        setTimeout(() => {
-          window.web3.eth.getTransactionReceipt(txHash, (err, res) => {
-            console.log('ethAddress:', ethAddress);
-            console.log('res:', res);
-            AuthAPI.register({
-              ethAddress,
-              accountAddress: res.to,
-              thumbnail,
-              username,
-              email
-            }).then(() => {
-              history.push('/');
-            });
-          });
-        }, 50000);
+    // Blockon 계약 내의 createAccount 함수 호출
+    blockon.createAccount.sendTransaction(ethAddress, email, (err, txHash) => {
+      if (err) {
+        console.log('createAccount 함수 호출 실패');
+      } else {
+        console.log('createAccount 함수 호출 성공');
       }
-    );
+    });
+
+    // accountAddress를 제외한 나머지를 DB에 추가
+    AuthAPI.register({
+      ethAddress,
+      thumbnail,
+      username,
+      email
+    });
   };
 
   handleKeyPress = event => {
@@ -54,6 +49,34 @@ class Register extends Component {
       this.handleRegister();
     }
   };
+
+  componentDidMount() {
+    const { history } = this.props;
+    const { web3, blockon } = window;
+    const ethAddress = web3.eth.defaultAccount;
+
+    // CreateAccount 이벤트 필터 객체 생성
+    // publicAddress가 ethAddress인 이벤트 로그만
+    // 범위는 첫 번째 블록부터 마지막 블록까지
+    const createAccountEvent = blockon.CreateAccount(
+      { publicAddress: ethAddress },
+      {
+        fromBlock: 0,
+        toBlock: 'latest'
+      }
+    );
+
+    // CreateAccount 이벤트 불러오기
+    createAccountEvent.watch((err, res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        const { accountAddress, publicAddress } = res.args;
+        AuthAPI.updateAccountAddressByEthAddress(accountAddress, publicAddress);
+        history.push('/');
+      }
+    });
+  }
 
   render() {
     return (

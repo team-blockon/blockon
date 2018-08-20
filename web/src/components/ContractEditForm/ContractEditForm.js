@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import { Radio } from 'antd';
 import './ContractEditForm.scss';
+
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 class ContractEditForm extends Component {
   state = {
@@ -25,6 +29,10 @@ class ContractEditForm extends Component {
         console.log(res);
       }
     );
+  };
+
+  handleChange = event => {
+    console.log(event.target.value);
   };
 
   render() {
@@ -56,10 +64,16 @@ class ContractEditForm extends Component {
             <h2>매물정보</h2>
             <div className="form-group type">
               <label className="form-label">건물형태</label>
-              <input type="radio" id="jutaek" name="type" /> 주택
-              <input type="radio" id="apartment" name="type" /> 아파트
-              <input type="radio" id="sangga" name="type" /> 상가
-              <input type="radio" id="officetel" name="type" /> 오피스텔
+              <RadioGroup
+                onChange={this.handleChange}
+                defaultValue="jutaek"
+                buttonStyle="solid"
+              >
+                <RadioButton value="jutaek">주택</RadioButton>
+                <RadioButton value="apartment">아파트</RadioButton>
+                <RadioButton value="sangga">상가</RadioButton>
+                <RadioButton value="officetel">오피스텔</RadioButton>
+              </RadioGroup>
             </div>
             <div className="form-group">
               <label className="form-label">건물주소</label>
@@ -79,9 +93,15 @@ class ContractEditForm extends Component {
             </div>
             <div className="form-group">
               <label className="form-label">계약종류</label>
-              <input type="radio" value="wolse" /> 월세
-              <input type="radio" value="jeonse" /> 전세
-              <input type="radio" value="maemae" /> 매매
+              <RadioGroup
+                onChange={this.handleChange}
+                defaultValue="wolse"
+                buttonStyle="solid"
+              >
+                <RadioButton value="wolse">월세</RadioButton>
+                <RadioButton value="jeonse">전세</RadioButton>
+                <RadioButton value="maemae">매매</RadioButton>
+              </RadioGroup>
             </div>
             <div className="form-group">
               <label className="form-label">계약상황</label>

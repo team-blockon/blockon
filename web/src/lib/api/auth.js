@@ -1,15 +1,8 @@
 import defaultClient from 'lib/defaultClient';
 
-export const register = ({
-  ethAddress,
-  accountAddress,
-  thumbnail,
-  username,
-  email
-}) => {
+export const register = ({ ethAddress, thumbnail, username, email }) => {
   return defaultClient.post('/api/auth/register', {
     ethAddress,
-    accountAddress,
     thumbnail,
     username,
     email
@@ -24,4 +17,13 @@ export const login = ethAddress => {
 
 export const logout = () => {
   return defaultClient.post('/api/auth/logout');
+};
+
+export const updateAccountAddressByEthAddress = (
+  accountAddress,
+  ethAddress
+) => {
+  return defaultClient.put(`/api/auth/${ethAddress}`, {
+    accountAddress
+  });
 };

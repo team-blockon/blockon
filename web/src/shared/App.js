@@ -37,12 +37,14 @@ class App extends Component {
   };
 
   componentDidMount() {
+    let { web3 } = window;
+
     this.initializeUserInfo();
 
-    if (window.web3) {
+    if (web3) {
       // 메타마스크가 자동으로 브라우저에 인젝트하는
       // web3가 정의되어 있다면 currentProvider를 가져옴
-      this.web3Provider = window.web3.currentProvider;
+      this.web3Provider = web3.currentProvider;
     } else {
       // 직접 HttpProvider로 Provier 설정
       // 로컬에서 full node를 돌리고 있을때 보통 8545 포트
@@ -50,11 +52,11 @@ class App extends Component {
         'http://localhost:8545'
       );
     }
-    window.web3 = new Web3(this.web3Provider); // window.web3 객체를 만들어줌
 
-    const contract = window.web3.eth.contract(Abi); // 컨트랙트 클래스 생성
-    window.blockon = contract.at('0xefa13b5b9750aad171f8c0f7550f15edac1ea0af'); // 컨트랙트 인스턴스 생성
-    window.web3.eth.defaultAccount = window.web3.eth.accounts[0]; // 내가 지금 메타마스크에서 사용하고 있는 주소를 defaultAccount로 설정
+    web3 = new Web3(this.web3Provider); // web3 객체를 만들어줌
+    const contract = web3.eth.contract(Abi); // 컨트랙트 클래스 생성
+    window.blockon = contract.at('0xb287643249930424d1aed49b430f9cb97018ac1b'); // 컨트랙트 인스턴스 생성
+    web3.eth.defaultAccount = web3.eth.accounts[0]; // 내가 지금 메타마스크에서 사용하고 있는 주소를 defaultAccount로 설정
   }
 
   render() {

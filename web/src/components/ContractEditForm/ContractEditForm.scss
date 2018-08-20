@@ -1,3 +1,5 @@
+@import "~open-color/open-color";
+
 .ContractEditForm {
   h1 {
     font-weight: 100;
@@ -22,7 +24,8 @@
     }
 
     input {
-      border: 1px solid #ffda44;
+      border: 1px solid $oc-gray-4;
+      background-color: $oc-gray-0;
       padding: 10px 13px;
       border-radius: 3px;
       font-size: 0.9rem;

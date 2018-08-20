@@ -6,6 +6,23 @@ const abi = [
     type: 'constructor'
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: 'publicAddress',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        name: 'accountAddress',
+        type: 'address'
+      }
+    ],
+    name: 'CreateAccount',
+    type: 'event'
+  },
+  {
     constant: false,
     inputs: [
       {

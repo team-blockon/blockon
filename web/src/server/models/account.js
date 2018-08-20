@@ -31,16 +31,9 @@ function hash(password) {
 */
 
 // Account 도큐먼트 생성
-Account.statics.create = function(
-  ethAddress,
-  accountAddress,
-  thumbnail,
-  username,
-  email
-) {
+Account.statics.create = function(ethAddress, thumbnail, username, email) {
   const account = new this({
     ethAddress,
-    accountAddress,
     profile: {
       username,
       thumbnail

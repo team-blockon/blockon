@@ -10,7 +10,7 @@ const Account = require('../../../models/account');
 */
 
 exports.register = (req, res) => {
-  const { ethAddress, accountAddress, thumbnail, username, email } = req.body;
+  const { ethAddress, thumbnail, username, email } = req.body;
   let newAccount = null;
 
   // 유저가 존재하지 않으면 새 유저 생성
@@ -18,13 +18,7 @@ exports.register = (req, res) => {
     if (account) {
       throw new Error('username exists');
     } else {
-      return Account.create(
-        ethAddress,
-        accountAddress,
-        thumbnail,
-        username,
-        email
-      );
+      return Account.create(ethAddress, thumbnail, username, email);
     }
   };
 
@@ -146,4 +140,22 @@ exports.login = (req, res) => {
 exports.logout = (req, res) => {
   res.clearCookie('access-token');
   res.status(204).end(); // 데이터 없이 응답
+};
+
+/*
+    PUT /api/auth/:ethAddress
+    {
+      accountAddress
+    }
+*/
+
+exports.updateAccountAddressByEthAddress = (req, res) => {
+  Account.update(
+    { ethAddress: req.params.ethAddress },
+    { $set: req.body },
+    (err, output) => {
+      console.log(output);
+      res.json({ message: 'account updated' });
+    }
+  );
 };
