@@ -25,9 +25,27 @@ class Register extends Component {
     const { thumbnail, username, email } = this.state;
     const ethAddress = window.web3.eth.defaultAccount;
 
-    AuthAPI.register({ ethAddress, thumbnail, username, email }).then(() => {
-      history.push('/');
-    });
+    window.blockon.createAccount.sendTransaction(
+      ethAddress,
+      email,
+      (err, txHash) => {
+        setTimeout(() => {
+          window.web3.eth.getTransactionReceipt(txHash, (err, res) => {
+            console.log('ethAddress:', ethAddress);
+            console.log('res:', res);
+            AuthAPI.register({
+              ethAddress,
+              accountAddress: res.to,
+              thumbnail,
+              username,
+              email
+            }).then(() => {
+              history.push('/');
+            });
+          });
+        }, 50000);
+      }
+    );
   };
 
   handleKeyPress = event => {

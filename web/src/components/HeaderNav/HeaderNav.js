@@ -1,26 +1,20 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as userActions from 'store/modules/user';
+import LoggedInNav from 'components/HeaderNav/LoggedInNav';
+import LoggedOutNav from 'components/HeaderNav/LoggedOutNav';
+import * as AuthAPI from 'lib/api/auth';
 import './HeaderNav.scss';
-/*import jQuery from './jquery.min';
-window.$ = window.jQuery = jQuery;
 
-(function($) {
-  $(function () {   //when DOM ready
-
-  });
-
-})(jQuery);*/
-/*document.getElementById('#nav-toggle').addEventListener('click', function() {
-  this.classList.toggle('active');
-});*/
-
-export const HeaderNavItem = ({ children, selected, item, onSelect, to }) => {
+export const HeaderNavItem = ({ children, activeItem, item, onSelect, to }) => {
   return (
     <Fragment>
       <li
         className={classNames({
-          active: selected === item
+          active: activeItem === item
         })}
         onClick={() => onSelect(item)}
       >
@@ -47,14 +41,44 @@ class HeaderNav extends Component {
     });
   };
 
-  render() {
-    const { activeItem, onSelect, userButtons } = this.props;
-    const { toggled } = this.state;
+  handleLogout = async () => {
+    const { UserActions } = this.props;
 
-    // Toggle open and close nav styles on click
-    /*$('#nav-toggle').click(function() {
-      $('nav ul').slideToggle();
-    });*/
+    await AuthAPI.logout()
+      .then(() => {
+        console.log('access-token 쿠키 삭제 성공');
+      })
+      .catch(() => {
+        console.log('access-token 쿠키 삭제 실패');
+      });
+
+    localStorage.removeItem('loggedInfo');
+    UserActions.logout();
+    this.props.history.push('/'); /* / 라우트로 이동 */
+  };
+
+  /**
+   * 로그인 여부에 따라 로그인/로그아웃 버튼 조건부 렌더링
+   */
+  getUserButtons = () => {
+    const { activeItem, onSelect, isLogged } = this.props;
+
+    if (isLogged) {
+      return (
+        <LoggedInNav
+          activeItem={activeItem}
+          onSelect={onSelect}
+          handleLogout={this.handleLogout}
+        />
+      );
+    } else {
+      return <LoggedOutNav onSelect={onSelect} activeItem={activeItem} />;
+    }
+  };
+
+  render() {
+    const { activeItem, onSelect } = this.props;
+    const { toggled } = this.state;
 
     return (
       <nav className="HeaderNav">
@@ -63,17 +87,17 @@ class HeaderNav extends Component {
             id="nav-toggle"
             href="#!"
             onClick={this.nav_click}
-            className={toggled && 'active'}
+            className={toggled ? 'active' : undefined}
           >
             <span />
           </a>
         </div>
 
         {/*Just for test. 잠깐 없애놓음.*/}
-        <ul className={toggled && 'active'}>
+        <ul className={toggled ? 'active' : undefined}>
           <HeaderNavItem
             item="about"
-            selected={activeItem}
+            activeItem={activeItem}
             onSelect={onSelect}
             to="/"
           >
@@ -81,7 +105,7 @@ class HeaderNav extends Component {
           </HeaderNavItem>
           <HeaderNavItem
             item="message"
-            selected={activeItem}
+            activeItem={activeItem}
             onSelect={onSelect}
             to="/search"
           >
@@ -89,17 +113,31 @@ class HeaderNav extends Component {
           </HeaderNavItem>
           <HeaderNavItem
             item="help"
-            selected={activeItem}
+            activeItem={activeItem}
             onSelect={onSelect}
             to="/help"
           >
             고객센터
           </HeaderNavItem>
-          {userButtons}
+          {this.getUserButtons()}
         </ul>
       </nav>
     );
   }
 }
 
-export default HeaderNav;
+const mapStateToProps = ({ user }) => ({
+  isLogged: user.isLogged
+});
+
+const mapDispatchToProps = dispatch => ({
+  UserActions: bindActionCreators(userActions, dispatch)
+});
+
+// withRouter: 상위 Route 컴포넌트의 history 객체를 props로 넣어줌
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(HeaderNav)
+);

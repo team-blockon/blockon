@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AuthContent from 'components/AuthContent';
-import InputWithLabel from 'components/InputWithLabel';
 import AuthButton from 'components/AuthButton';
 import AuthLink from 'components/AuthLink';
 import * as AuthAPI from 'lib/api/auth';
 import * as userActions from 'store/modules/user';
+import { Divider } from 'antd';
+import * as MetamaskUtil from 'lib/MetamaskUtil';
 
 class Login extends Component {
-  state = {
-    email: '',
-    password: ''
-  };
-
   handleChange = event => {
     const name = event.target.name;
     const value = event.target.value;
@@ -23,15 +19,16 @@ class Login extends Component {
   };
 
   handleLogin = () => {
-    const { setLoggedInfo, history } = this.props;
-    const { email, password } = this.state;
+    if (!MetamaskUtil.check()) return;
 
-    AuthAPI.login({ email, password }).then(res => {
+    const { setLoggedInfo } = this.props;
+    const ethAddress = window.web3.eth.defaultAccount;
+
+    AuthAPI.login(ethAddress).then(res => {
       const loggedInfo = res.data;
       setLoggedInfo(loggedInfo);
 
       localStorage.setItem('loggedInfo', JSON.stringify(loggedInfo));
-      history.push('/');
     });
   };
 
@@ -43,28 +40,10 @@ class Login extends Component {
   };
 
   render() {
-    const { email, password } = this.state;
-
     return (
       <AuthContent title="로그인">
-        <InputWithLabel
-          label="이메일"
-          type="text"
-          name="email"
-          value={email}
-          placeholder="이메일"
-          onChange={this.handleChange}
-        />
-        <InputWithLabel
-          label="비밀번호"
-          type="password"
-          name="password"
-          value={password}
-          placeholder="비밀번호"
-          onChange={this.handleChange}
-          onKeyPress={this.handleKeyPress}
-        />
-        <AuthButton onClick={this.handleLogin}>로그인</AuthButton>
+        <AuthButton onClick={this.handleLogin}>MetaMask로 로그인</AuthButton>
+        <Divider />
         <AuthLink to="/auth/register">회원가입</AuthLink>
       </AuthContent>
     );

@@ -10,6 +10,7 @@
 /build
 .idea/
 .vscode
+jsconfig.json
 
 #pdf
 *.pdf

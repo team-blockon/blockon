@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { Home, Contract, ContractEdit, Auth } from 'pages';
+import { Home, Contract, ContractEdit, Auth, Search } from 'pages';
 import AppTemplate from 'components/AppTemplate';
 import HeaderNav from 'components/HeaderNav';
 import HeaderContainer from 'containers/HeaderContainer';
@@ -36,26 +36,8 @@ class App extends Component {
     });
   };
 
-  checkMetamask() {
-    try {
-      if (!window.web3.currentProvider.isMetaMask) {
-        return '메타마스크 설치 안됨';
-      } else if (window.web3.eth.accounts.length === 0) {
-        return '메타마스크 로그인 안됨';
-      } /* else if (window.web3.version.network !== '1') {
-      return '메인넷 아님';
-    } */ else {
-        return true;
-      }
-    } catch (e) {
-      return false;
-    }
-  }
-
   componentDidMount() {
     this.initializeUserInfo();
-
-    if (!this.checkMetamask()) return;
 
     if (window.web3) {
       // 메타마스크가 자동으로 브라우저에 인젝트하는
@@ -95,6 +77,7 @@ class App extends Component {
         <Switch>
           {/* 라우트에 맞춰서 컴포넌트를 보여줌 */}
           <Route exact path="/" component={Home} />
+          <Route path="/search" component={Search} />
           <PrivateRoute
             exact
             path="/contract"

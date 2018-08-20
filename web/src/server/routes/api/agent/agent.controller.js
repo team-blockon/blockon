@@ -1,6 +1,7 @@
 const Agent = require('../../../models/agent');
 const Hangul = require('hangul-js');
 const equals = require('array-equal');
+const agentJSON = require('../../../models/json/agent.json');
 
 /**
  * 중개사무소 이름을 자모음 분리하여 검색
@@ -88,4 +89,8 @@ exports.save = (req, res) => {
   disassemble(name)
     .then(create)
     .then(respond);
+};
+
+exports.search = (req, res) => {
+  res.json(agentJSON);
 };
