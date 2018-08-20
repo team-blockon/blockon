@@ -27,7 +27,7 @@ contract DB {
     }
 
     // 인풋 : 유저의 이메일, 아웃풋 : 유저의 어카운트 스마트컨트랙트 주소
-    function getUserAccountByEmail(string _email) public view returns (Account _accountAddress) {
+    function getUserAccount(string _email) public view returns (Account _accountAddress) {
         address publicAddress = emailToAddress[_email];
         return getUserAccount(publicAddress);
     }
@@ -48,5 +48,10 @@ contract DB {
     // 어카운트의 타입을 중개인으로 변경
     function athorizeAsAgent(address _publicAddress) public {
         userDatas[_publicAddress].isAgent = true;
+    }
+
+    // 어카운트의 타입을 중개인으로 변경
+    function athorizeAsAgent(string _email) public {
+        userDatas[emailToAddress[_email]].isAgent = true;
     }
 }
