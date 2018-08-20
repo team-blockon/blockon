@@ -6,6 +6,7 @@ import AuthLink from 'components/AuthLink';
 import * as AuthAPI from 'lib/api/auth';
 import * as userActions from 'store/modules/user';
 import { Divider } from 'antd';
+import * as MetamaskUtil from 'lib/MetamaskUtil';
 
 class Login extends Component {
   handleChange = event => {
@@ -18,6 +19,8 @@ class Login extends Component {
   };
 
   handleLogin = () => {
+    if (!MetamaskUtil.check()) return;
+
     const { setLoggedInfo } = this.props;
     const ethAddress = window.web3.eth.defaultAccount;
 
