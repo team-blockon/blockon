@@ -6,6 +6,13 @@ contract Blockon {
 
     DB dataBase;
 
+    /**
+     * @dev createAccount 함수 호출시 발행, 입력된 퍼블릭어드레스와 그 어드레스와 연동된 어카운트 계약 주소를 반환
+     * @param publicAddress 어카운트를 생성할 이더리움 퍼블릭 어드레스
+     * @param accountAddress 해당 이더리움 퍼블릭 어드레스에 대해 생성된 account 계약의 주소 
+     */
+    event CreateAccount(address indexed publicAddress, address accountAddress);
+
     constructor() public {
         dataBase = new DB();
     }
@@ -25,6 +32,9 @@ contract Blockon {
     
         // add to database
         dataBase.addUserData(publicAddress, email, account);
+
+        // 생성된 어카운트 주소를 이벤트로 찍어야지 외부에서 어카운트 계정의 주소를 확인할수 있다.
+        emit CreateAccount(publicAddress, account);
     }
 
     /**
