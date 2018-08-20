@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import * as UserAPI from 'lib/api/user';
-import { AutoComplete, Radio } from 'antd';
+import { AutoComplete, Radio, DatePicker } from 'antd';
+import locale from 'antd/lib/date-picker/locale/ko_KR';
 import './ContractEditForm.scss';
 
 const RadioButton = Radio.Button;
@@ -38,11 +39,16 @@ class ContractEditForm extends Component {
   };
 
   handleSearch = value => {
-    UserAPI.getEmailList();
+    UserAPI.getEmailList(value).then(res => {
+      const emailList = res.data;
+      this.setState({
+        dataSource: emailList
+      });
+    });
   };
 
   render() {
-    const { status } = this.state;
+    const { dataSource, status } = this.state;
 
     return (
       <div className="ContractEditForm">
@@ -53,15 +59,16 @@ class ContractEditForm extends Component {
             <div className="form-group">
               <label className="form-label">매수인</label>
               <AutoComplete
-                type="text"
+                dataSource={dataSource}
                 onSearch={this.handleSearch}
                 placeholder="이메일 주소 또는 전화번호로 검색하세요"
               />
             </div>
             <div className="form-group">
               <label className="form-label">매도인</label>
-              <input
-                type="text"
+              <AutoComplete
+                dataSource={dataSource}
+                onSearch={this.handleSearch}
                 placeholder="이메일 주소 또는 전화번호로 검색하세요"
               />
             </div>
@@ -96,7 +103,7 @@ class ContractEditForm extends Component {
           <div>
             <div className="form-group">
               <label className="form-label">거래일자</label>
-              <input type="date" placeholder="2018-09-31" />
+              <DatePicker locale={locale} />
             </div>
             <div className="form-group">
               <label className="form-label">계약종류</label>

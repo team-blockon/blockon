@@ -9,7 +9,7 @@ const agent = require('./agent');
 const landing = require('./landing');
 
 api.use('/auth', auth);
-api.use('/user', authMiddleware);
+// api.use('/user', authMiddleware);
 api.use('/user', user);
 
 api.use('/contract', contract);
