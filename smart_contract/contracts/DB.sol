@@ -45,6 +45,11 @@ contract DB {
         return userDatas[_publicAddress].exists;
     }
 
+    // 해당 퍼블릭 어드레스를 사용하는 유저의 존재 확인
+    function isExist(string _email) public view returns (bool) {
+        return userDatas[emailToAddress[_email]].exists;
+    }
+
     // 어카운트의 타입을 중개인으로 변경
     function athorizeAsAgent(address _publicAddress) public {
         userDatas[_publicAddress].isAgent = true;

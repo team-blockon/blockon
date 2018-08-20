@@ -88,17 +88,41 @@ contract Blockon {
         buyerAccount.addContract(newContract);
     }
 
+    /**
+     * @dev 유저의 이더리움 퍼블릭 어드레스와 연동되는 어카운트 컨트랙트의 주소를 받아온다
+     * @param userPublicAddress 유저의 이더리움 퍼블릭 어드레스
+     * @return 연동되는 어카운트 컨트랙트의 주소
+     */
     function getUserAccount(address userPublicAddress) public view returns (Account) {
         return dataBase.getUserAccount(userPublicAddress);
     }
+
+    /**
+     * @dev 유저의 이메일과 연동되는 어카운트 컨트랙트의 주소를 받아온다
+     * @param userEmail 유저의 이메일
+     * @return 연동되는 어카운트 컨트랙트의 주소
+     */
     function getUserAccount(string userEmail) public view returns (Account) {
         return dataBase.getUserAccount(userEmail);
     }
 
+    /**
+     * @dev 해당 퍼블릭 어드레스를 가진 회원을 중개인으로 인증한다
+     * @param userPublicAddress 유저의 이더리움 퍼블릭 어드레스
+     */
     function athorizeAsAgent(address userPublicAddress) public {
-        dataBase.athorizeAsAgent(userPublicAddress);
+        if(dataBase.isExist(userPublicAddress)){
+            dataBase.athorizeAsAgent(userPublicAddress);
+        }
     }
+
+     /**
+     * @dev 해당 퍼블릭 어드레스를 가진 회원을 중개인으로 인증한다
+     * @param userEmail 유저의 이메일
+     */
     function athorizeAsAgent(string userEmail) public {
-        dataBase.athorizeAsAgent(userEmail);
+        if(dataBase.isExist(userEmail)) {
+            dataBase.athorizeAsAgent(userEmail);
+        }
     }
 }
