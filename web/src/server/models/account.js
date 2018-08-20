@@ -5,6 +5,7 @@ const crypto = require('crypto');
 // 계정 컬렉션 데이터 스키마
 const Account = new Schema({
   ethAddress: String,
+  accountAddress: String,
   profile: {
     username: String,
     thumbnail: String // 프로필 사진
@@ -30,9 +31,16 @@ function hash(password) {
 */
 
 // Account 도큐먼트 생성
-Account.statics.create = function(ethAddress, thumbnail, username, email) {
+Account.statics.create = function(
+  ethAddress,
+  accountAddress,
+  thumbnail,
+  username,
+  email
+) {
   const account = new this({
     ethAddress,
+    accountAddress,
     profile: {
       username,
       thumbnail

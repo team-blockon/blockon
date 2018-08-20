@@ -18,7 +18,7 @@ contract Blockon {
     function createAccount(address publicAddress, string email) public {
         
         // 해당 퍼블릭 어드레스와 연동되는 어카운트가 이미 있는지 확인
-        assert(dataBase.isExist(publicAddress) == false);
+//        assert(dataBase.isExist(publicAddress) == false);
 
         // create account
         Account account = new Account(publicAddress);

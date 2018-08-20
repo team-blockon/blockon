@@ -13,9 +13,9 @@ export const check = () => {
     msg = '메타마스크 설치 안됨';
   } else if (window.web3.eth.accounts.length === 0) {
     msg = '메타마스크 로그인 안됨';
-  } else if (window.web3.version.network !== '1') {
+  } /* else if (window.web3.version.network !== '1') {
     msg = '메인넷 아님';
-  } else {
+  } */ else {
     return true;
   }
 

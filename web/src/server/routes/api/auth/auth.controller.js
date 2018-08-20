@@ -10,7 +10,7 @@ const Account = require('../../../models/account');
 */
 
 exports.register = (req, res) => {
-  const { ethAddress, thumbnail, username, email } = req.body;
+  const { ethAddress, accountAddress, thumbnail, username, email } = req.body;
   let newAccount = null;
 
   // 유저가 존재하지 않으면 새 유저 생성
@@ -18,7 +18,13 @@ exports.register = (req, res) => {
     if (account) {
       throw new Error('username exists');
     } else {
-      return Account.create(ethAddress, thumbnail, username, email);
+      return Account.create(
+        ethAddress,
+        accountAddress,
+        thumbnail,
+        username,
+        email
+      );
     }
   };
 
@@ -53,7 +59,7 @@ exports.register = (req, res) => {
     });
   };
 
-  // email 중복 체크
+  // ethAddress 중복 체크
   Account.findByEthAddress(ethAddress)
     .then(create)
     .then(count)
