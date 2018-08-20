@@ -88,4 +88,17 @@ contract Blockon {
         buyerAccount.addContract(newContract);
     }
 
+    function getUserAccount(address userPublicAddress) public view returns (Account) {
+        return dataBase.getUserAccount(userPublicAddress);
+    }
+    function getUserAccount(string userEmail) public view returns (Account) {
+        return dataBase.getUserAccount(userEmail);
+    }
+
+    function athorizeAsAgent(address userPublicAddress) public {
+        dataBase.athorizeAsAgent(userPublicAddress);
+    }
+    function athorizeAsAgent(string userEmail) public {
+        dataBase.athorizeAsAgent(userEmail);
+    }
 }
