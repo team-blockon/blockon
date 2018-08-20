@@ -1,16 +1,24 @@
 pragma solidity ^0.4.24;
+import "./Account.sol";
 
 contract BaseContract {
     address public agentID;
-    address public buyerID;
     address public sellerID;
+    address public buyerID;
     uint8 public contractType;
     uint8 public contractState;
     
-    constructor(address _agentID, address _buyerID, address _sellerID, uint8 _contractType) public {
-        agentID = _agentID;
-        buyerID = _buyerID;
-        sellerID = _sellerID;
+    /**
+     * @dev 중개인, 매도인, 매수인의 어카운트 주소를 입력받아서 상태변수를 초기화시킨다
+     * @param agentAccount 중개인의 Account 스마트컨트랙트 주소
+     * @param sellerAccount 매도인의 Account 스마트컨트랙트 주소
+     * @param buyerAccount 매수인의 Account 스마트컨트랙트 주소
+     * @param _contractType 계약의 종류, 1 - 매매, 2 - 전,월세
+     */
+    constructor(Account agentAccount, Account sellerAccount, Account buyerAccount, uint8 _contractType) public {
+        agentID = agentAccount.publicAddress();
+        buyerID = sellerAccount.publicAddress();
+        sellerID = buyerAccount.publicAddress();
         contractType = _contractType;
     }
 
