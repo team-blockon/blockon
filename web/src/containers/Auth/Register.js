@@ -3,6 +3,7 @@ import AuthContent from 'components/AuthContent';
 import InputWithLabel from 'components/InputWithLabel';
 import AuthButton from 'components/AuthButton';
 import * as AuthAPI from 'lib/api/auth';
+import * as UserAPI from 'lib/api/user';
 
 class Register extends Component {
   state = {
@@ -72,7 +73,7 @@ class Register extends Component {
         console.log(err);
       } else {
         const { accountAddress, publicAddress } = res.args;
-        AuthAPI.updateAccountAddressByEthAddress(accountAddress, publicAddress);
+        UserAPI.updateAccountAddressByEthAddress(accountAddress, publicAddress);
         history.push('/');
       }
     });

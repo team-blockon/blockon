@@ -16,3 +16,46 @@ exports.list = (req, res) => {
     res.json({ accounts });
   });
 };
+
+/*
+    PUT /api/user/:ethAddress
+    {
+      accountAddress
+    }
+*/
+
+exports.updateAccountAddressByEthAddress = (req, res) => {
+  Account.update(
+    { ethAddress: req.params.ethAddress },
+    { $set: req.body },
+    (err, output) => {
+      console.log(output);
+      res.json({ message: 'account updated' });
+    }
+  );
+};
+
+/*
+    POST /api/user/email
+*/
+
+exports.getEmailList = (req, res) => {
+  Account.find()
+    .select('email')
+    .then(emailList => {
+      res.json(emailList);
+    });
+};
+
+/*
+    POST /api/user
+    {
+      email
+    }
+*/
+
+exports.getAccountAddressByEmail = (req, res) => {
+  Account.findOne(req.body, (err, account) => {
+    res.json(account);
+  });
+};

@@ -18,12 +18,3 @@ export const login = ethAddress => {
 export const logout = () => {
   return defaultClient.post('/api/auth/logout');
 };
-
-export const updateAccountAddressByEthAddress = (
-  accountAddress,
-  ethAddress
-) => {
-  return defaultClient.put(`/api/auth/${ethAddress}`, {
-    accountAddress
-  });
-};

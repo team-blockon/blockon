@@ -141,21 +141,3 @@ exports.logout = (req, res) => {
   res.clearCookie('access-token');
   res.status(204).end(); // 데이터 없이 응답
 };
-
-/*
-    PUT /api/auth/:ethAddress
-    {
-      accountAddress
-    }
-*/
-
-exports.updateAccountAddressByEthAddress = (req, res) => {
-  Account.update(
-    { ethAddress: req.params.ethAddress },
-    { $set: req.body },
-    (err, output) => {
-      console.log(output);
-      res.json({ message: 'account updated' });
-    }
-  );
-};

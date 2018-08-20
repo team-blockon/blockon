@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import { Radio } from 'antd';
+import * as UserAPI from 'lib/api/user';
+import { AutoComplete, Radio } from 'antd';
 import './ContractEditForm.scss';
 
 const RadioButton = Radio.Button;
@@ -8,6 +9,7 @@ const RadioGroup = Radio.Group;
 
 class ContractEditForm extends Component {
   state = {
+    dataSource: [],
     seller: '',
     buyer: '',
     status: ''
@@ -35,6 +37,10 @@ class ContractEditForm extends Component {
     console.log(event.target.value);
   };
 
+  handleSearch = value => {
+    UserAPI.getEmailList();
+  };
+
   render() {
     const { status } = this.state;
 
@@ -46,8 +52,9 @@ class ContractEditForm extends Component {
           <div>
             <div className="form-group">
               <label className="form-label">매수인</label>
-              <input
+              <AutoComplete
                 type="text"
+                onSearch={this.handleSearch}
                 placeholder="이메일 주소 또는 전화번호로 검색하세요"
               />
             </div>
