@@ -17,13 +17,14 @@ contract DB {
 
     // 새로운 유저데이터를 추가
     function addUserData(address _publicAddress, string _email, Account _accountAddress) public {
+        // 테이블 초기화
+        emailToAddress[_email] = _publicAddress;
+        
         UserData storage userData = userDatas[_publicAddress];
-        if(!userData.exists) {
-            userData.publicAddress = _publicAddress;
-            userData.email = _email;
-            userData.accountAddress = _accountAddress;
-            userData.exists = true;
-        }
+        userData.publicAddress = _publicAddress;
+        userData.email = _email;
+        userData.accountAddress = _accountAddress;
+        userData.exists = true;
     }
 
     // 인풋 : 유저의 이메일, 아웃풋 : 유저의 어카운트 스마트컨트랙트 주소
@@ -35,9 +36,7 @@ contract DB {
     // 인풋 : 유저의 이더리움 주소, 아웃풋 : 유저의 어카운트 스마트컨트랙트 주소
     function getUserAccount(address _publicAddress) public view returns (Account _accountAddress) {
         UserData memory userData = userDatas[_publicAddress];
-        if(userData.exists) {
-            return userData.accountAddress;
-        }       
+        return userData.accountAddress;    
     }
 
     // 해당 퍼블릭 어드레스를 사용하는 유저의 존재 확인

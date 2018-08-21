@@ -20,6 +20,8 @@ contract BaseContract {
         buyerID = sellerAccount.publicAddress();
         sellerID = buyerAccount.publicAddress();
         contractType = _contractType;
+        
+        contractState = uint8(0);  // 기본상태 0
     }
 
     /**

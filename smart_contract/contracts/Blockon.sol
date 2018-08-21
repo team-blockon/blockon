@@ -1,6 +1,7 @@
 pragma solidity ^0.4.24;
 import "./DB.sol";
 import "./Account.sol";
+import "./BaseContract.sol";
 
 contract Blockon {
 
