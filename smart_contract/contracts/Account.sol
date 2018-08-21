@@ -82,7 +82,7 @@ contract Account {
      */
     function getContract(BaseContract contractAddress) internal view returns (uint8 contractType, uint8 contractState) {
         contractType = contractAddress.contractType();
-        contractState = contractAddress.contractType();
+        contractState = contractAddress.contractState();
     }
 
     /**
