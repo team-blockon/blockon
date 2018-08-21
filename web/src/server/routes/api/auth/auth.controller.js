@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Account = require('../../../models/account');
+const multer = require('multer');
 
 /*
     POST /api/auth/register
@@ -10,16 +11,53 @@ const Account = require('../../../models/account');
 */
 
 exports.register = (req, res) => {
-  const { ethAddress, thumbnail, username, email } = req.body;
+  const { ethAddress, username, email } = req.body;
+
+  const upload = multer({
+      storage: multer.diskStorage({
+          destination : function (req, file, cb) {
+              cb(null, 'upload/');
+          },
+          filename: function (req, file, cb) {
+              cb(null, new Date().valueOf() + file.originalname);
+          }
+      }),
+      fileFilter : function (req, file, cb) {
+          return checkImage(file) ? cb(null, true) : cb(new Error('thumbnail type error'));
+      }
+  }).single('thumbnail');
+
+  const checkImage = (thumbnail) => {
+        const type = thumbnail.originalname.split('.')[1];
+        const mimeType = thumbnail.mimetype.split('/')[0];
+
+        return ((type === ( 'jpg'|| 'jpeg' || 'png')) && mimeType === 'image');
+  };
+
+  const thumbnailUpload = () => {
+    return new Promise((resolve, reject) => {
+        upload(req, res, (err) => {
+            if(err) reject(new Error("thumbnail type error"));
+            else resolve(req.file.path);
+        });
+    });
+  };
+
   let newAccount = null;
 
   // 유저가 존재하지 않으면 새 유저 생성
-  const create = account => {
-    if (account) {
-      throw new Error('username exists');
-    } else {
-      return Account.create(ethAddress, thumbnail, username, email);
-    }
+  const create = thumbnail => {
+    // ethAddress 중복 체크
+    return Account.findByEthAddress(ethAddress)
+        .then( (account) => {
+            return new Promise( (resolve, reject) => {
+                if (account) {
+                    throw new Error('username exists');
+                } else {
+                    resolve(Account.create(ethAddress ,thumbnail , username, email));
+                }
+            });
+        });
   };
 
   // 유저 수 카운트
@@ -42,7 +80,7 @@ exports.register = (req, res) => {
   const respond = isAdmin => {
     res.json({
       message: 'registered successfully',
-      admin: isAdmin ? true : false
+      admin: !!isAdmin
     });
   };
 
@@ -53,8 +91,7 @@ exports.register = (req, res) => {
     });
   };
 
-  // ethAddress 중복 체크
-  Account.findByEthAddress(ethAddress)
+    thumbnailUpload()
     .then(create)
     .then(count)
     .then(assign)
