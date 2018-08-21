@@ -5,6 +5,9 @@ const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
+const Agent = require('./models/agent')
+
 require('dotenv').config();
 
 const app = express();
@@ -70,6 +73,7 @@ mongoose.connect(
   { useNewUrlParser: true }
 );
 const db = mongoose.connection;
+
 db.on('error', console.error);
 db.once('open', () => {
   console.log('connected to mongodb server');
