@@ -70,8 +70,8 @@ contract Account {
      * @return contractType 계약의 종류
      * @return contractState 계약의 상태
      */
-    function getContractAt(uint index) public view returns (uint8 contractType, uint8 contractState) {
-        return getContract(contracts[index]);
+    function getContractInfoAt(uint index) public view returns (uint8 contractType, uint8 contractState) {
+        return getContractInfo(contracts[index]);
     }
 
     /**
@@ -80,7 +80,7 @@ contract Account {
      * @return contractType 계약의 종류
      * @return contractState 계약의 상태
      */
-    function getContract(BaseContract contractAddress) internal view returns (uint8 contractType, uint8 contractState) {
+    function getContractInfo(BaseContract contractAddress) internal view returns (uint8 contractType, uint8 contractState) {
         contractType = contractAddress.contractType();
         contractState = contractAddress.contractState();
     }
