@@ -40,6 +40,7 @@
     "jest": "20.0.4",
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.2.5",
+    "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.9.0",
     "node-sass": "^4.9.2",
     "nodemailer": "^4.6.7",

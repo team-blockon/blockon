@@ -37,14 +37,23 @@ exports.updateAccountAddressByEthAddress = (req, res) => {
 
 /*
     POST /api/user/email
+    {
+      value
+    }
 */
 
-exports.getEmailList = (req, res) => {
-  Account.find()
-    .select('email')
-    .then(emailList => {
-      res.json(emailList);
-    });
+/**
+ * 자동완성을 위해 value로 시작하는 이메일 검색
+ * @param {*} req
+ * @param {*} res
+ */
+exports.getEmailList = async (req, res) => {
+  const accounts = await Account.find(
+    { email: new RegExp(`^${req.body.value}`) },
+    '-_id'
+  ).select('email');
+  const emailList = accounts.map(account => account.email);
+  res.json(emailList);
 };
 
 /*

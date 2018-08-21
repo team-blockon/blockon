@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const autoIncrement = require('mongoose-auto-increment');
 
 const Agent = new Schema({
   name: [String],
@@ -14,5 +15,9 @@ Agent.statics.create = function(splitName, address) {
 
   return rating.save();
 };
+
+autoIncrement.initialize(mongoose.connection);
+Agent.plugin(autoIncrement.plugin,'Agent');
+
 
 module.exports = mongoose.model('Agent', Agent);
