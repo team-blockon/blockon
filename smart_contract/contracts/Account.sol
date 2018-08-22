@@ -40,6 +40,22 @@ contract Account {
     }
 
     /**
+     * @dev 컨트랙트의 상태를 변경한다. 중개인만 사용가능.
+     * @param index 상태를 변경할 컨트랙트의 인덱스
+     * @param newContractState 변경 할 상태(매매의 경우 1,2,3,4 / 전월세의 경우 1,3,5)
+     *                      1 - 계약금 입금
+     *                      2 - 중도금 입금
+     *                      3 - 잔금 입금
+     *                      4 - 등기 등록 신청
+     *                      5 - 확정일자 
+     */
+    function changeContractStateAt(uint index, uint8 newContractState) public {
+        if(isAgent) {
+            changeContractState(contracts[index], newContractState);
+        }
+    }
+
+    /**
      * @dev 컨트랙트의 상태를 변경하고, UpdateContract 이벤트를 발행한다. 중개인만 사용가능
      * @param contractAddress 상태를 변경할 컨트랙트의 주소
      * @param newContractState 변경 할 상태(매매의 경우 1,2,3,4 / 전월세의 경우 1,3,5)
