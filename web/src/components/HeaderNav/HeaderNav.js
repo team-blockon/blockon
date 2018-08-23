@@ -12,17 +12,19 @@ import './HeaderNav.scss';
 export const HeaderNavItem = ({ children, activeItem, item, onSelect, nav_click, to }) => {
   return (
     <Fragment>
-      <li
-        className={classNames({
-          active: activeItem === item
-        })}
-        onClick={() => {
-          onSelect(item);
-          nav_click();
-        }}
-      >
-        <Link to={to}>{children}</Link>
-      </li>
+      <Link to={to}>
+        <li
+          className={classNames({
+            active: activeItem === item
+          })}
+          onClick={() => {
+            onSelect(item);
+            nav_click();
+          }}
+        >
+          {children}
+        </li>
+      </Link>
     </Fragment>
   );
 };
