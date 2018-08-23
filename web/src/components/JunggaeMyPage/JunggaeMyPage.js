@@ -56,6 +56,13 @@ class JunggaeMyPage extends Component {
   };
 
   /**
+   * promise 실패 callback
+   */
+  failureCallback = error => {
+    console.error("promise failed : " + error);
+  }
+
+  /**
    * 해당하는 어카운트가 포함된 계약의 길이 반환
    */
   getContractsLength = function(accountInstance) {
@@ -123,10 +130,13 @@ class JunggaeMyPage extends Component {
 
     // 유저가 포함된 컨트랙트들을 state에 추가
     for(let i = 0; i<contractsLength; i++) {
+      const contractInfo = await this.getContractInfoAt(accountInstance, i);
+      const contractType = contractInfo[0].c[0];
+      const contractState = contractInfo[1].c[0];
       this.setState({
         contractInfoList: [
           ...this.state.contractInfoList,
-          await this.getContractInfoAt(accountInstance, i)
+          [contractType, contractState]
         ]
       })
     }
@@ -134,10 +144,11 @@ class JunggaeMyPage extends Component {
     // state 제대로 들어갔나 확인
     this.state.contractInfoList.forEach((contractInfo, index) => {
       console.log("-----------" + index);
-      console.log("contractType : " +  contractInfo[0]);
-      console.log("contractState : " + contractInfo[1]);
+      console.log("contract type : " + contractInfo[0]);
+      console.log("contract state : " + contractInfo[1]);
     });
 
+    // 최신 블록 넘버 가져오기
     const latestBlock = await this.getLatestBlockNumber();
     console.log("latestBlock : " + latestBlock);
 
@@ -152,18 +163,18 @@ class JunggaeMyPage extends Component {
       if(error) {
         console.log(error);
       } else {
-        console.log(result.args.updateType.c[0]);
         const updateType = result.args.updateType.c[0];
-        const contractIndex = result.args.contractIndex.c[0]
-        if(result.args.updateType.c[0] === 1) {
+        const contractIndex = result.args.contractIndex.c[0];
+        console.log("----------conntractIndex : " + contractIndex);
+        if(updateType === 1) {
           // add contract 이므로 state에 컨트랙트 하나추가
           console.log("add contract");
         }
-        if(result.args.updateType.c[0] === 2) {
+        if(updateType === 2) {
           // 컨트랙트상태가 변경된것이므로 해당하는 인덱스의 상태변경
           console.log("state change");
         }
-        console.log("conntractIndex : " + contractIndex);
+        
       }
     });
 
