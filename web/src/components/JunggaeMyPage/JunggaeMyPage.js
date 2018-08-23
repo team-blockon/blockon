@@ -25,6 +25,12 @@ const MyPageTab = ({ activeItem, item, handleSelect, children }) => {
   );
 };
 
+/**
+ * contractInfo state 인덱스
+ */
+const TYPE = 0;
+const STATE = 1;
+
 class JunggaeMyPage extends Component {
   state = {
     tradeModal: false,
@@ -54,13 +60,6 @@ class JunggaeMyPage extends Component {
       return '유효하지 않은 탭입니다.';
     }
   };
-
-  /**
-   * promise 실패 callback
-   */
-  failureCallback = error => {
-    console.error("promise failed : " + error);
-  }
 
   /**
    * 해당하는 어카운트가 포함된 계약의 길이 반환
@@ -107,6 +106,37 @@ class JunggaeMyPage extends Component {
     });
   }
 
+  /**
+   * 블록체인으로 부터 인덱스에 해당하는 컨트랙트 정보를 가져와서
+   * state.contractInfoList에 추가한다
+   */
+  addContractInfoAt = async function(accountInstance, index) {
+    const contractInfo = await this.getContractInfoAt(accountInstance, index);
+    const contractType = contractInfo[0].c[0];
+    const contractState = contractInfo[1].c[0];
+    this.setState({
+      contractInfoList: [
+        ...this.state.contractInfoList,
+        [contractType, contractState]
+      ]
+    })
+  }
+
+  /**
+   * 블록체인으로 부터 인덱스에 해당하는 컨트랙트의 새로운 상태를 받아와서
+   * state.contractInfoList를 업데이트 한다
+   */
+  changeContractStateAt = async function(accountInstance, index) {
+    const contractInfo = await this.getContractInfoAt(accountInstance, index);
+    const contractState = contractInfo[1].c[0];
+
+    const currentStateList = this.state.contractInfoList.slice();
+    currentStateList[index][STATE] = contractState;
+    this.setState({
+      contractInfoList: currentStateList
+    })
+  }
+
   async componentWillMount() {
 
     /**
@@ -130,15 +160,7 @@ class JunggaeMyPage extends Component {
 
     // 유저가 포함된 컨트랙트들을 state에 추가
     for(let i = 0; i<contractsLength; i++) {
-      const contractInfo = await this.getContractInfoAt(accountInstance, i);
-      const contractType = contractInfo[0].c[0];
-      const contractState = contractInfo[1].c[0];
-      this.setState({
-        contractInfoList: [
-          ...this.state.contractInfoList,
-          [contractType, contractState]
-        ]
-      })
+      this.addContractInfoAt(accountInstance, i);
     }
 
     // state 제대로 들어갔나 확인
@@ -167,18 +189,17 @@ class JunggaeMyPage extends Component {
         const contractIndex = result.args.contractIndex.c[0];
         console.log("----------conntractIndex : " + contractIndex);
         if(updateType === 1) {
-          // add contract 이므로 state에 컨트랙트 하나추가
+          // add contract 이므로 state에 새로 생성된 컨트랙트 추가
           console.log("add contract");
+          this.addContractInfoAt(accountInstance, contractIndex);
         }
         if(updateType === 2) {
           // 컨트랙트상태가 변경된것이므로 해당하는 인덱스의 상태변경
           console.log("state change");
+          this.changeContractStateAt(accountInstance, contractIndex);
         }
-        
       }
     });
-
-    
   }
 
   render() {
