@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react';
 import { HeaderNavItem } from './HeaderNav';
 
-const LoggedInNav = ({ activeItem, onSelect, handleLogout }) => {
+const LoggedInNav = ({ activeItem, onSelect, nav_click, handleLogout }) => {
   return (
     <Fragment>
       <HeaderNavItem
         item="contract"
         activeItem={activeItem}
         onSelect={onSelect}
+        nav_click={nav_click}
         to="/contract"
       >
         계약관리
@@ -16,6 +17,7 @@ const LoggedInNav = ({ activeItem, onSelect, handleLogout }) => {
         item="mypage"
         activeItem={activeItem}
         onSelect={onSelect}
+        nav_click={nav_click}
         to="/mypage"
       >
         마이페이지

@@ -9,14 +9,17 @@ import LoggedOutNav from 'components/HeaderNav/LoggedOutNav';
 import * as AuthAPI from 'lib/api/auth';
 import './HeaderNav.scss';
 
-export const HeaderNavItem = ({ children, activeItem, item, onSelect, to }) => {
+export const HeaderNavItem = ({ children, activeItem, item, onSelect, nav_click, to }) => {
   return (
     <Fragment>
       <li
         className={classNames({
           active: activeItem === item
         })}
-        onClick={() => onSelect(item)}
+        onClick={() => {
+          onSelect(item);
+          nav_click();
+        }}
       >
         <Link to={to}>{children}</Link>
       </li>
@@ -68,11 +71,18 @@ class HeaderNav extends Component {
         <LoggedInNav
           activeItem={activeItem}
           onSelect={onSelect}
+          nav_click={this.nav_click}
           handleLogout={this.handleLogout}
         />
       );
     } else {
-      return <LoggedOutNav onSelect={onSelect} activeItem={activeItem} />;
+      return (
+        <LoggedOutNav
+          onSelect={onSelect}
+          activeItem={activeItem}
+          nav_click={this.nav_click}
+        />
+      );
     }
   };
 
@@ -99,6 +109,7 @@ class HeaderNav extends Component {
             item="about"
             activeItem={activeItem}
             onSelect={onSelect}
+            nav_click={this.nav_click}
             to="/"
           >
             소개
@@ -107,6 +118,7 @@ class HeaderNav extends Component {
             item="message"
             activeItem={activeItem}
             onSelect={onSelect}
+            nav_click={this.nav_click}
             to="/search"
           >
             평점검색
@@ -115,6 +127,7 @@ class HeaderNav extends Component {
             item="help"
             activeItem={activeItem}
             onSelect={onSelect}
+            nav_click={this.nav_click}
             to="/help"
           >
             고객센터
