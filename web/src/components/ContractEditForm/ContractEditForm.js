@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import * as UserAPI from 'lib/api/user';
+import * as ContractAPI from 'lib/api/contract';
+import * as MetamaskUtil from 'lib/MetamaskUtil';
 import { AutoComplete, Radio, DatePicker } from 'antd';
 import locale from 'antd/lib/date-picker/locale/ko_KR';
 import './ContractEditForm.scss';
@@ -11,31 +13,63 @@ const RadioGroup = Radio.Group;
 class ContractEditForm extends Component {
   state = {
     dataSource: [],
-    seller: '',
-    buyer: '',
-    status: ''
+    formData: {
+      sellerEmail: '',
+      buyerEmail: '',
+      buildingAddress: ''
+    }
   };
 
   handleSelect = status => {
     this.setState({
-      status
+      formData: {
+        status
+      }
     });
   };
 
-  handleSubmit = () => {
-    window.blockon.createContract.sendTransaction(
-      '0x2cacbe568e220d6cc7d4995455e1e1616b830bd0',
-      '0x97bf1acae54d933ede531c2ca4bedc341f6e5c15',
-      '0x736202c81da14abac98ea9cf3e3bf4b54e625e77',
-      1,
+  handleSubmit = async () => {
+    const { sellerEmail, buyerEmail, contractType } = this.state.formData;
+    const { blockon } = window;
+
+    const agent = await UserAPI.getAccountAddressByEthAddress(
+      MetamaskUtil.getDefaultAccount()
+    );
+    const seller = await UserAPI.getAccountAddressByEamil(sellerEmail);
+    const buyer = await UserAPI.getAccountAddressByEamil(buyerEmail);
+
+    const agentAddress = agent.data.accountAddress;
+    const sellerAddress = seller.data.accountAddress;
+    const buyerAddress = buyer.data.accountAddress;
+
+    console.group('createContractByAccountAddress called');
+    console.log('agentAddress:', agentAddress);
+    console.log('sellerAddress:', sellerAddress);
+    console.log('buyerAddress:', buyerAddress);
+    console.log('contractType:', contractType);
+    console.groupEnd();
+
+    blockon.createContractByAccountAddress.sendTransaction(
+      /* 먼저 createAccount를 호출하고, 생성된 Account 컨트랙트의 주소를 넣음 */
+      agentAddress,
+      sellerAddress,
+      buyerAddress,
+      contractType,
       (err, res) => {
-        console.log(res);
+        if (err) {
+          console.log(err);
+        } else {
+          ContractAPI.create(this.state.formData);
+        }
       }
     );
   };
 
   handleChange = event => {
-    console.log(event.target.value);
+    const { name, value } = event.target;
+    this.setState({ [name]: value }, () => {
+      console.log(this.state);
+    });
   };
 
   handleSearch = value => {
@@ -48,7 +82,13 @@ class ContractEditForm extends Component {
   };
 
   render() {
-    const { dataSource, status } = this.state;
+    const { dataSource } = this.state;
+    const {
+      sellerEmail,
+      buyerEmail,
+      buildingAddress,
+      status
+    } = this.state.formData;
 
     return (
       <div className="ContractEditForm">
@@ -59,18 +99,43 @@ class ContractEditForm extends Component {
             <div className="form-group">
               <label className="form-label">매수인</label>
               <AutoComplete
+                name="sellerEmail"
                 dataSource={dataSource}
+                onChange={value => {
+                  this.setState({ formData: { buyerEmail: value } });
+                }}
+                onSelect={value => {
+                  this.setState({ formData: { buyerEmail: value } });
+                }}
                 onSearch={this.handleSearch}
-                placeholder="이메일 주소 또는 전화번호로 검색하세요"
-              />
+              >
+                <input
+                  type="email"
+                  value={sellerEmail}
+                  name="sellerEmail"
+                  placeholder="이메일 주소로 검색하세요"
+                />
+              </AutoComplete>
             </div>
             <div className="form-group">
               <label className="form-label">매도인</label>
               <AutoComplete
                 dataSource={dataSource}
+                onChange={value => {
+                  this.setState({ formData: { sellerEmail: value } });
+                }}
+                onSelect={value => {
+                  this.setState({ formData: { sellerEmail: value } });
+                }}
                 onSearch={this.handleSearch}
-                placeholder="이메일 주소 또는 전화번호로 검색하세요"
-              />
+              >
+                <input
+                  type="email"
+                  value={buyerEmail}
+                  name="buyerEmail"
+                  placeholder="이메일 주소로 검색하세요"
+                />
+              </AutoComplete>
             </div>
           </div>
 
@@ -79,6 +144,7 @@ class ContractEditForm extends Component {
             <div className="form-group type">
               <label className="form-label">건물형태</label>
               <RadioGroup
+                name="buildingType"
                 onChange={this.handleChange}
                 defaultValue="jutaek"
                 buttonStyle="solid"
@@ -91,7 +157,13 @@ class ContractEditForm extends Component {
             </div>
             <div className="form-group">
               <label className="form-label">건물주소</label>
-              <input type="text" placeholder="예) 센트럴타운로 76" />
+              <input
+                type="text"
+                value={buildingAddress}
+                name="buildingAddress"
+                onChange={this.handleChange}
+                placeholder="예) 센트럴타운로 76"
+              />
             </div>
             <div className="form-group">
               <label className="form-label">매물사진</label>
@@ -108,13 +180,14 @@ class ContractEditForm extends Component {
             <div className="form-group">
               <label className="form-label">계약종류</label>
               <RadioGroup
+                name="contractType"
                 onChange={this.handleChange}
                 defaultValue="wolse"
                 buttonStyle="solid"
               >
-                <RadioButton value="wolse">월세</RadioButton>
-                <RadioButton value="jeonse">전세</RadioButton>
-                <RadioButton value="maemae">매매</RadioButton>
+                <RadioButton value={1}>월세</RadioButton>
+                <RadioButton value={2}>전세</RadioButton>
+                <RadioButton value={3}>매매</RadioButton>
               </RadioGroup>
             </div>
             <div className="form-group">
@@ -125,7 +198,7 @@ class ContractEditForm extends Component {
                     className={classNames({ active: status === 'deposit' })}
                     onClick={() => this.handleSelect('deposit')}
                   >
-                    가계약금
+                    계약금
                   </li>
                   <li
                     className={classNames({

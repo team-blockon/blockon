@@ -24,12 +24,16 @@ exports.list = (req, res) => {
     }
 */
 
+/**
+ * ethAddress와 일치하는 document에 accountAddress를 추가합니다.
+ * @param {*} req
+ * @param {*} res
+ */
 exports.updateAccountAddressByEthAddress = (req, res) => {
   Account.update(
     { ethAddress: req.params.ethAddress },
     { $set: req.body },
     (err, output) => {
-      console.log(output);
       res.json({ message: 'account updated' });
     }
   );
@@ -52,6 +56,7 @@ exports.getEmailList = async (req, res) => {
     { email: new RegExp(`^${req.body.value}`) },
     '-_id'
   ).select('email');
+  console.log(accounts);
   const emailList = accounts.map(account => account.email);
   res.json(emailList);
 };
@@ -59,11 +64,16 @@ exports.getEmailList = async (req, res) => {
 /*
     POST /api/user
     {
-      email
+      email|ethAddress
     }
 */
 
-exports.getAccountAddressByEmail = (req, res) => {
+/**
+ * 이메일 주소나 ethAddress로 accountAddress 찾기
+ * @param {*} req
+ * @param {*} res
+ */
+exports.getAccountAddress = (req, res) => {
   Account.findOne(req.body, (err, account) => {
     res.json(account);
   });

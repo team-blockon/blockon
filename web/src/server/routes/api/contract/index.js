@@ -1,6 +1,7 @@
-const router = require("express").Router();
-const { rightEmail } = require("./contract.controller");
+const contract = require('express').Router();
+const controller = require('./contract.controller');
 
-router.post("/", rightEmail );
+// contract.post('/', controller.isRightEmail);
+contract.post('/', controller.addContract);
 
-module.exports = router;
+module.exports = contract;

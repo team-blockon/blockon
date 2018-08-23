@@ -22,3 +22,7 @@ export const check = () => {
   openNotification(msg);
   return false;
 };
+
+export const getDefaultAccount = () => {
+  return window.web3.eth.accounts[0];
+};

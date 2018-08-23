@@ -254,8 +254,8 @@ class HomeWrapper extends Component {
       {
         dataSource: value ? await searchResult(value) : []
       },
-      state => {
-        console.log(state);
+      () => {
+        console.log(this.state);
       }
     );
   };
@@ -278,9 +278,8 @@ class HomeWrapper extends Component {
           <div className="search">
             <AutoComplete dataSource={dataSource} onSearch={this.handleSearch}>
               <Input
-                placeholder="관심지역 또는 공인중개소를 검색해보세요."
+                placeholder="원하시는 지역을 검색해보세요."
                 className="agent"
-                prefix={<Icon type="search" />}
                 value={agent}
                 onPressEnter={this.handleKeyPress}
               />

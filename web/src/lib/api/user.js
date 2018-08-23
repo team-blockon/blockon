@@ -14,3 +14,15 @@ export const getEmailList = value => {
     value
   });
 };
+
+export const getAccountAddressByEthAddress = ethAddress => {
+  return defaultClient.post('/api/user', {
+    ethAddress
+  });
+};
+
+export const getAccountAddressByEamil = email => {
+  return defaultClient.post('/api/user', {
+    email
+  });
+};

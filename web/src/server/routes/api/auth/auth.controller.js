@@ -1,63 +1,88 @@
 const jwt = require('jsonwebtoken');
 const Account = require('../../../models/account');
 const multer = require('multer');
+const path = require('path');
+
+/*
+    POST /api/auth/profile
+    form-data {
+      profile
+    }
+*/
+
+/**
+ * 프로필 사진 업로드
+ * @param {*} req
+ * @param {*} res
+ */
+exports.profile = (req, res) => {
+  const upload = multer({
+    storage: multer.diskStorage({
+      // 저장될 경로와 파일명 지정
+      destination: function(req, file, cb) {
+        cb(null, path.resolve(__dirname, '../../../uploads'));
+      },
+      filename: function(req, file, cb) {
+        cb(null, new Date().valueOf() + '_' + file.originalname); // 타임스탬프 + 원래 파일명
+      }
+    }),
+    fileFilter: function(req, file, cb) {
+      if (checkImage(file)) {
+        cb(null, true); // 파일 허용
+      } else {
+        cb(null, false); // 파일 거부
+      }
+    }
+  }).single('profile'); // req.file은 thumbnail 필드의 파일 정보
+
+  // 이미지인지 확장자와 MIME 타입 체크
+  const checkImage = profile => {
+    const mimeType = profile.mimetype.split('/');
+    const fileType = mimeType[1];
+
+    return fileType === 'jpg' || fileType === 'jpeg' || fileType === 'png';
+  };
+
+  const profileUpload = new Promise((resolve, reject) => {
+    upload(req, res, err => {
+      if (err) reject(err);
+      resolve(req.file.filename);
+    });
+  });
+
+  profileUpload
+    .then(path => {
+      res.json({ path });
+    })
+    .catch(err => {
+      res.status(403).json({
+        message: err
+      });
+    });
+};
 
 /*
     POST /api/auth/register
     {
-      email,
-      password
+      ethAddress,
+      profileFilename,
+      username,
+      email
     }
 */
 
 exports.register = (req, res) => {
-  const { ethAddress, username, email } = req.body;
-
-  const upload = multer({
-      storage: multer.diskStorage({
-          destination : function (req, file, cb) {
-              cb(null, 'upload/');
-          },
-          filename: function (req, file, cb) {
-              cb(null, new Date().valueOf() + file.originalname);
-          }
-      }),
-      fileFilter : function (req, file, cb) {
-          return checkImage(file) ? cb(null, true) : cb(new Error('thumbnail type error'));
-      }
-  }).single('thumbnail');
-
-  const checkImage = (thumbnail) => {
-        const type = thumbnail.originalname.split('.')[1];
-        const mimeType = thumbnail.mimetype.split('/')[0];
-
-        return ((type === ( 'jpg'|| 'jpeg' || 'png')) && mimeType === 'image');
-  };
-
-  const thumbnailUpload = () => {
-    return new Promise((resolve, reject) => {
-        upload(req, res, (err) => {
-            if(err) reject(new Error("thumbnail type error"));
-            else resolve(req.file.path);
-        });
-    });
-  };
+  const { ethAddress, profileFilename, username, email } = req.body;
 
   let newAccount = null;
 
   // 유저가 존재하지 않으면 새 유저 생성
-  const create = thumbnail => {
-    // ethAddress 중복 체크
-    return Account.findByEthAddress(ethAddress)
-        .then( (account) => {
-            return new Promise( (resolve, reject) => {
-                if (account) {
-                    throw new Error('username exists');
-                } else {
-                    resolve(Account.create(ethAddress ,thumbnail , username, email));
-                }
-            });
-        });
+  const create = account => {
+    if (account) {
+      throw new Error('username exists');
+    } else {
+      Account.create(ethAddress, profileFilename, username, email);
+    }
   };
 
   // 유저 수 카운트
@@ -91,7 +116,8 @@ exports.register = (req, res) => {
     });
   };
 
-    thumbnailUpload()
+  // ethAddress 중복 체크
+  Account.findByEthAddress(ethAddress)
     .then(create)
     .then(count)
     .then(assign)

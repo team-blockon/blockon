@@ -41,7 +41,7 @@
     background-color: #fff;
     border-radius: 50px;
 
-    input.agent {
+    input.ant-input.agent {
       font-size: 1rem;
       border: none;
       background: none;
@@ -49,7 +49,7 @@
       color: #333;
       width: 270px;
       background-image: url("../../static/images/icon/search.png");
-      background-position: 1px 4px;
+      background-position: 1px 8px;
       background-repeat: no-repeat;
       background-size: 15px;
       padding-left: 25px;
@@ -94,9 +94,9 @@
     width: auto;
     top: 210px;
 
-    input {
+    input.ant-input.agent {
       width: 500px;
-      background-position: 3px 3px;
+      background-position: 3px 6px;
       background-size: 18px;
       padding-left: 35px;
 
@@ -134,7 +134,7 @@
     left: 24.3%;
     top: 415px;
 
-    input.agent {
+    input.ant-input.agent {
       font-size: 1.3rem;
       width: 500px;
       background-position: 7px 7px;

@@ -1,9 +1,9 @@
 import defaultClient from 'lib/defaultClient';
 
-export const register = ({ ethAddress, thumbnail, username, email }) => {
+export const register = ({ ethAddress, profileFilename, username, email }) => {
   return defaultClient.post('/api/auth/register', {
     ethAddress,
-    thumbnail,
+    profileFilename,
     username,
     email
   });

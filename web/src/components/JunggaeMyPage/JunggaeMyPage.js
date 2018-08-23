@@ -36,9 +36,9 @@ class JunggaeMyPage extends Component {
     switch (activeTab) {
     case 0:
       if (activeType === 0) {
-        return <JunggaeTradeCard />;
-      } else {
         return <JunggaeTradeList handleSelect={this.handleToggleModal} />;
+      } else {
+        return <JunggaeTradeCard />;
       }
     case 1:
       return '완료된거래';
@@ -100,14 +100,14 @@ class JunggaeMyPage extends Component {
                   activeItem={activeType}
                   handleSelect={handleTypeSelect}
                 >
-                  <CardIcon />
+                  <ListIcon />
                 </MyPageTab>
                 <MyPageTab
                   item={1}
                   activeItem={activeType}
                   handleSelect={handleTypeSelect}
                 >
-                  <ListIcon />
+                  <CardIcon />
                 </MyPageTab>
               </ul>
             )}

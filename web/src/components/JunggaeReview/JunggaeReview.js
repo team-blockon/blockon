@@ -83,7 +83,7 @@ class JunggaeReview extends Component {
             <img src={JunggaeImage} alt="junggae" />
           </div>
           <div>
-            <h2>준영공인중개사무소</h2>
+            <h2>휴먼공인중개사사무소</h2>
             <div className="stars">
               <StarRatingComponent
                 starColor="#ffb400"

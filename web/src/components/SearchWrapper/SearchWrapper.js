@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import * as SearchAPI from 'lib/api/search';
 import markerYellow from 'static/images/icon/marker-yellow.png';
@@ -29,8 +30,9 @@ export class SearchWrapper extends Component {
 
   initMap = () => {
     const { agents } = this.state;
+    const { google } = window;
 
-    const map = new window.google.maps.Map(this.refs.map, {
+    const map = new google.maps.Map(this.refs.map, {
       center: { lat: 37.5037267, lng: 127.0404673 },
       zoom: 18
     });
@@ -56,8 +58,22 @@ export class SearchWrapper extends Component {
 
       return {
         url,
-        scaledSize: new window.google.maps.Size(size, size)
+        scaledSize: new google.maps.Size(size, size)
       };
+    };
+
+    const infowindow = new google.maps.InfoWindow({
+      content: 'contentString'
+    });
+
+    const getContent = agent => {
+      return `
+      <div>
+        <p>${agent.name}</p>
+        <p>${agent.address}</p>
+        <p>${agent.rating}</p>
+        <button><a href="/contract">리뷰 보기</a></button>
+      </div>`;
     };
 
     agents.map(agent => {
@@ -69,11 +85,17 @@ export class SearchWrapper extends Component {
         fontSize: '1.4rem'
       };
 
-      new window.google.maps.Marker({
+      const marker = new google.maps.Marker({
         map: map,
         position: { lat: agent.lat, lng: agent.lng },
         label,
         icon
+      });
+
+      marker.addListener('click', function() {
+        const content = getContent(agent);
+        infowindow.setContent(content);
+        infowindow.open(map, marker);
       });
     });
   };
@@ -110,4 +132,4 @@ export class SearchWrapper extends Component {
   }
 }
 
-export default SearchWrapper;
+export default withRouter(SearchWrapper);

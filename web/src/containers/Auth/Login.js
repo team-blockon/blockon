@@ -22,7 +22,7 @@ class Login extends Component {
     if (!MetamaskUtil.check()) return;
 
     const { setLoggedInfo } = this.props;
-    const ethAddress = window.web3.eth.defaultAccount;
+    const ethAddress = MetamaskUtil.getDefaultAccount();
 
     AuthAPI.login(ethAddress).then(res => {
       const loggedInfo = res.data;
@@ -30,13 +30,6 @@ class Login extends Component {
 
       localStorage.setItem('loggedInfo', JSON.stringify(loggedInfo));
     });
-  };
-
-  handleKeyPress = event => {
-    // 엔터가 입력되면 로그인 진행
-    if (event.charCode === 13) {
-      this.handleLogin();
-    }
   };
 
   render() {
