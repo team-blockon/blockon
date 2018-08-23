@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const dirPath = path.resolve(__dirname, '../../../uploads');
+const DIR_PATH = path.resolve(__dirname, '../../../uploads');
 
 /*
     POST /api/auth/profile
@@ -23,7 +23,7 @@ exports.profile = (req, res) => {
     storage: multer.diskStorage({
       // 저장될 경로와 파일명 지정
       destination: function(req, file, cb) {
-        cb(null, dirPath);
+        cb(null, DIR_PATH);
       },
       filename: function(req, file, cb) {
         cb(null, new Date().valueOf() + '_' + file.originalname); // 타임스탬프 + 원래 파일명
@@ -47,8 +47,8 @@ exports.profile = (req, res) => {
   };
 
   const profileUpload = new Promise((resolve, reject) => {
-    if(fs.existsSync(dirPath) === false){
-      fs.mkdirSync(dirPath);
+    if(fs.existsSync(DIR_PATH) === false){
+      fs.mkdirSync(DIR_PATH);
     }
     upload(req, res, err => {
       if (err) reject(err);
