@@ -26,7 +26,7 @@ const MyPageTab = ({ activeItem, item, handleSelect, children }) => {
 };
 
 /**
- * contractInfo state 인덱스
+ * contractInfoList 인덱스
  */
 const TYPE = 0;
 const STATE = 1;
@@ -45,10 +45,11 @@ class JunggaeMyPage extends Component {
   };
 
   getTabContent = (activeTab, activeType) => {
+    console.log("Entry :getTabContent");
     switch (activeTab) {
     case 0:
       if (activeType === 0) {
-        return <JunggaeTradeList handleSelect={this.handleToggleModal} />;
+        return <JunggaeTradeList handleSelect={this.handleToggleModal} contractInfoList={this.state.contractInfoList} />;
       } else {
         return <JunggaeTradeCard />;
       }
@@ -176,7 +177,7 @@ class JunggaeMyPage extends Component {
 
     // UpdateEvent 이벤트에 대한 filter
     const updateEvent = accountInstance.UpdateContract(null, {
-      fromBlock: 0,
+      fromBlock: latestBlock,
       toBlock: "latest"
     });
 
