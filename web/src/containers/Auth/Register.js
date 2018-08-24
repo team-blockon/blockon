@@ -164,7 +164,7 @@ class Register extends Component {
             onChange={this.handleProfileChange}
             customRequest={this.customRequest}
           >
-            {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
+            {imageUrl ? <img src={imageUrl} className="profile_pic" style={{width: 100+'%'}} alt="avatar" /> : uploadButton}
           </Upload>
         </div>
         <InputWithLabel

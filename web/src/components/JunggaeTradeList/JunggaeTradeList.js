@@ -3,8 +3,19 @@ import { Link } from 'react-router-dom';
 import maemulImage from 'static/images/maemul.png';
 import './JunggaeTradeList.scss';
 
-const getLists = handleSelect => {
-  const cards = [];
+/**
+ * contractInfoList 인덱스
+ */
+const TYPE = 0;
+const STATE = 1;
+
+/**
+ * contractType 인덱스
+ */
+//const TRADE = 1;
+//const RENT = 2;
+
+const getCard = (handleSelect, contractType, contractState) => {
   const card = (
     <div className="card">
       <p className="no">No. mxabcff</p>
@@ -17,7 +28,7 @@ const getLists = handleSelect => {
             <p>준영타워팰리스</p>
             <p>단독주택</p>
             <p>수원시 영통구 이의동 센트럴타운로 76</p>
-            <p>매매 / 10억</p>
+            <p>{contractType} / 10억</p>
           </div>
         </div>
       </div>
@@ -39,17 +50,22 @@ const getLists = handleSelect => {
     </div>
   );
 
-  for (let i = 0; i < 5; i++) {
-    cards.push(card);
-  }
+  return card;
+}
 
+const getLists = (handleSelect, contractInfoList) => {
+  const cards = [];
+  contractInfoList.forEach( contractInfo => {
+    cards.push(getCard(handleSelect, contractInfo[TYPE], contractInfo[STATE] ));
+  });
   return cards;
 };
 
-const JunggaeTradeList = ({ handleSelect }) => {
+const JunggaeTradeList = ({ handleSelect, contractInfoList }) => {
+  console.log('Entry : JunggaeTradeList');
   return (
     <div className="JunggaeTradeList">
-      <div className="list-wrapper">{getLists(handleSelect)}</div>
+      <div className="list-wrapper">{getLists(handleSelect, contractInfoList)}</div>
       <div className="sidebar">
         <button>
           <Link to="/contract/edit">계약 올리기</Link>

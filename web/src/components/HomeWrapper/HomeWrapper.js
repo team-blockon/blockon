@@ -15,7 +15,7 @@ import googleIcon from 'static/images/icon/google.png';
 import instagramIcon from 'static/images/icon/instagram.png';
 import * as LandingAPI from 'lib/api/landing';
 import './HomeWrapper.scss';
-import { Input, Icon, AutoComplete, notification } from 'antd';
+import { Input, AutoComplete, notification } from 'antd';
 
 const BlockonSection = () => {
   return (
@@ -225,8 +225,8 @@ class ContactUsSection extends Component {
               <img src={facebookIcon} alt="facebook" />
             </a>
             {/*Just for test. 일단 없애놨음. */}
-            {/*<img src={googleIcon} alt="google" />
-            <img src={instagramIcon} alt="instagram" />*/}
+            <img src={googleIcon} alt="google" />
+            <img src={instagramIcon} alt="instagram" />
           </div>
         </div>
       </section>
