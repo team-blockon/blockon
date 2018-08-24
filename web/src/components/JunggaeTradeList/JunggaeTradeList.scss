@@ -5,18 +5,23 @@
 
   .list-wrapper {
     flex-direction: column;
+    padding-left: 0;
+    padding-right: 0;
     margin-right: 1rem;
 
     .card {
       .content {
-        padding: 3rem 10rem;
-        padding-bottom: 1.5rem;
+        padding: 3rem 13rem 1.5rem 2.5rem;
 
         .detail {
           display: flex;
 
           .image {
             margin-right: 4rem;
+
+            img {
+              width: 156px;
+            }
           }
         }
       }
@@ -38,9 +43,8 @@
 }
 
 .progressbar-wrapper {
-  width: 80%;
-  margin: 0 auto;
-  padding-bottom: 1rem;
+  width: 90%;
+  padding-bottom: 2rem;
 
   .progressbar {
     display: flex;

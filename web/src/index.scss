@@ -1,4 +1,5 @@
 @import url(//cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css);
+@import "~open-color/open-color";
 
 body {
   margin: 0;
@@ -28,5 +29,18 @@ a {
 
   &:focus {
     text-decoration: none;
+  }
+}
+
+.ant-btn-primary,
+.ant-btn-primary:active {
+  background-color: #ffda44;
+  border-color: #ffda44;
+
+  &:hover,
+  &:focus {
+    background-color: #fff;
+    border-color: #ffda44;
+    color: #ffda44;
   }
 }

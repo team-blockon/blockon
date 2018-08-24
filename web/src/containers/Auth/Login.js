@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AuthContent from 'components/AuthContent';
 import AuthButton from 'components/AuthButton';
@@ -19,6 +20,8 @@ class Login extends Component {
   };
 
   handleLogin = () => {
+    const { history } = this.props; // 나중에 없앨 것!
+
     if (!MetamaskUtil.check()) return;
 
     const { setLoggedInfo } = this.props;
@@ -29,6 +32,7 @@ class Login extends Component {
       setLoggedInfo(loggedInfo);
 
       localStorage.setItem('loggedInfo', JSON.stringify(loggedInfo));
+      history.push('/pricing'); // 나중에 없앨 것!
     });
   };
 
@@ -47,7 +51,9 @@ const mapDispatchToProps = dispatch => ({
   setLoggedInfo: loggedInfo => dispatch(userActions.setLoggedInfo(loggedInfo))
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Login);
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps
+  )(Login)
+);

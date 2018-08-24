@@ -19,6 +19,11 @@ class MyPage extends Component {
     });
   };
 
+  componentDidMount() {
+    const locationState = this.props.location.state;
+    locationState && this.setState({ activeTab: locationState.activeTab });
+  }
+
   render() {
     const { isJunggae } = this.props;
     const { activeTab, activeType } = this.state;
