@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { Home, Contract, ContractEdit, Auth, Search } from 'pages';
+import { Home, Search, Contract, ContractEdit, Pricing, Auth } from 'pages';
 import AppTemplate from 'components/AppTemplate';
 import HeaderNav from 'components/HeaderNav';
 import HeaderContainer from 'containers/HeaderContainer';
@@ -95,6 +95,7 @@ class App extends Component {
             component={ContractEdit}
             isLogged={isLogged}
           />
+          <Route path="/pricing" component={Pricing} />
           <Route path="/auth" component={Auth} />
         </Switch>
       </AppTemplate>
