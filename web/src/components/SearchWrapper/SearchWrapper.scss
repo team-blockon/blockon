@@ -26,18 +26,11 @@
           width: 70px;
           height: 70px;
           border-radius: 50%;
-          border: 2px solid #ffda44;
           margin-right: 2rem;
           text-align: center;
           line-height: 70px;
-
-          &.blue {
-            border: 2px solid $oc-blue-4;
-          }
-
-          &.red {
-            border: 2px solid $oc-red-4;
-          }
+          font-size: 1.5rem;
+          font-weight: 700;
         }
 
         p {
@@ -50,5 +43,11 @@
         }
       }
     }
+  }
+}
+
+.AgentMarker {
+  .infowindow {
+    width: 200px;
   }
 }

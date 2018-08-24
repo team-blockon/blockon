@@ -1,130 +1,92 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-import * as SearchAPI from 'lib/api/search';
-import markerYellow from 'static/images/icon/marker-yellow.png';
-import markerBlue from 'static/images/icon/marker-blue.png';
-import markerRed from 'static/images/icon/marker-red.png';
+import GoogleMapReact from 'google-map-react';
+import * as MapAPI from 'lib/api/map';
+import marker from 'static/images/icon/marker.png';
 import './SearchWrapper.scss';
+import { Popover, Button } from 'antd';
+
+const content = agent => {
+  return (
+    <div className="infowindow">
+      <p>{agent.road_address_name}</p>
+      <Link to={{ pathname: '/contract', state: { activeTab: 2 } }}>
+        <Button type="primary">리뷰 보기</Button>
+      </Link>
+    </div>
+  );
+};
+
+const AgentMarker = ({ agent }) => (
+  <div className="AgentMarker">
+    <Popover content={content(agent)} title={agent.place_name}>
+      <img src={marker} alt="marker" style={{ width: '40px' }} />
+    </Popover>
+  </div>
+);
 
 export class SearchWrapper extends Component {
   state = {
     agents: []
   };
 
-  componentDidMount() {
-    SearchAPI.search().then(res => {
-      this.setState({
-        agents: res.data
-      });
-    });
-
-    window.initMap = this.initMap;
-
-    const script = document.createElement('script');
-    script.src =
-      'https://maps.googleapis.com/maps/api/js?key=AIzaSyCpPfq3qe6Jr4YJ9zABDWAWL3RYd_IbiTc&callback=initMap';
-    script.async = true;
-    document.body.appendChild(script);
-  }
-
-  initMap = () => {
-    const { agents } = this.state;
-    const { google } = window;
-
-    const map = new google.maps.Map(this.refs.map, {
-      center: { lat: 37.5037267, lng: 127.0404673 },
-      zoom: 18
-    });
-
-    map.addListener('click', e => {
-      console.log(e.latLng.lat() + ', ' + e.latLng.lng());
-    });
-
-    const getIcon = rating => {
-      let url;
-      let size;
-
-      if (rating >= 4) {
-        url = markerYellow;
-        size = 70;
-      } else if (rating >= 3) {
-        url = markerBlue;
-        size = 60;
-      } else {
-        url = markerRed;
-        size = 50;
-      }
-
-      return {
-        url,
-        scaledSize: new google.maps.Size(size, size)
-      };
-    };
-
-    const infowindow = new google.maps.InfoWindow({
-      content: 'contentString'
-    });
-
-    const getContent = agent => {
-      return `
-      <div>
-        <p>${agent.name}</p>
-        <p>${agent.address}</p>
-        <p>${agent.rating}</p>
-        <button><a href="/contract">리뷰 보기</a></button>
-      </div>`;
-    };
-
-    agents.map(agent => {
-      const icon = getIcon(agent.rating);
-
-      const label = {
-        text: agent.rating.toString(),
-        color: 'white',
-        fontSize: '1.4rem'
-      };
-
-      const marker = new google.maps.Marker({
-        map: map,
-        position: { lat: agent.lat, lng: agent.lng },
-        label,
-        icon
-      });
-
-      marker.addListener('click', function() {
-        const content = getContent(agent);
-        infowindow.setContent(content);
-        infowindow.open(map, marker);
-      });
-    });
+  static defaultProps = {
+    center: {
+      lat: 37.5037267,
+      lng: 127.0404673
+    },
+    zoom: 18
   };
+
+  componentDidMount() {
+    const { lat, lng } = this.props.center;
+
+    MapAPI.getAgents(lat, lng, 1000).then(res => {
+      const agents = res.data.documents;
+      this.setState({ agents });
+    });
+  }
 
   getAgents = () => {
     const agents = this.state.agents.map((agent, index) => (
       <div className="agent" key={index}>
         <div
-          className={classNames('circle', {
-            blue: 3 <= agent.rating && agent.rating < 4,
-            red: 2 <= agent.rating && agent.rating < 3
-          })}
-        />
+          className={classNames('circle')}
+          style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}
+        >
+          {agent.place_name.charAt(0)}
+        </div>
         <div>
-          <p>{agent.rating} / 5.0</p>
-          <p>{agent.name}</p>
-          <p>{agent.address}</p>
+          <p>{agent.place_name}</p>
+          <p>{agent.road_address_name}</p>
         </div>
       </div>
     ));
-
     return agents;
   };
 
   render() {
+    const { agents } = this.state;
+
     return (
       <div className="SearchWrapper">
         <div className="map-container">
-          <div id="map" ref="map" />
+          <div style={{ flex: 1 }}>
+            <GoogleMapReact
+              bootstrapURLKeys={{
+                key: 'AIzaSyCpPfq3qe6Jr4YJ9zABDWAWL3RYd_IbiTc'
+              }}
+              defaultCenter={this.props.center}
+              defaultZoom={this.props.zoom}
+            >
+              {agents.map(agent => {
+                return (
+                  <AgentMarker lat={agent.y} lng={agent.x} agent={agent} />
+                );
+              })}
+            </GoogleMapReact>
+          </div>
           <div className="agent-list">{this.getAgents()}</div>
         </div>
       </div>
