@@ -28,7 +28,7 @@ const MyPageTab = ({ activeItem, item, handleSelect, children }) => {
 /**
  * contractInfoList 인덱스
  */
-const TYPE = 0;
+//const TYPE = 0;
 const STATE = 1;
 
 class JunggaeMyPage extends Component {
@@ -45,7 +45,7 @@ class JunggaeMyPage extends Component {
   };
 
   getTabContent = (activeTab, activeType) => {
-    console.log("Entry :getTabContent");
+    console.log('Entry :getTabContent');
     switch (activeTab) {
     case 0:
       if (activeType === 0) {
@@ -147,17 +147,17 @@ class JunggaeMyPage extends Component {
 
     // 현재 브라우저에 접속한 유저의 어카운트 계정 인스턴스 생성
     const ethAddress = MetamaskUtil.getDefaultAccount();
-    console.log("ethAddress : " + ethAddress);
+    console.log('ethAddress : ' + ethAddress);
     const userData = await UserAPI.getAccountAddressByEthAddress(ethAddress);
     console.log(userData.data);
     const accountAddress = userData.data.accountAddress;
-    console.log("accountAddress : " + accountAddress);
+    console.log('accountAddress : ' + accountAddress);
     const accountInstance = window.web3.eth.contract(AccountAbi).at(accountAddress);
-    console.log("accountInstance : " + accountInstance);
+    console.log('accountInstance : ' + accountInstance);
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
     const contractsLength = await this.getContractsLength(accountInstance);
-    console.log("contractsLength : " + contractsLength);
+    console.log('contractsLength : ' + contractsLength);
 
     // 유저가 포함된 컨트랙트들을 state에 추가
     for(let i = 0; i<contractsLength; i++) {
@@ -166,19 +166,19 @@ class JunggaeMyPage extends Component {
 
     // state 제대로 들어갔나 확인
     this.state.contractInfoList.forEach((contractInfo, index) => {
-      console.log("-----------" + index);
-      console.log("contract type : " + contractInfo[0]);
-      console.log("contract state : " + contractInfo[1]);
+      console.log('-----------' + index);
+      console.log('contract type : ' + contractInfo[0]);
+      console.log('contract state : ' + contractInfo[1]);
     });
 
     // 최신 블록 넘버 가져오기
     const latestBlock = await this.getLatestBlockNumber();
-    console.log("latestBlock : " + latestBlock);
+    console.log('latestBlock : ' + latestBlock);
 
     // UpdateEvent 이벤트에 대한 filter
     const updateEvent = accountInstance.UpdateContract(null, {
       fromBlock: latestBlock,
-      toBlock: "latest"
+      toBlock: 'latest'
     });
 
     // UpdateEvent 이벤트에 대한 watch
@@ -188,15 +188,15 @@ class JunggaeMyPage extends Component {
       } else {
         const updateType = result.args.updateType.c[0];
         const contractIndex = result.args.contractIndex.c[0];
-        console.log("----------conntractIndex : " + contractIndex);
+        console.log('----------conntractIndex : ' + contractIndex);
         if(updateType === 1) {
           // add contract 이므로 state에 새로 생성된 컨트랙트 추가
-          console.log("add contract");
+          console.log('add contract');
           this.addContractInfoAt(accountInstance, contractIndex);
         }
         if(updateType === 2) {
           // 컨트랙트상태가 변경된것이므로 해당하는 인덱스의 상태변경
-          console.log("state change");
+          console.log('state change');
           this.changeContractStateAt(accountInstance, contractIndex);
         }
       }

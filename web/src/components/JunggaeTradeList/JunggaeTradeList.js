@@ -12,8 +12,8 @@ const STATE = 1;
 /**
  * contractType 인덱스
  */
-const TRADE = 1;
-const RENT = 2;
+//const TRADE = 1;
+//const RENT = 2;
 
 const getCard = (handleSelect, contractType, contractState) => {
   const card = (
@@ -61,7 +61,7 @@ const getLists = (handleSelect, contractInfoList) => {
 };
 
 const JunggaeTradeList = ({ handleSelect, contractInfoList }) => {
-  console.log("Entry : JunggaeTradeList");
+  console.log('Entry : JunggaeTradeList');
   return (
     <div className="JunggaeTradeList">
       <div className="list-wrapper">{getLists(handleSelect, contractInfoList)}</div>
