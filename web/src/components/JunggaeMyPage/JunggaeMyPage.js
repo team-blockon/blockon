@@ -34,6 +34,7 @@ const STATE = 1;
 class JunggaeMyPage extends Component {
   state = {
     tradeModal: false,
+    contractsLength: 0,
     // [contractType, contractState]의 리스트
     contractInfoList: []
   };
@@ -157,6 +158,7 @@ class JunggaeMyPage extends Component {
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
     const contractsLength = await this.getContractsLength(accountInstance);
+    this.setState(contractsLength);
     console.log('contractsLength : ' + contractsLength);
 
     // 유저가 포함된 컨트랙트들을 state에 추가
@@ -229,7 +231,7 @@ class JunggaeMyPage extends Component {
                 activeItem={activeTab}
                 handleSelect={handleTabSelect}
               >
-                진행중거래 (9건)
+                진행중거래 ({this.state.contractsLength}건)
               </MyPageTab>
               <MyPageTab
                 item={1}
