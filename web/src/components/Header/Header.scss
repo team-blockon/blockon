@@ -1,8 +1,9 @@
 @import "~open-color/open-color";
 
-header {
+header.landing {
   background: url(../../static/images/cover.png) fixed;
   background-size: 100%;
+  box-shadow: none;
 }
 
 @media (max-width: 1040px) {
@@ -10,6 +11,8 @@ header {
     padding-top: 13px;
     padding-bottom: 13px;
     display: flex;
+    box-shadow: 0 2px 4px rgba(85, 77, 86, 0.2);
+    background-color: #fff;
 
     //navbar가 상단고정.
     position: fixed;
@@ -37,6 +40,8 @@ header {
     padding-bottom: 13px;
     display: flex;
     //background-size: cover;
+    box-shadow: 0 2px 4px rgba(85, 77, 86, 0.2);
+    background-color: #fff;
 
     //navbar가 상단고정.
     position: fixed;

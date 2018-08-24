@@ -1,12 +1,16 @@
-footer {
+footer.landing {
   padding-top: 10rem;
+}
+
+footer {
+  padding-top: 5rem;
   padding-bottom: 3rem;
   background-color: #353a4c;
   color: #fff;
 
   @media only screen and (max-width: 980px) {
     .footer-top {
-      display: block;           //1st option
+      display: block; //1st option
       //flex-flow: column wrap;   //second option
 
       .company {
@@ -17,13 +21,10 @@ footer {
   }
   @media only screen and (min-width: 981px) {
     .footer-top {
-      display: block;           //임시로 사용
-      //display: flex;          //just for test. 잠깐 없애놓기.
+      display: flex;
 
       .company {
-        padding-left: 0;        //임시로 사용
-        text-align: center;     //임시로 사용
-        //padding-left: 3rem;   //just for test. 잠깐 없애놓기.
+        padding-left: 3rem;
       }
     }
   }
@@ -53,27 +54,23 @@ footer {
       }
     }
     @media only screen and (max-width: 980px) {
-      nav{
-        display: none;                //1st option
+      nav {
+        display: none; //1st option
         /*display: flex;            //second option
         justify-content: center;
         padding-top: 3rem;
         div{
           padding: 1rem;
-        }      */                   //through here
+        }      */ //through here
       }
     }
     @media only screen and (min-width: 981px) {
-      nav{
-        display: none;                  //임시로 넣어논 것.
-        /*                              //just for test. 잠깐 없애놓기.
+      nav {
         display: flex;
         padding-left: 8rem;
         justify-content: space-around;
-        */
       }
     }
-
   }
 
   hr {

@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Logo from 'static/images/logo-header.png';
+import LogoBlack from 'static/images/logo-header-black.png';
 import './Header.scss';
 
 class Header extends Component {
   render() {
-    const { navItem } = this.props;
+    const { navItem, location } = this.props;
 
     return (
-      <header>
+      <header className={location.pathname === '/' && 'landing'}>
         <div className="menu container">
           <Link to="/">
-            <img src={Logo} className="logo" alt="logo" />
+            <img
+              src={location.pathname === '/' ? Logo : LogoBlack}
+              className="logo"
+              alt="logo"
+            />
           </Link>
           {navItem}
         </div>
@@ -20,4 +25,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

@@ -1,10 +1,11 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import logo from 'static/images/logo-footer.png';
 import './Footer.scss';
 
-const Footer = () => {
+const Footer = ({ location }) => {
   return (
-    <footer>
+    <footer className={location.pathname === '/' && 'landing'}>
       <div className="container">
         <div className="footer-top">
           <div className="company">
@@ -22,7 +23,6 @@ const Footer = () => {
             </div>
             <div>
               <ul>
-                <li>고객센터</li>
                 <li>자주묻는질문</li>
                 <li>공지사항</li>
                 <li>개인정보관리</li>
@@ -48,4 +48,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default withRouter(Footer);

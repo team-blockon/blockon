@@ -111,14 +111,6 @@ class HeaderNav extends Component {
           >
             평점검색
           </HeaderNavItem>
-          <HeaderNavItem
-            item="help"
-            activeItem={activeItem}
-            onSelect={onSelect}
-            to="/help"
-          >
-            고객센터
-          </HeaderNavItem>
           {this.getUserButtons()}
         </ul>
       </nav>
