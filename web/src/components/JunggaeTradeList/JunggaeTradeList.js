@@ -51,13 +51,13 @@ const INACTIVE = 3;
 
 const getListClassName = (listClassName) => {
   if(listClassName === ACTIVE){
-    return "active";
+    return 'active';
   }
   if(listClassName === FIRST_NOT_ACTIVE) {
-    return "first-not-active";
+    return 'first-not-active';
   }
   if(listClassName === INACTIVE) {
-    return "";  // className = "" 가 괜찮은지 확인요망
+    return'';  // className = '' 가 괜찮은지 확인요망
   }
 }
 

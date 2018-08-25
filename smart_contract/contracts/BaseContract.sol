@@ -21,7 +21,12 @@ contract BaseContract {
         sellerID = buyerAccount.publicAddress();
         contractType = _contractType;
         
-        contractState = uint8(0);  // 기본상태 0
+        // 기본상태 1, 계약금 입금 상태
+        // 프론트엔드에서 상태가 1일때 1이 완료된것으로 인식하는것이 아니라
+        // 1이 진행중이라고 인식을 한다. 1이완료되서 상태 2로 넘어가면 1이완료되고,
+        // 상태 2가 진행중으로 뜨는 것이다.
+        // 그렇기 때문에 처음의 상태는 1로 초기화를 해주어야 한다.
+        contractState = uint8(1);  
     }
 
     /**
