@@ -48,6 +48,7 @@ contract Account {
      *                      3 - 잔금 입금
      *                      4 - 등기 등록 신청
      *                      5 - 확정일자 
+     *                      100 - 완료
      */
     function changeContractStateAt(uint index, uint8 newContractState) public {
         if(isAgent) {
@@ -64,6 +65,7 @@ contract Account {
      *                      3 - 잔금 입금
      *                      4 - 등기 등록 신청
      *                      5 - 확정일자 
+     *                      100 - 완료
      */
     function changeContractState(BaseContract contractAddress, uint8 newContractState) public {
         if(isAgent) {

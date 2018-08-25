@@ -32,6 +32,7 @@ contract BaseContract {
      *                  3 - 잔금 입금
      *                  4 - 등기 등록 신청
      *                  5 - 확정일자 
+     *                  100 - 완료
      */
     function changeState(uint8 newState) public {
         contractState = newState;

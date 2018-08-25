@@ -33,14 +33,9 @@ const STATE = 1;
 
 /**
  * contract state
- *  1 - 계약금 입금
- *  2 - 중도금 입금
- *  3 - 잔금 입금
- *  4 - 등기 등록 신청
- *  5 - 확정일자 
+ * 100 - 완료
  */
-const REGISTRATION = 4;
-const FIXED_DATE = 5;
+const COMPLETED_CONTRACT = 100;
 
 /**
  * activeTab 인덱스
@@ -150,7 +145,7 @@ class JunggaeMyPage extends Component {
     })
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
-    if(contractState === REGISTRATION || contractState === FIXED_DATE) {
+    if(contractState === COMPLETED_CONTRACT) {
       this.setState({
         completedContractsNum: this.state.completedContractsNum + 1
       })
@@ -176,7 +171,7 @@ class JunggaeMyPage extends Component {
     })
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
-    if(contractState === REGISTRATION || contractState === FIXED_DATE) {
+    if(contractState === COMPLETED_CONTRACT) {
       this.setState({
         activeContractsNum: this.state.activeContractsNum - 1,
         completedContractsNum: this.state.completedContractsNum + 1
