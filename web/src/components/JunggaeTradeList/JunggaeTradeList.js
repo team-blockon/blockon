@@ -15,6 +15,26 @@ const STATE = 1;
 //const TRADE = 1;
 //const RENT = 2;
 
+/**
+ * contract state
+ *  1 - 계약금 입금
+ *  2 - 중도금 입금
+ *  3 - 잔금 입금
+ *  4 - 등기 등록 신청
+ *  5 - 확정일자 
+ */
+const REGISTRATION = 4;
+const FIXED_DATE = 5;
+
+
+/**
+ * activeTab 인덱스
+ * 0 - 진행중거래 탭
+ * 1 - 완료된거래 탭
+ */
+const ONGOING_TAB = 0;
+const COMPLETED_TAB = 1;
+
 const getCard = (handleSelect, contractType, contractState) => {
   const card = (
     <div className="card">
@@ -53,19 +73,29 @@ const getCard = (handleSelect, contractType, contractState) => {
   return card;
 }
 
-const getLists = (handleSelect, contractInfoList) => {
+const getLists = (handleSelect, contractInfoList, activeTab) => {
   const cards = [];
   contractInfoList.forEach( contractInfo => {
-    cards.push(getCard(handleSelect, contractInfo[TYPE], contractInfo[STATE] ));
+    const contractType = contractInfo[TYPE];
+    const contractState = contractInfo[STATE];
+    if(activeTab === ONGOING_TAB) {
+      if(contractState !== REGISTRATION && contractState !== FIXED_DATE) {
+        cards.push(getCard(handleSelect, contractType, contractState));
+      }
+    } else if(activeTab === COMPLETED_TAB) {
+      if(contractState === REGISTRATION || contractState === FIXED_DATE) {
+        cards.push(getCard(handleSelect, contractType, contractState));
+      }
+    }
   });
   return cards;
 };
 
-const JunggaeTradeList = ({ handleSelect, contractInfoList }) => {
+const JunggaeTradeList = ({ handleSelect, contractInfoList, activeTab }) => {
   console.log('Entry : JunggaeTradeList');
   return (
     <div className="JunggaeTradeList">
-      <div className="list-wrapper">{getLists(handleSelect, contractInfoList)}</div>
+      <div className="list-wrapper">{getLists(handleSelect, contractInfoList, activeTab)}</div>
       <div className="sidebar">
         <button>
           <Link to="/contract/edit">계약 올리기</Link>

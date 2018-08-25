@@ -42,6 +42,14 @@ const STATE = 1;
 const REGISTRATION = 4;
 const FIXED_DATE = 5;
 
+/**
+ * activeTab 인덱스
+ * 0 - 진행중거래 탭
+ * 1 - 완료된거래 탭
+ */
+const ONGOING_TAB = 0;
+const COMPLETED_TAB = 1;
+
 
 class JunggaeMyPage extends Component {
   state = {
@@ -61,14 +69,18 @@ class JunggaeMyPage extends Component {
   getTabContent = (activeTab, activeType) => {
     console.log('Entry :getTabContent');
     switch (activeTab) {
-    case 0:
+    case ONGOING_TAB: //진행중 거래
       if (activeType === 0) {
-        return <JunggaeTradeList handleSelect={this.handleToggleModal} contractInfoList={this.state.contractInfoList} />;
+        return <JunggaeTradeList handleSelect={this.handleToggleModal} contractInfoList={this.state.contractInfoList} activeTab={activeTab}/>;
       } else {
         return <JunggaeTradeCard />;
       }
-    case 1:
-      return '완료된거래';
+    case COMPLETED_TAB: //완료된 거래
+      if (activeType === 0) {
+        return <JunggaeTradeList handleSelect={this.handleToggleModal} contractInfoList={this.state.contractInfoList} activeTab={activeTab}/>;
+      } else {
+        return <JunggaeTradeCard />;
+      }
     case 2:
       return <JunggaeReview />;
     default:
@@ -129,10 +141,11 @@ class JunggaeMyPage extends Component {
     const contractInfo = await this.getContractInfoAt(accountInstance, index);
     const contractType = contractInfo[0].c[0];
     const contractState = contractInfo[1].c[0];
+    // 최신 데이터를 가장 위로 추가
     this.setState({
       contractInfoList: [
-        ...this.state.contractInfoList,
-        [contractType, contractState]
+        [contractType, contractState],
+        ...this.state.contractInfoList
       ]
     })
 
@@ -190,12 +203,10 @@ class JunggaeMyPage extends Component {
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
     const contractsLength = await this.getContractsLength(accountInstance);
-    this.setState(contractsLength);
-    console.log('contractsLength : ' + contractsLength);
 
     // 유저가 포함된 컨트랙트들을 state에 추가
     for(let i = 0; i<contractsLength; i++) {
-      this.addContractInfoAt(accountInstance, i);
+      await this.addContractInfoAt(accountInstance, i);
     }
 
     // state 제대로 들어갔나 확인
