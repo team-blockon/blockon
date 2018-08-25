@@ -31,10 +31,23 @@ const MyPageTab = ({ activeItem, item, handleSelect, children }) => {
 //const TYPE = 0;
 const STATE = 1;
 
+/**
+ * contract state
+ *  1 - 계약금 입금
+ *  2 - 중도금 입금
+ *  3 - 잔금 입금
+ *  4 - 등기 등록 신청
+ *  5 - 확정일자 
+ */
+const REGISTRATION = 4;
+const FIXED_DATE = 5;
+
+
 class JunggaeMyPage extends Component {
   state = {
     tradeModal: false,
-    contractsLength: 0,
+    activeContractsNum: 0,
+    completedContractsNum: 0,
     // [contractType, contractState]의 리스트
     contractInfoList: []
   };
@@ -122,6 +135,17 @@ class JunggaeMyPage extends Component {
         [contractType, contractState]
       ]
     })
+
+    // 진행중 거래와 완료된 거래의 개수를 업데이트
+    if(contractState === REGISTRATION || contractState === FIXED_DATE) {
+      this.setState({
+        completedContractsNum: this.state.completedContractsNum + 1
+      })
+    } else {
+      this.setState({
+        activeContractsNum: this.state.activeContractsNum + 1
+      })
+    }
   }
 
   /**
@@ -137,6 +161,14 @@ class JunggaeMyPage extends Component {
     this.setState({
       contractInfoList: currentStateList
     })
+
+    // 진행중 거래와 완료된 거래의 개수를 업데이트
+    if(contractState === REGISTRATION || contractState === FIXED_DATE) {
+      this.setState({
+        activeContractsNum: this.state.activeContractsNum - 1,
+        completedContractsNum: this.state.completedContractsNum + 1
+      })
+    }
   }
 
   async componentWillMount() {
@@ -231,14 +263,14 @@ class JunggaeMyPage extends Component {
                 activeItem={activeTab}
                 handleSelect={handleTabSelect}
               >
-                진행중거래 ({this.state.contractsLength}건)
+                진행중거래 ({this.state.activeContractsNum}건)
               </MyPageTab>
               <MyPageTab
                 item={1}
                 activeItem={activeTab}
                 handleSelect={handleTabSelect}
               >
-                완료된거래 (20건)
+                완료된거래 ({this.state.completedContractsNum}건)
               </MyPageTab>
               <MyPageTab
                 item={2}
