@@ -13,6 +13,7 @@ header.landing {
     display: flex;
     box-shadow: 0 2px 4px rgba(85, 77, 86, 0.2);
     background-color: #fff;
+    transition: background-color 0.2s linear; // 스크롤 되었을 경우, background-color가 일정한 속도로 변화
 
     //navbar가 상단고정.
     position: fixed;
@@ -42,6 +43,7 @@ header.landing {
     //background-size: cover;
     box-shadow: 0 2px 4px rgba(85, 77, 86, 0.2);
     background-color: #fff;
+    transition: background-color 0.2s linear; // 스크롤 되었을 경우, background-color가 일정한 속도로 변화
 
     //navbar가 상단고정.
     position: fixed;
