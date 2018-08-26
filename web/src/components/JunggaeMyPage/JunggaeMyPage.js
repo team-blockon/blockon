@@ -45,7 +45,6 @@ const COMPLETED_CONTRACT = 100;
 const ONGOING_TAB = 0;
 const COMPLETED_TAB = 1;
 
-
 class JunggaeMyPage extends Component {
   state = {
     tradeModal: false,
@@ -66,13 +65,25 @@ class JunggaeMyPage extends Component {
     switch (activeTab) {
     case ONGOING_TAB: //진행중 거래
       if (activeType === 0) {
-        return <JunggaeTradeList handleSelect={this.handleToggleModal} contractInfoList={this.state.contractInfoList} activeTab={activeTab}/>;
+        return (
+          <JunggaeTradeList
+            handleSelect={this.handleToggleModal}
+            contractInfoList={this.state.contractInfoList}
+            activeTab={activeTab}
+          />
+        );
       } else {
         return <JunggaeTradeCard />;
       }
     case COMPLETED_TAB: //완료된 거래
       if (activeType === 0) {
-        return <JunggaeTradeList handleSelect={this.handleToggleModal} contractInfoList={this.state.contractInfoList} activeTab={activeTab}/>;
+        return (
+          <JunggaeTradeList
+            handleSelect={this.handleToggleModal}
+            contractInfoList={this.state.contractInfoList}
+            activeTab={activeTab}
+          />
+        );
       } else {
         return <JunggaeTradeCard />;
       }
@@ -89,14 +100,14 @@ class JunggaeMyPage extends Component {
   getContractsLength = function(accountInstance) {
     return new Promise((resolve, reject) => {
       accountInstance.getContractsLength((err, res) => {
-        if(!err) {
+        if (!err) {
           resolve(res);
         } else {
           reject(err);
         }
       });
     });
-  }
+  };
 
   /**
    * 해당하는 어카운트, 인덱스의 계약정보(계약종류, 계약상태)) 반환
@@ -104,14 +115,14 @@ class JunggaeMyPage extends Component {
   getContractInfoAt = function(accountInstance, index) {
     return new Promise((resolve, reject) => {
       accountInstance.getContractInfoAt(index, (err, res) => {
-        if(!err) {
+        if (!err) {
           resolve(res);
         } else {
           reject(err);
         }
       });
     });
-  }
+  };
 
   /**
    * 가장 최신 블록넘버를 반환
@@ -119,14 +130,14 @@ class JunggaeMyPage extends Component {
   getLatestBlockNumber = function() {
     return new Promise((resolve, reject) => {
       window.web3.eth.getBlockNumber((err, res) => {
-        if(!err) {
+        if (!err) {
           resolve(res);
         } else {
           reject(err);
         }
       });
     });
-  }
+  };
 
   /**
    * 블록체인으로 부터 인덱스에 해당하는 컨트랙트 정보를 가져와서
@@ -139,22 +150,22 @@ class JunggaeMyPage extends Component {
     // 최신 데이터를 가장 위로 추가
     this.setState({
       contractInfoList: [
-        [contractType, contractState],
-        ...this.state.contractInfoList
+        ...this.state.contractInfoList,
+        [contractType, contractState]
       ]
-    })
+    });
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
-    if(contractState === COMPLETED_CONTRACT) {
+    if (contractState === COMPLETED_CONTRACT) {
       this.setState({
         completedContractsNum: this.state.completedContractsNum + 1
-      })
+      });
     } else {
       this.setState({
         activeContractsNum: this.state.activeContractsNum + 1
-      })
+      });
     }
-  }
+  };
 
   /**
    * 블록체인으로 부터 인덱스에 해당하는 컨트랙트의 새로운 상태를 받아와서
@@ -164,26 +175,25 @@ class JunggaeMyPage extends Component {
     const contractInfo = await this.getContractInfoAt(accountInstance, index);
     const contractState = contractInfo[STATE].c[0];
 
-    console.log("****changeContractStateAt****");
-    console.log("----state : " + contractState);  
+    console.log('****changeContractStateAt****');
+    console.log('----state : ' + contractState);
 
     const currentStateList = this.state.contractInfoList.slice();
     currentStateList[index][STATE] = contractState;
     this.setState({
       contractInfoList: currentStateList
-    })
+    });
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
-    if(contractState === COMPLETED_CONTRACT) {
+    if (contractState === COMPLETED_CONTRACT) {
       this.setState({
         activeContractsNum: this.state.activeContractsNum - 1,
         completedContractsNum: this.state.completedContractsNum + 1
-      })
+      });
     }
-  }
+  };
 
   async componentWillMount() {
-
     /**
      * 데이터베이스와 블록체인 네트워크로 부터 정보를 받아온다
      * state에 정보를 채운다
@@ -196,14 +206,16 @@ class JunggaeMyPage extends Component {
     console.log(userData.data);
     const accountAddress = userData.data.accountAddress;
     console.log('accountAddress : ' + accountAddress);
-    const accountInstance = window.web3.eth.contract(AccountAbi).at(accountAddress);
+    const accountInstance = window.web3.eth
+      .contract(AccountAbi)
+      .at(accountAddress);
     console.log('accountInstance : ' + accountInstance);
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
     const contractsLength = await this.getContractsLength(accountInstance);
 
     // 유저가 포함된 컨트랙트들을 state에 추가
-    for(let i = 0; i<contractsLength; i++) {
+    for (let i = 0; i < contractsLength; i++) {
       await this.addContractInfoAt(accountInstance, i);
     }
 
@@ -226,18 +238,18 @@ class JunggaeMyPage extends Component {
 
     // UpdateEvent 이벤트에 대한 watch
     updateEvent.watch((error, result) => {
-      if(error) {
+      if (error) {
         console.log(error);
       } else {
         const updateType = result.args.updateType.c[0];
         const contractIndex = result.args.contractIndex.c[0];
         console.log('----------conntractIndex : ' + contractIndex);
-        if(updateType === 1) {
+        if (updateType === 1) {
           // add contract 이므로 state에 새로 생성된 컨트랙트 추가
           console.log('add contract');
           this.addContractInfoAt(accountInstance, contractIndex);
         }
-        if(updateType === 2) {
+        if (updateType === 2) {
           // 컨트랙트상태가 변경된것이므로 해당하는 인덱스의 상태변경
           console.log('state change');
           this.changeContractStateAt(accountInstance, contractIndex);
@@ -272,14 +284,16 @@ class JunggaeMyPage extends Component {
                 activeItem={activeTab}
                 handleSelect={handleTabSelect}
               >
-                진행중거래 ({this.state.activeContractsNum}건)
+                진행중거래 ({this.state.activeContractsNum}
+                건)
               </MyPageTab>
               <MyPageTab
                 item={1}
                 activeItem={activeTab}
                 handleSelect={handleTabSelect}
               >
-                완료된거래 ({this.state.completedContractsNum}건)
+                완료된거래 ({this.state.completedContractsNum}
+                건)
               </MyPageTab>
               <MyPageTab
                 item={2}
