@@ -67,7 +67,7 @@ class ContractEditForm extends Component {
 
   handleChange = event => {
     const { name, value } = event.target;
-    this.setState({ [name]: value }, () => {
+    this.setState({ formData: { [name]: value } }, () => {
       console.log(this.state);
     });
   };
