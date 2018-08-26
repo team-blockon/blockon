@@ -1,11 +1,12 @@
 import React from 'react';
+import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import logo from 'static/images/logo-footer.png';
 import './Footer.scss';
 
 const Footer = ({ location }) => {
   return (
-    <footer className={location.pathname === '/' && 'landing'}>
+    <footer className={classNames({ landing: location.pathname === '/' })}>
       <div className="container">
         <div className="footer-top">
           <div className="company">

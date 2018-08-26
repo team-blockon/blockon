@@ -181,7 +181,7 @@ const getCard = (handleSelect, contractType, contractState) => {
     contractData = (<p>매매 / 10억</p>);
   }
   if(contractType === RENT) {
-    contractData = (<p>전,월세 / 1000/45 </p>)
+    contractData = (<p>전,월세 / 1000/45 </p>);
   }
 
   const card = (
@@ -196,7 +196,7 @@ const getCard = (handleSelect, contractType, contractState) => {
             <p>준영타워팰리스</p>
             <p>단독주택</p>
             <p>수원시 영통구 이의동 센트럴타운로 76</p>
-            <p>{contractData}</p>
+            {contractData}
           </div>
         </div>
       </div>
@@ -213,7 +213,7 @@ const getCard = (handleSelect, contractType, contractState) => {
 
 const getLists = (handleSelect, contractInfoList, activeTab) => {
   const cards = [];
-  contractInfoList.forEach( contractInfo => {
+  Array.from(contractInfoList).reverse().forEach( contractInfo => {
     const contractType = contractInfo[TYPE];
     const contractState = contractInfo[STATE];
     if(activeTab === ONGOING_TAB) {

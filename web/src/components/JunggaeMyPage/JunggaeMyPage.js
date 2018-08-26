@@ -135,8 +135,8 @@ class JunggaeMyPage extends Component {
     // 최신 데이터를 가장 위로 추가
     this.setState({
       contractInfoList: [
-        [contractType, contractState],
-        ...this.state.contractInfoList
+        ...this.state.contractInfoList,
+        [contractType, contractState]
       ]
     });
 
