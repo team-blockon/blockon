@@ -4,12 +4,6 @@ import maemulImage from 'static/images/maemul.png';
 import './JunggaeTradeList.scss';
 
 /**
- * contractInfoList 인덱스
- */
-const TYPE = 0;
-const STATE = 1;
-
-/**
  * contractType 인덱스
  */
 const TRADE = 1;
@@ -91,8 +85,18 @@ const getListItem = (handleSelect, listItemIndex, listClassName) => {
 
   default:
   }
+
   return (
-    <li className={getListClassName(listClassName)} onClick={handleSelect}>
+    <li
+      className={getListClassName(listClassName)}
+      onClick={
+        listClassName === FIRST_NOT_ACTIVE
+          ? e => {
+            handleSelect(itemType);
+          }
+          : undefined
+      }
+    >
       {itemType}
     </li>
   );
@@ -143,16 +147,21 @@ const getRentProgressbarList = (handleSelect, contractState) => {
   return progressbarList;
 };
 
-const getProgressbarList = (handleSelect, contractType, contractState) => {
+const getProgressbarList = (
+  handleSelect,
+  contractType,
+  contractState,
+  index
+) => {
   if (contractType === TRADE) {
-    return getTradeProgressbarList(handleSelect, contractState);
+    return getTradeProgressbarList(handleSelect, contractState, index);
   }
   if (contractType === RENT) {
-    return getRentProgressbarList(handleSelect, contractState);
+    return getRentProgressbarList(handleSelect, contractState, index);
   }
 };
 
-const getCard = (handleSelect, contractType, contractState) => {
+const getCard = (handleSelect, contractType, contractState, index) => {
   let contractData;
   if (contractType === TRADE) {
     contractData = <p>매매 / 10억</p>;
@@ -162,7 +171,15 @@ const getCard = (handleSelect, contractType, contractState) => {
   }
 
   const card = (
-    <div className="card">
+    <div
+      className="card"
+      key={index}
+      data-id={index}
+      onClick={e => {
+        // currentTarget: 이벤트가 바인딩된 요소
+        console.log(e.currentTarget.dataset.id);
+      }}
+    >
       <p className="no">No. mxabcff</p>
       <div className="content">
         <div className="detail">
@@ -190,26 +207,29 @@ const getCard = (handleSelect, contractType, contractState) => {
 
 const getLists = (handleSelect, contractInfoList, activeTab) => {
   const cards = [];
-  Array.from(contractInfoList)
-    .reverse()
-    .forEach(contractInfo => {
-      const contractType = contractInfo[TYPE];
-      const contractState = contractInfo[STATE];
-      if (activeTab === ONGOING_TAB) {
-        if (contractState !== COMPLETED_CONTRACT) {
-          cards.push(getCard(handleSelect, contractType, contractState));
-        }
-      } else if (activeTab === COMPLETED_TAB) {
-        if (contractState === COMPLETED_CONTRACT) {
-          cards.push(getCard(handleSelect, contractType, contractState));
-        }
-      }
-    });
+
+  contractInfoList.forEach(contractInfo => {
+    const contractType = contractInfo.type;
+    const contractState = contractInfo.state;
+
+    if (activeTab === ONGOING_TAB && contractState !== COMPLETED_CONTRACT) {
+      cards.push(
+        getCard(handleSelect, contractType, contractState, contractInfo.index)
+      );
+    } else if (
+      activeTab === COMPLETED_TAB &&
+      contractState === COMPLETED_CONTRACT
+    ) {
+      cards.push(
+        getCard(handleSelect, contractType, contractState, contractInfo.index)
+      );
+    }
+  });
   return cards;
 };
 
 const JunggaeTradeList = ({ handleSelect, contractInfoList, activeTab }) => {
-  console.log('Entry : JunggaeTradeList');
+  // console.log('Entry : JunggaeTradeList');
   return (
     <div className="JunggaeTradeList">
       <div className="list-wrapper">

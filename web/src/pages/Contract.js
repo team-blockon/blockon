@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import JunggaeMyPage from 'components/JunggaeMyPage';
+import JunggaeMyPage from 'components/junggae/JunggaeMyPage';
 
 class MyPage extends Component {
   state = {

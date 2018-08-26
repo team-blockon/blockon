@@ -2,11 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
-const Agent = require('./models/agent')
 
 require('dotenv').config();
 
@@ -33,20 +30,8 @@ app.use(morgan('dev'));
 /* development */
 app.use('/', express.static(path.resolve(__dirname, '../../public')));
 
-/*
--------------------------
-빌드시 삭제
- */
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  credentials: true
-};
-app.use(cors(corsOptions)); // cross-origin 요청 허용
-/*
---------------------------
- */
-app.use(express.static("./routes/util"));
-app.use("/api", require("./routes/api"));
+app.use(express.static('./routes/util'));
+app.use('/api', require('./routes/api'));
 
 /**
  * req.body 값으로 JSX 템플릿을 채운다.

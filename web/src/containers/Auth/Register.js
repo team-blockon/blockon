@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import AuthContent from 'components/AuthContent';
+import AuthContent from 'components/auth/AuthContent';
 import InputWithLabel from 'components/InputWithLabel';
-import AuthButton from 'components/AuthButton';
+import AuthButton from 'components/auth/AuthButton';
 import * as AuthAPI from 'lib/api/auth';
 import * as UserAPI from 'lib/api/user';
 import * as MetamaskUtil from 'lib/MetamaskUtil';
@@ -164,7 +164,16 @@ class Register extends Component {
             onChange={this.handleProfileChange}
             customRequest={this.customRequest}
           >
-            {imageUrl ? <img src={imageUrl} className="profile_pic" style={{width: 100+'%'}} alt="avatar" /> : uploadButton}
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                className="profile_pic"
+                style={{ width: 100 + '%' }}
+                alt="avatar"
+              />
+            ) : (
+              uploadButton
+            )}
           </Upload>
         </div>
         <InputWithLabel

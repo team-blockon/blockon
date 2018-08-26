@@ -93,7 +93,7 @@
 
       &.active::before {
         background: none;
-        background-image: url(../../static/images/icon/check.png);
+        background-image: url(../../../static/images/icon/check.png);
         background-size: 25px;
         background-repeat: no-repeat;
         width: 25px;
@@ -109,7 +109,7 @@
 
       &.first-not-active::before {
         background: none;
-        background-image: url(../../static/images/icon/doing.png);
+        background-image: url(../../../static/images/icon/doing.png);
         background-size: 30px;
         background-repeat: no-repeat;
         width: 30px;

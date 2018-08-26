@@ -244,7 +244,10 @@ class ContractEditForm extends Component {
               <div className="progressbar-wrapper">
                 <ul className="progressbar">
                   <li
-                    className={classNames({ active: status === 'deposit' })}
+                    className={classNames(
+                      { active: status === 'deposit' },
+                      'first-not-active'
+                    )}
                     onClick={() => this.handleSelect('deposit')}
                   >
                     계약금

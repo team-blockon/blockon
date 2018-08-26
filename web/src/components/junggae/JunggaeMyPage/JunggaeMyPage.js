@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import produce from 'immer';
 import classNames from 'classnames';
 import {
   TiThMenu as ListIcon,
@@ -50,18 +51,19 @@ class JunggaeMyPage extends Component {
     tradeModal: false,
     activeContractsNum: 0,
     completedContractsNum: 0,
-    // [contractType, contractState]의 리스트
+    // {index, type, state}의 리스트
     contractInfoList: []
   };
 
-  handleToggleModal = () => {
+  handleToggleModal = itemType => {
     this.setState({
-      tradeModal: !this.state.tradeModal
+      tradeModal: !this.state.tradeModal,
+      itemType
     });
   };
 
   getTabContent = (activeTab, activeType) => {
-    console.log('Entry :getTabContent');
+    // console.log('Entry :getTabContent');
     switch (activeTab) {
     case ONGOING_TAB: //진행중 거래
       if (activeType === 0) {
@@ -110,7 +112,7 @@ class JunggaeMyPage extends Component {
   };
 
   /**
-   * 해당하는 어카운트, 인덱스의 계약정보(계약종류, 계약상태)) 반환
+   * 해당하는 어카운트, 인덱스의 계약정보(계약종류, 계약상태) 반환
    */
   getContractInfoAt = function(accountInstance, index) {
     return new Promise((resolve, reject) => {
@@ -132,13 +134,17 @@ class JunggaeMyPage extends Component {
     const contractInfo = await this.getContractInfoAt(accountInstance, index);
     const contractType = contractInfo[0].c[0];
     const contractState = contractInfo[1].c[0];
+
     // 최신 데이터를 가장 위로 추가
-    this.setState({
-      contractInfoList: [
-        ...this.state.contractInfoList,
-        [contractType, contractState]
-      ]
-    });
+    this.setState(
+      produce(draft => {
+        draft.contractInfoList.unshift({
+          index,
+          type: contractType,
+          state: contractState
+        });
+      })
+    );
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
     if (contractState === COMPLETED_CONTRACT) {
@@ -186,14 +192,15 @@ class JunggaeMyPage extends Component {
 
     // 현재 브라우저에 접속한 유저의 어카운트 계정 인스턴스 생성
     const ethAddress = MetamaskUtil.getDefaultAccount();
-    console.log('ethAddress : ' + ethAddress);
     const userData = await UserAPI.getAccountAddressByEthAddress(ethAddress);
-    console.log(userData.data);
     const accountAddress = userData.data.accountAddress;
-    console.log('accountAddress : ' + accountAddress);
     const accountInstance = window.web3.eth
       .contract(AccountAbi)
       .at(accountAddress);
+
+    console.log('ethAddress : ' + ethAddress);
+    console.log(userData.data);
+    console.log('accountAddress : ' + accountAddress);
     console.log('accountInstance : ' + accountInstance);
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
@@ -205,10 +212,11 @@ class JunggaeMyPage extends Component {
     }
 
     // state 제대로 들어갔나 확인
-    this.state.contractInfoList.forEach((contractInfo, index) => {
-      console.log('-----------' + index);
-      console.log('contract type : ' + contractInfo[0]);
-      console.log('contract state : ' + contractInfo[1]);
+    this.state.contractInfoList.forEach(contractInfo => {
+      console.group(`${contractInfo.index}번 컨트랙트`);
+      console.log('contract type : ' + contractInfo.type);
+      console.log('contract state : ' + contractInfo.state);
+      console.groupEnd();
     });
 
     // 최신 블록 넘버 가져오기
@@ -250,7 +258,7 @@ class JunggaeMyPage extends Component {
       handleTabSelect,
       handleTypeSelect
     } = this.props;
-    const { tradeModal } = this.state;
+    const { tradeModal, itemType } = this.state;
 
     return (
       <div
@@ -310,7 +318,12 @@ class JunggaeMyPage extends Component {
           </div>
 
           {this.getTabContent(activeTab, activeType)}
-          {tradeModal && <JunggaeTradeModal onClose={this.handleToggleModal} />}
+          {tradeModal && (
+            <JunggaeTradeModal
+              onClose={this.handleToggleModal}
+              itemType={itemType}
+            />
+          )}
         </div>
       </div>
     );

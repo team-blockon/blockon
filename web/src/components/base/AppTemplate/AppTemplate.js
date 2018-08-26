@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import Footer from 'components/Footer';
+import Footer from 'components/base/Footer';
 import './AppTemplate.scss';
 
 const AppTemplate = ({ header, children, location }) => {

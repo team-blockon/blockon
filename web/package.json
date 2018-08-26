@@ -142,5 +142,6 @@
         2
       ]
     }
-  }
+  },
+  "proxy": "http://localhost:8000"
 }

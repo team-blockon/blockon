@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import AuthContent from 'components/AuthContent';
-import AuthButton from 'components/AuthButton';
-import AuthLink from 'components/AuthLink';
+import AuthContent from 'components/auth/AuthContent';
+import AuthButton from 'components/auth/AuthButton';
+import AuthLink from 'components/auth/AuthLink';
 import * as AuthAPI from 'lib/api/auth';
 import * as userActions from 'store/modules/user';
 import { Divider } from 'antd';

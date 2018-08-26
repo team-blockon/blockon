@@ -4,12 +4,19 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from 'store/modules/user';
-import LoggedInNav from 'components/HeaderNav/LoggedInNav';
-import LoggedOutNav from 'components/HeaderNav/LoggedOutNav';
+import LoggedInNav from 'components/base/HeaderNav/LoggedInNav';
+import LoggedOutNav from 'components/base/HeaderNav/LoggedOutNav';
 import * as AuthAPI from 'lib/api/auth';
 import './HeaderNav.scss';
 
-export const HeaderNavItem = ({ children, activeItem, item, onSelect, nav_click, to }) => {
+export const HeaderNavItem = ({
+  children,
+  activeItem,
+  item,
+  onSelect,
+  nav_click,
+  to
+}) => {
   return (
     <Fragment>
       <Link to={to}>

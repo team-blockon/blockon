@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { Home, Search, Contract, ContractEdit, Pricing, Auth } from 'pages';
-import AppTemplate from 'components/AppTemplate';
-import HeaderNav from 'components/HeaderNav';
+import AppTemplate from 'components/base/AppTemplate';
+import HeaderNav from 'components/base/HeaderNav';
 import HeaderContainer from 'containers/HeaderContainer';
 import PrivateRoute from 'components/PrivateRoute';
 

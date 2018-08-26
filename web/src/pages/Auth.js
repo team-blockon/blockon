@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import AuthWrapper from 'components/AuthWrapper';
+import AuthWrapper from 'components/auth/AuthWrapper';
 import { Route } from 'react-router-dom';
 import { Login, Register } from 'containers/Auth';
 
