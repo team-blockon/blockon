@@ -21,7 +21,7 @@ const RENT = 2;
  * 2 - 중도금 입금
  * 3 - 잔금 입금
  * 4 - 등기 등록 신청
- * 5 - 확정일자 
+ * 5 - 확정일자
  * 100 - 완료
  */
 const DOWN_PAYMENT = 1;
@@ -49,139 +49,116 @@ const ACTIVE = 1;
 const FIRST_NOT_ACTIVE = 2;
 const INACTIVE = 3;
 
-const getListClassName = (listClassName) => {
-  if(listClassName === ACTIVE){
+const getListClassName = listClassName => {
+  if (listClassName === ACTIVE) {
     return 'active';
   }
-  if(listClassName === FIRST_NOT_ACTIVE) {
+  if (listClassName === FIRST_NOT_ACTIVE) {
     return 'first-not-active';
   }
-  if(listClassName === INACTIVE) {
-    return'';  // className = '' 가 괜찮은지 확인요망
+  if (listClassName === INACTIVE) {
+    return ''; // className = '' 가 괜찮은지 확인요망
   }
-}
-
-const getDownPaymentListItem = (handleSelect, listClassName) => {
-  return (
-    <li className={getListClassName(listClassName)} onClick={handleSelect}>
-      계약금
-    </li>
-  );
-}
-
-const getMiddlePaymentListItem = (handleSelect, listClassName) => {
-  return (
-    <li className={getListClassName(listClassName)} onClick={handleSelect}>
-      중도금
-    </li>
-  );
-}
-
-const getFinalPaymentListItem = (handleSelect, listClassName) => {
-  return (
-    <li className={getListClassName(listClassName)} onClick={handleSelect}>
-      잔금
-    </li>
-  );
-}
-
-const getRegistrationListItem = (handleSelect, listClassName) => {
-  return (
-    <li className={getListClassName(listClassName)} onClick={handleSelect}>
-      등기신청
-    </li>
-  );
-}
-
-const getFixedDateListItem = (handleSelect, listClassName) => {
-  return (
-    <li className={getListClassName(listClassName)} onClick={handleSelect}>
-      확정일자
-    </li>
-  );
-}
-
-const getCompleteListItem = (handleSelect, listClassName) => {
-  return (
-    <li className={getListClassName(listClassName)} onClick={handleSelect}>
-      완료
-    </li>
-  );
-}
+};
 
 const getListItem = (handleSelect, listItemIndex, listClassName) => {
-  if(listItemIndex === DOWN_PAYMENT) {
-    return getDownPaymentListItem(handleSelect, listClassName);
+  let itemType;
+
+  switch (listItemIndex) {
+  case DOWN_PAYMENT:
+    itemType = '계약금';
+    break;
+
+  case MIDDLE_PAYMENT:
+    itemType = '중도금';
+    break;
+
+  case FINAL_PAYMENT:
+    itemType = '잔금';
+    break;
+
+  case REGISTRATION:
+    itemType = '등기신청';
+    break;
+
+  case FIXED_DATE:
+    itemType = '확정일자';
+    break;
+
+  case COMPLETED_CONTRACT:
+    itemType = '완료';
+    break;
+
+  default:
   }
-  if(listItemIndex === MIDDLE_PAYMENT) {
-    return getMiddlePaymentListItem(handleSelect, listClassName);
-  }
-  if(listItemIndex === FINAL_PAYMENT) {
-    return getFinalPaymentListItem(handleSelect, listClassName);
-  }
-  if(listItemIndex === REGISTRATION) {
-    return getRegistrationListItem(handleSelect, listClassName);
-  }
-  if(listItemIndex === FIXED_DATE) {
-    return getFixedDateListItem(handleSelect, listClassName);
-  }
-  if(listItemIndex === COMPLETED_CONTRACT) {
-    return getCompleteListItem(handleSelect, listClassName);
-  }
-}
+  return (
+    <li className={getListClassName(listClassName)} onClick={handleSelect}>
+      {itemType}
+    </li>
+  );
+};
 
 const getTradeProgressbarList = (handleSelect, contractState) => {
-  const contractFlow = [DOWN_PAYMENT, MIDDLE_PAYMENT, FINAL_PAYMENT, REGISTRATION, COMPLETED_CONTRACT];
+  const contractFlow = [
+    DOWN_PAYMENT,
+    MIDDLE_PAYMENT,
+    FINAL_PAYMENT,
+    REGISTRATION,
+    COMPLETED_CONTRACT
+  ];
   const progressbarList = [];
 
-  contractFlow.forEach( flow => {
-    if(flow < contractState) {
+  contractFlow.forEach(flow => {
+    if (flow < contractState) {
       progressbarList.push(getListItem(handleSelect, flow, ACTIVE));
-    } else if(flow === contractState) {
+    } else if (flow === contractState) {
       progressbarList.push(getListItem(handleSelect, flow, FIRST_NOT_ACTIVE));
     } else {
       progressbarList.push(getListItem(handleSelect, flow, INACTIVE));
     }
-  })
+  });
 
   return progressbarList;
-}
+};
 
 const getRentProgressbarList = (handleSelect, contractState) => {
-  const contractFlow = [DOWN_PAYMENT, FINAL_PAYMENT, FIXED_DATE, COMPLETED_CONTRACT];
+  const contractFlow = [
+    DOWN_PAYMENT,
+    FINAL_PAYMENT,
+    FIXED_DATE,
+    COMPLETED_CONTRACT
+  ];
   const progressbarList = [];
 
-  contractFlow.forEach( flow => {
-    if(flow < contractState) {
+  contractFlow.forEach(flow => {
+    if (flow < contractState) {
       progressbarList.push(getListItem(handleSelect, flow, ACTIVE));
-    } else if(flow === contractState) {
+    } else if (flow === contractState) {
       progressbarList.push(getListItem(handleSelect, flow, FIRST_NOT_ACTIVE));
     } else {
       progressbarList.push(getListItem(handleSelect, flow, INACTIVE));
     }
-  })
+  });
 
   return progressbarList;
-}
+};
 
 const getProgressbarList = (handleSelect, contractType, contractState) => {
-  if(contractType === TRADE) { 
-    return getTradeProgressbarList(handleSelect, contractState); 
+  if (contractType === TRADE) {
+    return getTradeProgressbarList(handleSelect, contractState);
   }
-  if(contractType === RENT) { 
-    return getRentProgressbarList(handleSelect, contractState); 
+  if (contractType === RENT) {
+    return getRentProgressbarList(handleSelect, contractState);
   }
-}
-
+};
 
 const getCard = (handleSelect, contractType, contractState) => {
-
   let contractData;
-  if(contractType === TRADE) {
-    contractData = (<p>매매 / 10억</p>);
+  if (contractType === TRADE) {
+    contractData = <p>매매 / 10억</p>;
   }
-  if(contractType === RENT) {
-    contractData = (<p>전,월세 / 1000/45 </p>);
+  if (contractType === RENT) {
+    contractData = <p>전,월세 / 1000/45 </p>;
   }
 
   const card = (
@@ -209,23 +186,25 @@ const getCard = (handleSelect, contractType, contractState) => {
   );
 
   return card;
-}
+};
 
 const getLists = (handleSelect, contractInfoList, activeTab) => {
   const cards = [];
-  Array.from(contractInfoList).reverse().forEach( contractInfo => {
-    const contractType = contractInfo[TYPE];
-    const contractState = contractInfo[STATE];
-    if(activeTab === ONGOING_TAB) {
-      if(contractState !== COMPLETED_CONTRACT) {
-        cards.push(getCard(handleSelect, contractType, contractState));
+  Array.from(contractInfoList)
+    .reverse()
+    .forEach(contractInfo => {
+      const contractType = contractInfo[TYPE];
+      const contractState = contractInfo[STATE];
+      if (activeTab === ONGOING_TAB) {
+        if (contractState !== COMPLETED_CONTRACT) {
+          cards.push(getCard(handleSelect, contractType, contractState));
+        }
+      } else if (activeTab === COMPLETED_TAB) {
+        if (contractState === COMPLETED_CONTRACT) {
+          cards.push(getCard(handleSelect, contractType, contractState));
+        }
       }
-    } else if(activeTab === COMPLETED_TAB) {
-      if(contractState === COMPLETED_CONTRACT) {
-        cards.push(getCard(handleSelect, contractType, contractState));
-      }
-    }
-  });
+    });
   return cards;
 };
 
@@ -233,7 +212,9 @@ const JunggaeTradeList = ({ handleSelect, contractInfoList, activeTab }) => {
   console.log('Entry : JunggaeTradeList');
   return (
     <div className="JunggaeTradeList">
-      <div className="list-wrapper">{getLists(handleSelect, contractInfoList, activeTab)}</div>
+      <div className="list-wrapper">
+        {getLists(handleSelect, contractInfoList, activeTab)}
+      </div>
       <div className="sidebar">
         <button>
           <Link to="/contract/edit">계약 올리기</Link>
