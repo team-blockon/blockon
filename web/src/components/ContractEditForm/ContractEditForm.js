@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
+import produce from 'immer';
 import * as UserAPI from 'lib/api/user';
 import * as ContractAPI from 'lib/api/contract';
 import * as MetamaskUtil from 'lib/MetamaskUtil';
+import AccountAbi from 'abi/account_abi';
 import { AutoComplete, Radio, DatePicker } from 'antd';
 import locale from 'antd/lib/date-picker/locale/ko_KR';
 import './ContractEditForm.scss';
@@ -12,6 +15,7 @@ const RadioGroup = Radio.Group;
 
 class ContractEditForm extends Component {
   state = {
+    agentAddress: null,
     dataSource: [],
     formData: {
       sellerEmail: '',
@@ -21,24 +25,21 @@ class ContractEditForm extends Component {
   };
 
   handleSelect = status => {
-    this.setState({
-      formData: {
-        status
-      }
-    });
+    this.setState(
+      produce(draft => {
+        draft.formData.contractType = status;
+      })
+    );
   };
 
   handleSubmit = async () => {
+    const { agentAddress } = this.state;
     const { sellerEmail, buyerEmail, contractType } = this.state.formData;
     const { blockon } = window;
 
-    const agent = await UserAPI.getAccountAddressByEthAddress(
-      MetamaskUtil.getDefaultAccount()
-    );
     const seller = await UserAPI.getAccountAddressByEamil(sellerEmail);
     const buyer = await UserAPI.getAccountAddressByEamil(buyerEmail);
 
-    const agentAddress = agent.data.accountAddress;
     const sellerAddress = seller.data.accountAddress;
     const buyerAddress = buyer.data.accountAddress;
 
@@ -59,7 +60,7 @@ class ContractEditForm extends Component {
         if (err) {
           console.log(err);
         } else {
-          ContractAPI.create(this.state.formData);
+          console.log('createContractByAccountAddress res:', res);
         }
       }
     );
@@ -67,9 +68,11 @@ class ContractEditForm extends Component {
 
   handleChange = event => {
     const { name, value } = event.target;
-    this.setState({ formData: { [name]: value } }, () => {
-      console.log(this.state);
-    });
+    this.setState(
+      produce(draft => {
+        draft.formData[name] = value;
+      })
+    );
   };
 
   handleSearch = value => {
@@ -80,6 +83,36 @@ class ContractEditForm extends Component {
       });
     });
   };
+
+  async componentDidMount() {
+    const { history } = this.props;
+    const { web3 } = window;
+
+    const agent = await UserAPI.getAccountAddressByEthAddress(
+      MetamaskUtil.getDefaultAccount()
+    );
+    const agentAddress = agent.data.accountAddress;
+    this.setState({ agentAddress });
+    const accountInstance = web3.eth.contract(AccountAbi).at(agentAddress);
+
+    const latestBlockNumber = await MetamaskUtil.getLatestBlockNumber();
+
+    // UpdateEvent 이벤트에 대한 filter
+    const updateEvent = accountInstance.UpdateContract(null, {
+      fromBlock: latestBlockNumber,
+      toBlock: 'latest'
+    });
+
+    // UpdateEvent 이벤트에 대한 watch
+    updateEvent.watch(async (error, result) => {
+      if (error) {
+        console.log(error);
+      } else {
+        await ContractAPI.create(this.state.formData);
+        history.push('/contract');
+      }
+    });
+  }
 
   render() {
     const { dataSource } = this.state;
@@ -99,20 +132,28 @@ class ContractEditForm extends Component {
             <div className="form-group">
               <label className="form-label">매수인</label>
               <AutoComplete
-                name="sellerEmail"
+                name="buyerEmail"
                 dataSource={dataSource}
                 onChange={value => {
-                  this.setState({ formData: { buyerEmail: value } });
+                  this.setState(
+                    produce(draft => {
+                      draft.formData.buyerEmail = value;
+                    })
+                  );
                 }}
                 onSelect={value => {
-                  this.setState({ formData: { buyerEmail: value } });
+                  this.setState(
+                    produce(draft => {
+                      draft.formData.buyerEmail = value;
+                    })
+                  );
                 }}
                 onSearch={this.handleSearch}
               >
                 <input
                   type="email"
-                  value={sellerEmail}
-                  name="sellerEmail"
+                  value={buyerEmail}
+                  name="buyerEmail"
                   placeholder="이메일 주소로 검색하세요"
                 />
               </AutoComplete>
@@ -122,17 +163,25 @@ class ContractEditForm extends Component {
               <AutoComplete
                 dataSource={dataSource}
                 onChange={value => {
-                  this.setState({ formData: { sellerEmail: value } });
+                  this.setState(
+                    produce(draft => {
+                      draft.formData.sellerEmail = value;
+                    })
+                  );
                 }}
                 onSelect={value => {
-                  this.setState({ formData: { sellerEmail: value } });
+                  this.setState(
+                    produce(draft => {
+                      draft.formData.sellerEmail = value;
+                    })
+                  );
                 }}
                 onSearch={this.handleSearch}
               >
                 <input
                   type="email"
-                  value={buyerEmail}
-                  name="buyerEmail"
+                  value={sellerEmail}
+                  name="sellerEmail"
                   placeholder="이메일 주소로 검색하세요"
                 />
               </AutoComplete>
@@ -244,4 +293,4 @@ class ContractEditForm extends Component {
   }
 }
 
-export default ContractEditForm;
+export default withRouter(ContractEditForm);

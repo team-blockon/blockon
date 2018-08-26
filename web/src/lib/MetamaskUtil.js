@@ -26,3 +26,18 @@ export const check = () => {
 export const getDefaultAccount = () => {
   return window.web3.eth.accounts[0];
 };
+
+/**
+ * 가장 최신 블록넘버를 반환
+ */
+export const getLatestBlockNumber = () => {
+  return new Promise((resolve, reject) => {
+    window.web3.eth.getBlockNumber((err, res) => {
+      if (!err) {
+        resolve(res);
+      } else {
+        reject(err);
+      }
+    });
+  });
+};
