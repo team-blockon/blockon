@@ -69,9 +69,17 @@ contract Account {
      */
     function changeContractState(BaseContract contractAddress, uint8 newContractState) public {
         if(isAgent) {
+            // changeState에서 상태 변경후 emitChangeContractStateEvent를 호출해서 변경된것을 알림
             contractAddress.changeState(newContractState);
-            emit UpdateContract(uint8(2), contractIndices[contractAddress] - 1);
         }
+    }
+
+    /**
+     * @dev BaseContract 계약계정에서 상태 변경을 완료 한 후, 이벤트를 발행하기 위해 Account 계약계정에 알림
+     * @param contractAddress 상태가 변경된 BaseContract 계약 계정 주소
+     */
+    function emitChangeContractStateEvent(BaseContract contractAddress) public {
+        emit UpdateContract(uint8(2), contractIndices[contractAddress] - 1);
     }
 
     /**

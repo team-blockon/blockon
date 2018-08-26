@@ -2,23 +2,23 @@ pragma solidity ^0.4.24;
 import "./Account.sol";
 
 contract BaseContract {
-    address public agentID;
-    address public sellerID;
-    address public buyerID;
+    Account public agentAccount;
+    Account public sellerAccount;
+    Account public buyerAccount;
     uint8 public contractType;
     uint8 public contractState;
     
     /**
      * @dev 중개인, 매도인, 매수인의 어카운트 주소를 입력받아서 상태변수를 초기화시킨다
-     * @param agentAccount 중개인의 Account 스마트컨트랙트 주소
-     * @param sellerAccount 매도인의 Account 스마트컨트랙트 주소
-     * @param buyerAccount 매수인의 Account 스마트컨트랙트 주소
+     * @param _agentAccount 중개인의 Account 스마트컨트랙트 주소
+     * @param _sellerAccount 매도인의 Account 스마트컨트랙트 주소
+     * @param _buyerAccount 매수인의 Account 스마트컨트랙트 주소
      * @param _contractType 계약의 종류, 1 - 매매, 2 - 전,월세
      */
-    constructor(Account agentAccount, Account sellerAccount, Account buyerAccount, uint8 _contractType) public {
-        agentID = agentAccount.publicAddress();
-        buyerID = sellerAccount.publicAddress();
-        sellerID = buyerAccount.publicAddress();
+    constructor(Account _agentAccount, Account _sellerAccount, Account _buyerAccount, uint8 _contractType) public {
+        agentAccount = _agentAccount;
+        buyerAccount = _sellerAccount;
+        sellerAccount = _buyerAccount;
         contractType = _contractType;
         
         // 기본상태 1, 계약금 입금 상태
@@ -30,7 +30,7 @@ contract BaseContract {
     }
 
     /**
-     * @dev 계약의 상태를 변경한다
+     * @dev 계약의 상태를 변경한다. 상태가 변경되었다고 각 어카운트에 알린다.
      * @param newState 변경 할 상태(매매의 경우 1,2,3,4 / 전월세의 경우 1,3,5)
      *                  1 - 계약금 입금
      *                  2 - 중도금 입금
@@ -41,6 +41,11 @@ contract BaseContract {
      */
     function changeState(uint8 newState) public {
         contractState = newState;
+
+        // 상태변화가 완료되었다는 것을 계약 당사자들의 account 계약계정에 알림
+        agentAccount.emitChangeContractStateEvent(this);
+        buyerAccount.emitChangeContractStateEvent(this);
+        sellerAccount.emitChangeContractStateEvent(this);
     }
     
 }
