@@ -162,7 +162,10 @@ class JunggaeMyPage extends Component {
    */
   changeContractStateAt = async function(accountInstance, index) {
     const contractInfo = await this.getContractInfoAt(accountInstance, index);
-    const contractState = contractInfo[1].c[0];
+    const contractState = contractInfo[STATE].c[0];
+
+    console.log("****changeContractStateAt****");
+    console.log("----state : " + contractState);  
 
     const currentStateList = this.state.contractInfoList.slice();
     currentStateList[index][STATE] = contractState;

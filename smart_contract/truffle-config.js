@@ -7,13 +7,13 @@ module.exports = {
       development: {
           host: "127.0.0.1",
           port: 7545,
-          gas: 4712388,
+          gas: 4612388,
           network_id: "*"
       },
       ropsten: {
           provider: () => new HDWalletProvider([privateKey], 'https://ropsten.infura.io/v3/' + accessToken),
           network_id: 3,
-          gas: 4712388,
+          gas: 4612388,
           gasPrice: 100000000000
       }
   }

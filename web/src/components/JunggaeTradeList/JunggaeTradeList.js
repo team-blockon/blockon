@@ -173,7 +173,17 @@ const getProgressbarList = (handleSelect, contractType, contractState) => {
   }
 }
 
+
 const getCard = (handleSelect, contractType, contractState) => {
+
+  let contractData;
+  if(contractType === TRADE) {
+    contractData = (<p>매매 / 10억</p>);
+  }
+  if(contractType === RENT) {
+    contractData = (<p>전,월세 / 1000/45 </p>)
+  }
+
   const card = (
     <div className="card">
       <p className="no">No. mxabcff</p>
@@ -186,7 +196,7 @@ const getCard = (handleSelect, contractType, contractState) => {
             <p>준영타워팰리스</p>
             <p>단독주택</p>
             <p>수원시 영통구 이의동 센트럴타운로 76</p>
-            <p>{contractType} / 10억</p>
+            <p>{contractData}</p>
           </div>
         </div>
       </div>
