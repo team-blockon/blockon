@@ -56,9 +56,17 @@ class JunggaeMyPage extends Component {
     contractInfoList: []
   };
 
-  handleToggleModal = itemType => {
+  handleToggleModal = (
+    accountAddress,
+    contractIndex,
+    newContractState,
+    itemType
+  ) => {
     this.setState({
       tradeModal: !this.state.tradeModal,
+      accountAddress,
+      contractIndex,
+      newContractState,
       itemType
     });
   };
@@ -72,6 +80,7 @@ class JunggaeMyPage extends Component {
           <JunggaeTradeList
             handleSelect={this.handleToggleModal}
             contractInfoList={this.state.contractInfoList}
+            accountInstance={this.state.accountInstance}
             activeTab={activeTab}
           />
         );
@@ -174,13 +183,17 @@ class JunggaeMyPage extends Component {
     const contractState = contractInfo[STATE].toNumber();
 
     console.log('****changeContractStateAt****');
-    console.log('----state : ' + contractState);
+    console.log('----state : ', contractState);
 
-    const currentStateList = this.state.contractInfoList.slice();
-    currentStateList[index][STATE] = contractState;
-    this.setState({
-      contractInfoList: currentStateList
-    });
+    this.setState(
+      produce(draft => {
+        draft.contractInfoList.forEach(info => {
+          if (info.index === index) {
+            info.state = contractState;
+          }
+        });
+      })
+    );
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
     if (contractState === COMPLETED_CONTRACT) {
@@ -204,6 +217,7 @@ class JunggaeMyPage extends Component {
     const accountInstance = window.web3.eth
       .contract(AccountAbi)
       .at(accountAddress);
+    this.setState({ accountInstance });
 
     console.log('ethAddress : ' + ethAddress);
     console.log(userData.data);
@@ -266,7 +280,13 @@ class JunggaeMyPage extends Component {
       handleTabSelect,
       handleTypeSelect
     } = this.props;
-    const { tradeModal, itemType } = this.state;
+    const {
+      tradeModal,
+      accountAddress,
+      contractIndex,
+      newContractState,
+      itemType
+    } = this.state;
 
     return (
       <div
@@ -329,6 +349,9 @@ class JunggaeMyPage extends Component {
           {tradeModal && (
             <JunggaeTradeModal
               onClose={this.handleToggleModal}
+              accountAddress={accountAddress}
+              contractIndex={contractIndex}
+              newContractState={newContractState}
               itemType={itemType}
             />
           )}

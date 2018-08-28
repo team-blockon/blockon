@@ -43,206 +43,209 @@ const ACTIVE = 1;
 const FIRST_NOT_ACTIVE = 2;
 const INACTIVE = 3;
 
-const getListClassName = listClassName => {
-  if (listClassName === ACTIVE) {
-    return 'active';
-  }
-  if (listClassName === FIRST_NOT_ACTIVE) {
-    return 'first-not-active';
-  }
-  if (listClassName === INACTIVE) {
-    return ''; // className = '' 가 괜찮은지 확인요망
-  }
-};
-
-const getListItem = (handleSelect, listItemIndex, listClassName) => {
-  let itemType;
-
-  switch (listItemIndex) {
-  case DOWN_PAYMENT:
-    itemType = '계약금';
-    break;
-
-  case MIDDLE_PAYMENT:
-    itemType = '중도금';
-    break;
-
-  case FINAL_PAYMENT:
-    itemType = '잔금';
-    break;
-
-  case REGISTRATION:
-    itemType = '등기신청';
-    break;
-
-  case FIXED_DATE:
-    itemType = '확정일자';
-    break;
-
-  case COMPLETED_CONTRACT:
-    itemType = '완료';
-    break;
-
-  default:
-  }
-
-  return (
-    <li
-      className={getListClassName(listClassName)}
-      onClick={
-        listClassName === FIRST_NOT_ACTIVE
-          ? e => {
-            handleSelect(itemType);
-          }
-          : undefined
-      }
-    >
-      {itemType}
-    </li>
-  );
-};
-
-const getTradeProgressbarList = (handleSelect, contractState) => {
-  const contractFlow = [
-    DOWN_PAYMENT,
-    MIDDLE_PAYMENT,
-    FINAL_PAYMENT,
-    REGISTRATION,
-    COMPLETED_CONTRACT
-  ];
-  const progressbarList = [];
-
-  contractFlow.forEach(flow => {
-    if (flow < contractState) {
-      progressbarList.push(getListItem(handleSelect, flow, ACTIVE));
-    } else if (flow === contractState) {
-      progressbarList.push(getListItem(handleSelect, flow, FIRST_NOT_ACTIVE));
-    } else {
-      progressbarList.push(getListItem(handleSelect, flow, INACTIVE));
-    }
-  });
-
-  return progressbarList;
-};
-
-const getRentProgressbarList = (handleSelect, contractState) => {
-  const contractFlow = [
-    DOWN_PAYMENT,
-    FINAL_PAYMENT,
-    FIXED_DATE,
-    COMPLETED_CONTRACT
-  ];
-  const progressbarList = [];
-
-  contractFlow.forEach(flow => {
-    if (flow < contractState) {
-      progressbarList.push(getListItem(handleSelect, flow, ACTIVE));
-    } else if (flow === contractState) {
-      progressbarList.push(getListItem(handleSelect, flow, FIRST_NOT_ACTIVE));
-    } else {
-      progressbarList.push(getListItem(handleSelect, flow, INACTIVE));
-    }
-  });
-
-  return progressbarList;
-};
-
-const getProgressbarList = (
+const JunggaeTradeList = ({
   handleSelect,
-  contractType,
-  contractState,
-  index
-) => {
-  if (contractType === TRADE) {
-    return getTradeProgressbarList(handleSelect, contractState, index);
-  }
-  if (contractType === RENT) {
-    return getRentProgressbarList(handleSelect, contractState, index);
-  }
-};
-
-const getCard = (handleSelect, contractInfo) => {
-  const { index, type, state, building } = contractInfo;
-
-  let contractData;
-  if (type === TRADE) {
-    contractData = <p>매매 / 10억</p>;
-  }
-  if (type === RENT) {
-    contractData = <p>전,월세 / 1000/45 </p>;
-  }
-
-  const getKoreanBuildingType = eng => {
-    const map = {
-      jutaek: '주택',
-      apartment: '아파트',
-      sangga: '상가',
-      officetel: '오피스텔'
-    };
-
-    return map[eng];
+  contractInfoList,
+  accountInstance,
+  activeTab
+}) => {
+  // console.log('Entry : JunggaeTradeList');
+  const getListClassName = listClassName => {
+    switch (listClassName) {
+    case ACTIVE:
+      return 'active';
+    case FIRST_NOT_ACTIVE:
+      return 'first-not-active';
+    default:
+      return '';
+    }
   };
 
-  const card = (
-    <div
-      className="card"
-      key={index}
-      data-id={index}
-      onClick={e => {
-        // currentTarget: 이벤트가 바인딩된 요소
-        console.log(e.currentTarget.dataset.id);
-      }}
-    >
-      <p className="no">No. mxabcff</p>
-      <div className="content">
-        <div className="detail">
-          <div className="image">
-            <img src={maemulImage} alt="maemul" />
-          </div>
-          <div>
-            <p>준영타워팰리스</p>
-            <p>{getKoreanBuildingType(building.type)}</p>
-            <p>{building.address}</p>
-            {contractData}
+  const getListItem = (stepIndex, listClassName, cardIndex, contractType) => {
+    const tradeStep = [
+      DOWN_PAYMENT,
+      MIDDLE_PAYMENT,
+      FINAL_PAYMENT,
+      REGISTRATION,
+      COMPLETED_CONTRACT
+    ];
+    const rentStep = [
+      DOWN_PAYMENT,
+      FINAL_PAYMENT,
+      FIXED_DATE,
+      COMPLETED_CONTRACT
+    ];
+
+    const nextStep = (currentStep => {
+      switch (contractType) {
+      case TRADE:
+        for (const [index, step] of tradeStep.entries()) {
+          if (step === currentStep) {
+            return tradeStep[index + 1];
+          }
+        }
+        break;
+      case RENT:
+        for (const [index, step] of rentStep.entries()) {
+          if (step === currentStep) {
+            return rentStep[index + 1];
+          }
+        }
+        break;
+      default:
+      }
+    })(stepIndex);
+
+    const getStepWord = step => {
+      switch (step) {
+      case DOWN_PAYMENT:
+        return '계약금';
+      case MIDDLE_PAYMENT:
+        return '중도금';
+      case FINAL_PAYMENT:
+        return '잔금';
+      case REGISTRATION:
+        return '등기신청';
+      case FIXED_DATE:
+        return '확정일자';
+      case COMPLETED_CONTRACT:
+        return '완료';
+      default:
+      }
+    };
+
+    return (
+      <li
+        className={getListClassName(listClassName)}
+        onClick={
+          listClassName === FIRST_NOT_ACTIVE
+            ? e => {
+              handleSelect(
+                accountInstance.address,
+                cardIndex,
+                nextStep,
+                getStepWord(nextStep)
+              );
+            }
+            : undefined
+        }
+      >
+        {getStepWord(stepIndex)}
+      </li>
+    );
+  };
+
+  const getProgressbarList = (contractType, contractState, cardIndex) => {
+    let contractStep;
+
+    if (contractType === TRADE) {
+      contractStep = [
+        DOWN_PAYMENT,
+        MIDDLE_PAYMENT,
+        FINAL_PAYMENT,
+        REGISTRATION,
+        COMPLETED_CONTRACT
+      ];
+    } else {
+      contractStep = [
+        DOWN_PAYMENT,
+        FINAL_PAYMENT,
+        FIXED_DATE,
+        COMPLETED_CONTRACT
+      ];
+    }
+
+    const progressbarList = [];
+
+    contractStep.forEach(step => {
+      if (step < contractState) {
+        progressbarList.push(
+          getListItem(step, ACTIVE, cardIndex, contractType)
+        );
+      } else if (step === contractState) {
+        progressbarList.push(
+          getListItem(step, FIRST_NOT_ACTIVE, cardIndex, contractType)
+        );
+      } else {
+        progressbarList.push(
+          getListItem(step, INACTIVE, cardIndex, contractType)
+        );
+      }
+    });
+
+    return progressbarList;
+  };
+
+  const getCard = contractInfo => {
+    const { index, type, state, building } = contractInfo;
+
+    let contractData;
+    if (type === TRADE) {
+      contractData = <p>매매 / 10억</p>;
+    }
+    if (type === RENT) {
+      contractData = <p>전,월세 / 1000/45 </p>;
+    }
+
+    const getKoreanBuildingType = eng => {
+      const map = {
+        jutaek: '주택',
+        apartment: '아파트',
+        sangga: '상가',
+        officetel: '오피스텔'
+      };
+
+      return map[eng];
+    };
+
+    const card = (
+      <div className="card" key={index}>
+        <p className="no">No. mxabcff</p>
+        <div className="content">
+          <div className="detail">
+            <div className="image">
+              <img src={maemulImage} alt="maemul" />
+            </div>
+            <div>
+              <p>준영타워팰리스</p>
+              <p>{getKoreanBuildingType(building.type)}</p>
+              <p>{building.address}</p>
+              {contractData}
+            </div>
           </div>
         </div>
+        <div className="progressbar-wrapper">
+          <ul className="progressbar">
+            {getProgressbarList(type, state, index)}
+          </ul>
+        </div>
       </div>
-      <div className="progressbar-wrapper">
-        <ul className="progressbar">
-          {getProgressbarList(handleSelect, type, state)}
-        </ul>
-      </div>
-    </div>
-  );
+    );
 
-  return card;
-};
+    return card;
+  };
 
-const getLists = (handleSelect, contractInfoList, activeTab) => {
-  const cards = [];
+  const getLists = () => {
+    const cards = [];
 
-  contractInfoList.forEach(contractInfo => {
-    const contractState = contractInfo.state;
+    contractInfoList.forEach(contractInfo => {
+      const contractState = contractInfo.state;
 
-    if (activeTab === ONGOING_TAB && contractState !== COMPLETED_CONTRACT) {
-      cards.push(getCard(handleSelect, contractInfo));
-    } else if (
-      activeTab === COMPLETED_TAB &&
-      contractState === COMPLETED_CONTRACT
-    ) {
-      cards.push(getCard(handleSelect, contractInfo));
-    }
-  });
-  return cards;
-};
+      if (activeTab === ONGOING_TAB && contractState !== COMPLETED_CONTRACT) {
+        cards.push(getCard(contractInfo));
+      } else if (
+        activeTab === COMPLETED_TAB &&
+        contractState === COMPLETED_CONTRACT
+      ) {
+        cards.push(getCard(contractInfo));
+      }
+    });
+    return cards;
+  };
 
-const JunggaeTradeList = ({ handleSelect, contractInfoList, activeTab }) => {
-  // console.log('Entry : JunggaeTradeList');
   return (
     <div className="JunggaeTradeList">
-      <div className="list-wrapper">
-        {getLists(handleSelect, contractInfoList, activeTab)}
-      </div>
+      <div className="list-wrapper">{getLists()}</div>
       <div className="sidebar">
         <button>
           <Link to="/contract/edit">계약 올리기</Link>
