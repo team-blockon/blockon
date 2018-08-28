@@ -39,15 +39,6 @@ export class SearchWrapper extends Component {
     zoom: 18
   };
 
-  componentDidMount() {
-    const { lat, lng } = this.props.center;
-
-    MapAPI.getAgents(lat, lng, 1000).then(res => {
-      const agents = res.data.documents;
-      this.setState({ agents });
-    });
-  }
-
   getAgents = () => {
     const agents = this.state.agents.map((agent, index) => (
       <div className="agent" key={index}>
@@ -66,6 +57,18 @@ export class SearchWrapper extends Component {
     return agents;
   };
 
+  /**
+   * 지도 움직일 때마다 공인중개사 목록 갱신
+   */
+  handleChange = ({ center }) => {
+    const { lat, lng } = center;
+
+    MapAPI.getAgents(lat, lng, 1000).then(res => {
+      const agents = res.data.documents;
+      this.setState({ agents });
+    });
+  };
+
   render() {
     const { agents } = this.state;
 
@@ -79,6 +82,7 @@ export class SearchWrapper extends Component {
               }}
               defaultCenter={this.props.center}
               defaultZoom={this.props.zoom}
+              onChange={this.handleChange}
             >
               {agents.map(agent => {
                 return (
