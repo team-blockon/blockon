@@ -14,6 +14,7 @@ import facebookIcon from 'static/images/icon/facebook.png';
 import googleIcon from 'static/images/icon/google.png';
 import instagramIcon from 'static/images/icon/instagram.png';
 import * as LandingAPI from 'lib/api/landing';
+import * as MapAPI from 'lib/api/map';
 import './HomeWrapper.scss';
 import { Input, AutoComplete, notification } from 'antd';
 
@@ -236,9 +237,9 @@ class ContactUsSection extends Component {
 
 const searchResult = value => {
   return new Promise((resolve, reject) => {
-    LandingAPI.agentSearch(value).then(res => {
-      const agents = res.data.message;
-      resolve(agents.map(agent => agent.name));
+    MapAPI.getSubways(value).then(res => {
+      const subways = res.data.documents;
+      resolve(subways.map(document => document.place_name));
     });
   });
 };
@@ -250,17 +251,14 @@ class HomeWrapper extends Component {
   };
 
   handleSearch = async value => {
-    this.setState(
-      {
-        dataSource: value ? await searchResult(value) : []
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+    const subways = await searchResult(value);
+
+    if (subways.length > 0) {
+      this.setState({ dataSource: subways });
+    }
   };
 
-  handleKeyPress = event => {
+  handlePressEnter = event => {
     const { history } = this.props;
     history.push(`/search?q=${event.target.value}`);
   };
@@ -281,7 +279,7 @@ class HomeWrapper extends Component {
                 placeholder="원하시는 지역을 검색해보세요."
                 className="agent"
                 value={agent}
-                onPressEnter={this.handleKeyPress}
+                onPressEnter={this.handlePressEnter}
               />
             </AutoComplete>
           </div>
