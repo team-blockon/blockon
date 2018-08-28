@@ -44,9 +44,9 @@ exports.isRightEmail = (req, res) => {
     POST /api/contract
     {
         people: {
-            agentEthAddress,
-            sellerEmail,
-            buyerEmail
+            agentAddress,
+            sellerAddress,
+            buyerAddress
         },
         building: {
             type,
@@ -54,9 +54,9 @@ exports.isRightEmail = (req, res) => {
             photo
         },
         contract: {
+            index,
             date,
-            type,
-            status
+            type
         }
     }
 */
@@ -68,6 +68,22 @@ exports.isRightEmail = (req, res) => {
  */
 exports.addContract = (req, res) => {
   Contract.create(req.body).then(contract => {
+    res.json(contract);
+  });
+};
+
+exports.getContractByIndex = (req, res) => {
+  const index = req.params.index;
+  const { accountAddress } = req.body;
+  console.log(accountAddress);
+  Contract.findOne({
+    $or: [
+      { 'people.agentAddress': accountAddress },
+      { 'people.sellerAddress': accountAddress },
+      { 'people.buyerAddress': accountAddress }
+    ],
+    'contract.index': index
+  }).then(contract => {
     res.json(contract);
   });
 };

@@ -11,6 +11,7 @@ import JunggaeTradeCard from '../JunggaeTradeCard/JunggaeTradeCard';
 import JunggaeTradeList from '../JunggaeTradeList/JunggaeTradeList';
 import JunggaeTradeModal from '../JunggaeTradeModal';
 import * as UserAPI from 'lib/api/user';
+import * as ContractAPI from 'lib/api/contract';
 import * as MetamaskUtil from 'lib/MetamaskUtil';
 
 import AccountAbi from 'abi/account_abi';
@@ -131,9 +132,14 @@ class JunggaeMyPage extends Component {
    * state.contractInfoList에 추가한다
    */
   addContractInfoAt = async function(accountInstance, index) {
+    // 온체인 데이터 가져오기
     const contractInfo = await this.getContractInfoAt(accountInstance, index);
-    const contractType = contractInfo[0].c[0];
-    const contractState = contractInfo[1].c[0];
+    const contractType = contractInfo[0].toNumber();
+    const contractState = contractInfo[1].toNumber();
+
+    // 오프체인 데이터 가져오기
+    const res = await ContractAPI.get(accountInstance.address, index);
+    const { building } = res.data;
 
     // 최신 데이터를 가장 위로 추가
     this.setState(
@@ -141,7 +147,8 @@ class JunggaeMyPage extends Component {
         draft.contractInfoList.unshift({
           index,
           type: contractType,
-          state: contractState
+          state: contractState,
+          building
         });
       })
     );
@@ -164,7 +171,7 @@ class JunggaeMyPage extends Component {
    */
   changeContractStateAt = async function(accountInstance, index) {
     const contractInfo = await this.getContractInfoAt(accountInstance, index);
-    const contractState = contractInfo[STATE].c[0];
+    const contractState = contractInfo[STATE].toNumber();
 
     console.log('****changeContractStateAt****');
     console.log('----state : ' + contractState);
@@ -184,7 +191,7 @@ class JunggaeMyPage extends Component {
     }
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     /**
      * 데이터베이스와 블록체인 네트워크로 부터 정보를 받아온다
      * state에 정보를 채운다
@@ -216,6 +223,7 @@ class JunggaeMyPage extends Component {
       console.group(`${contractInfo.index}번 컨트랙트`);
       console.log('contract type : ' + contractInfo.type);
       console.log('contract state : ' + contractInfo.state);
+      console.log('contract address : ' + contractInfo.building.address);
       console.groupEnd();
     });
 
@@ -234,8 +242,8 @@ class JunggaeMyPage extends Component {
       if (error) {
         console.log(error);
       } else {
-        const updateType = result.args.updateType.c[0];
-        const contractIndex = result.args.contractIndex.c[0];
+        const updateType = result.args.updateType.toNumber();
+        const contractIndex = result.args.contractIndex.toNumber();
         console.log('----------conntractIndex : ' + contractIndex);
         if (updateType === 1) {
           // add contract 이므로 state에 새로 생성된 컨트랙트 추가

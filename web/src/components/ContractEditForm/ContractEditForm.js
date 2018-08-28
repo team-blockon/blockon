@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import classNames from 'classnames';
 import produce from 'immer';
 import * as UserAPI from 'lib/api/user';
 import * as ContractAPI from 'lib/api/contract';
 import * as MetamaskUtil from 'lib/MetamaskUtil';
 import AccountAbi from 'abi/account_abi';
 import { AutoComplete, Radio, DatePicker } from 'antd';
-import locale from 'antd/lib/date-picker/locale/ko_KR';
 import './ContractEditForm.scss';
 
 const RadioButton = Radio.Button;
@@ -15,26 +13,32 @@ const RadioGroup = Radio.Group;
 
 class ContractEditForm extends Component {
   state = {
-    agentAddress: null,
     dataSource: [],
+    sellerEmail: '',
+    buyerEmail: '',
     formData: {
-      sellerEmail: '',
-      buyerEmail: '',
-      buildingAddress: ''
+      people: {
+        agentAddress: null,
+        sellerAddress: null,
+        buyerAddress: null
+      },
+      building: {
+        type: null,
+        address: '',
+        photo: null
+      },
+      contract: {
+        index: null,
+        date: null,
+        type: null
+      }
     }
   };
 
-  handleSelect = status => {
-    this.setState(
-      produce(draft => {
-        draft.formData.contractType = status;
-      })
-    );
-  };
-
   handleSubmit = async () => {
-    const { agentAddress } = this.state;
-    const { sellerEmail, buyerEmail, contractType } = this.state.formData;
+    const { sellerEmail, buyerEmail, formData } = this.state;
+    const { agentAddress } = formData.people;
+    const { type } = formData.contract;
     const { blockon } = window;
 
     const seller = await UserAPI.getAccountAddressByEamil(sellerEmail);
@@ -42,12 +46,18 @@ class ContractEditForm extends Component {
 
     const sellerAddress = seller.data.accountAddress;
     const buyerAddress = buyer.data.accountAddress;
+    this.setState(
+      produce(draft => {
+        draft.formData.people.sellerAddress = sellerAddress;
+        draft.formData.people.buyerAddress = buyerAddress;
+      })
+    );
 
     console.group('createContractByAccountAddress called');
     console.log('agentAddress:', agentAddress);
     console.log('sellerAddress:', sellerAddress);
     console.log('buyerAddress:', buyerAddress);
-    console.log('contractType:', contractType);
+    console.log('contractType:', type);
     console.groupEnd();
 
     blockon.createContractByAccountAddress.sendTransaction(
@@ -55,7 +65,7 @@ class ContractEditForm extends Component {
       agentAddress,
       sellerAddress,
       buyerAddress,
-      contractType,
+      type,
       (err, res) => {
         if (err) {
           console.log(err);
@@ -66,11 +76,28 @@ class ContractEditForm extends Component {
     );
   };
 
-  handleChange = event => {
+  handleBuildingChange = event => {
     const { name, value } = event.target;
     this.setState(
       produce(draft => {
-        draft.formData[name] = value;
+        draft.formData.building[name] = value;
+      })
+    );
+  };
+
+  handleContractChange = event => {
+    const { name, value } = event.target;
+    this.setState(
+      produce(draft => {
+        draft.formData.contract[name] = value;
+      })
+    );
+  };
+
+  handleDateChange = (date, dateString) => {
+    this.setState(
+      produce(draft => {
+        draft.formData.contract.date = dateString;
       })
     );
   };
@@ -92,7 +119,11 @@ class ContractEditForm extends Component {
       MetamaskUtil.getDefaultAccount()
     );
     const agentAddress = agent.data.accountAddress;
-    this.setState({ agentAddress });
+    this.setState(
+      produce(draft => {
+        draft.formData.people.agentAddress = agentAddress;
+      })
+    );
     const accountInstance = web3.eth.contract(AccountAbi).at(agentAddress);
 
     const latestBlockNumber = await MetamaskUtil.getLatestBlockNumber();
@@ -108,6 +139,11 @@ class ContractEditForm extends Component {
       if (error) {
         console.log(error);
       } else {
+        this.setState(
+          produce(draft => {
+            draft.formData.contract.index = result.args.contractIndex.toNumber(); // BigNumber to Number
+          })
+        );
         await ContractAPI.create(this.state.formData);
         history.push('/contract');
       }
@@ -115,13 +151,8 @@ class ContractEditForm extends Component {
   }
 
   render() {
-    const { dataSource } = this.state;
-    const {
-      sellerEmail,
-      buyerEmail,
-      buildingAddress,
-      status
-    } = this.state.formData;
+    const { dataSource, sellerEmail, buyerEmail, formData } = this.state;
+    const { address } = formData.building;
 
     return (
       <div className="ContractEditForm">
@@ -137,14 +168,14 @@ class ContractEditForm extends Component {
                 onChange={value => {
                   this.setState(
                     produce(draft => {
-                      draft.formData.buyerEmail = value;
+                      draft.buyerEmail = value;
                     })
                   );
                 }}
                 onSelect={value => {
                   this.setState(
                     produce(draft => {
-                      draft.formData.buyerEmail = value;
+                      draft.buyerEmail = value;
                     })
                   );
                 }}
@@ -165,14 +196,14 @@ class ContractEditForm extends Component {
                 onChange={value => {
                   this.setState(
                     produce(draft => {
-                      draft.formData.sellerEmail = value;
+                      draft.sellerEmail = value;
                     })
                   );
                 }}
                 onSelect={value => {
                   this.setState(
                     produce(draft => {
-                      draft.formData.sellerEmail = value;
+                      draft.sellerEmail = value;
                     })
                   );
                 }}
@@ -193,8 +224,8 @@ class ContractEditForm extends Component {
             <div className="form-group type">
               <label className="form-label">건물형태</label>
               <RadioGroup
-                name="buildingType"
-                onChange={this.handleChange}
+                name="type"
+                onChange={this.handleBuildingChange}
                 defaultValue="jutaek"
                 buttonStyle="solid"
               >
@@ -208,9 +239,9 @@ class ContractEditForm extends Component {
               <label className="form-label">건물주소</label>
               <input
                 type="text"
-                value={buildingAddress}
-                name="buildingAddress"
-                onChange={this.handleChange}
+                value={address}
+                name="address"
+                onChange={this.handleBuildingChange}
                 placeholder="예) 센트럴타운로 76"
               />
             </div>
@@ -224,13 +255,13 @@ class ContractEditForm extends Component {
           <div>
             <div className="form-group">
               <label className="form-label">거래일자</label>
-              <DatePicker locale={locale} />
+              <DatePicker onChange={this.handleDateChange} />
             </div>
             <div className="form-group">
               <label className="form-label">계약종류</label>
               <RadioGroup
-                name="contractType"
-                onChange={this.handleChange}
+                name="type"
+                onChange={this.handleContractChange}
                 defaultValue="wolse"
                 buttonStyle="solid"
               >
@@ -243,43 +274,11 @@ class ContractEditForm extends Component {
               <label className="form-label">계약상황</label>
               <div className="progressbar-wrapper">
                 <ul className="progressbar">
-                  <li
-                    className={classNames(
-                      { active: status === 'deposit' },
-                      'first-not-active'
-                    )}
-                    onClick={() => this.handleSelect('deposit')}
-                  >
-                    계약금
-                  </li>
-                  <li
-                    className={classNames({
-                      active: status === 'middlePayment'
-                    })}
-                    onClick={() => this.handleSelect('middlePayment')}
-                  >
-                    중도금
-                  </li>
-                  <li
-                    className={classNames({ active: status === 'balance' })}
-                    onClick={() => this.handleSelect('balance')}
-                  >
-                    잔금처리
-                  </li>
-                  <li
-                    className={classNames({
-                      active: status === 'registration'
-                    })}
-                    onClick={() => this.handleSelect('registration')}
-                  >
-                    등기신청
-                  </li>
-                  <li
-                    className={classNames({ active: status === 'complete' })}
-                    onClick={() => this.handleSelect('complete')}
-                  >
-                    완료
-                  </li>
+                  <li className={'first-not-active'}>계약금</li>
+                  <li>중도금</li>
+                  <li>잔금처리</li>
+                  <li>등기신청</li>
+                  <li>완료</li>
                 </ul>
               </div>
             </div>

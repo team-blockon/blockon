@@ -1,22 +1,28 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const People = new Schema({
+  agentAddress: String,
+  sellerAddress: String,
+  buyerAddress: String
+});
+
+const Building = new Schema({
+  type: String,
+  address: String,
+  photo: String
+});
+
+const ContractDetail = new Schema({
+  index: Number,
+  date: Date,
+  type: Number
+});
+
 const Contract = new Schema({
-  people: {
-    agentEthAddress: String,
-    sellerEmail: String,
-    buyerEmail: String
-  },
-  building: {
-    type: String,
-    address: String,
-    photo: String
-  },
-  contract: {
-    date: Date,
-    type: String,
-    progress: String
-  }
+  people: People,
+  building: Building,
+  contract: ContractDetail
 });
 
 Contract.statics.create = function(body) {

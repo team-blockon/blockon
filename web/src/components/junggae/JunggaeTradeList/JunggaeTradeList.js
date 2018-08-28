@@ -161,14 +161,27 @@ const getProgressbarList = (
   }
 };
 
-const getCard = (handleSelect, contractType, contractState, index) => {
+const getCard = (handleSelect, contractInfo) => {
+  const { index, type, state, building } = contractInfo;
+
   let contractData;
-  if (contractType === TRADE) {
+  if (type === TRADE) {
     contractData = <p>매매 / 10억</p>;
   }
-  if (contractType === RENT) {
+  if (type === RENT) {
     contractData = <p>전,월세 / 1000/45 </p>;
   }
+
+  const getKoreanBuildingType = eng => {
+    const map = {
+      jutaek: '주택',
+      apartment: '아파트',
+      sangga: '상가',
+      officetel: '오피스텔'
+    };
+
+    return map[eng];
+  };
 
   const card = (
     <div
@@ -188,15 +201,15 @@ const getCard = (handleSelect, contractType, contractState, index) => {
           </div>
           <div>
             <p>준영타워팰리스</p>
-            <p>단독주택</p>
-            <p>수원시 영통구 이의동 센트럴타운로 76</p>
+            <p>{getKoreanBuildingType(building.type)}</p>
+            <p>{building.address}</p>
             {contractData}
           </div>
         </div>
       </div>
       <div className="progressbar-wrapper">
         <ul className="progressbar">
-          {getProgressbarList(handleSelect, contractType, contractState)}
+          {getProgressbarList(handleSelect, type, state)}
         </ul>
       </div>
     </div>
@@ -209,20 +222,15 @@ const getLists = (handleSelect, contractInfoList, activeTab) => {
   const cards = [];
 
   contractInfoList.forEach(contractInfo => {
-    const contractType = contractInfo.type;
     const contractState = contractInfo.state;
 
     if (activeTab === ONGOING_TAB && contractState !== COMPLETED_CONTRACT) {
-      cards.push(
-        getCard(handleSelect, contractType, contractState, contractInfo.index)
-      );
+      cards.push(getCard(handleSelect, contractInfo));
     } else if (
       activeTab === COMPLETED_TAB &&
       contractState === COMPLETED_CONTRACT
     ) {
-      cards.push(
-        getCard(handleSelect, contractType, contractState, contractInfo.index)
-      );
+      cards.push(getCard(handleSelect, contractInfo));
     }
   });
   return cards;
