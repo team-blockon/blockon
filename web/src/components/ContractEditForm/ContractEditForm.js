@@ -85,6 +85,23 @@ class ContractEditForm extends Component {
     );
   };
 
+  handleBuildingAddressClick = () => {
+    const { daum } = window;
+    const self = this;
+
+    daum.postcode.load(function() {
+      new daum.Postcode({
+        oncomplete: function(data) {
+          self.setState(
+            produce(draft => {
+              draft.formData.building.address = data.jibunAddress;
+            })
+          );
+        }
+      }).open();
+    });
+  };
+
   handleContractChange = event => {
     const { name, value } = event.target;
     this.setState(
@@ -241,8 +258,9 @@ class ContractEditForm extends Component {
                 type="text"
                 value={address}
                 name="address"
-                onChange={this.handleBuildingChange}
+                onClick={this.handleBuildingAddressClick}
                 placeholder="예) 센트럴타운로 76"
+                readOnly
               />
             </div>
             <div className="form-group">
