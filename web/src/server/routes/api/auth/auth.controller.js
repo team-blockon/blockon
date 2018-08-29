@@ -36,7 +36,7 @@ exports.profile = (req, res) => {
         cb(null, false); // 파일 거부
       }
     }
-  }).single('profile'); // req.file은 thumbnail 필드의 파일 정보
+  }).single('profile'); // req.file은 profile 필드의 파일 정보
 
   // 이미지인지 확장자와 MIME 타입 체크
   const checkImage = profile => {
@@ -47,7 +47,7 @@ exports.profile = (req, res) => {
   };
 
   const profileUpload = new Promise((resolve, reject) => {
-    if(fs.existsSync(DIR_PATH) === false){
+    if (fs.existsSync(DIR_PATH) === false) {
       fs.mkdirSync(DIR_PATH);
     }
     upload(req, res, err => {

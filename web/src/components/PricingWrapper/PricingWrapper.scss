@@ -21,6 +21,7 @@
       border: 1px solid #ebebeb;
       padding: 15px 30px;
       display: flex;
+      flex-wrap: wrap;
       align-content: space-between;
       align-items: center;
 
@@ -43,6 +44,7 @@
 
       .right {
         display: flex;
+        flex-wrap: wrap;
 
         .price {
           margin-right: 1rem;

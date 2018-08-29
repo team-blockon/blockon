@@ -6,16 +6,30 @@ import * as ContractAPI from 'lib/api/contract';
 import * as MetamaskUtil from 'lib/MetamaskUtil';
 import AccountAbi from 'abi/account_abi';
 import { AutoComplete, Radio, DatePicker } from 'antd';
+import { Upload, Icon } from 'antd';
 import './ContractEditForm.scss';
+import axios from 'axios';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+
+/**
+ * 프로필 사진 미리보기를 위한 base64 인코딩
+ * @param {*} img
+ * @param {*} callback
+ */
+const getBase64 = (img, callback) => {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+};
 
 class ContractEditForm extends Component {
   state = {
     dataSource: [],
     sellerEmail: '',
     buyerEmail: '',
+    loading: false,
     formData: {
       people: {
         agentAddress: null,
@@ -167,9 +181,67 @@ class ContractEditForm extends Component {
     });
   }
 
+  /**
+   * 매물사진 업로드 상태 변경
+   */
+  handlePhotoChange = info => {
+    const { status, originFileObj, response } = info.file;
+
+    if (status === 'uploading') {
+      this.setState({ loading: true });
+      return;
+    }
+    if (status === 'done') {
+      getBase64(originFileObj, imageUrl => {
+        this.setState(
+          produce(draft => {
+            draft.imageUrl = imageUrl;
+            draft.formData.building.photo = response.path;
+            draft.loading = false;
+          })
+        );
+      });
+    }
+  };
+
+  /**
+   * multipart/form-data 요청을 위한 커스텀 요청 생성
+   */
+  customRequest = options => {
+    const formData = new FormData();
+    formData.append('thumbnail', options.file);
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    };
+
+    axios
+      .post(options.action, formData, config)
+      .then(res => {
+        options.onSuccess(res.data, options.file);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   render() {
-    const { dataSource, sellerEmail, buyerEmail, formData } = this.state;
+    const {
+      dataSource,
+      sellerEmail,
+      buyerEmail,
+      formData,
+      imageUrl
+    } = this.state;
     const { address } = formData.building;
+
+    const uploadButton = (
+      <div>
+        <Icon type={this.state.loading ? 'loading' : 'plus'} />
+        <div className="ant-upload-text">사진 업로드</div>
+      </div>
+    );
 
     return (
       <div className="ContractEditForm">
@@ -265,7 +337,26 @@ class ContractEditForm extends Component {
             </div>
             <div className="form-group">
               <label className="form-label">매물사진</label>
-              <input type="file" />
+              <Upload
+                name="photo"
+                listType="picture-card"
+                className="avatar-uploader"
+                showUploadList={false}
+                action="/api/contract/photo"
+                onChange={this.handlePhotoChange}
+                customRequest={this.customRequest}
+              >
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    className="profile_pic"
+                    style={{ width: 100 + '%' }}
+                    alt="avatar"
+                  />
+                ) : (
+                  uploadButton
+                )}
+              </Upload>
             </div>
           </div>
 

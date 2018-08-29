@@ -160,7 +160,7 @@ class Register extends Component {
             listType="picture-card"
             className="avatar-uploader"
             showUploadList={false}
-            action="//localhost:8000/api/auth/profile"
+            action="/api/auth/profile"
             onChange={this.handleProfileChange}
             customRequest={this.customRequest}
           >

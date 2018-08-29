@@ -4,6 +4,7 @@
   display: flex;
 
   .list-wrapper {
+    flex: 1;
     flex-direction: column;
     padding-left: 0;
     padding-right: 0;
@@ -29,15 +30,13 @@
   }
 
   .sidebar {
-    flex: 1;
-
     button {
       border: none;
       outline: none;
       background-color: #353a4c;
       color: #fff;
       padding: 0.5rem 2rem;
-      width: 100%;
+      width: 17.5rem;
     }
   }
 }
