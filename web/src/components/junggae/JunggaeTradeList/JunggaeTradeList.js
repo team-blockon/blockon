@@ -204,7 +204,14 @@ const JunggaeTradeList = ({
         <div className="content">
           <div className="detail">
             <div className="image">
-              <img src={maemulImage} alt="maemul" />
+              {building.photo ? (
+                <img
+                  src={`http://localhost:8000/contracts/${building.photo}`}
+                  alt="maemul"
+                />
+              ) : (
+                <img src={maemulImage} alt="maemul" />
+              )}
             </div>
             <div>
               <p>준영타워팰리스</p>

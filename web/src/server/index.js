@@ -24,6 +24,8 @@ app.use(cookieParser());
 // request log
 app.use(morgan('dev'));
 
+app.use('/contracts', express.static(__dirname + '/uploads/contracts'));
+
 /* build */
 // app.use("/", express.static(path.resolve(__dirname, "../../build")));
 

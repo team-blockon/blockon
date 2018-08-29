@@ -21,6 +21,7 @@
 
     label.form-label {
       margin-right: 4rem;
+      white-space: nowrap; /* 줄바꿈 방지 */
     }
 
     input {
@@ -30,7 +31,8 @@
       border-radius: 3px;
       font-size: 0.9rem;
 
-      &[type="text"] {
+      &[type="text"],
+      &[type="email"] {
         width: 350px;
       }
     }
@@ -50,5 +52,9 @@
       border: none;
       letter-spacing: 3px;
     }
+  }
+
+  .progressbar-wrapper {
+    padding-bottom: 0;
   }
 }
