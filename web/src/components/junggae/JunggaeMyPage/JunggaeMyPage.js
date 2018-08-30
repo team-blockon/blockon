@@ -52,7 +52,7 @@ class JunggaeMyPage extends Component {
     tradeModal: false,
     activeContractsNum: 0,
     completedContractsNum: 0,
-    // {index, type, state}의 리스트
+    // {index, type, state, building}의 리스트
     contractInfoList: []
   };
 
@@ -140,7 +140,7 @@ class JunggaeMyPage extends Component {
    * 블록체인으로 부터 인덱스에 해당하는 컨트랙트 정보를 가져와서
    * state.contractInfoList에 추가한다
    */
-  addContractInfoAt = async function(accountInstance, index) {
+  addContractInfoAt = async (accountInstance, index) => {
     // 온체인 데이터 가져오기
     const contractInfo = await this.getContractInfoAt(accountInstance, index);
     const contractType = contractInfo[0].toNumber();
@@ -211,7 +211,7 @@ class JunggaeMyPage extends Component {
      */
 
     // 현재 브라우저에 접속한 유저의 어카운트 계정 인스턴스 생성
-    const ethAddress = MetamaskUtil.getDefaultAccount();
+    const ethAddress = await MetamaskUtil.getDefaultAccount(); // 이게 왜 가끔 undefined일까?
     const userData = await UserAPI.getAccountAddressByEthAddress(ethAddress);
     const accountAddress = userData.data.accountAddress;
     const accountInstance = window.web3.eth

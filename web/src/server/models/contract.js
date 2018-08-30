@@ -9,6 +9,7 @@ const People = new Schema({
 
 const Building = new Schema({
   type: String,
+  name: String,
   address: String,
   photo: String
 });

@@ -23,8 +23,7 @@ class JunggaeReview extends Component {
           <h2>3.5</h2>
           <div style={{ fontSize: 24 }}>
             <StarRatingComponent
-              starColor="#ffb400"
-              emptyStarColor="#ffb400"
+              name="credit"
               value={rating}
               renderStarIcon={(index, value) => {
                 return index <= value ? <StarIcon /> : <StarOutlineIcon />;
@@ -32,6 +31,8 @@ class JunggaeReview extends Component {
               renderStarIconHalf={() => {
                 return <StarHalfOutlineIcon />;
               }}
+              starColor="#ffb400"
+              emptyStarColor="#ffb400"
             />
           </div>
           <p>2018. 08. 12.</p>
@@ -83,11 +84,10 @@ class JunggaeReview extends Component {
             <img src={JunggaeImage} alt="junggae" />
           </div>
           <div>
-            <h2>휴먼공인중개사사무소</h2>
+            <h2>신청담코리아 공인중개사무소</h2>
             <div className="stars">
               <StarRatingComponent
-                starColor="#ffb400"
-                emptyStarColor="#ffb400"
+                name="rating"
                 value={rating}
                 renderStarIcon={(index, value) => {
                   return index <= value ? <StarIcon /> : <StarOutlineIcon />;
@@ -95,6 +95,8 @@ class JunggaeReview extends Component {
                 renderStarIconHalf={() => {
                   return <StarHalfOutlineIcon />;
                 }}
+                starColor="#ffb400"
+                emptyStarColor="#ffb400"
               />
               <div className="point">3.5 / 5.0</div>
             </div>

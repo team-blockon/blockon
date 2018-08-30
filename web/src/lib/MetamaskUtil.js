@@ -23,8 +23,19 @@ export const check = () => {
   return false;
 };
 
+/**
+ * default account를 비동기로 가져옴
+ */
 export const getDefaultAccount = () => {
-  return window.web3.eth.accounts[0];
+  return new Promise((resolve, reject) => {
+    window.web3.eth.getAccounts((err, accounts) => {
+      if (!err) {
+        resolve(accounts[0]);
+      } else {
+        reject(err);
+      }
+    });
+  });
 };
 
 /**

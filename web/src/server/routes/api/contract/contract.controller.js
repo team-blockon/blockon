@@ -111,6 +111,7 @@ exports.photo = (req, res) => {
         },
         building: {
             type,
+            name,
             address,
             photo
         },
@@ -133,10 +134,25 @@ exports.addContract = (req, res) => {
   });
 };
 
+/*
+    POST /api/contract/:index
+    {
+      accountAddress
+    }
+*/
+
+/**
+ * index와 accountAddress가 일치하는 contract 응답
+ * @param {*} req
+ * @param {*} res
+ */
 exports.getContractByIndex = (req, res) => {
   const index = req.params.index;
   const { accountAddress } = req.body;
-  console.log(accountAddress);
+
+  console.log('index:', index);
+  console.log('accountAddress:', accountAddress);
+
   Contract.findOne({
     $or: [
       { 'people.agentAddress': accountAddress },
@@ -145,6 +161,7 @@ exports.getContractByIndex = (req, res) => {
     ],
     'contract.index': index
   }).then(contract => {
+    console.log('contract', contract);
     res.json(contract);
   });
 };

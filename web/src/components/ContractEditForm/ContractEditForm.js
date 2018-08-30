@@ -38,6 +38,7 @@ class ContractEditForm extends Component {
       },
       building: {
         type: null,
+        name: '',
         address: '',
         photo: null
       },
@@ -234,7 +235,7 @@ class ContractEditForm extends Component {
       formData,
       imageUrl
     } = this.state;
-    const { address } = formData.building;
+    const { name, address } = formData.building;
 
     const uploadButton = (
       <div>
@@ -323,6 +324,16 @@ class ContractEditForm extends Component {
                 <RadioButton value="sangga">상가</RadioButton>
                 <RadioButton value="officetel">오피스텔</RadioButton>
               </RadioGroup>
+            </div>
+            <div className="form-group">
+              <label className="form-label">건물명</label>
+              <input
+                type="text"
+                value={name}
+                name="name"
+                onChange={this.handleBuildingChange}
+                placeholder="예) 광교이편한세상"
+              />
             </div>
             <div className="form-group">
               <label className="form-label">건물주소</label>

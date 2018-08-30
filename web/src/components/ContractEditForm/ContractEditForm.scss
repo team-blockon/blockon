@@ -20,8 +20,7 @@
     align-items: center;
 
     label.form-label {
-      margin-right: 4rem;
-      white-space: nowrap; /* 줄바꿈 방지 */
+      min-width: 7rem;
     }
 
     input {

@@ -95,7 +95,11 @@ class App extends Component {
             component={ContractEdit}
             isLogged={isLogged}
           />
-          <Route path="/pricing" component={Pricing} />
+          <PrivateRoute
+            path="/pricing"
+            component={Pricing}
+            isLogged={isLogged}
+          />
           <Route path="/auth" component={Auth} />
         </Switch>
       </AppTemplate>

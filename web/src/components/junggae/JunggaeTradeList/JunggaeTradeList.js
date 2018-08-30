@@ -129,6 +129,7 @@ const JunggaeTradeList = ({
             }
             : undefined
         }
+        key={stepIndex}
       >
         {getStepWord(stepIndex)}
       </li>
@@ -214,7 +215,7 @@ const JunggaeTradeList = ({
               )}
             </div>
             <div>
-              <p>준영타워팰리스</p>
+              <p>{building.name}</p>
               <p>{getKoreanBuildingType(building.type)}</p>
               <p>{building.address}</p>
               {contractData}

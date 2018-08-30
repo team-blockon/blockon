@@ -84,9 +84,14 @@ export class SearchWrapper extends Component {
               defaultZoom={this.props.zoom}
               onChange={this.handleChange}
             >
-              {agents.map(agent => {
+              {agents.map((agent, index) => {
                 return (
-                  <AgentMarker lat={agent.y} lng={agent.x} agent={agent} />
+                  <AgentMarker
+                    lat={agent.y}
+                    lng={agent.x}
+                    agent={agent}
+                    key={index}
+                  />
                 );
               })}
             </GoogleMapReact>

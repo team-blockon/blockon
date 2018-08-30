@@ -19,13 +19,13 @@ class Login extends Component {
     });
   };
 
-  handleLogin = () => {
+  handleLogin = async () => {
     const { history } = this.props; // 나중에 없앨 것!
 
     if (!MetamaskUtil.check()) return;
 
     const { setLoggedInfo } = this.props;
-    const ethAddress = MetamaskUtil.getDefaultAccount();
+    const ethAddress = await MetamaskUtil.getDefaultAccount();
 
     AuthAPI.login(ethAddress).then(res => {
       const loggedInfo = res.data;
