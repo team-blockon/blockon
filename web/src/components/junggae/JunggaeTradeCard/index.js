@@ -1,1 +1,1 @@
-export { default } from './JunggaeCard';
+export { default } from './JunggaeTradeCard';

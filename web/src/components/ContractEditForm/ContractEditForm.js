@@ -148,7 +148,7 @@ class ContractEditForm extends Component {
     const { web3 } = window;
 
     const agent = await UserAPI.getAccountAddressByEthAddress(
-      MetamaskUtil.getDefaultAccount()
+      await MetamaskUtil.getDefaultAccount()
     );
     const agentAddress = agent.data.accountAddress;
     this.setState(

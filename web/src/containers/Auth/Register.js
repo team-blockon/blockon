@@ -35,10 +35,10 @@ class Register extends Component {
     });
   };
 
-  handleRegister = event => {
+  handleRegister = async event => {
     const { profileFilename, username, email } = this.state;
-    const { web3, blockon } = window;
-    const ethAddress = web3.eth.defaultAccount;
+    const { blockon } = window;
+    const ethAddress = await MetamaskUtil.getDefaultAccount();
 
     // Blockon 계약 내의 createAccount 함수 호출
     blockon.createAccount.sendTransaction(ethAddress, email, (err, txHash) => {
@@ -51,8 +51,6 @@ class Register extends Component {
         /* 컨트랙트 내에서 계정 생성 성공시 이벤트를 받아 / 라우트로 리다이렉트 */
         console.log('createAccount 함수 호출 성공');
         const { history } = this.props;
-        const { blockon } = window;
-        const ethAddress = MetamaskUtil.getDefaultAccount();
 
         // CreateAccount 이벤트 필터 객체 생성
         // publicAddress가 ethAddress인 이벤트 로그만
