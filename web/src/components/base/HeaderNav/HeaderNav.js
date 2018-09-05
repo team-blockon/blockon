@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import classNames from 'classnames';
+import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from 'store/modules/user';
@@ -9,29 +8,22 @@ import LoggedOutNav from 'components/base/HeaderNav/LoggedOutNav';
 import * as AuthAPI from 'lib/api/auth';
 import './HeaderNav.scss';
 
-export const HeaderNavItem = ({
-  children,
-  activeItem,
-  item,
-  onSelect,
-  nav_click,
-  to
-}) => {
+export const HeaderNavItem = ({ children, item, nav_click, to, exact }) => {
   return (
     <Fragment>
-      <Link to={to}>
+      <NavLink
+        to={to}
+        activeClassName="active"
+        exact={exact ? true : undefined}
+      >
         <li
-          className={classNames({
-            active: activeItem === item
-          })}
           onClick={() => {
-            onSelect(item);
             nav_click();
           }}
         >
           {children}
         </li>
-      </Link>
+      </NavLink>
     </Fragment>
   );
 };
@@ -46,7 +38,7 @@ class HeaderNav extends Component {
     toggled: false
   };
 
-  //nav 클릭시 토클 변수를 추가해서 변수에 따라 메뉴가 나오고 사라질 수 있게 한다.
+  // nav 클릭시 토글 변수를 추가해서 변수에 따라 메뉴가 나오고 사라질 수 있게 한다.
   nav_click = () => {
     this.setState({
       toggled: !this.state.toggled
@@ -73,30 +65,21 @@ class HeaderNav extends Component {
    * 로그인 여부에 따라 로그인/로그아웃 버튼 조건부 렌더링
    */
   getUserButtons = () => {
-    const { activeItem, onSelect, isLogged } = this.props;
+    const { isLogged } = this.props;
 
     if (isLogged) {
       return (
         <LoggedInNav
-          activeItem={activeItem}
-          onSelect={onSelect}
           nav_click={this.nav_click}
           handleLogout={this.handleLogout}
         />
       );
     } else {
-      return (
-        <LoggedOutNav
-          onSelect={onSelect}
-          activeItem={activeItem}
-          nav_click={this.nav_click}
-        />
-      );
+      return <LoggedOutNav nav_click={this.nav_click} />;
     }
   };
 
   render() {
-    const { activeItem, onSelect } = this.props;
     const { toggled } = this.state;
 
     return (
@@ -112,24 +95,11 @@ class HeaderNav extends Component {
           </a>
         </div>
 
-        {/*Just for test. 잠깐 없애놓음.*/}
         <ul className={toggled ? 'active' : undefined}>
-          <HeaderNavItem
-            item="about"
-            activeItem={activeItem}
-            onSelect={onSelect}
-            nav_click={this.nav_click}
-            to="/"
-          >
+          <HeaderNavItem item="about" nav_click={this.nav_click} to="/" exact>
             소개
           </HeaderNavItem>
-          <HeaderNavItem
-            item="message"
-            activeItem={activeItem}
-            onSelect={onSelect}
-            nav_click={this.nav_click}
-            to="/search"
-          >
+          <HeaderNavItem item="message" nav_click={this.nav_click} to="/search">
             평점검색
           </HeaderNavItem>
           {this.getUserButtons()}

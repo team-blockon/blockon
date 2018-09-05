@@ -10,11 +10,6 @@ require('dotenv').config();
 const app = express();
 const port = 8000;
 
-// 리액트 서버 사이드 렌더링
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jsx');
-app.engine('jsx', require('express-react-views').createEngine());
-
 // JSON 바디 파싱
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,13 +29,6 @@ app.use('/', express.static(path.resolve(__dirname, '../../public')));
 
 app.use(express.static('./routes/util'));
 app.use('/api', require('./routes/api'));
-
-/**
- * req.body 값으로 JSX 템플릿을 채운다.
- */
-app.post('/fillPDF', (req, res) => {
-  res.render('ContractTemplate', req.body);
-});
 
 /**
  * 클라이언트 사이드 렌더링

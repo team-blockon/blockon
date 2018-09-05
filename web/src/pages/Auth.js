@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AuthWrapper from 'components/auth/AuthWrapper';
 import { Route } from 'react-router-dom';
-import { Login, Register } from 'containers/Auth';
+import { Login, Register } from 'containers/auth';
 
 class Auth extends Component {
   render() {

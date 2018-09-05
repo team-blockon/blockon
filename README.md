@@ -23,7 +23,7 @@ Blockon
 	yarn start
 	
 ### 3. express 실행
-	yarn server-start
+	yarn start:server
 	
 ### 4. 서버 접속
 	http://localhost:3000

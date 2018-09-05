@@ -1,59 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { updateEvent } from 'store/modules/web3/contract';
 import produce from 'immer';
-import classNames from 'classnames';
-import {
-  TiThMenu as ListIcon,
-  TiThLarge as CardIcon
-} from 'react-icons/lib/ti';
-import './JunggaeMyPage.scss';
-import JunggaeReview from 'components/junggae/JunggaeReview';
-import JunggaeTradeCard from 'components/junggae/JunggaeTradeCard';
-import JunggaeTradeList from 'components/junggae/JunggaeTradeList';
+
+import ContractTab from 'components/contract/ContractTab';
+import ContractTabContent from 'components/contract/ContractTab/ContractTabContent';
 import JunggaeTradeModal from 'components/junggae/JunggaeTradeModal';
-import * as UserAPI from 'lib/api/user';
+
 import * as ContractAPI from 'lib/api/contract';
-import * as MetamaskUtil from 'lib/MetamaskUtil';
+import * as Web3User from 'lib/web3/user';
+import * as Web3Contract from 'lib/web3/contract';
 
-import AccountAbi from 'abi/account_abi';
-
-const MyPageTab = ({ activeItem, item, handleSelect, children }) => {
-  return (
-    <li
-      className={classNames({ active: activeItem === item })}
-      onClick={() => handleSelect(item)}
-    >
-      {children}
-    </li>
-  );
-};
-
-/**
- * contractInfoList 인덱스
- */
-//const TYPE = 0;
-const STATE = 1;
-
-/**
- * contract state
- * 100 - 완료
- */
-const COMPLETED_CONTRACT = 100;
-
-/**
- * activeTab 인덱스
- * 0 - 진행중거래 탭
- * 1 - 완료된거래 탭
- */
-const ONGOING_TAB = 0;
-const COMPLETED_TAB = 1;
+// 계약상태 상수
+const COMPLETED_CONTRACT = 100; // 계약 완료
 
 class JunggaeMyPage extends Component {
   state = {
-    tradeModal: false,
-    activeContractsNum: 0,
-    completedContractsNum: 0,
-    // {index, type, state, building}의 리스트
-    contractInfoList: []
+    tradeModal: false, // 모달을 보일건지 여부
+    activeContractsNum: 0, // 진행중계약 개수
+    completedContractsNum: 0, // 완료된계약 개수
+    contractInfoList: [] // {index, type, state, building} 리스트
   };
 
   handleToggleModal = (
@@ -71,83 +37,26 @@ class JunggaeMyPage extends Component {
     });
   };
 
-  getTabContent = (activeTab, activeType) => {
-    // console.log('Entry :getTabContent');
-    switch (activeTab) {
-    case ONGOING_TAB: //진행중 거래
-      if (activeType === 0) {
-        return (
-          <JunggaeTradeList
-            handleSelect={this.handleToggleModal}
-            contractInfoList={this.state.contractInfoList}
-            accountInstance={this.state.accountInstance}
-            activeTab={activeTab}
-          />
-        );
-      } else {
-        return <JunggaeTradeCard />;
-      }
-    case COMPLETED_TAB: //완료된 거래
-      if (activeType === 0) {
-        return (
-          <JunggaeTradeList
-            handleSelect={this.handleToggleModal}
-            contractInfoList={this.state.contractInfoList}
-            activeTab={activeTab}
-          />
-        );
-      } else {
-        return <JunggaeTradeCard />;
-      }
-    case 2:
-      return <JunggaeReview />;
-    default:
-      return '유효하지 않은 탭입니다.';
-    }
-  };
-
-  /**
-   * 해당하는 어카운트가 포함된 계약의 길이 반환
-   */
-  getContractsLength = function(accountInstance) {
-    return new Promise((resolve, reject) => {
-      accountInstance.getContractsLength((err, res) => {
-        if (!err) {
-          resolve(res);
-        } else {
-          reject(err);
-        }
-      });
-    });
-  };
-
-  /**
-   * 해당하는 어카운트, 인덱스의 계약정보(계약종류, 계약상태) 반환
-   */
-  getContractInfoAt = function(accountInstance, index) {
-    return new Promise((resolve, reject) => {
-      accountInstance.getContractInfoAt(index, (err, res) => {
-        if (!err) {
-          resolve(res);
-        } else {
-          reject(err);
-        }
-      });
-    });
-  };
-
   /**
    * 블록체인으로 부터 인덱스에 해당하는 컨트랙트 정보를 가져와서
    * state.contractInfoList에 추가한다
    */
   addContractInfoAt = async (accountInstance, index) => {
     // 온체인 데이터 가져오기
-    const contractInfo = await this.getContractInfoAt(accountInstance, index);
+    const contractInfo = await Web3Contract.getContractInfoAt(
+      accountInstance,
+      index
+    );
     const contractType = contractInfo[0].toNumber();
     const contractState = contractInfo[1].toNumber();
 
     // 오프체인 데이터 가져오기
     const res = await ContractAPI.get(accountInstance.address, index);
+    // building을 가져오기 전 null 체크
+    // 어떤 문제로 인해 몽고DB에 정보가 올라가지 않은 경우
+    if (!res || !res.data || !res.data.building) {
+      return;
+    }
     const { building } = res.data;
 
     // 최신 데이터를 가장 위로 추가
@@ -178,12 +87,16 @@ class JunggaeMyPage extends Component {
    * 블록체인으로 부터 인덱스에 해당하는 컨트랙트의 새로운 상태를 받아와서
    * state.contractInfoList를 업데이트 한다
    */
-  changeContractStateAt = async function(accountInstance, index) {
-    const contractInfo = await this.getContractInfoAt(accountInstance, index);
-    const contractState = contractInfo[STATE].toNumber();
+  changeContractStateAt = async (accountInstance, index) => {
+    // 업데이트된 상태 정보 가져오기
+    const contractInfo = await Web3Contract.getContractInfoAt(
+      accountInstance,
+      index
+    );
+    const contractState = contractInfo[1].toNumber();
 
-    console.log('****changeContractStateAt****');
-    console.log('----state : ', contractState);
+    console.log('계약상태: ', contractState);
+    console.groupEnd();
 
     this.setState(
       produce(draft => {
@@ -204,89 +117,65 @@ class JunggaeMyPage extends Component {
     }
   };
 
+  watchUpdateEvent = () => {
+    const { updateEvent } = this.props;
+    const { accountInstance } = this.state;
+
+    // 체이닝을 위한 Promise 리턴
+    return updateEvent(accountInstance).then(
+      ({ updateType, contractIndex }) => {
+        console.group(`${contractIndex}번 계약 업데이트됨`);
+
+        // 계약이 추가된 것이므로 state에 새로 생성된 계약 추가
+        if (updateType === 1) {
+          console.log('계약 추가됨');
+          console.groupEnd();
+          this.addContractInfoAt(accountInstance, contractIndex);
+        } // 계약 추가했을 때 이벤트로는 안들어오고 다시 componentDidMount가 호출되는듯
+
+        // 계약 상태가 변경된 것이므로 해당하는 인덱스의 상태 변경
+        if (updateType === 2) {
+          console.log('계약상태 변경됨');
+          this.changeContractStateAt(accountInstance, contractIndex);
+        }
+      }
+    );
+  };
+
   async componentDidMount() {
     /**
-     * 데이터베이스와 블록체인 네트워크로 부터 정보를 받아온다
+     * 데이터베이스와 블록체인 네트워크로부터 정보를 받아온다
      * state에 정보를 채운다
      */
 
     // 현재 브라우저에 접속한 유저의 어카운트 계정 인스턴스 생성
-    const ethAddress = await MetamaskUtil.getDefaultAccount();
-    const userData = await UserAPI.getAccountAddressByEthAddress(ethAddress);
-    const accountAddress = userData.data.accountAddress;
-    const accountInstance = window.web3.eth
-      .contract(AccountAbi)
-      .at(accountAddress);
+    const { accountInstance } = await Web3User.getAccountInstance();
     this.setState({ accountInstance });
 
-    console.group('유저 정보');
-    console.log('ethAddress : ' + ethAddress);
-    console.log(userData.data);
-    console.log('accountAddress : ' + accountAddress);
-    console.log('accountInstance : ' + accountInstance);
-    console.groupEnd();
-
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
-    const contractsLength = await this.getContractsLength(accountInstance);
+    const contractsLength = await Web3Contract.getContractsLength(
+      accountInstance
+    );
 
     // 유저가 포함된 컨트랙트들을 state에 추가
     for (let i = 0; i < contractsLength; i++) {
-      await this.addContractInfoAt(accountInstance, i);
+      this.addContractInfoAt(accountInstance, i);
     }
 
     // state 제대로 들어갔나 확인
     this.state.contractInfoList.forEach(contractInfo => {
-      console.group(`${contractInfo.index}번 컨트랙트`);
-      console.log('contract type : ' + contractInfo.type);
-      console.log('contract state : ' + contractInfo.state);
-      console.log('contract address : ' + contractInfo.building.address);
+      console.group(`${contractInfo.index}번 계약`);
+      console.log('계약종류: ' + contractInfo.type);
+      console.log('계약상태: ' + contractInfo.state);
+      console.log('건물주소: ' + contractInfo.building.address);
       console.groupEnd();
-    });
-
-    // 마지막 블록 넘버 가져오기
-    let latestBlock = await MetamaskUtil.getLatestBlockNumber();
-
-    // UpdateEvent 이벤트에 대한 filter
-    const updateEvent = accountInstance.UpdateContract(null, {
-      fromBlock: latestBlock
-    });
-
-    // UpdateEvent 이벤트에 대한 watch
-    updateEvent.watch((error, event) => {
-      if (error) {
-        console.log(error);
-      } else {
-        // 마지막 블록의 이벤트를 한 번만 받음
-        if (event.blockNumber !== latestBlock) {
-          const updateType = event.args.updateType.toNumber();
-          const contractIndex = event.args.contractIndex.toNumber();
-
-          console.group(`${contractIndex}번 컨트랙트 업데이트됨`);
-          console.log(event);
-
-          // add contract 이므로 state에 새로 생성된 컨트랙트 추가
-          if (updateType === 1) {
-            console.log('add contract');
-            this.addContractInfoAt(accountInstance, contractIndex);
-            latestBlock += 1; // 이벤트가 가끔 2번 들어와서 임의로 1 증가
-          }
-
-          // 컨트랙트 상태가 변경된 것이므로 해당하는 인덱스의 상태 변경
-          if (updateType === 2) {
-            console.log('state change');
-            this.changeContractStateAt(accountInstance, contractIndex);
-          }
-
-          console.groupEnd();
-        }
-      }
     });
   }
 
   render() {
     const {
       activeTab,
-      activeType,
+      activeType, // 목록형인지, 카드형인지
       handleTabSelect,
       handleTypeSelect
     } = this.props;
@@ -308,54 +197,23 @@ class JunggaeMyPage extends Component {
         }
       >
         <div className="container content">
-          <div className="control">
-            <ul className="tab">
-              <MyPageTab
-                item={0}
-                activeItem={activeTab}
-                handleSelect={handleTabSelect}
-              >
-                진행중거래 ({this.state.activeContractsNum}
-                건)
-              </MyPageTab>
-              <MyPageTab
-                item={1}
-                activeItem={activeTab}
-                handleSelect={handleTabSelect}
-              >
-                완료된거래 ({this.state.completedContractsNum}
-                건)
-              </MyPageTab>
-              <MyPageTab
-                item={2}
-                activeItem={activeTab}
-                handleSelect={handleTabSelect}
-              >
-                평점및리뷰 (30건)
-              </MyPageTab>
-            </ul>
+          <ContractTab
+            activeTab={activeTab}
+            activeType={activeType}
+            handleTabSelect={handleTabSelect}
+            handleTypeSelect={handleTypeSelect}
+            activeContractsNum={this.state.activeContractsNum}
+            completedContractsNum={this.state.completedContractsNum}
+          />
 
-            {activeTab !== 2 && (
-              <ul className="type">
-                <MyPageTab
-                  item={0}
-                  activeItem={activeType}
-                  handleSelect={handleTypeSelect}
-                >
-                  <ListIcon />
-                </MyPageTab>
-                <MyPageTab
-                  item={1}
-                  activeItem={activeType}
-                  handleSelect={handleTypeSelect}
-                >
-                  <CardIcon />
-                </MyPageTab>
-              </ul>
-            )}
-          </div>
+          <ContractTabContent
+            activeTab={activeTab}
+            activeType={activeType}
+            contractInfoList={this.state.contractInfoList}
+            accountInstance={this.state.accountInstance}
+            handleSelect={this.handleToggleModal}
+          />
 
-          {this.getTabContent(activeTab, activeType)}
           {tradeModal && (
             <JunggaeTradeModal
               onClose={this.handleToggleModal}
@@ -363,6 +221,7 @@ class JunggaeMyPage extends Component {
               contractIndex={contractIndex}
               newContractState={newContractState}
               itemType={itemType}
+              watchUpdateEvent={this.watchUpdateEvent}
             />
           )}
         </div>
@@ -371,4 +230,7 @@ class JunggaeMyPage extends Component {
   }
 }
 
-export default JunggaeMyPage;
+export default connect(
+  null,
+  { updateEvent }
+)(JunggaeMyPage);

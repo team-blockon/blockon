@@ -1,12 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { register, registerEvent } from 'store/modules/web3/auth';
+
 import AuthContent from 'components/auth/AuthContent';
-import InputWithLabel from 'components/InputWithLabel';
+import InputWithLabel from 'components/auth/InputWithLabel';
 import AuthButton from 'components/auth/AuthButton';
+import Loading from 'components/common/Loading';
+
 import * as AuthAPI from 'lib/api/auth';
 import * as UserAPI from 'lib/api/user';
-import * as MetamaskUtil from 'lib/MetamaskUtil';
+import * as Web3Utils from 'lib/web3/utils';
+
 import { Upload, Icon } from 'antd';
-import axios from 'axios';
 
 /**
  * 프로필 사진 미리보기를 위한 base64 인코딩
@@ -37,56 +43,29 @@ class Register extends Component {
 
   handleRegister = async event => {
     const { profileFilename, username, email } = this.state;
-    const { blockon } = window;
-    const ethAddress = await MetamaskUtil.getDefaultAccount();
+    const ethAddress = await Web3Utils.getDefaultAccount();
 
-    // Blockon 계약 내의 createAccount 함수 호출
-    blockon.createAccount.sendTransaction(ethAddress, email, (err, txHash) => {
-      if (err) {
-        console.group('createAccount 함수 호출 실패');
-        console.log(err);
-        console.groupEnd();
-        return;
-      } else {
-        /* 컨트랙트 내에서 계정 생성 성공시 이벤트를 받아 / 라우트로 리다이렉트 */
-        console.log('createAccount 함수 호출 성공');
-        const { history } = this.props;
+    /* 컨트랙트 내에서 계정 생성 성공시 이벤트를 받아 / 라우트로 리다이렉트 */
+    const { register, registerEvent, history } = this.props;
 
-        // CreateAccount 이벤트 필터 객체 생성
-        // publicAddress가 ethAddress인 이벤트 로그만
-        // 범위는 첫 번째 블록부터 마지막 블록까지
-        const createAccountEvent = blockon.CreateAccount(
-          { publicAddress: ethAddress },
-          {
-            fromBlock: 0,
-            toBlock: 'latest'
-          }
-        );
-
-        // CreateAccount 이벤트 불러오기
-        createAccountEvent.watch((err, res) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log(res);
-            const { accountAddress, publicAddress } = res.args;
-            UserAPI.updateAccountAddressByEthAddress(
-              accountAddress,
-              publicAddress
-            );
-            history.push('/');
-          }
-        });
-      }
-    });
+    if (!ethAddress || !email) {
+      return;
+    }
+    await register({ ethAddress, email });
+    await registerEvent(ethAddress);
 
     // accountAddress를 제외한 나머지를 DB에 추가
-    AuthAPI.register({
+    await AuthAPI.register({
       ethAddress,
       profileFilename,
       username,
       email
     });
+
+    const { accountAddress } = this.props;
+    await UserAPI.updateAccountAddressByEthAddress(accountAddress, ethAddress);
+
+    history.push('/');
   };
 
   handleKeyPress = event => {
@@ -141,6 +120,7 @@ class Register extends Component {
 
   render() {
     const { imageUrl, username, email } = this.state;
+    const { loading } = this.props;
 
     const uploadButton = (
       <div>
@@ -150,52 +130,61 @@ class Register extends Component {
     );
 
     return (
-      <AuthContent title="회원가입">
-        <div className="InputWithLabel">
-          <div className="label">프로필</div>
-          <Upload
-            name="profile"
-            listType="picture-card"
-            className="avatar-uploader"
-            showUploadList={false}
-            action="/api/auth/profile"
-            onChange={this.handleProfileChange}
-            customRequest={this.customRequest}
-          >
-            {imageUrl ? (
-              <img
-                src={imageUrl}
-                className="profile_pic"
-                style={{ width: 100 + '%' }}
-                alt="avatar"
-              />
-            ) : (
-              uploadButton
-            )}
-          </Upload>
-        </div>
-        <InputWithLabel
-          label="이름"
-          type="text"
-          name="username"
-          value={username}
-          placeholder="이름"
-          onChange={this.handleChange}
-        />
-        <InputWithLabel
-          label="이메일"
-          type="text"
-          name="email"
-          value={email}
-          placeholder="이메일"
-          onChange={this.handleChange}
-          onKeyPress={this.handleKeyPress}
-        />
+      <Fragment>
+        {loading && <Loading />}
+        <AuthContent title="회원가입">
+          <div className="InputWithLabel">
+            <div className="label">프로필</div>
+            <Upload
+              name="profile"
+              listType="picture-card"
+              className="avatar-uploader"
+              showUploadList={false}
+              action="/api/auth/profile"
+              onChange={this.handleProfileChange}
+              customRequest={this.customRequest}
+            >
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  className="profile_pic"
+                  style={{ width: 100 + '%' }}
+                  alt="avatar"
+                />
+              ) : (
+                uploadButton
+              )}
+            </Upload>
+          </div>
+          <InputWithLabel
+            label="이름"
+            type="text"
+            name="username"
+            value={username}
+            placeholder="이름"
+            onChange={this.handleChange}
+          />
+          <InputWithLabel
+            label="이메일"
+            type="text"
+            name="email"
+            value={email}
+            placeholder="이메일"
+            onChange={this.handleChange}
+            onKeyPress={this.handleKeyPress}
+          />
 
-        <AuthButton onClick={this.handleRegister}>회원가입</AuthButton>
-      </AuthContent>
+          <AuthButton onClick={this.handleRegister}>회원가입</AuthButton>
+        </AuthContent>
+      </Fragment>
     );
   }
 }
 
-export default Register;
+export default connect(
+  ({ web3Auth, pender }) => ({
+    accountAddress: web3Auth.accountAddress,
+    loading: pender.pending['web3/auth/REGISTER_EVENT']
+  }),
+  { register, registerEvent }
+)(Register);

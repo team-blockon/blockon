@@ -1,8 +1,8 @@
 import React from 'react';
-import SearchWrapper from 'components/SearchWrapper';
+import SearchTemplate from 'components/search/SearchTemplate';
 
-const SearchPage = () => {
-  return <SearchWrapper />;
+const Search = () => {
+  return <SearchTemplate />;
 };
 
-export default SearchPage;
+export default Search;

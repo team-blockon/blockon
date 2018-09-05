@@ -1,58 +1,61 @@
-import React from 'react';
-import AccountAbi from 'abi/account_abi';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { changeState } from 'store/modules/web3/contract';
+import * as Web3User from 'lib/web3/user';
 
 import { MdClose as CloseIcon } from 'react-icons/lib/md';
-import './JunggaeTradeModal.scss';
 import { Button } from 'antd';
+import './JunggaeTradeModal.scss';
 
-const JunggaeTradeModal = ({
-  accountAddress,
-  contractIndex,
-  newContractState,
-  itemType,
-  onClose
-}) => {
-  const handleSubmit = () => {
-    console.log(accountAddress, contractIndex, newContractState);
-    const accountInstance = window.web3.eth
-      .contract(AccountAbi)
-      .at(accountAddress);
+class JunggaeTradeModal extends Component {
+  handleSubmit = async () => {
+    const {
+      contractIndex, // 상태를 변경할 계약 인덱스
+      newContractState, // 새로운 상태
+      changeState,
+      watchUpdateEvent,
+      onClose
+    } = this.props;
 
-    accountInstance.changeContractStateAt.sendTransaction(
+    const { accountInstance } = await Web3User.getAccountInstance();
+    await changeState({
+      accountInstance,
       contractIndex,
-      newContractState,
-      (err, res) => {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log(res);
-        }
-      }
-    );
+      newContractState
+    });
+    await watchUpdateEvent();
+    onClose();
   };
 
-  return (
-    <div className="JunggaeTradeModal">
-      <div className="dark" onClick={onClose} />
-      <div className="modal">
-        <div className="head">
-          <h3>
-            {itemType}
-            으로 이동하시겠습니까?
-          </h3>
-          <div className="exit" onClick={onClose}>
-            <CloseIcon />
-          </div>
-        </div>
-        {/* <p>잔금은 받으셨나요</p>
-        <p>인감증명은 받으셨나요</p>
-        <p>대리계약은 아니었나요</p> */}
-        <Button type="primary" onClick={handleSubmit}>
-          확인
-        </Button>
-      </div>
-    </div>
-  );
-};
+  render = () => {
+    const {
+      itemType, // 이동할 단계 이름
+      onClose
+    } = this.props;
 
-export default JunggaeTradeModal;
+    return (
+      <div className="JunggaeTradeModal">
+        <div className="dark" onClick={onClose} />
+        <div className="modal">
+          <div className="head">
+            <h3>
+              {itemType}
+              으로 이동하시겠습니까?
+            </h3>
+            <div className="exit" onClick={onClose}>
+              <CloseIcon />
+            </div>
+          </div>
+          <Button type="primary" onClick={this.handleSubmit}>
+            확인
+          </Button>
+        </div>
+      </div>
+    );
+  };
+}
+
+export default connect(
+  null,
+  { changeState }
+)(JunggaeTradeModal);

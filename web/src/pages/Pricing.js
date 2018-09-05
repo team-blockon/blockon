@@ -1,8 +1,8 @@
 import React from 'react';
-import PricingWrapper from 'components/PricingWrapper';
+import PricingTemplate from 'components/pricing/PricingTemplate';
 
 const Pricing = () => {
-  return <PricingWrapper />;
+  return <PricingTemplate />;
 };
 
 export default Pricing;

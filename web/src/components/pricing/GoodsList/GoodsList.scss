@@ -1,0 +1,56 @@
+@import "~open-color/open-color";
+
+.item {
+  border: 1px solid #ebebeb;
+  padding: 15px 30px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  align-items: center;
+
+  & + .item {
+    margin-top: 2rem;
+  }
+
+  &.active {
+    border-width: 5px;
+  }
+
+  .left {
+    flex: 1;
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+  }
+
+  .right {
+    display: flex;
+    flex-wrap: wrap;
+
+    .price {
+      margin-right: 1rem;
+      font-size: 1.2rem;
+
+      .original {
+        position: relative;
+        font-size: 1rem;
+        margin-right: 1rem;
+
+        &::after {
+          content: "";
+          width: 100%;
+          border-bottom: 2px solid $oc-yellow-4;
+          position: absolute;
+          left: 0;
+          top: calc(50% - 1px);
+        }
+      }
+
+      .discount {
+        font-weight: 900;
+      }
+    }
+  }
+}

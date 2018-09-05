@@ -1,0 +1,61 @@
+@import "~open-color/open-color";
+
+.PricingTemplate {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+
+  .container {
+    border: 2px solid #ededed;
+    padding: 60px 30px;
+
+    .title {
+      margin-bottom: 3rem;
+
+      h1 {
+        font-size: 1.4rem;
+        font-weight: 900;
+      }
+    }
+
+    .form-section {
+      padding-top: 40px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e6e6e6;
+    }
+
+    .agree {
+      padding-top: 3rem;
+      padding-bottom: 1rem;
+
+      .comment {
+        background-color: #f7f7f7;
+        padding: 24px 40px;
+        margin-top: 1rem;
+      }
+    }
+
+    .action {
+      text-align: center;
+      border-top: 1px solid $oc-gray-3;
+      padding-top: 1rem;
+
+      button + button {
+        margin-left: 1rem;
+      }
+    }
+  }
+}
+
+.ant-spin.ant-spin-spinning {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
+
+.ant-form-item-label {
+  text-align: left !important;
+
+  label:after {
+    content: "" !important;
+  }
+}

@@ -3,7 +3,7 @@ import JunggaeMyPage from 'components/junggae/JunggaeMyPage';
 
 class MyPage extends Component {
   state = {
-    activeTab: 0,
+    activeTab: 'ongoing',
     activeType: 0
   };
 

@@ -12,9 +12,6 @@
 .vscode
 jsconfig.json
 
-#pdf
-*.pdf
-
 # misc
 .DS_Store
 .env.local

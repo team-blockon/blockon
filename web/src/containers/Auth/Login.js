@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import * as userActions from 'store/modules/user';
+
 import AuthContent from 'components/auth/AuthContent';
 import AuthButton from 'components/auth/AuthButton';
 import AuthLink from 'components/auth/AuthLink';
+
 import * as AuthAPI from 'lib/api/auth';
-import * as userActions from 'store/modules/user';
+import * as Web3Utils from 'lib/web3/utils';
+
 import { Divider } from 'antd';
-import * as MetamaskUtil from 'lib/MetamaskUtil';
 
 class Login extends Component {
   handleChange = event => {
@@ -22,10 +25,10 @@ class Login extends Component {
   handleLogin = async () => {
     const { history } = this.props; // 나중에 없앨 것!
 
-    if (!MetamaskUtil.check()) return;
+    if (!Web3Utils.check()) return;
 
     const { setLoggedInfo } = this.props;
-    const ethAddress = await MetamaskUtil.getDefaultAccount();
+    const ethAddress = await Web3Utils.getDefaultAccount();
 
     AuthAPI.login(ethAddress).then(res => {
       const loggedInfo = res.data;

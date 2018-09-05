@@ -26,14 +26,6 @@ const FIXED_DATE = 5;
 const COMPLETED_CONTRACT = 100;
 
 /**
- * activeTab 인덱스
- * 0 - 진행중거래 탭
- * 1 - 완료된거래 탭
- */
-const ONGOING_TAB = 0;
-const COMPLETED_TAB = 1;
-
-/**
  * list class name
  * 1 - active
  * 2 - first-not-active
@@ -239,10 +231,10 @@ const JunggaeTradeList = ({
     contractInfoList.forEach(contractInfo => {
       const contractState = contractInfo.state;
 
-      if (activeTab === ONGOING_TAB && contractState !== COMPLETED_CONTRACT) {
+      if (activeTab === 'ongoing' && contractState !== COMPLETED_CONTRACT) {
         cards.push(getCard(contractInfo));
       } else if (
-        activeTab === COMPLETED_TAB &&
+        activeTab === 'completed' &&
         contractState === COMPLETED_CONTRACT
       ) {
         cards.push(getCard(contractInfo));

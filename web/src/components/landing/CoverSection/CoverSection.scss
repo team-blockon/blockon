@@ -1,0 +1,146 @@
+@import "~open-color/open-color";
+
+.CoverSection {
+  background: url("../../../static/images/cover.png") fixed;
+  background-size: 100%;
+}
+
+@media (min-width: 320px) {
+  .CoverSection {
+    height: 159px;
+
+    .logo {
+      img {
+        display: none;
+      }
+    }
+  }
+
+  .subtitle {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    top: 90px;
+    font-size: 1.3rem;
+    font-weight: 100;
+  }
+
+  .search {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 80%;
+    top: 140px;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 50px;
+
+    input.ant-input.agent {
+      font-size: 1rem;
+      border: none;
+      background: none;
+      outline: none;
+      color: #333;
+      width: 270px;
+      background-image: url("../../../static/images/icon/search.png");
+      background-position: 1px 8px;
+      background-repeat: no-repeat;
+      background-size: 15px;
+      padding-left: 25px;
+
+      &::placeholder {
+        color: $oc-gray-5;
+        font-size: 9pt;
+      }
+    }
+  }
+}
+
+@media (min-width: 750px) {
+  .CoverSection {
+    height: 239px;
+
+    .logo {
+      position: absolute;
+      left: 120px;
+      top: 95px;
+
+      img {
+        display: block;
+        height: 43px;
+      }
+    }
+  }
+
+  .subtitle {
+    left: 120px;
+    right: auto;
+    text-align: left;
+    top: 160px;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .search {
+    left: 120px;
+    right: auto;
+    margin: 0;
+    width: auto;
+    top: 210px;
+
+    input.ant-input.agent {
+      width: 500px;
+      background-position: 3px 6px;
+      background-size: 18px;
+      padding-left: 35px;
+
+      &::placeholder {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 981px) {
+  .CoverSection {
+    height: 540px;
+
+    .logo {
+      position: absolute;
+      left: 24.3%;
+      top: 185px;
+
+      img {
+        height: 73px;
+      }
+    }
+  }
+
+  .subtitle {
+    position: absolute;
+    left: 24.3%;
+    top: 310px;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .search {
+    left: 24.3%;
+    top: 415px;
+
+    input.ant-input.agent {
+      font-size: 1.3rem;
+      width: 500px;
+      background-position: 7px 7px;
+      background-size: 18px;
+      padding-left: 45px;
+
+      &::placeholder {
+        font-size: 1.3rem;
+      }
+    }
+  }
+}
