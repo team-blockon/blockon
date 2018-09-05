@@ -79,9 +79,12 @@
     "start": "node scripts/start.js",
     "start:server": "nodemon src/server/index.js",
     "build": "node scripts/build.js",
+    "dev": "concurrently  \"yarn start\" \"yarn start:server\"",
     "test": "node scripts/test.js --env=jsdom"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "concurrently": "^4.0.1"
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
