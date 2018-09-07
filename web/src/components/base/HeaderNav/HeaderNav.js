@@ -85,14 +85,13 @@ class HeaderNav extends Component {
     return (
       <nav className="HeaderNav">
         <div className="nav-mobile">
-          <a
+          <button
             id="nav-toggle"
-            href="#!"
             onClick={this.nav_click}
             className={toggled ? 'active' : undefined}
           >
             <span />
-          </a>
+          </button>
         </div>
 
         <ul className={toggled ? 'active' : undefined}>

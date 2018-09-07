@@ -11,9 +11,9 @@ import {
 } from 'pages';
 
 import AppTemplate from 'components/base/AppTemplate';
+import HeaderContainer from 'containers/base/HeaderContainer';
 import HeaderNav from 'components/base/HeaderNav';
 import PrivateRoute from 'components/common/PrivateRoute';
-import HeaderContainer from 'containers/HeaderContainer';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -59,7 +59,7 @@ class App extends Component {
   }
 
   render() {
-    const { isLogged, isJunggae } = this.props;
+    const { isLogged } = this.props;
 
     return (
       <AppTemplate header={<HeaderContainer navItem={<HeaderNav />} />}>
@@ -72,7 +72,6 @@ class App extends Component {
             path="/contract"
             component={Contract}
             isLogged={isLogged}
-            isJunggae={isJunggae}
           />
           <PrivateRoute
             path="/contract/edit"
@@ -92,9 +91,8 @@ class App extends Component {
 }
 
 // 스토어의 state를 props로 넣어주는 함수
-const mapStateToProps = ({ user, pender }) => ({
-  isLogged: user.isLogged,
-  isJunggae: user.isJunggae
+const mapStateToProps = ({ user }) => ({
+  isLogged: user.isLogged
 });
 
 // 액션을 dispatch하는 함수를 props로 넣어주는 함수

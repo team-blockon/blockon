@@ -1,6 +1,6 @@
 import React from 'react';
 import maemulImage from 'static/images/maemul.png';
-import './JunggaeTradeCard.scss';
+import './ContractCard.scss';
 
 const getCards = () => {
   const cards = [];
@@ -26,8 +26,8 @@ const getCards = () => {
   return cards;
 };
 
-const JunggaeTradeCard = () => {
+const ContractCard = () => {
   return <div className="card-wrapper">{getCards()}</div>;
 };
 
-export default JunggaeTradeCard;
+export default ContractCard;

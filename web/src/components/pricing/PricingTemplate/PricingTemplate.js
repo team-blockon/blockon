@@ -25,7 +25,7 @@ class PricingTemplate extends Component {
     setTimeout(() => {
       this.props.history.push({
         pathname: '/contract',
-        state: { activeTab: 2 }
+        state: { activeTab: 'review' }
       });
     }, 3000);
   };

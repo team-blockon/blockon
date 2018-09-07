@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { updateEvent } from 'store/modules/web3/contract';
 import produce from 'immer';
 
-import ContractTab from 'components/contract/ContractTab';
-import ContractTabContent from 'components/contract/ContractTab/ContractTabContent';
-import JunggaeTradeModal from 'components/junggae/JunggaeTradeModal';
+import ContractTab from '../ContractTab';
+import ContractTabContent from '../ContractTab/ContractTabContent';
+import ContractModal from '../ContractModal';
 
 import * as ContractAPI from 'lib/api/contract';
 import * as Web3User from 'lib/web3/user';
@@ -14,7 +12,7 @@ import * as Web3Contract from 'lib/web3/contract';
 // 계약상태 상수
 const COMPLETED_CONTRACT = 100; // 계약 완료
 
-class JunggaeMyPage extends Component {
+class ContractTemplate extends Component {
   state = {
     tradeModal: false, // 모달을 보일건지 여부
     activeContractsNum: 0, // 진행중계약 개수
@@ -177,7 +175,9 @@ class JunggaeMyPage extends Component {
       activeTab,
       activeType, // 목록형인지, 카드형인지
       handleTabSelect,
-      handleTypeSelect
+      handleTypeSelect,
+      isJunggae,
+      changeState
     } = this.props;
     const {
       tradeModal,
@@ -204,6 +204,7 @@ class JunggaeMyPage extends Component {
             handleTypeSelect={handleTypeSelect}
             activeContractsNum={this.state.activeContractsNum}
             completedContractsNum={this.state.completedContractsNum}
+            isJunggae={isJunggae}
           />
 
           <ContractTabContent
@@ -215,12 +216,13 @@ class JunggaeMyPage extends Component {
           />
 
           {tradeModal && (
-            <JunggaeTradeModal
+            <ContractModal
               onClose={this.handleToggleModal}
               accountAddress={accountAddress}
               contractIndex={contractIndex}
               newContractState={newContractState}
               itemType={itemType}
+              changeState={changeState}
               watchUpdateEvent={this.watchUpdateEvent}
             />
           )}
@@ -230,7 +232,4 @@ class JunggaeMyPage extends Component {
   }
 }
 
-export default connect(
-  null,
-  { updateEvent }
-)(JunggaeMyPage);
+export default ContractTemplate;

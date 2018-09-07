@@ -23,7 +23,8 @@ const ContractTab = ({
   handleTabSelect,
   handleTypeSelect,
   activeContractsNum,
-  completedContractsNum
+  completedContractsNum,
+  isJunggae
 }) => {
   return (
     <div className="ContractTab">
@@ -44,13 +45,15 @@ const ContractTab = ({
           완료된거래 ({completedContractsNum}
           건)
         </ContractTabItem>
-        <ContractTabItem
-          item="review"
-          activeItem={activeTab}
-          handleSelect={handleTabSelect}
-        >
-          평점및리뷰 (30건)
-        </ContractTabItem>
+        {isJunggae && ( // 중개인만 리뷰 탭 보이기
+          <ContractTabItem
+            item="review"
+            activeItem={activeTab}
+            handleSelect={handleTabSelect}
+          >
+            평점및리뷰 (30건)
+          </ContractTabItem>
+        )}
       </ul>
 
       {activeTab !== 2 && (

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import produce from 'immer';
 import axios from 'axios';
@@ -9,7 +8,6 @@ import * as UserAPI from 'lib/api/user';
 import * as ContractAPI from 'lib/api/contract';
 import * as Web3User from 'lib/web3/user';
 import * as Web3Contract from 'lib/web3/contract';
-import { updateEvent } from 'store/modules/web3/contract';
 
 import { AutoComplete, Radio, DatePicker } from 'antd';
 import { Upload, Icon } from 'antd';
@@ -410,7 +408,4 @@ class ContractUploadTemplate extends Component {
   }
 }
 
-export default connect(
-  ({ pender }) => ({ loading: pender.pending['web3/contract/UPDATE_EVENT'] }),
-  { updateEvent }
-)(withRouter(ContractUploadTemplate));
+export default withRouter(ContractUploadTemplate);

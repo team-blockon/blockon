@@ -6,9 +6,9 @@ import {
 } from 'react-icons/lib/ti';
 import JunggaeImage from 'static/images/junggae.png';
 import StarRatingComponent from 'react-star-rating-component';
-import './JunggaeReveiw.scss';
+import './ContractReview.scss';
 
-class JunggaeReview extends Component {
+class ContractReview extends Component {
   state = {
     rating: 3.5
   };
@@ -77,7 +77,7 @@ class JunggaeReview extends Component {
     const { rating } = this.state;
 
     return (
-      <div className="JunggaeReview">
+      <div className="ContractReview">
         <h1>나의 평점</h1>
         <div className="point-average">
           <div className="image">
@@ -118,4 +118,4 @@ class JunggaeReview extends Component {
   }
 }
 
-export default JunggaeReview;
+export default ContractReview;

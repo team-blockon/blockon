@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { changeState } from 'store/modules/web3/contract';
 import * as Web3User from 'lib/web3/user';
 
 import { MdClose as CloseIcon } from 'react-icons/lib/md';
 import { Button } from 'antd';
-import './JunggaeTradeModal.scss';
+import './ContractModal.scss';
 
-class JunggaeTradeModal extends Component {
+class ContractModal extends Component {
   handleSubmit = async () => {
     const {
       contractIndex, // 상태를 변경할 계약 인덱스
@@ -34,7 +32,7 @@ class JunggaeTradeModal extends Component {
     } = this.props;
 
     return (
-      <div className="JunggaeTradeModal">
+      <div className="ContractModal">
         <div className="dark" onClick={onClose} />
         <div className="modal">
           <div className="head">
@@ -55,7 +53,4 @@ class JunggaeTradeModal extends Component {
   };
 }
 
-export default connect(
-  null,
-  { changeState }
-)(JunggaeTradeModal);
+export default ContractModal;

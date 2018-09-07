@@ -1,7 +1,7 @@
 import React from 'react';
-import JunggaeReview from 'components/junggae/JunggaeReview';
-import JunggaeTradeCard from 'components/junggae/JunggaeTradeCard';
-import JunggaeTradeList from 'components/junggae/JunggaeTradeList';
+import ContractList from '../ContractList';
+import ContractCard from '../ContractCard';
+import ContractReview from '../ContractReview';
 
 const ContractTabContent = ({
   activeTab,
@@ -14,7 +14,7 @@ const ContractTabContent = ({
   case 'ongoing': // 진행중 거래
     if (activeType === 0) {
       return (
-        <JunggaeTradeList
+        <ContractList
           handleSelect={handleSelect}
           contractInfoList={contractInfoList}
           accountInstance={accountInstance}
@@ -22,22 +22,22 @@ const ContractTabContent = ({
         />
       );
     } else {
-      return <JunggaeTradeCard />;
+      return <ContractCard />;
     }
   case 'completed': // 완료된 거래
     if (activeType === 0) {
       return (
-        <JunggaeTradeList
+        <ContractList
           handleSelect={handleSelect}
           contractInfoList={contractInfoList}
           activeTab={activeTab}
         />
       );
     } else {
-      return <JunggaeTradeCard />;
+      return <ContractCard />;
     }
   case 'review':
-    return <JunggaeReview />;
+    return <ContractReview />;
   default:
     return '유효하지 않은 탭입니다.';
   }
