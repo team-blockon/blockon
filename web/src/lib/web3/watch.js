@@ -40,6 +40,7 @@ export const updateContract = accountInstance => {
     // 마지막 블록 넘버 가져오기
     let latestBlock = await Web3Utils.getLatestBlockNumber();
 
+    // issue: Ganache에서 UpdateContract 이벤트 안 받아짐
     // UpdateEvent 이벤트 필터
     const updateEvent = accountInstance.UpdateContract(null, {
       fromBlock: latestBlock

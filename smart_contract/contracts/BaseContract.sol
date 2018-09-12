@@ -13,7 +13,7 @@ contract BaseContract {
      * @param _agentAccount 중개인의 Account 스마트컨트랙트 주소
      * @param _sellerAccount 매도인의 Account 스마트컨트랙트 주소
      * @param _buyerAccount 매수인의 Account 스마트컨트랙트 주소
-     * @param _contractType 계약의 종류, 1 - 매매, 2 - 전,월세
+     * @param _contractType 계약의 종류, 1 - 월세, 2 - 전세, 3 - 매매
      */
     constructor(Account _agentAccount, Account _sellerAccount, Account _buyerAccount, uint8 _contractType) public {
         agentAccount = _agentAccount;

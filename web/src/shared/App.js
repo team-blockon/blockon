@@ -54,7 +54,7 @@ class App extends Component {
 
     web3 = new Web3(this.web3Provider); // web3 객체를 만들어줌
     const contract = web3.eth.contract(blockonABI); // Blockon 컨트랙트 클래스 생성
-    window.blockon = contract.at('0x293f26dd93794f1e5507d91cece3c7e6469f510f'); // 컨트랙트 인스턴스 생성
+    window.blockon = contract.at('0x0891dac5870d723cc77538f7c884a5c52b33e479'); // 컨트랙트 인스턴스 생성
     web3.eth.defaultAccount = web3.eth.accounts[0]; // 내가 지금 메타마스크에서 사용하고 있는 주소를 defaultAccount로 설정
   }
 

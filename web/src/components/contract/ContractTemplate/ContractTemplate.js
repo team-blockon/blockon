@@ -14,7 +14,7 @@ const COMPLETED_CONTRACT = 100; // 계약 완료
 
 class ContractTemplate extends Component {
   state = {
-    tradeModal: false, // 모달을 보일건지 여부
+    contractModal: false, // 모달을 보일건지 여부
     activeContractsNum: 0, // 진행중계약 개수
     completedContractsNum: 0, // 완료된계약 개수
     contractInfoList: [] // {index, type, state, building} 리스트
@@ -27,7 +27,7 @@ class ContractTemplate extends Component {
     itemType
   ) => {
     this.setState({
-      tradeModal: !this.state.tradeModal,
+      contractModal: !this.state.contractModal,
       accountAddress,
       contractIndex,
       newContractState,
@@ -180,7 +180,7 @@ class ContractTemplate extends Component {
       changeState
     } = this.props;
     const {
-      tradeModal,
+      contractModal,
       accountAddress,
       contractIndex,
       newContractState,
@@ -215,7 +215,7 @@ class ContractTemplate extends Component {
             handleSelect={this.handleToggleModal}
           />
 
-          {tradeModal && (
+          {contractModal && (
             <ContractModal
               onClose={this.handleToggleModal}
               accountAddress={accountAddress}

@@ -77,7 +77,7 @@ contract Blockon {
      * @param agentAccount 중개인의 Account 스마트컨트랙트 주소
      * @param sellerAccount 매도인의 Account 스마트컨트랙트 주소
      * @param buyerAccount 매수인의 Account 스마트컨트랙트 주소
-     * @param contractType 계약의 종류, 1 - 매매, 2 - 전,월세
+     * @param contractType 계약의 종류, 1 - 월세, 2 - 전세, 3 - 매매
      */
     function createContractByAccountAddress(Account agentAccount, Account sellerAccount, Account buyerAccount, uint8 contractType) public {
         // 새로 추가할 계약

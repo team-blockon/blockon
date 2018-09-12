@@ -1,8 +1,8 @@
 import React from 'react';
-import ContractUploadTemplate from 'components/contract/ContractUploadTemplate';
+import ContractUploadContainer from 'containers/contract/ContractUploadContainer';
 
 const ContractUpload = () => {
-  return <ContractUploadTemplate />;
+  return <ContractUploadContainer />;
 };
 
 export default ContractUpload;
