@@ -49,9 +49,9 @@ class Login extends Component {
   render() {
     return (
       <AuthContent title="로그인">
-        <AuthButton onClick={this.handleLogin}>MetaMask로 로그인dsd21 </AuthButton>
+        <AuthButton onClick={this.handleLogin}>MetaMask로 로그인</AuthButton>
         <Divider />
-        <AuthButton onClick={this.handleRegister}>회원가입</AuthButton>
+        <AuthLink onClick={this.handleRegister}>회원가입</AuthLink>
       </AuthContent>
     );
   }
