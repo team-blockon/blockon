@@ -1,7 +1,7 @@
 import React from 'react';
 import './AuthLink.scss';
 
-const AuthLink = ({ handleClick, children }) => {
+const AuthLink = ({ children, handleClick }) => {
   return (
     <div className="AuthLink" onClick={handleClick}>
       {children}

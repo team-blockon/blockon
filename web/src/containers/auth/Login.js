@@ -51,7 +51,7 @@ class Login extends Component {
       <AuthContent title="로그인">
         <AuthButton onClick={this.handleLogin}>MetaMask로 로그인</AuthButton>
         <Divider />
-        <AuthLink onClick={this.handleRegister}>회원가입</AuthLink>
+        <AuthLink handleClick={this.handleRegister}>회원가입</AuthLink>
       </AuthContent>
     );
   }
