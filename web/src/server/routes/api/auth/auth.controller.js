@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const EmailAuth = require('../../../models/emailAuth');
 const nodemailer = require('nodemailer');
+const randomstring = require('randomstring');
 
 const DIR_PATH = path.resolve(__dirname, '../../../uploads');
 
@@ -103,8 +104,8 @@ exports.register = async (req, res) => {
           });
       } else {
           res.status(409).json({
-              message: 'already sign up';
-          })
+              message: 'already sign up'
+          });
       }
   }catch (err) {
       res.status(409).json({
