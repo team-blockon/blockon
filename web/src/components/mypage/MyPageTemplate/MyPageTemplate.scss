@@ -1,0 +1,48 @@
+.account-info {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+
+  .profile-wrapper {
+    display: flex;
+    flex-flow: row nowrap;
+    .user-picture {
+      width: 120px;
+      display: flex;
+      flex-direction: column;
+      .edit-btn {
+        margin-top: 1rem;
+      }
+    }
+    .userNameForm {
+      margin: 0 auto;
+      padding-left: 50px;
+      align-self: center;
+    }
+  }
+
+}
+
+@media (max-width: 1040px) {
+  .account-info {
+    flex-flow: column wrap;
+    .account-profile {
+      width: 100%;
+    }
+    .account-contact {
+      width: 100%;
+      margin-top: 20px;
+    }
+  }
+}
+@media (min-width: 1041px) {
+  .account-info {
+    flex-flow: row wrap;
+    .account-profile {
+      width: 45%;
+    }
+    .account-contact {
+      width: 45%;
+    }
+  }
+}
