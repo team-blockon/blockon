@@ -12,3 +12,7 @@ export const saveWallet = ({ ethAddress, hyconAddress, hyconPrivateKey }) => {
     hyconPrivateKey
   });
 };
+
+export const getWallet = ({ ethAddress }) => {
+  return defaultClient.get(`/api/mypage/wallet/${ethAddress}`);
+};

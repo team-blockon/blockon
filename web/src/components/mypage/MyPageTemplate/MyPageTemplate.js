@@ -6,7 +6,9 @@ import * as Web3Utils from 'lib/web3/utils';
 const FormItem = Form.Item;
 
 class MyPageTemplate extends Component {
-  state = {};
+  state = {
+    hasWallet: true
+  };
 
   handleChange = event => {
     const { name, value } = event.target;
@@ -35,8 +37,22 @@ class MyPageTemplate extends Component {
     });
   };
 
+  async componentDidMount() {
+    const ethAddress = await Web3Utils.getDefaultAccount();
+
+    MyPageAPI.getWallet({ ethAddress }).then(res => {
+      const { hyconAddress, hyconPrivateKey } = res.data;
+      console.log(hyconAddress, hyconPrivateKey);
+      this.setState({
+        hasWallet: true,
+        hyconAddress,
+        hyconPrivateKey
+      });
+    });
+  }
+
   render() {
-    const { hyconAddress, hyconPrivateKey } = this.state;
+    const { hasWallet, hyconAddress, hyconPrivateKey } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -65,37 +81,39 @@ class MyPageTemplate extends Component {
       <div className="MyPageTemplate">
         <div className="container content">
           <Card title="지갑 생성">
-            <Form onSubmit={this.handleSubmit}>
-              <FormItem {...formItemLayout} label="지갑 이름">
-                <Input
-                  type="text"
-                  name="walletName"
-                  onChange={this.handleChange}
-                  placeholder="지갑 이름"
-                />
-              </FormItem>
-              <FormItem {...formItemLayout} label="비밀번호">
-                <Input
-                  type="password"
-                  name="password"
-                  onChange={this.handleChange}
-                  placeholder="비밀번호"
-                />
-              </FormItem>
-              <FormItem {...formItemLayout} label="비밀번호 확인">
-                <Input
-                  type="password"
-                  name="passwordConfirm"
-                  onChange={this.handleChange}
-                  placeholder="비밀번호 확인"
-                />
-              </FormItem>
-              <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">
-                  지갑 생성
-                </Button>
-              </FormItem>
-            </Form>
+            {!hasWallet && (
+              <Form onSubmit={this.handleSubmit}>
+                <FormItem {...formItemLayout} label="지갑 이름">
+                  <Input
+                    type="text"
+                    name="walletName"
+                    onChange={this.handleChange}
+                    placeholder="지갑 이름"
+                  />
+                </FormItem>
+                <FormItem {...formItemLayout} label="비밀번호">
+                  <Input
+                    type="password"
+                    name="password"
+                    onChange={this.handleChange}
+                    placeholder="비밀번호"
+                  />
+                </FormItem>
+                <FormItem {...formItemLayout} label="비밀번호 확인">
+                  <Input
+                    type="password"
+                    name="passwordConfirm"
+                    onChange={this.handleChange}
+                    placeholder="비밀번호 확인"
+                  />
+                </FormItem>
+                <FormItem {...tailFormItemLayout}>
+                  <Button type="primary" htmlType="submit">
+                    지갑 생성
+                  </Button>
+                </FormItem>
+              </Form>
+            )}
             지갑 주소: {hyconAddress}
             <br />
             프라이빗 키: {hyconPrivateKey}
