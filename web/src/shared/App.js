@@ -51,7 +51,7 @@ class App extends Component {
       // this.web3Provider = new Web3.providers.HttpProvider(
       //   'http://localhost:8545'
       // );
-        return;
+      return;
     }
 
     web3 = new Web3(this.web3Provider); // web3 객체를 만들어줌

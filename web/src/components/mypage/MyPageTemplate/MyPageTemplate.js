@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Card, Avatar } from 'antd';
 import './MyPageTemplate.scss';
+import * as MyPageAPI from 'lib/api/myPage';
+import * as Web3Utils from 'lib/web3/utils';
 
 const FormItem = Form.Item;
 
@@ -64,20 +66,72 @@ class MyPageTemplate extends Component {
         value: '********',
       },
     },
+    hasWallet: true,
   };
 
   handleFormChange = (changedFields) => {
     this.setState(({ fields }) => ({
       fields: { ...fields, ...changedFields},
-    }));
+    }))
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
+  handleChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
   };
+
+  handleSubmit = async event => {
+    event.preventDefault();
+    await MyPageAPI.makeWallet().then(res => {
+      const { address, privateKey } = res.data;
+      this.setState({
+        hyconAddress: address,
+        hyconPrivateKey: privateKey
+      });
+    });
+
+    const ethAddress = await Web3Utils.getDefaultAccount();
+    const { hyconAddress, hyconPrivateKey } = this.state;
+
+    MyPageAPI.saveWallet({
+      ethAddress,
+      hyconAddress,
+      hyconPrivateKey
+    });
+  };
+
+  async componentDidMount() {
+    const ethAddress = await Web3Utils.getDefaultAccount();
+
+    await MyPageAPI.getWallet({ ethAddress }).then(res => {
+      const { hyconAddress, hyconPrivateKey } = res.data;
+      console.log(hyconAddress, hyconPrivateKey);
+      this.setState({
+        hasWallet: true,
+        hyconAddress,
+        hyconPrivateKey
+      });
+    });
+
+    const { hyconAddress } = this.state;
+    await MyPageAPI.getBalance({ hyconAddress }).then(res => {
+      const { balance } = res.data;
+      this.setState({
+        hyconBalance: balance
+      });
+    });
+  }
 
   render() {
-    const fields = this.state.fields;
+    const {
+      fields,
+      hasWallet,
+      hyconAddress,
+      hyconPrivateKey,
+      hyconBalance
+    } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -133,20 +187,44 @@ class MyPageTemplate extends Component {
             </Card>
           </div>
           <Card title="지갑 생성">
-            <Form onSubmit={this.handleSubmit}>
-              <FormItem {...formItemLayout} label="지갑 이름">
-                <Input type="text" name="walletName" placeholder="지갑 이름" />
-              </FormItem>
-              <FormItem {...formItemLayout} label="비밀번호">
-                <Input type="password" name="password" placeholder="비밀번호" />
-              </FormItem>
-              <FormItem {...formItemLayout} label="비밀번호 확인">
-                <Input type="password" placeholder="비밀번호 확인" />
-              </FormItem>
-              <FormItem {...tailFormItemLayout}>
-                <Button type="primary">지갑 생성</Button>
-              </FormItem>
-            </Form>
+            {!hasWallet && (
+              <Form onSubmit={this.handleSubmit}>
+                <FormItem {...formItemLayout} label="지갑 이름">
+                  <Input
+                    type="text"
+                    name="walletName"
+                    onChange={this.handleChange}
+                    placeholder="지갑 이름"
+                  />
+                </FormItem>
+                <FormItem {...formItemLayout} label="비밀번호">
+                  <Input
+                    type="password"
+                    name="password"
+                    onChange={this.handleChange}
+                    placeholder="비밀번호"
+                  />
+                </FormItem>
+                <FormItem {...formItemLayout} label="비밀번호 확인">
+                  <Input
+                    type="password"
+                    name="passwordConfirm"
+                    onChange={this.handleChange}
+                    placeholder="비밀번호 확인"
+                  />
+                </FormItem>
+                <FormItem {...tailFormItemLayout}>
+                  <Button type="primary" htmlType="submit">
+                    지갑 생성
+                  </Button>
+                </FormItem>
+              </Form>
+            )}
+            지갑 주소: {hyconAddress}
+            <br />
+            프라이빗 키: {hyconPrivateKey}
+            <br />
+            잔액: {hyconBalance} HYCON
           </Card>
         </div>
       </div>
