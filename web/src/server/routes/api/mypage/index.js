@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const { sendAuthEmail, authEmail } = require('./mypage.controller');
+const { makeWallet, getWallet } = require('./mypage.controller');
 
-router.post('/sendAuthEmail', sendAuthEmail);
-router.get('/authEmail', authEmail);
+router.post('/wallet', makeWallet);
+router.get('/wallet/:ethAddress',getWallet);
 
 module.exports = router;
