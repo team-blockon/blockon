@@ -6,6 +6,7 @@ import {
   Search,
   Contract,
   ContractUpload,
+  MyPage,
   Pricing,
   Auth
 } from 'pages';
@@ -78,6 +79,7 @@ class App extends Component {
             component={ContractUpload}
             isLogged={isLogged}
           />
+          <PrivateRoute path="/mypage" component={MyPage} isLogged={isLogged} />
           <PrivateRoute
             path="/pricing"
             component={Pricing}

@@ -3,5 +3,6 @@ export { default as Landing } from './Landing';
 export { default as Search } from './Search';
 export { default as Contract } from './Contract';
 export { default as ContractUpload } from './ContractUpload';
+export { default as MyPage } from './MyPage';
 export { default as Pricing } from './Pricing';
 export { default as Auth } from './Auth';
