@@ -40,7 +40,7 @@ class MyPageTemplate extends Component {
   async componentDidMount() {
     const ethAddress = await Web3Utils.getDefaultAccount();
 
-    MyPageAPI.getWallet({ ethAddress }).then(res => {
+    await MyPageAPI.getWallet({ ethAddress }).then(res => {
       const { hyconAddress, hyconPrivateKey } = res.data;
       console.log(hyconAddress, hyconPrivateKey);
       this.setState({
@@ -49,10 +49,23 @@ class MyPageTemplate extends Component {
         hyconPrivateKey
       });
     });
+
+    const { hyconAddress } = this.state;
+    await MyPageAPI.getBalance({ hyconAddress }).then(res => {
+      const { balance } = res.data;
+      this.setState({
+        hyconBalance: balance
+      });
+    });
   }
 
   render() {
-    const { hasWallet, hyconAddress, hyconPrivateKey } = this.state;
+    const {
+      hasWallet,
+      hyconAddress,
+      hyconPrivateKey,
+      hyconBalance
+    } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -117,6 +130,8 @@ class MyPageTemplate extends Component {
             지갑 주소: {hyconAddress}
             <br />
             프라이빗 키: {hyconPrivateKey}
+            <br />
+            잔액: {hyconBalance} HYCON
           </Card>
         </div>
       </div>
