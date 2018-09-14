@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import GoodsList from '../GoodsList/GoodsList';
-import { Form, Input, Radio, Checkbox, Button, Spin } from 'antd';
+import * as Web3Utils from 'lib/web3/utils';
+import * as MyPageAPI from 'lib/api/myPage';
+import * as PricingAPI from 'lib/api/pricing';
+import { Form, Input, Radio, Checkbox, Button, Spin, Modal } from 'antd';
 import './PricingTemplate.scss';
 
 const FormItem = Form.Item;
@@ -10,6 +13,7 @@ const RadioGroup = Radio.Group;
 class PricingTemplate extends Component {
   state = {
     payment: 'card',
+    visible: false,
     loading: false
   };
 
@@ -19,15 +23,51 @@ class PricingTemplate extends Component {
     });
   };
 
-  handlePay = () => {
-    this.setState({ loading: true });
+  showModal = () => {
+    this.setState({ visible: true });
+  };
 
-    setTimeout(() => {
-      this.props.history.push({
-        pathname: '/contract',
-        state: { activeTab: 'review' }
+  handlePay = async () => {
+    this.setState({ loading: true });
+    const ethAddress = await Web3Utils.getDefaultAccount();
+
+    await MyPageAPI.getWallet({ ethAddress }).then(res => {
+      const { hyconAddress, hyconPrivateKey } = res.data;
+      this.setState({
+        hyconAddress,
+        hyconPrivateKey
       });
-    }, 3000);
+    });
+
+    const { hyconAddress, hyconPrivateKey } = this.state;
+
+    const getTx = sendTxRes => {
+      return new Promise((resolve, reject) => {
+        const intervalID = setInterval(async () => {
+          const { txHash } = sendTxRes.data;
+          const getTxRes = await PricingAPI.getTx({ txHash });
+          console.log(getTxRes.data);
+
+          if (!!getTxRes.data.blockHash) {
+            clearInterval(intervalID);
+            resolve(getTxRes.data.blockHash);
+          }
+        }, 5000);
+      });
+    };
+
+    await PricingAPI.sendTx({
+      privateKey: hyconPrivateKey,
+      from: hyconAddress,
+      amount: 1
+    })
+      .then(getTx)
+      .then(console.log);
+
+    this.props.history.push({
+      pathname: '/contract',
+      state: { activeTab: 'review' }
+    });
   };
 
   handleClick = index => {
@@ -101,11 +141,17 @@ class PricingTemplate extends Component {
 
           <div className="action">
             <Button>취소</Button>
-            <Button type="primary" onClick={this.handlePay}>
+            <Button type="primary" onClick={this.showModal}>
               결제
             </Button>
           </div>
         </div>
+
+        <Modal title="열람권 결제" visible={this.state.visible}>
+          <Button type="primary" onClick={this.handlePay} block>
+            Hycon으로 결제하기
+          </Button>
+        </Modal>
         {loading && <Spin tip="결제 진행중..." size="large" />}
       </div>
     );
