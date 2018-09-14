@@ -1,11 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './AuthLink.scss';
 
-const AuthLink = ({ to, children }) => {
+const AuthLink = ({ handleClick, children }) => {
   return (
-    <div className="AuthLink">
-      <Link to={to}>{children}</Link>
+    <div className="AuthLink" onClick={handleClick}>
+      {children}
     </div>
   );
 };

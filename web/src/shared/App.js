@@ -48,9 +48,10 @@ class App extends Component {
     } else {
       // 직접 HttpProvider로 Provier 설정
       // 로컬에서 full node를 돌리고 있을때 보통 8545 포트
-      this.web3Provider = new Web3.providers.HttpProvider(
-        'http://localhost:8545'
-      );
+      // this.web3Provider = new Web3.providers.HttpProvider(
+      //   'http://localhost:8545'
+      // );
+        return;
     }
 
     web3 = new Web3(this.web3Provider); // web3 객체를 만들어줌
