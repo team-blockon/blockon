@@ -31,29 +31,40 @@ const CustomizedForm = Form.create({
   }
 })(props => {
   const { getFieldDecorator } = props.form;
+
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 8 }
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 16 }
+    }
+  };
+
   return (
-      <Form layout="inline">
-        <FormItem label="userEmail">
-          {getFieldDecorator('userEmail', {
-            rules: [{ required: true, message: 'user email is required' }],
-          })(<Input/>)}
-        </FormItem>
-        <FormItem label="password">
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'password is required' }],
-          })(<Input id="error"/>)}
-        </FormItem>
-        <FormItem label="passwordCheck">
-          {getFieldDecorator('passwordCheck', {
-            rules: [{ required: true, message: 'check your password again' }],
-          })(<Input/>)}
-        </FormItem>
-      </Form>
+    <Form>
+      <FormItem {...formItemLayout} label="이메일">
+        {getFieldDecorator('userEmail', {
+          rules: [{ required: true, message: 'user email is required' }]
+        })(<Input />)}
+      </FormItem>
+      <FormItem {...formItemLayout} label="비밀번호">
+        {getFieldDecorator('password', {
+          rules: [{ required: true, message: 'password is required' }]
+        })(<Input id="error" />)}
+      </FormItem>
+      <FormItem {...formItemLayout} label="비밀번호 확인">
+        {getFieldDecorator('passwordCheck', {
+          rules: [{ required: true, message: 'check your password again' }]
+        })(<Input />)}
+      </FormItem>
+    </Form>
   );
 });
 
 class MyPageTemplate extends Component {
-  //state = {};
   state = {
     fields: {
       userEmail: {
@@ -80,7 +91,6 @@ class MyPageTemplate extends Component {
       jsonShow: !prevState.jsonShow
     }));
   };
-
 
   handleChange = event => {
     const { name, value } = event.target;
@@ -189,7 +199,7 @@ class MyPageTemplate extends Component {
                 <Button onClick={this.handleJsonToggle}>json 파일보기</Button>
                 <Button>변경 완료</Button>
                 <pre className="language-bash">
-                  {this.state.jsonShow ? JSON.stringify(fields, null, 2) : ''}
+                  {jsonShow ? JSON.stringify(fields, null, 2) : ''}
                 </pre>
               </div>
             </Card>
