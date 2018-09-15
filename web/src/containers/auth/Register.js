@@ -14,6 +14,7 @@ import * as Web3Utils from 'lib/web3/utils';
 
 import { Upload, Icon } from 'antd';
 import { Button } from 'antd';
+import { notification } from 'antd';
 
 /**
  * 프로필 사진 미리보기를 위한 base64 인코딩
@@ -40,6 +41,15 @@ class Register extends Component {
 
     this.setState({
       [name]: value
+    });
+  };
+
+  handleClick = async () => {
+    const { email } = this.state;
+    await AuthAPI.sendAuthEmail({ email });
+    notification['success']({
+      message: '입력하신 이메일로 인증 메일이 발송되었습니다.',
+      duration: 3
     });
   };
 
@@ -121,7 +131,7 @@ class Register extends Component {
   };
 
   render() {
-    const { imageUrl, username, email, authNo } = this.state;
+    const { imageUrl, username, email } = this.state;
     const { loading } = this.props;
 
     const uploadButton = (
@@ -176,22 +186,15 @@ class Register extends Component {
                 placeholder="이메일"
                 onChange={this.handleChange}
               />
-              <Button type="primary" style={{ height: '44px' }}>
+              <Button
+                type="primary"
+                style={{ height: '44px' }}
+                onClick={this.handleClick}
+              >
                 인증
               </Button>
             </div>
           </div>
-          <div className="InputWithLabel">
-            <input
-              type="text"
-              name="authNo"
-              value={authNo}
-              placeholder="인증번호"
-              onChange={this.handleChange}
-              onKeyPress={this.handleKeyPress}
-            />
-          </div>
-
           <AuthButton onClick={this.handleRegister}>회원가입</AuthButton>
         </AuthContent>
       </Fragment>

@@ -1,5 +1,9 @@
 import defaultClient from 'lib/defaultClient';
 
+export const sendAuthEmail = ({ email }) => {
+  return defaultClient.post('/api/auth/sendAuthEmail', { email });
+};
+
 export const register = ({ ethAddress, profileFilename, username, email }) => {
   return defaultClient.post('/api/auth/register', {
     ethAddress,

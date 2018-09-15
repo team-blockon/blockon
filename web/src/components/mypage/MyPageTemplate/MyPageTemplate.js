@@ -77,7 +77,7 @@ class MyPageTemplate extends Component {
         value: '********'
       }
     },
-    hasWallet: true
+    hasWallet: false
   };
 
   handleFormChange = changedFields => {
@@ -123,8 +123,13 @@ class MyPageTemplate extends Component {
     const ethAddress = await Web3Utils.getDefaultAccount();
 
     await MyPageAPI.getWallet({ ethAddress }).then(res => {
+      if (!res.data || !res.data.hyconAddress || !res.data.hyconPrivateKey) {
+        return;
+      }
+
       const { hyconAddress, hyconPrivateKey } = res.data;
       console.log(hyconAddress, hyconPrivateKey);
+
       this.setState({
         hasWallet: true,
         hyconAddress,
