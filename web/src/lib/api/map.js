@@ -17,3 +17,12 @@ export const getAgents = (latitude, longitude, radius) => {
     }
   );
 };
+
+export const searchLocation = query => {
+  return axios.get(
+    `https://dapi.kakao.com/v2/local/search/keyword.json?query=${query}`,
+    {
+      headers: { Authorization: 'KakaoAK f2e6d9819343c31ce8ae9c5e463dbeb8' }
+    }
+  );
+};

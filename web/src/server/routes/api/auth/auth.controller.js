@@ -3,6 +3,9 @@ const Account = require('../../../models/account');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const EmailAuth = require('../../../models/emailAuth');
+const nodemailer = require('nodemailer');
+const randomstring = require('randomstring');
 
 const DIR_PATH = path.resolve(__dirname, '../../../uploads');
 
@@ -78,58 +81,51 @@ exports.profile = (req, res) => {
     }
 */
 
-exports.register = (req, res) => {
+exports.register = async (req, res) => {
   const { ethAddress, profileFilename, username, email } = req.body;
-
-  let newAccount = null;
-
-  // 유저가 존재하지 않으면 새 유저 생성
-  const create = account => {
-    if (account) {
-      throw new Error('username exists');
-    } else {
-      Account.create(ethAddress, profileFilename, username, email);
-    }
+  const createAccount = async () => {
+      const emailAuth = await EmailAuth.findOne({email});
+      let account = null;
+      if(emailAuth.status === 1) {
+          account = await Account.create(ethAddress, profileFilename, username, email);
+          await EmailAuth.updateStatus(email, 2);
+      }
+      return account;
   };
 
-  // 유저 수 카운트
-  const count = account => {
-    newAccount = account;
-    return Account.countDocuments({}).exec();
+  const assignAdmin = async (account) =>{
+      if (await Account.countDocuments({}).exec() === 1) {
+          await account.assignAdmin();
+          return true;
+      }
+      return false;
   };
 
-  // 유저 수가 1이면 admin 부여
-  const assign = count => {
-    if (count === 1) {
-      return newAccount.assignAdmin();
-    } else {
-      // if not, return a promise that returns false;
-      return Promise.resolve(false);
-    }
-  };
-
-  // 클라이언트에게 응답
-  const respond = isAdmin => {
-    res.json({
-      message: 'registered successfully',
-      admin: !!isAdmin
-    });
-  };
-
-  // 에러가 있을 때 실행되는 함수 (이미 존재하는 email)
-  const onError = error => {
-    res.status(409).json({
-      message: error.message
-    });
-  };
-
-  // ethAddress 중복 체크
-  Account.findByEthAddress(ethAddress)
-    .then(create)
-    .then(count)
-    .then(assign)
-    .then(respond)
-    .catch(onError);
+  try {
+      const accounts = await Account.findByEthAddress(ethAddress);
+      if (!!accounts === false) {
+          const newAccount = await createAccount();
+          if(!!newAccount){
+              const isAdmin = await assignAdmin(newAccount);
+              res.json({
+                  message: 'registered successfully',
+                  admin: isAdmin
+              });
+          }else {
+              res.status(409).json({
+                  message: 'invalid email'
+              });
+          }
+      } else {
+          res.status(409).json({
+              message: 'already sign up'
+          });
+      }
+  }catch (err) {
+      res.status(409).json({
+          message: err
+      });
+  }
 };
 
 /*
@@ -210,4 +206,98 @@ exports.login = (req, res) => {
 exports.logout = (req, res) => {
   res.clearCookie('access-token');
   res.status(204).end(); // 데이터 없이 응답
+};
+
+
+/**
+ * 인증 email 전송
+ * @param req
+ * @param res
+ */
+exports.sendAuthEmail = async (req, res) => {
+    const { email } = req.body;
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.email_id, // gmail 계정 아이디를 입력
+            pass: process.env.email_password // gmail 계정의 비밀번호를 입력
+        }
+    });
+
+    const token = randomstring.generate(8);
+    const uri = `${process.env.blockon_uri}/api/auth/authEmail/?email=${email}&token=${token}`;
+    const mailOptions = {
+        from: process.env.email_id,
+        to: email,
+
+        subject: '안녕하세요, BlockOn 입니다. 이메일 인증을 해주세요.',
+        html:
+            '<p>BlockOn Email 인증</p>' +
+            `<a href="${uri}">인증하기</a>`
+    };
+
+    const createEmailAuth = async () => {
+        const emailAuth = await EmailAuth.findOne({email});
+        if (!!emailAuth) {
+            switch (emailAuth.status) {
+                case 0:
+                case 1:
+                    await EmailAuth.updateToken(email, token);
+                    return true;
+                case 2:
+                    //이미 가입된 이메일
+                    return false;
+            }
+        } else {
+            await EmailAuth.create(email, token);
+            return true;
+        }
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        const result = await createEmailAuth();
+        res.json({
+            result
+        });
+    }catch (e) {
+        res.json({
+            result : false,
+            info : e
+        });
+    }
+
+};
+
+/**
+ * 이메일 인증 - 인증 이메일에서 인증하기 버튼 클릭시 호출
+ * @param req
+ * @param res
+ */
+exports.authEmail = async (req, res) => {
+    const { email, token } = req.query;
+    const updateEmailStatus = async () => {
+        const emailAuth = await EmailAuth.findOne({email});
+        switch (emailAuth.status) {
+            case 0:
+                if (emailAuth.token === token) {
+                    await EmailAuth.updateStatus(email, 1);
+                    return 'certification';
+                } else {
+                    return 'invalid token';
+                }
+            case 1:
+                return 'already certification';
+            case 2:
+                return 'already signed up';
+        }
+    };
+
+    try {
+        let result = await updateEmailStatus();
+        res.send(`<script>alert('${result}');close();</script>`);
+    }catch (err) {
+        res.send(`<script>alert('${err}'); close();</script>`);
+    }
 };
