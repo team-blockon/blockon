@@ -75,6 +75,13 @@ class MyPageTemplate extends Component {
     }))
   };
 
+  handleJsonToggle = () => {
+    this.setState(prevState => ({
+      jsonShow: !prevState.jsonShow
+    }));
+  };
+
+
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -130,7 +137,8 @@ class MyPageTemplate extends Component {
       hasWallet,
       hyconAddress,
       hyconPrivateKey,
-      hyconBalance
+      hyconBalance,
+      jsonShow
     } = this.state;
 
     const formItemLayout = {
@@ -178,10 +186,10 @@ class MyPageTemplate extends Component {
             <Card className="account-contact" title="연락처">
               <div>
                 <CustomizedForm {...fields} onChange={this.handleFormChange} />
-                <Button>json 파일보기</Button>
+                <Button onClick={this.handleJsonToggle}>json 파일보기</Button>
                 <Button>변경 완료</Button>
                 <pre className="language-bash">
-                  {JSON.stringify(fields, null, 2)}
+                  {this.state.jsonShow ? JSON.stringify(fields, null, 2) : ''}
                 </pre>
               </div>
             </Card>
