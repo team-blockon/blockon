@@ -17,7 +17,7 @@ EmailAuth.statics.create = function(email, token) {
 };
 
 EmailAuth.statics.updateToken = function(email, token) {
-  return this.update({ email }, { token }, {status : 0});
+  return this.update({ email }, { token, status : 0});
 };
 
 EmailAuth.statics.updateStatus = function(email, status) {

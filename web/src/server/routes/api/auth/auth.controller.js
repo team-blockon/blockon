@@ -83,10 +83,17 @@ exports.profile = (req, res) => {
 
 exports.register = async (req, res) => {
   const { ethAddress, profileFilename, username, email } = req.body;
-
   const createAccount = async () => {
-      const account = await Account.create(ethAddress, profileFilename, username, email);
-      await EmailAuth.updateState(email, 2);
+      const emailAuth = await EmailAuth.findOne({email});
+      let account = null;
+      if(emailAuth.status === 1) {
+          account = await Account.create(ethAddress, profileFilename, username, email);
+          await EmailAuth.updateStatus(email, 2);
+      }
+      return account;
+  };
+
+  const assignAdmin = async (account) =>{
       if (await Account.countDocuments({}).exec() === 1) {
           await account.assignAdmin();
           return true;
@@ -95,13 +102,20 @@ exports.register = async (req, res) => {
   };
 
   try {
-      const ethAddress = Account.findByEthAddress(ethAddress);
-      if (!!ethAddress === false) {
-          const isAdmin = await createAccount();
-          res.json({
-              message: 'registered successfully',
-              admin: isAdmin
-          });
+      const accounts = await Account.findByEthAddress(ethAddress);
+      if (!!accounts === false) {
+          const newAccount = await createAccount();
+          if(!!newAccount){
+              const isAdmin = await assignAdmin(newAccount);
+              res.json({
+                  message: 'registered successfully',
+                  admin: isAdmin
+              });
+          }else {
+              res.status(409).json({
+                  message: 'invalid email'
+              });
+          }
       } else {
           res.status(409).json({
               message: 'already sign up'
@@ -212,6 +226,7 @@ exports.sendAuthEmail = async (req, res) => {
     });
 
     const token = randomstring.generate(8);
+    const uri = `${process.env.blockon_uri}/api/auth/authEmail/?email=${email}&token=${token}`;
     const mailOptions = {
         from: process.env.email_id,
         to: email,
@@ -219,19 +234,14 @@ exports.sendAuthEmail = async (req, res) => {
         subject: '안녕하세요, BlockOn 입니다. 이메일 인증을 해주세요.',
         html:
             '<p>BlockOn Email 인증</p>' +
-            "<a href='" +
-            process.env.blockon_uri +
-            '/api/mypage/authEmail/?email=' +
-            email +
-            '&token=' +
-            token +
-            "'>인증하기</a>"
+            `<a href="${uri}">인증하기</a>`
     };
 
     const createEmailAuth = async () => {
         const emailAuth = await EmailAuth.findOne({email});
-        if (emailAuth) {
+        if (!!emailAuth) {
             switch (emailAuth.status) {
+                case 0:
                 case 1:
                     await EmailAuth.updateToken(email, token);
                     return true;
@@ -267,7 +277,6 @@ exports.sendAuthEmail = async (req, res) => {
  */
 exports.authEmail = async (req, res) => {
     const { email, token } = req.query;
-
     const updateEmailStatus = async () => {
         const emailAuth = await EmailAuth.findOne({email});
         switch (emailAuth.status) {
@@ -279,7 +288,7 @@ exports.authEmail = async (req, res) => {
                     return 'invalid token';
                 }
             case 1:
-                return 'invalid certification';
+                return 'already certification';
             case 2:
                 return 'already signed up';
         }
@@ -287,8 +296,8 @@ exports.authEmail = async (req, res) => {
 
     try {
         let result = await updateEmailStatus();
-        res.send(`<script>alert(${result});close();</script>`);
+        res.send(`<script>alert('${result}');close();</script>`);
     }catch (err) {
-        res.send(`<script>alert(${err}); close();</script>`);
+        res.send(`<script>alert('${err}'); close();</script>`);
     }
 };
