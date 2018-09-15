@@ -1,6 +1,19 @@
 .SearchTemplate {
+  position: relative;
+
+  .search-input {
+    position: absolute;
+    z-index: 2;
+    left: 1.5rem;
+    top: 1.5rem;
+    background-color: #fff;
+    padding: 0.7rem;
+  }
+
   .map-container {
     display: flex;
+    position: relative; // 단순 z-index 적용 용도
+    z-index: 1;
 
     #map {
       flex: 1;
