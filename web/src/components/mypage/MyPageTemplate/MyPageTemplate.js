@@ -7,48 +7,48 @@ import * as Web3Utils from 'lib/web3/utils';
 const FormItem = Form.Item;
 
 const CustomizedForm = Form.create({
-  onFieldsChange(props, changedFields){
+  onFieldsChange(props, changedFields) {
     props.onChange(changedFields);
   },
-  mapPropsToFields(props){
+  mapPropsToFields(props) {
     return {
       userEmail: Form.createFormField({
         ...props.userEmail,
-        value: props.userEmail.value,
+        value: props.userEmail.value
       }),
       password: Form.createFormField({
         ...props.password,
-        value: props.password.value,
+        value: props.password.value
       }),
       passwordCheck: Form.createFormField({
         ...props.passwordCheck,
-        value: props.passwordCheck.value,
-      }),
+        value: props.passwordCheck.value
+      })
     };
   },
-  onValuesChange(_, values){
+  onValuesChange(_, values) {
     console.log(values);
-  },
-})((props) => {
+  }
+})(props => {
   const { getFieldDecorator } = props.form;
   return (
-      <Form layout="inline">
-        <FormItem label="userEmail">
-          {getFieldDecorator('userEmail', {
-            rules: [{ required: true, message: 'user email is required' }],
-          })(<Input/>)}
-        </FormItem>
-        <FormItem label="password">
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'password is required' }],
-          })(<Input/>)}
-        </FormItem>
-        <FormItem label="passwordCheck">
-          {getFieldDecorator('passwordCheck', {
-            rules: [{ required: true, message: 'check your password again' }],
-          })(<Input/>)}
-        </FormItem>
-      </Form>
+    <Form layout="inline">
+      <FormItem label="userEmail">
+        {getFieldDecorator('userEmail', {
+          rules: [{ required: true, message: 'user email is required' }]
+        })(<Input />)}
+      </FormItem>
+      <FormItem label="password">
+        {getFieldDecorator('password', {
+          rules: [{ required: true, message: 'password is required' }]
+        })(<Input />)}
+      </FormItem>
+      <FormItem label="passwordCheck">
+        {getFieldDecorator('passwordCheck', {
+          rules: [{ required: true, message: 'check your password again' }]
+        })(<Input />)}
+      </FormItem>
+    </Form>
   );
 });
 
@@ -57,22 +57,22 @@ class MyPageTemplate extends Component {
   state = {
     fields: {
       userEmail: {
-        value: 'yicho93@gmail.com',
+        value: 'yicho93@gmail.com'
       },
       password: {
-        value: '********',
+        value: '********'
       },
       passwordCheck: {
-        value: '********',
-      },
+        value: '********'
+      }
     },
-    hasWallet: true,
+    hasWallet: true
   };
 
-  handleFormChange = (changedFields) => {
+  handleFormChange = changedFields => {
     this.setState(({ fields }) => ({
-      fields: { ...fields, ...changedFields},
-    }))
+      fields: { ...fields, ...changedFields }
+    }));
   };
 
   handleChange = event => {
@@ -163,14 +163,14 @@ class MyPageTemplate extends Component {
             <Card className="account-profile" title="프로필">
               <div className="profile-wrapper">
                 <div className="user-picture">
-                  <Avatar size={120} icon="user" src=""/>
+                  <Avatar size={120} icon="user" src="" />
                   <Button className="edit-btn">수정</Button>
                 </div>
 
                 <Form className="userNameForm" layout="inline">
-                    <FormItem {...formItemLayout} label="이름">
-                      <Input type="text" name="userName" disabled />
-                    </FormItem>
+                  <FormItem {...formItemLayout} label="이름">
+                    <Input type="text" name="userName" disabled />
+                  </FormItem>
                 </Form>
               </div>
             </Card>

@@ -31,6 +31,22 @@ export class SearchTemplate extends Component {
     });
   };
 
+  componentDidMount() {
+    const { location } = this.props;
+    const q = new URLSearchParams(location.search).get('q');
+
+    MapAPI.searchLocation(q).then(res => {
+      const result = res.data.documents[0];
+      console.log(result);
+      this.setState({
+        center: {
+          lat: Number(result.y),
+          lng: Number(result.x)
+        }
+      });
+    });
+  }
+
   render() {
     const { agents } = this.state;
 
@@ -43,6 +59,7 @@ export class SearchTemplate extends Component {
                 key: 'AIzaSyCpPfq3qe6Jr4YJ9zABDWAWL3RYd_IbiTc'
               }}
               defaultCenter={this.props.center}
+              center={this.state.center}
               defaultZoom={this.props.zoom}
               onChange={this.handleChange}
             >
