@@ -41,7 +41,7 @@ const CustomizedForm = Form.create({
         <FormItem label="password">
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'password is required' }],
-          })(<Input/>)}
+          })(<Input id="error"/>)}
         </FormItem>
         <FormItem label="passwordCheck">
           {getFieldDecorator('passwordCheck', {
