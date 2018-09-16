@@ -14,6 +14,16 @@ Blockon
 <div align="middle">:warning::zap: using IPFS :zap::warning: </div>
 <div align="middle"><img src="https://github.com/soma-boomable/integrated-repo/blob/master/IPFS.png?raw=true" style="width:100px;" /></div>
 
+*****
+1. node version : 10.10.0
+2. npm version : 6.4.1
+3. yarn version : 1.9.4
+4. 실행파일 하나 만들기 (배치파일 혹은 쉘파일 만들기) -> yarn dev 명령어로.
+5. 빌드 버전 확실하게 명시하기.
+6. env 파일 제대로 작성(NODE_PATH=src/) 명시.
+*****
+
+
 ## 프로젝트 실행
 
 ### 1. Node.js 모듈 설치
@@ -28,6 +38,9 @@ Blockon
 ### 4. 서버 접속
 	http://localhost:3000
 
+### 2,3번 과정을 묶어서 yarn dev를 통해 실행.
+
+
 ## License
 
-* [MIT License](LICENSE)
+* [MIT License](LICENSE)ㅓ
