@@ -43,7 +43,7 @@ Blockon
 ### 4. 브라우저에서 서버 접속
 	http://localhost:3000
 
-### 2,3번 과정을 묶어서 yarn dev를 통해 실행.
+### > 2,3번 과정을 묶어서 yarn dev를 통해 실행.
 
 
 ## License
