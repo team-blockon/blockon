@@ -30,7 +30,7 @@ Blockon
 
 
 ## 프로젝트 실행 (TO-DO list)
-## :zap: 모든 설치는 os 마다 다르므로 각각의 os에 맞게 설치해야됨!
+## :warning: 모든 설치는 os 마다 다르므로 각각의 os에 맞게 설치해야됨!
 
 ### 1. git을 이용해서 clone 또는 zip 파일 다운로드 후 압축해제
 	ex) git clone https://github.com/proj-blockon/integrated-repo
