@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Card, Avatar } from 'antd';
 import './MyPageTemplate.scss';
-import * as MyPageAPI from 'lib/api/myPage';
-import * as Web3Utils from 'lib/web3/utils';
 
 const FormItem = Form.Item;
 
@@ -98,33 +96,6 @@ class MyPageTemplate extends Component {
       [name]: value
     });
   };
-
-  async componentDidMount() {
-    const ethAddress = await Web3Utils.getDefaultAccount();
-
-    await MyPageAPI.getWallet({ ethAddress }).then(res => {
-      if (!res.data || !res.data.hyconAddress || !res.data.hyconPrivateKey) {
-        return;
-      }
-
-      const { hyconAddress, hyconPrivateKey } = res.data;
-      console.log(hyconAddress, hyconPrivateKey);
-
-      this.setState({
-        hasWallet: true,
-        hyconAddress,
-        hyconPrivateKey
-      });
-    });
-
-    const { hyconAddress } = this.state;
-    await MyPageAPI.getBalance({ hyconAddress }).then(res => {
-      const { balance } = res.data;
-      this.setState({
-        hyconBalance: balance
-      });
-    });
-  }
 
   render() {
     const { fields, jsonShow } = this.state;

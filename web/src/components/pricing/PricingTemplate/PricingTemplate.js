@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import GoodsList from '../GoodsList/GoodsList';
-import * as Web3Utils from 'lib/web3/utils';
-import * as MyPageAPI from 'lib/api/myPage';
-import * as PricingAPI from 'lib/api/pricing';
 import { Form, Input, Radio, Checkbox, Button, Spin, Modal } from 'antd';
 import './PricingTemplate.scss';
 
@@ -29,40 +26,6 @@ class PricingTemplate extends Component {
 
   handlePay = async () => {
     this.setState({ loading: true });
-    const ethAddress = await Web3Utils.getDefaultAccount();
-
-    await MyPageAPI.getWallet({ ethAddress }).then(res => {
-      const { hyconAddress, hyconPrivateKey } = res.data;
-      this.setState({
-        hyconAddress,
-        hyconPrivateKey
-      });
-    });
-
-    const { hyconAddress, hyconPrivateKey } = this.state;
-
-    const getTx = sendTxRes => {
-      return new Promise((resolve, reject) => {
-        const intervalID = setInterval(async () => {
-          const { txHash } = sendTxRes.data;
-          const getTxRes = await PricingAPI.getTx({ txHash });
-          console.log(getTxRes.data);
-
-          if (!!getTxRes.data.blockHash) {
-            clearInterval(intervalID);
-            resolve(getTxRes.data.blockHash);
-          }
-        }, 5000);
-      });
-    };
-
-    await PricingAPI.sendTx({
-      privateKey: hyconPrivateKey,
-      from: hyconAddress,
-      amount: 1
-    })
-      .then(getTx)
-      .then(console.log);
 
     this.props.history.push({
       pathname: '/contract',
@@ -149,7 +112,7 @@ class PricingTemplate extends Component {
 
         <Modal title="열람권 결제" visible={this.state.visible}>
           <Button type="primary" onClick={this.handlePay} block>
-            Hycon으로 결제하기
+            결제하기
           </Button>
         </Modal>
         {loading && <Spin tip="결제 진행중..." size="large" />}
