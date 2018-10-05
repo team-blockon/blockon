@@ -1,10 +1,4 @@
-import { notification } from 'antd';
-
-const openNotification = message => {
-  notification['warning']({
-    message
-  });
-};
+import { openNotification } from '../utils';
 
 export const check = () => {
   let msg = [];
@@ -20,7 +14,7 @@ export const check = () => {
     return true;
   }
 
-  msg.forEach((msg) => {
+  msg.forEach(msg => {
     openNotification(msg);
   });
   return false;
