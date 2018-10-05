@@ -209,46 +209,6 @@ class MyPageTemplate extends Component {
               </div>
             </Card>
           </div>
-          <Card title="지갑 생성">
-            {!hasWallet && (
-              <Form onSubmit={this.handleSubmit}>
-                <FormItem {...formItemLayout} label="지갑 이름">
-                  <Input
-                    type="text"
-                    name="walletName"
-                    onChange={this.handleChange}
-                    placeholder="지갑 이름"
-                  />
-                </FormItem>
-                <FormItem {...formItemLayout} label="비밀번호">
-                  <Input
-                    type="password"
-                    name="password"
-                    onChange={this.handleChange}
-                    placeholder="비밀번호"
-                  />
-                </FormItem>
-                <FormItem {...formItemLayout} label="비밀번호 확인">
-                  <Input
-                    type="password"
-                    name="passwordConfirm"
-                    onChange={this.handleChange}
-                    placeholder="비밀번호 확인"
-                  />
-                </FormItem>
-                <FormItem {...tailFormItemLayout}>
-                  <Button type="primary" htmlType="submit">
-                    지갑 생성
-                  </Button>
-                </FormItem>
-              </Form>
-            )}
-            지갑 주소: {hyconAddress}
-            <br />
-            프라이빗 키: {hyconPrivateKey}
-            <br />
-            잔액: {hyconBalance} HYCON
-          </Card>
         </div>
       </div>
     );
