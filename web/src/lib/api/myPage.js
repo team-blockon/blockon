@@ -1,14 +1,6 @@
 import defaultClient from 'lib/defaultClient';
 import hyconClient from 'lib/hyconClient';
 
-export const saveWallet = ({ ethAddress, hyconAddress, hyconPrivateKey }) => {
-  return defaultClient.post('/api/mypage/wallet', {
-    ethAddress,
-    hyconAddress,
-    hyconPrivateKey
-  });
-};
-
 export const getWallet = ({ ethAddress }) => {
   return defaultClient.get(`/api/mypage/wallet/${ethAddress}`);
 };

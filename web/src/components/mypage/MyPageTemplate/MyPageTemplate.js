@@ -99,26 +99,6 @@ class MyPageTemplate extends Component {
     });
   };
 
-  handleSubmit = async event => {
-    event.preventDefault();
-    await MyPageAPI.makeWallet().then(res => {
-      const { address, privateKey } = res.data;
-      this.setState({
-        hyconAddress: address,
-        hyconPrivateKey: privateKey
-      });
-    });
-
-    const ethAddress = await Web3Utils.getDefaultAccount();
-    const { hyconAddress, hyconPrivateKey } = this.state;
-
-    MyPageAPI.saveWallet({
-      ethAddress,
-      hyconAddress,
-      hyconPrivateKey
-    });
-  };
-
   async componentDidMount() {
     const ethAddress = await Web3Utils.getDefaultAccount();
 
@@ -147,14 +127,7 @@ class MyPageTemplate extends Component {
   }
 
   render() {
-    const {
-      fields,
-      hasWallet,
-      hyconAddress,
-      hyconPrivateKey,
-      hyconBalance,
-      jsonShow
-    } = this.state;
+    const { fields, jsonShow } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -164,18 +137,6 @@ class MyPageTemplate extends Component {
       wrapperCol: {
         xs: { span: 24 },
         sm: { span: 16 }
-      }
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0
-        },
-        sm: {
-          span: 16,
-          offset: 8
-        }
       }
     };
 
