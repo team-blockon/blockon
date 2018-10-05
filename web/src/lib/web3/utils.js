@@ -1,22 +1,21 @@
 import { openNotification } from '../utils';
 
 export const check = () => {
-  let msg = [];
+  let msg = null;
+  let desc = null;
 
   if (!window.web3 || !window.web3.currentProvider.isMetaMask) {
-    msg.push('메타마스크 설치 안됨. ');
-    msg.push('구글 크롬 브라우저 확장 프로그램에서 Metamask를 설치해주세요');
+    msg = '메타마스크 설치 필요';
+    desc = 'Chrome 웹 스토어에서 메타마스크를 설치해 주세요.';
   } else if (window.web3.eth.accounts.length === 0) {
-    msg.push('메타마스크 로그인 안됨');
+    msg = '메타마스크 로그인 필요';
   } /* else if (window.web3.version.network !== '1') {
-    msg = '메인넷 아님';
+    msg = '메인넷 연결 필요';
   } */ else {
     return true;
   }
 
-  msg.forEach(msg => {
-    openNotification(msg);
-  });
+  openNotification(msg, desc);
   return false;
 };
 
