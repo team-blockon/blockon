@@ -1,7 +1,4 @@
 const router = require('express').Router();
-const { makeWallet, getWallet } = require('./mypage.controller');
-
-router.post('/wallet', makeWallet);
-router.get('/wallet/:ethAddress', getWallet);
+const {} = require('./mypage.controller');
 
 module.exports = router;
