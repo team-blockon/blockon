@@ -11,6 +11,8 @@
     margin-right: 1rem;
 
     .card {
+      position: relative;
+
       .content {
         padding: 3rem 13rem 1.5rem 2.5rem;
 
@@ -26,11 +28,18 @@
           }
         }
       }
+
+      button {
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        outline: none;
+      }
     }
   }
 
   .sidebar {
-    button {
+    button.upload {
       border: none;
       outline: none;
       background-color: #353a4c;

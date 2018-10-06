@@ -1,0 +1,26 @@
+{
+  "name": "blockon-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "array-equal": "^1.0.0",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "hangul-js": "^0.2.5",
+    "ipfs-api": "^24.0.2",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.3.1",
+    "mongoose-auto-increment": "^5.0.1",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.0",
+    "nodemailer": "^4.6.8",
+    "randomstring": "^1.1.5",
+    "sockjs": "^0.3.19"
+  }
+}

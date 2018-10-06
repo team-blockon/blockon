@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import maemulImage from 'static/images/maemul.png';
+import { Button } from 'antd';
+import Chat from '../Chat';
 import './ContractList.scss';
 
 // 계약종류 상수
@@ -26,24 +28,25 @@ const liClass = Object.freeze({
   INACTIVE: 3
 });
 
-const ContractList = ({
-  handleSelect,
-  contractInfoList,
-  accountInstance,
-  activeTab
-}) => {
-  const getListClassName = listClassName => {
-    switch (listClassName) {
-    case liClass.ACTIVE:
-      return 'active';
-    case liClass.FIRST_NOT_ACTIVE:
-      return 'first-not-active';
-    default:
-      return '';
-    }
+const getListClassName = listClassName => {
+  switch (listClassName) {
+  case liClass.ACTIVE:
+    return 'active';
+  case liClass.FIRST_NOT_ACTIVE:
+    return 'first-not-active';
+  default:
+    return '';
+  }
+};
+
+class ContractList extends Component {
+  state = {
+    showChat: false
   };
 
-  const getListItem = (stepIndex, listClassName, cardIndex, contractType) => {
+  getProgressbarItem = (stepIndex, listClassName, cardIndex, contractType) => {
+    const { handleSelect, accountInstance } = this.props;
+
     const tradeStep = [
       state.DOWN_PAYMENT,
       state.MIDDLE_PAYMENT,
@@ -118,7 +121,7 @@ const ContractList = ({
     );
   };
 
-  const getProgressbarList = (contractType, contractState, cardIndex) => {
+  getProgressbarList = (contractType, contractState, cardIndex) => {
     let contractStep;
 
     if (contractType === type.TRADE) {
@@ -143,15 +146,25 @@ const ContractList = ({
     contractStep.forEach(step => {
       if (step < contractState) {
         progressbarList.push(
-          getListItem(step, liClass.ACTIVE, cardIndex, contractType)
+          this.getProgressbarItem(step, liClass.ACTIVE, cardIndex, contractType)
         );
       } else if (step === contractState) {
         progressbarList.push(
-          getListItem(step, liClass.FIRST_NOT_ACTIVE, cardIndex, contractType)
+          this.getProgressbarItem(
+            step,
+            liClass.FIRST_NOT_ACTIVE,
+            cardIndex,
+            contractType
+          )
         );
       } else {
         progressbarList.push(
-          getListItem(step, liClass.INACTIVE, cardIndex, contractType)
+          this.getProgressbarItem(
+            step,
+            liClass.INACTIVE,
+            cardIndex,
+            contractType
+          )
         );
       }
     });
@@ -159,7 +172,7 @@ const ContractList = ({
     return progressbarList;
   };
 
-  const getCard = contractInfo => {
+  getCard = contractInfo => {
     const { index, type, state, building } = contractInfo;
 
     let contractData;
@@ -206,16 +219,18 @@ const ContractList = ({
         </div>
         <div className="progressbar-wrapper">
           <ul className="progressbar">
-            {getProgressbarList(type, state, index)}
+            {this.getProgressbarList(type, state, index)}
           </ul>
         </div>
+        <Button onClick={this.toggleChat}>채팅</Button>
       </div>
     );
 
     return card;
   };
 
-  const getLists = () => {
+  getLists = () => {
+    const { contractInfoList, activeTab } = this.props;
     const cards = [];
 
     contractInfoList.forEach(contractInfo => {
@@ -225,27 +240,39 @@ const ContractList = ({
         activeTab === 'ongoing' &&
         contractState !== state.COMPLETED_CONTRACT
       ) {
-        cards.push(getCard(contractInfo));
+        cards.push(this.getCard(contractInfo));
       } else if (
         activeTab === 'completed' &&
         contractState === state.COMPLETED_CONTRACT
       ) {
-        cards.push(getCard(contractInfo));
+        cards.push(this.getCard(contractInfo));
       }
     });
     return cards;
   };
 
-  return (
-    <div className="ContractList">
-      <div className="list-wrapper">{getLists()}</div>
-      <div className="sidebar">
-        <button>
-          <Link to="/contract/edit">계약 올리기</Link>
-        </button>
+  toggleChat = () => {
+    const { showChat } = this.state;
+    this.setState({
+      showChat: !showChat
+    });
+  };
+
+  render() {
+    const { showChat } = this.state;
+
+    return (
+      <div className="ContractList">
+        <div className="list-wrapper">{this.getLists()}</div>
+        <div className="sidebar">
+          {showChat && <Chat />}
+          <button className="upload">
+            <Link to="/contract/edit">계약 올리기</Link>
+          </button>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default ContractList;
