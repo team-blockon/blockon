@@ -3,15 +3,6 @@ import "./BaseContract.sol";
 
 contract Account {
 
-    address public publicAddress;   // 이더리움 퍼블릭 어드레스
-    bool public isAgent;            // true이면 중개인
-    BaseContract[] contracts;       // 해당 유저가 포함된 계약의 주소 리스트
-
-    // 계약주소의 reverse lookup table
-    // 기본값이 0이므로, 인덱스를 1부터 저장한다
-    // contracts 리스트에 접근할때는 인덱스-1을 하여 접근
-    mapping(address => uint) contractIndices;   
-    
     /**
      * @dev 컨트랜트가 추가되거나, 컨트랙트의 상태가 변경되었을 때 이벤트 발행
      * @param updateType 업데이트의 종류
@@ -21,26 +12,79 @@ contract Account {
      */
     event UpdateContract(uint8 updateType, uint contractIndex);
 
+    event AddContract(address indexed publicAddress, address contractAddress);
+    event ConfirmChangeContractState(address indexed publicAddress, address contractAddress, uint8 changedState);
+    event RevokeConfirmation(address indexed publicAddress, address contractAddress, uint8 revokedState);
+
+    address public publicAddress;   // 이더리움 퍼블릭 어드레스
+    bool public isAgent;            // true이면 중개인
+    BaseContract[] contracts;       // 해당 유저가 포함된 계약의 주소 리스트
+    address owner;                  // 어카운트를 생성한 blockon 계약 계정이 저장될것
+
+    // 계약주소의 reverse lookup table
+    // 기본값이 0이므로, 인덱스를 1부터 저장한다
+    // contracts 리스트에 접근할때는 인덱스-1을 하여 접근
+    mapping(address => uint) contractIndices;   
+
+    /**
+     * @dev 어카운트를 생성한 blockon 계약 계정인지 확인
+     */
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Caller have to be owner(blockon contract)");
+        _;
+    }
+
+    /**
+     * @dev 유효한 contract state인지 검사
+     *      1 - 계약금 입금
+     *      2 - 중도금 입금
+     *      3 - 잔금 입금
+     *      4 - 등기 등록 신청
+     *      5 - 확정일자 
+     *      100 - 완료
+     */
+    modifier validContractState(uint8 contractState) {
+        require(contractState == 1 ||
+            contractState == 2 ||
+            contractState == 3 ||
+            contractState == 4 ||
+            contractState == 5 ||
+            contractState == 100,
+            "Invalid contract state"
+        );
+        _;
+    }
+
+    /**
+     * @dev 생성자. Account 계약 계정을 생성한 blockon 계약 계정의 주소를 저장한다.
+     * @param _publicAddress Account 계약 계정의 주인 이더리움 퍼블릭 어드레스
+     */
     constructor(address _publicAddress) public {
         publicAddress = _publicAddress;
+        owner = msg.sender;
     } 
 
     /**
      * @dev 새로운 계약을 추가하고, contractIndices를 업데이트한다. UpdateContract 이벤트를 발행한다.
      * @param contractAddress 추가할 계약의 주소
      */
-    function addContract(BaseContract contractAddress) public {
-        // 이미 추가된 주소인지 확인한다
-        assert(contractIndices[contractAddress] == 0);
+    function addContract(BaseContract contractAddress) 
+        public
+        onlyOwner {
+        require(contractIndices[contractAddress] == 0, "account has already had that base contract");
 
         contracts.push(contractAddress);
         contractIndices[contractAddress] = contracts.length;
 
+        // 컨트랙트가 추가 됐음을 알림. 외부참조
         emit UpdateContract(uint8(1), contracts.length - 1);
+
+        emit AddContract(publicAddress, contractAddress);
     }
 
     /**
-     * @dev 컨트랙트의 상태를 변경한다. 중개인만 사용가능.
+     * @dev 컨트랙트의 상태를 변경하는것에 동의한다. 
+     * 프론트엔드에서는 컨트랙트에 해당하는 인덱스만 알고있으므로, 이 함수를 호출한다.
      * @param index 상태를 변경할 컨트랙트의 인덱스
      * @param newContractState 변경 할 상태(매매의 경우 1,2,3,4 / 전월세의 경우 1,3,5)
      *                      1 - 계약금 입금
@@ -50,14 +94,16 @@ contract Account {
      *                      5 - 확정일자 
      *                      100 - 완료
      */
-    function changeContractStateAt(uint index, uint8 newContractState) public {
-        if(isAgent) {
-            changeContractState(contracts[index], newContractState);
-        }
+    function confirmToChangeContractStateAt(uint index, uint8 newContractState) 
+        public
+        validContractState(newContractState) {
+        require(index < contracts.length, "contracts array : index out of bound");
+        confirmToChangeContractState(contracts[index], newContractState);
     }
 
     /**
-     * @dev 컨트랙트의 상태를 변경하고, UpdateContract 이벤트를 발행한다. 중개인만 사용가능
+     * @dev 컨트랙트의 상태를 변경하는것에 동의한다.
+     * 중개, 매도, 매수인이 모두 이 함수를 호출해야 상태가 변경될것이다.
      * @param contractAddress 상태를 변경할 컨트랙트의 주소
      * @param newContractState 변경 할 상태(매매의 경우 1,2,3,4 / 전월세의 경우 1,3,5)
      *                      1 - 계약금 입금
@@ -67,11 +113,37 @@ contract Account {
      *                      5 - 확정일자 
      *                      100 - 완료
      */
-    function changeContractState(BaseContract contractAddress, uint8 newContractState) public {
-        if(isAgent) {
-            // changeState에서 상태 변경후 emitChangeContractStateEvent를 호출해서 변경된것을 알림
-            contractAddress.changeState(newContractState);
-        }
+    function confirmToChangeContractState(BaseContract contractAddress, uint8 newContractState) 
+        public
+        validContractState(newContractState) {
+        require(contractIndices[contractAddress] != 0, "contract address doesn't exist");
+        contractAddress.confirmChangeState(newContractState);
+        emit ConfirmChangeContractState(publicAddress, contractAddress, newContractState);
+    }
+
+    /**
+     * @dev 상태변경에 동의했던것을 취소한다.
+     * @param index 상태 변경을 취소할 컨트랙트의 인덱스
+     * @param contractStateToRevoke 취소할 컨트랙트 상태
+     */
+    function revokeConfirmationAt(uint index, uint8 contractStateToRevoke)
+        public
+        validContractState(contractStateToRevoke) {
+        require(index < contracts.length, "contracts array : index out of bound");
+        revokeConfirmation(contracts[index], contractStateToRevoke);
+    }
+
+    /**
+     * @dev 상태변경에 동의했던것을 취소한다.
+     * @param contractAddress 상태 변경을 취소할 컨트랙트의 주소
+     * @param contractStateToRevoke 취소할 컨트랙트 상태
+     */
+    function revokeConfirmation(BaseContract contractAddress, uint8 contractStateToRevoke) 
+        public 
+        validContractState(contractStateToRevoke) {
+        require(contractIndices[contractAddress] != 0, "contract address doesn't exist");
+        contractAddress.revokeConfirmation(contractStateToRevoke);
+        emit RevokeConfirmation(publicAddress, contractAddress, contractStateToRevoke);
     }
 
     /**
@@ -82,6 +154,19 @@ contract Account {
         emit UpdateContract(uint8(2), contractIndices[contractAddress] - 1);
     }
 
+    /**
+     * @dev 중개인으로 인증을 한 어카운트를 표시한다. 
+     * Blockon계정에서 Account를 생성하므로, Blockon계정만 사용 할 수 있다.
+     */
+    function athorizeAsAgent() 
+        public
+        onlyOwner {
+        isAgent = true;
+    }
+
+    //
+    // 프론트와 연동을 하기 위한 함수들  
+    //
     /**
      * @dev contracts 리스트의 길이에 대한 getter
      * @return uint contracts 리스트의 길이
@@ -112,13 +197,22 @@ contract Account {
     }
 
     /**
-     * @dev 중개인으로 인증을 한 어카운트를 표시한다.
-     * (Blockon계정에서 Account를 생성하므로, Blockon계정만 사용할수 잇도록 하면좋을듯)
+     * @dev index에 해당하는 BaseContract 계약 계정에 대해서, contractState를 confirm했는지 확인
+     * @param index 확인하고 싶은 BaseContract의 index
+     * @param contractState 확인하고 싶은 BaseContract의 계약 상태
+     * @return confirm했다면 true, 아니면 false
      */
-    function athorizeAsAgent() public {
-        // account 중개인 인증
-        isAgent = true;
+    function hasConfirmed(uint index, uint8 contractState) public view returns (bool) {
+        return contracts[index].hasConfirmed(contractState);
+    }
 
-        //DB 업데이트도 해줘야 할지??
+    /**
+     * @dev index에 해당하는 BaseContract 계약 계정에 대해서, contractState로 이미 변경하였는지 확인
+     * @param index 확인하고 싶은 BaseContract의 index
+     * @param contractState 확인하고 싶은 BaseContract의 계약 상태
+     * @return 이미 변경됬다면 true, 아니면 false
+     */
+    function hasExecuted(uint index, uint8 contractState) public view returns (bool) {
+        return contracts[index].hasExecuted(contractState);
     }
 }
