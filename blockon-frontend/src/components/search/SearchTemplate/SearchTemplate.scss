@@ -10,6 +10,18 @@
     padding: 0.7rem;
   }
 
+  @media (min-width: 1041px) {
+    .map-container {
+      height: calc(100vh - 66px);
+    }
+  }
+
+  @media (max-width: 1040px) {
+    .map-container {
+      height: calc(100vh - 56px);
+    }
+  }
+
   .map-container {
     display: flex;
     position: relative; // 단순 z-index 적용 용도

@@ -1,8 +1,13 @@
 @import "~open-color/open-color";
 
+@media (max-width: 767px) {
+  .AgentList {
+    display: none;
+  }
+}
+
 .AgentList {
   overflow-y: auto;
-  height: calc(100vh - 66px);
 
   .agent {
     border: 1px solid $oc-gray-4;

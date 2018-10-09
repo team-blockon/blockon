@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { Tabs } from 'antd';
 import { MessageList, Input, Button } from 'react-chat-elements';
 import SockJS from 'sockjs-client';
 
 import 'react-chat-elements/dist/main.css';
 import './Chat.scss';
 
+const TabPane = Tabs.TabPane;
 const sock = new SockJS('http://localhost:8000/chat');
 
 class Chat extends Component {
@@ -12,38 +14,58 @@ class Chat extends Component {
     super(props);
 
     this.state = {
-      messageList: []
+      activeTab: '1',
+      maedoMessageList: [],
+      maesuMessageList: []
     };
   }
 
-  componentDidMount = () => {
-    // 메시지 도착 이벤트가 발생하면 메시지 추가
-    sock.onmessage = e => {
-      const message = JSON.parse(e.data);
-      message.date = new Date(message.date);
+  handleTabChange = activeTab => {
+    this.setState({
+      activeTab
+    });
+  };
 
-      this.setState({
-        messageList: [...this.state.messageList, message]
-      });
-    };
+  getReceiver = () => {
+    const { activeTab } = this.state;
+    const { party } = this.props;
+
+    if (activeTab === '1') {
+      return party.sellerAddress;
+    } else if (activeTab === '2') {
+      return party.buyerAddress;
+    } else {
+      throw new Error('invalid receiver');
+    }
   };
 
   addMessage = () => {
-    const { messageList } = this.state;
+    const { activeTab, maedoMessageList, maesuMessageList } = this.state;
+    const {
+      party: { agentAddress }
+    } = this.props;
     const { input } = this.refs;
 
     if (!input.state.value) return;
 
     const message = {
+      sender: agentAddress,
+      receiver: this.getReceiver(),
       position: 'right',
       type: 'text',
       text: input.state.value,
       date: new Date()
     };
 
-    this.setState({
-      messageList: [...messageList, message]
-    });
+    if (activeTab === '1') {
+      this.setState({
+        maedoMessageList: [...maedoMessageList, message]
+      });
+    } else if (activeTab === '2') {
+      this.setState({
+        maesuMessageList: [...maesuMessageList, message]
+      });
+    }
 
     // 웹소켓 서버로 메시지 전송
     sock.send(
@@ -58,12 +80,36 @@ class Chat extends Component {
     input.input.focus();
   };
 
+  componentDidMount = () => {
+    sock.onopen = () => {
+      sock.send(this.props.party.agentAddress);
+    };
+
+    // 메시지 도착 이벤트가 발생하면 메시지 추가
+    sock.onmessage = e => {
+      const message = JSON.parse(e.data);
+      message.date = new Date(message.date);
+
+      this.setState({
+        messageList: [...this.state.messageList, message]
+      });
+    };
+  };
+
   render() {
-    const { messageList } = this.state;
+    const { activeTab, maedoMessageList, maesuMessageList } = this.state;
 
     return (
       <div className="Chat">
-        <MessageList className="message-list" dataSource={messageList} />
+        <Tabs activeKey={activeTab} onChange={this.handleTabChange}>
+          <TabPane tab="매도인" key="1" />
+          <TabPane tab="매수인" key="2" />
+        </Tabs>
+
+        <MessageList
+          className="message-list"
+          dataSource={activeTab === '1' ? maedoMessageList : maesuMessageList}
+        />
         <Input
           placeholder="메시지를 입력하세요..."
           ref="input"

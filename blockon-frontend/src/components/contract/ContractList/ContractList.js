@@ -41,7 +41,8 @@ const getListClassName = listClassName => {
 
 class ContractList extends Component {
   state = {
-    showChat: false
+    showChat: false,
+    chatParty: null
   };
 
   getProgressbarItem = (stepIndex, listClassName, cardIndex, contractType) => {
@@ -173,7 +174,7 @@ class ContractList extends Component {
   };
 
   getCard = contractInfo => {
-    const { index, type, state, building } = contractInfo;
+    const { index, type, state, people, building } = contractInfo;
 
     let contractData;
     if (type === type.TRADE) {
@@ -196,7 +197,7 @@ class ContractList extends Component {
 
     const card = (
       <div className="card" key={index}>
-        <p className="no">No. mxabcff</p>
+        <p className="no">No. {building._id.slice(0, 6)}</p>
         <div className="content">
           <div className="detail">
             <div className="image">
@@ -222,7 +223,7 @@ class ContractList extends Component {
             {this.getProgressbarList(type, state, index)}
           </ul>
         </div>
-        <Button onClick={this.toggleChat}>채팅</Button>
+        <Button onClick={() => this.toggleChat(people)}>채팅</Button>
       </div>
     );
 
@@ -251,21 +252,22 @@ class ContractList extends Component {
     return cards;
   };
 
-  toggleChat = () => {
+  toggleChat = people => {
     const { showChat } = this.state;
     this.setState({
-      showChat: !showChat
+      showChat: !showChat,
+      chatParty: people
     });
   };
 
   render() {
-    const { showChat } = this.state;
+    const { showChat, chatParty } = this.state;
 
     return (
       <div className="ContractList">
         <div className="list-wrapper">{this.getLists()}</div>
         <div className="sidebar">
-          {showChat && <Chat />}
+          {showChat && <Chat party={chatParty} />}
           <button className="upload">
             <Link to="/contract/edit">계약 올리기</Link>
           </button>
