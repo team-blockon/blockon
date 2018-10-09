@@ -62,16 +62,18 @@ class HeaderNav extends Component {
     const { isLogged } = this.props;
 
     if (isLogged) {
-      return (
-        <LoggedInNav
-          nav_click={this.nav_click}
-          handleLogout={this.handleLogout}
-        />
-      );
+      return <LoggedInNav handleLogout={this.handleLogout} />;
     } else {
-      return <LoggedOutNav nav_click={this.nav_click} />;
+      return <LoggedOutNav />;
     }
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    // 라우트가 달라지면 모바일 nav menu 닫기
+    if (this.props.location.pathname !== prevProps.location.pathname) {
+      this.setState({ toggled: false });
+    }
+  }
 
   render() {
     const { toggled } = this.state;

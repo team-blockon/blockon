@@ -1,9 +1,9 @@
 import React from 'react';
 import { HeaderNavItem } from './HeaderNav';
 
-const LoggedOutNav = ({ nav_click }) => {
+const LoggedOutNav = () => {
   return (
-    <HeaderNavItem item="login" nav_click={nav_click} to="/auth/login">
+    <HeaderNavItem item="login" to="/auth/login">
       로그인
     </HeaderNavItem>
   );
