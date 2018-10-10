@@ -7,24 +7,23 @@ import './MyPageTemplate.scss';
 const { Content, Sider } = Layout;
 
 const getProfileUrl = thumbnail => {
+  if (!thumbnail) return null;
   return `http://localhost:8000/uploads/${thumbnail}`;
 };
 
 class MyPageTemplate extends Component {
   state = {
+    ethAddress: null,
     profile: null,
     username: '',
-    email: '',
-    oldPassword: '',
-    newPassword: '',
-    newPasswordCheck: ''
+    email: ''
   };
 
   handleProfileChange = info => {
     const { status, response } = info.file;
 
     if (status === 'done') {
-      this.setState({ profile: getProfileUrl(response.path) });
+      this.setState({ profile: response.path });
     } else if (status === 'error') {
       message.error('프로필 사진을 업로드할 수 없습니다.');
     }
@@ -45,6 +44,18 @@ class MyPageTemplate extends Component {
     });
   };
 
+  handleSubmit = () => {
+    const { ethAddress, profile, email } = this.state;
+
+    UserAPI.updateAccountByEthAddress({
+      ethAddress,
+      profile,
+      email
+    }).then(res => {
+      message.success('회원정보가 수정되었습니다.');
+    });
+  };
+
   async componentDidMount() {
     const ethAddress = await Web3Utils.getDefaultAccount();
 
@@ -56,7 +67,8 @@ class MyPageTemplate extends Component {
 
       this.setState({
         ...this.state,
-        profile: getProfileUrl(thumbnail),
+        ethAddress,
+        profile: thumbnail,
         username,
         email
       });
@@ -64,14 +76,7 @@ class MyPageTemplate extends Component {
   }
 
   render() {
-    const {
-      profile,
-      username,
-      email,
-      oldPassword,
-      newPassword,
-      newPasswordCheck
-    } = this.state;
+    const { profile, username, email } = this.state;
 
     return (
       <div className="MyPageTemplate">
@@ -97,7 +102,11 @@ class MyPageTemplate extends Component {
                     <th>사진</th>
                     <td>
                       <div className="profile">
-                        <Avatar size={120} icon="user" src={profile} />
+                        <Avatar
+                          size={120}
+                          icon="user"
+                          src={getProfileUrl(profile)}
+                        />
                         <div className="action">
                           <Upload
                             name="profile"
@@ -115,12 +124,7 @@ class MyPageTemplate extends Component {
                   <tr>
                     <th>이름</th>
                     <td>
-                      <Input
-                        name="username"
-                        value={username}
-                        onChange={this.handleChange}
-                        disabled
-                      />
+                      <Input name="username" value={username} disabled />
                     </td>
                   </tr>
                   <tr>
@@ -130,43 +134,6 @@ class MyPageTemplate extends Component {
                         name="email"
                         value={email}
                         onChange={this.handleChange}
-                        disabled
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>기존 비밀번호</th>
-                    <td>
-                      <Input
-                        type="password"
-                        name="oldPassword"
-                        value={oldPassword}
-                        placeholder="기존 비밀번호"
-                        onChange={this.handleChange}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>비밀번호</th>
-                    <td>
-                      <Input
-                        type="password"
-                        name="newPassword"
-                        value={newPassword}
-                        placeholder="비밀번호"
-                        onChange={this.handleChange}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>비밀번호 확인</th>
-                    <td>
-                      <Input
-                        type="password"
-                        name="newPasswordCheck"
-                        value={newPasswordCheck}
-                        placeholder="비밀번호 확인"
-                        onChange={this.handleChange}
                       />
                     </td>
                   </tr>
@@ -174,7 +141,7 @@ class MyPageTemplate extends Component {
               </table>
 
               <div className="action">
-                <Button>확인</Button>
+                <Button onClick={this.handleSubmit}>확인</Button>
               </div>
             </Content>
           </Layout>

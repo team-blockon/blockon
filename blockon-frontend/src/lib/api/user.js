@@ -4,7 +4,7 @@ export const updateAccountAddressByEthAddress = (
   accountAddress,
   ethAddress
 ) => {
-  return defaultClient.put(`/api/user/${ethAddress}`, {
+  return defaultClient.put(`/api/user/${ethAddress}/address`, {
     accountAddress
   });
 };
@@ -23,6 +23,13 @@ export const getAccountByEthAddress = ethAddress => {
 
 export const getAccountByEamil = email => {
   return defaultClient.post('/api/user', {
+    email
+  });
+};
+
+export const updateAccountByEthAddress = ({ ethAddress, profile, email }) => {
+  return defaultClient.put(`/api/user/${ethAddress}`, {
+    profile,
     email
   });
 };

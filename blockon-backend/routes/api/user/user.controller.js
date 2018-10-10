@@ -1,25 +1,21 @@
 const Account = require("../../../models/account");
 
 /*
-    PUT /api/user/:ethAddress
+    POST /api/user
     {
-      accountAddress
+      email|ethAddress
     }
 */
 
 /**
- * ethAddress와 일치하는 document에 accountAddress를 추가합니다.
+ * 이메일 주소나 ethAddress로 Account 찾기
  * @param {*} req
  * @param {*} res
  */
-exports.updateAccountAddressByEthAddress = (req, res) => {
-  Account.update(
-    { ethAddress: req.params.ethAddress },
-    { $set: req.body },
-    (err, output) => {
-      res.json({ message: "account updated" });
-    }
-  );
+exports.getAccount = (req, res) => {
+  Account.findOne(req.body, (err, account) => {
+    res.json(account);
+  });
 };
 
 /*
@@ -45,19 +41,48 @@ exports.getEmailList = async (req, res) => {
 };
 
 /*
-    POST /api/user
+    GET /api/user/:ethAddress
     {
-      email|ethAddress
+      profile,
+      email
+    }
+*/
+
+exports.updateAccountByEthAddress = (req, res) => {
+  const { profile, email } = req.body;
+
+  Account.update(
+    { ethAddress: req.params.ethAddress },
+    {
+      $set: {
+        "profile.thumbnail": profile,
+        email
+      }
+    },
+    (err, output) => {
+      res.json({ message: "account updated" });
+    }
+  );
+};
+
+/*
+    PUT /api/user/:ethAddress/address
+    {
+      accountAddress
     }
 */
 
 /**
- * 이메일 주소나 ethAddress로 accountAddress 찾기
+ * ethAddress와 일치하는 document에 accountAddress를 추가합니다.
  * @param {*} req
  * @param {*} res
  */
-exports.getAccountAddress = (req, res) => {
-  Account.findOne(req.body, (err, account) => {
-    res.json(account);
-  });
+exports.updateAccountAddressByEthAddress = (req, res) => {
+  Account.update(
+    { ethAddress: req.params.ethAddress },
+    { $set: req.body },
+    (err, output) => {
+      res.json({ message: "account updated" });
+    }
+  );
 };

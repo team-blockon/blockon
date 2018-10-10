@@ -39,7 +39,7 @@ app.use("/api", require("./routes/api"));
  * 리액트 라우터가 렌더링하도록 index 띄운다.
  */
 app.get("/*", function(req, res) {
-  res.sendFile(path.join(__dirname, "../../build/index.html"));
+  res.sendFile(path.join(__dirname, "../blockon-frontend/public/index.html"));
 });
 
 /**

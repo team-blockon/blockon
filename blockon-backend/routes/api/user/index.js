@@ -1,8 +1,9 @@
 const user = require("express").Router();
 const controller = require("./user.controller");
 
-user.put("/:ethAddress", controller.updateAccountAddressByEthAddress);
+user.post("/", controller.getAccount);
 user.post("/email", controller.getEmailList);
-user.post("/", controller.getAccountAddress);
+user.put("/:ethAddress", controller.updateAccountByEthAddress);
+user.put("/:ethAddress/address", controller.updateAccountAddressByEthAddress);
 
 module.exports = user;
