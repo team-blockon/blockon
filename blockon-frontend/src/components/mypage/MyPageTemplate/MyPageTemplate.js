@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Input, Button, Avatar } from 'antd';
+import { Layout, Menu, Input, Upload, message, Button, Avatar } from 'antd';
 import * as Web3Utils from 'lib/web3/utils';
 import * as UserAPI from 'lib/api/user';
 import './MyPageTemplate.scss';
 
 const { Content, Sider } = Layout;
+
+const getProfileUrl = thumbnail => {
+  return `http://localhost:8000/uploads/${thumbnail}`;
+};
 
 class MyPageTemplate extends Component {
   state = {
@@ -14,6 +18,23 @@ class MyPageTemplate extends Component {
     oldPassword: '',
     newPassword: '',
     newPasswordCheck: ''
+  };
+
+  handleProfileChange = info => {
+    const { status, response } = info.file;
+
+    if (status === 'done') {
+      this.setState({ profile: getProfileUrl(response.path) });
+    } else if (status === 'error') {
+      message.error('프로필 사진을 업로드할 수 없습니다.');
+    }
+  };
+
+  deleteProfile = () => {
+    this.setState({
+      ...this.state,
+      profile: null
+    });
   };
 
   handleChange = event => {
@@ -35,7 +56,7 @@ class MyPageTemplate extends Component {
 
       this.setState({
         ...this.state,
-        profile: `http://localhost:8000/uploads/${thumbnail}`,
+        profile: getProfileUrl(thumbnail),
         username,
         email
       });
@@ -78,8 +99,15 @@ class MyPageTemplate extends Component {
                       <div className="profile">
                         <Avatar size={120} icon="user" src={profile} />
                         <div className="action">
-                          <Button>수정</Button>
-                          <Button>삭제</Button>
+                          <Upload
+                            name="profile"
+                            action="/api/auth/profile"
+                            showUploadList={false}
+                            onChange={this.handleProfileChange}
+                          >
+                            <Button>수정</Button>
+                          </Upload>
+                          <Button onClick={this.deleteProfile}>삭제</Button>
                         </div>
                       </div>
                     </td>

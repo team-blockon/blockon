@@ -29,11 +29,8 @@
 
     .action {
       display: flex;
+      justify-content: space-between;
       margin-top: 1rem;
-
-      button + button {
-        margin-left: 0.5rem;
-      }
     }
   }
 
