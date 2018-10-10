@@ -67,13 +67,8 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "start:server": "nodemon ../blockon-backend/index.js",
     "build": "node scripts/build.js",
-    "dev": "concurrently  \"yarn start\" \"yarn start:server\"",
     "test": "node scripts/test.js --env=jsdom"
-  },
-  "devDependencies": {
-    "concurrently": "^4.0.1"
   },
   "jest": {
     "collectCoverageFrom": [
