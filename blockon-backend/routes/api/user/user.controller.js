@@ -1,21 +1,4 @@
-const Account = require('../../../models/account');
-
-/*
-    GET /api/user/list
-*/
-
-exports.list = (req, res) => {
-  // admin이 아니면 거부
-  if (!req.decoded.admin) {
-    return res.status(403).json({
-      message: 'you are not an admin'
-    });
-  }
-
-  Account.find({}, '-password').then(accounts => {
-    res.json({ accounts });
-  });
-};
+const Account = require("../../../models/account");
 
 /*
     PUT /api/user/:ethAddress
@@ -34,7 +17,7 @@ exports.updateAccountAddressByEthAddress = (req, res) => {
     { ethAddress: req.params.ethAddress },
     { $set: req.body },
     (err, output) => {
-      res.json({ message: 'account updated' });
+      res.json({ message: "account updated" });
     }
   );
 };
@@ -54,8 +37,8 @@ exports.updateAccountAddressByEthAddress = (req, res) => {
 exports.getEmailList = async (req, res) => {
   const accounts = await Account.find(
     { email: new RegExp(`^${req.body.value}`) },
-    '-_id'
-  ).select('email');
+    "-_id"
+  ).select("email");
   console.log(accounts);
   const emailList = accounts.map(account => account.email);
   res.json(emailList);

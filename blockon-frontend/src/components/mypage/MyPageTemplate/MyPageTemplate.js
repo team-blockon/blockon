@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Input, Button, Avatar } from 'antd';
+import * as Web3Utils from 'lib/web3/utils';
+import * as UserAPI from 'lib/api/user';
 import './MyPageTemplate.scss';
 
 const { Content, Sider } = Layout;
@@ -21,6 +23,24 @@ class MyPageTemplate extends Component {
       [name]: value
     });
   };
+
+  async componentDidMount() {
+    const ethAddress = await Web3Utils.getDefaultAccount();
+
+    UserAPI.getAccountByEthAddress(ethAddress).then(res => {
+      const {
+        email,
+        profile: { username, thumbnail }
+      } = res.data;
+
+      this.setState({
+        ...this.state,
+        profile: thumbnail,
+        username,
+        email
+      });
+    });
+  }
 
   render() {
     const {
@@ -90,8 +110,10 @@ class MyPageTemplate extends Component {
                     <th>기존 비밀번호</th>
                     <td>
                       <Input
+                        type="password"
                         name="oldPassword"
                         value={oldPassword}
+                        placeholder="기존 비밀번호"
                         onChange={this.handleChange}
                       />
                     </td>
@@ -100,8 +122,10 @@ class MyPageTemplate extends Component {
                     <th>비밀번호</th>
                     <td>
                       <Input
+                        type="password"
                         name="newPassword"
                         value={newPassword}
+                        placeholder="비밀번호"
                         onChange={this.handleChange}
                       />
                     </td>
@@ -110,8 +134,10 @@ class MyPageTemplate extends Component {
                     <th>비밀번호 확인</th>
                     <td>
                       <Input
+                        type="password"
                         name="newPasswordCheck"
                         value={newPasswordCheck}
+                        placeholder="비밀번호 확인"
                         onChange={this.handleChange}
                       />
                     </td>

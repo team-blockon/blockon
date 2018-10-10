@@ -7,7 +7,7 @@ export const getAccountInstance = () => {
 
   return new Promise(async (resolve, reject) => {
     const ethAddress = await Web3Utils.getDefaultAccount();
-    const res = await UserAPI.getAccountAddressByEthAddress(ethAddress);
+    const res = await UserAPI.getAccountByEthAddress(ethAddress);
 
     const accountAddress = res.data.accountAddress;
     const accountInstance = web3.eth.contract(accountABI).at(accountAddress);

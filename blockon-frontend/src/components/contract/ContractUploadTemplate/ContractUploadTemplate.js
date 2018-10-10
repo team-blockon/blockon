@@ -61,8 +61,8 @@ class ContractUploadTemplate extends Component {
     const { updateEvent, history } = this.props;
 
     // 매도인, 매수인 이메일로 각각의 accountAddress를 가져옴
-    const seller = await UserAPI.getAccountAddressByEamil(sellerEmail);
-    const buyer = await UserAPI.getAccountAddressByEamil(buyerEmail);
+    const seller = await UserAPI.getAccountByEamil(sellerEmail);
+    const buyer = await UserAPI.getAccountByEamil(buyerEmail);
     const sellerAddress = seller && seller.data && seller.data.accountAddress;
     const buyerAddress = buyer && buyer.data && buyer.data.accountAddress;
 

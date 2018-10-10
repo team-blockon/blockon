@@ -15,13 +15,13 @@ export const getEmailList = value => {
   });
 };
 
-export const getAccountAddressByEthAddress = ethAddress => {
+export const getAccountByEthAddress = ethAddress => {
   return defaultClient.post('/api/user', {
     ethAddress
   });
 };
 
-export const getAccountAddressByEamil = email => {
+export const getAccountByEamil = email => {
   return defaultClient.post('/api/user', {
     email
   });
