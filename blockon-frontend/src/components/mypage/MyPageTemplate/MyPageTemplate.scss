@@ -1,47 +1,43 @@
-.account-info {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 20px;
+.MyPageTemplate {
+  background-color: #fafafa;
 
-  .profile-wrapper {
+  .ant-card + .ant-card {
+    margin-top: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      width: 20%;
+      background-color: #f9f9f9;
+    }
+
+    th,
+    td {
+      padding: 16px;
+      border-top: 1px solid #ebedf0;
+      border-bottom: 1px solid #ebedf0;
+    }
+  }
+
+  .profile {
     display: flex;
-    flex-flow: row nowrap;
-    .user-picture {
-      width: 120px;
+    flex-direction: column;
+    width: 120px;
+
+    .action {
       display: flex;
-      flex-direction: column;
-      .edit-btn {
-        margin-top: 1rem;
+      margin-top: 1rem;
+
+      button + button {
+        margin-left: 0.5rem;
       }
     }
-    .userNameForm {
-      margin: 0 auto;
-      padding-left: 50px;
-      align-self: center;
-    }
   }
-}
 
-@media (max-width: 1040px) {
-  .account-info {
-    flex-flow: column wrap;
-    .account-profile {
-      width: 100%;
-    }
-    .account-contact {
-      width: 100%;
-      margin-top: 20px;
-    }
-  }
-}
-@media (min-width: 1041px) {
-  .account-info {
-    flex-flow: row wrap;
-    .account-profile {
-      width: 45%;
-    }
-    .account-contact {
-      width: 45%;
-    }
+  .action {
+    margin-top: 1rem;
   }
 }

@@ -190,9 +190,9 @@ class ContractTemplate extends Component {
 
     return (
       <div
-        className="JunggaeMyPage"
+        className="ContractTemplate"
         style={
-          activeTab === 2
+          activeTab === 'review'
             ? { backgroundColor: '#fff' }
             : { backgroundColor: '#fafafa' }
         }

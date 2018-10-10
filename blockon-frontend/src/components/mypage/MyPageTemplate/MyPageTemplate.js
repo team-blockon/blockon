@@ -1,146 +1,129 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Card, Avatar } from 'antd';
+import { Layout, Menu, Input, Button, Avatar } from 'antd';
 import './MyPageTemplate.scss';
 
-const FormItem = Form.Item;
-
-const CustomizedForm = Form.create({
-  onFieldsChange(props, changedFields) {
-    props.onChange(changedFields);
-  },
-  mapPropsToFields(props) {
-    return {
-      userEmail: Form.createFormField({
-        ...props.userEmail,
-        value: props.userEmail.value
-      }),
-      password: Form.createFormField({
-        ...props.password,
-        value: props.password.value
-      }),
-      passwordCheck: Form.createFormField({
-        ...props.passwordCheck,
-        value: props.passwordCheck.value
-      })
-    };
-  },
-  onValuesChange(_, values) {
-    console.log(values);
-  }
-})(props => {
-  const { getFieldDecorator } = props.form;
-
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 8 }
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 }
-    }
-  };
-
-  return (
-    <Form>
-      <FormItem {...formItemLayout} label="이메일">
-        {getFieldDecorator('userEmail', {
-          rules: [{ required: true, message: 'user email is required' }]
-        })(<Input />)}
-      </FormItem>
-      <FormItem {...formItemLayout} label="비밀번호">
-        {getFieldDecorator('password', {
-          rules: [{ required: true, message: 'password is required' }]
-        })(<Input id="error" />)}
-      </FormItem>
-      <FormItem {...formItemLayout} label="비밀번호 확인">
-        {getFieldDecorator('passwordCheck', {
-          rules: [{ required: true, message: 'check your password again' }]
-        })(<Input />)}
-      </FormItem>
-    </Form>
-  );
-});
+const { Content, Sider } = Layout;
 
 class MyPageTemplate extends Component {
   state = {
-    fields: {
-      userEmail: {
-        value: 'yicho93@gmail.com'
-      },
-      password: {
-        value: '********'
-      },
-      passwordCheck: {
-        value: '********'
-      }
-    },
-    hasWallet: false
-  };
-
-  handleFormChange = changedFields => {
-    this.setState(({ fields }) => ({
-      fields: { ...fields, ...changedFields }
-    }));
-  };
-
-  handleJsonToggle = () => {
-    this.setState(prevState => ({
-      jsonShow: !prevState.jsonShow
-    }));
+    profile: null,
+    username: '',
+    email: '',
+    oldPassword: '',
+    newPassword: '',
+    newPasswordCheck: ''
   };
 
   handleChange = event => {
     const { name, value } = event.target;
+
     this.setState({
       [name]: value
     });
   };
 
   render() {
-    const { fields, jsonShow } = this.state;
-
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      }
-    };
+    const {
+      profile,
+      username,
+      email,
+      oldPassword,
+      newPassword,
+      newPasswordCheck
+    } = this.state;
 
     return (
       <div className="MyPageTemplate">
         <div className="container content">
-          <div className="account-info">
-            <Card className="account-profile" title="프로필">
-              <div className="profile-wrapper">
-                <div className="user-picture">
-                  <Avatar size={120} icon="user" src="" />
-                  <Button className="edit-btn">수정</Button>
-                </div>
+          <Layout style={{ padding: '24px 0', background: '#fff' }}>
+            <Sider width={200} style={{ background: '#fff' }}>
+              <Menu
+                mode="vertical"
+                defaultSelectedKeys={['1']}
+                style={{ height: '100%' }}
+              >
+                <Menu.Item key="1">회원정보</Menu.Item>
+                <Menu.Item key="2">보안인증</Menu.Item>
+              </Menu>
+            </Sider>
 
-                <Form className="userNameForm" layout="inline">
-                  <FormItem {...formItemLayout} label="이름">
-                    <Input type="text" name="userName" disabled />
-                  </FormItem>
-                </Form>
-              </div>
-            </Card>
+            <Content style={{ padding: '0 50px' }}>
+              <h2>회원정보</h2>
 
-            <Card className="account-contact" title="연락처">
-              <div>
-                <CustomizedForm {...fields} onChange={this.handleFormChange} />
-                <Button onClick={this.handleJsonToggle}>json 파일보기</Button>
-                <Button>변경 완료</Button>
-                <pre className="language-bash">
-                  {jsonShow ? JSON.stringify(fields, null, 2) : ''}
-                </pre>
+              <table>
+                <tbody>
+                  <tr>
+                    <th>사진</th>
+                    <td>
+                      <div className="profile">
+                        <Avatar size={120} icon="user" src={profile} />
+                        <div className="action">
+                          <Button>수정</Button>
+                          <Button>삭제</Button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>이름</th>
+                    <td>
+                      <Input
+                        name="username"
+                        value={username}
+                        onChange={this.handleChange}
+                        disabled
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>이메일</th>
+                    <td>
+                      <Input
+                        name="email"
+                        value={email}
+                        onChange={this.handleChange}
+                        disabled
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>기존 비밀번호</th>
+                    <td>
+                      <Input
+                        name="oldPassword"
+                        value={oldPassword}
+                        onChange={this.handleChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>비밀번호</th>
+                    <td>
+                      <Input
+                        name="newPassword"
+                        value={newPassword}
+                        onChange={this.handleChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>비밀번호 확인</th>
+                    <td>
+                      <Input
+                        name="newPasswordCheck"
+                        value={newPasswordCheck}
+                        onChange={this.handleChange}
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div className="action">
+                <Button>확인</Button>
               </div>
-            </Card>
-          </div>
+            </Content>
+          </Layout>
         </div>
       </div>
     );
