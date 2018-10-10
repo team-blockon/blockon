@@ -20,13 +20,16 @@ app.use(cookieParser());
 // request log
 app.use(morgan("dev"));
 
-app.use("/contracts", express.static(__dirname + "/uploads/contracts"));
+app.use("/uploads", express.static(__dirname + "/uploads"));
 
 /* build */
 // app.use("/", express.static(path.resolve(__dirname, "../../build")));
 
 /* development */
-app.use("/", express.static(path.resolve(__dirname, "../../public")));
+app.use(
+  "/",
+  express.static(path.resolve(__dirname, "../blockon-frontend/public"))
+);
 
 app.use(express.static("./routes/util"));
 app.use("/api", require("./routes/api"));

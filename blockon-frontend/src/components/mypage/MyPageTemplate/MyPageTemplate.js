@@ -35,7 +35,7 @@ class MyPageTemplate extends Component {
 
       this.setState({
         ...this.state,
-        profile: thumbnail,
+        profile: `http://localhost:8000/uploads/${thumbnail}`,
         username,
         email
       });
