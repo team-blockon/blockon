@@ -1,4 +1,4 @@
-# Blockon
+<img src="https://user-images.githubusercontent.com/16279779/46770397-1a65cd80-cd2a-11e8-8f3d-d96792edc076.png" width="270" alt="blockon">
 
 Blockon is real estate contract management platform based on Ethereum.
 
@@ -22,7 +22,7 @@ Clone the Blockon repository install the dependency modules.
 
 ```bash
 # Clone the repository.
-$ git clone https://github.com/proj-blockon/integrated-repo.git
+$ git clone https://github.com/team-blockon/blockon.git
 ```
 
 #### 2. Install dependencies
