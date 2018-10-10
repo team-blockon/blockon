@@ -12,9 +12,7 @@ import * as AuthAPI from 'lib/api/auth';
 import * as UserAPI from 'lib/api/user';
 import * as Web3Utils from 'lib/web3/utils';
 
-import { Upload, Icon } from 'antd';
-import { Button } from 'antd';
-import { notification } from 'antd';
+import { Upload, Icon, Button, notification } from 'antd';
 
 /**
  * 프로필 사진 미리보기를 위한 base64 인코딩

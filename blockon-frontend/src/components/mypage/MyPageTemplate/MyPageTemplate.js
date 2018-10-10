@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Input, Upload, message, Button, Avatar } from 'antd';
 import * as Web3Utils from 'lib/web3/utils';
+import * as AuthAPI from 'lib/api/auth';
 import * as UserAPI from 'lib/api/user';
+import {
+  Layout,
+  Menu,
+  Input,
+  Avatar,
+  Upload,
+  message,
+  Button,
+  notification
+} from 'antd';
 import './MyPageTemplate.scss';
 
 const { Content, Sider } = Layout;
@@ -41,6 +51,15 @@ class MyPageTemplate extends Component {
 
     this.setState({
       [name]: value
+    });
+  };
+
+  sendAuthEmail = async () => {
+    const { email } = this.state;
+    await AuthAPI.sendAuthEmail({ email });
+    notification['success']({
+      message: '입력하신 이메일로 인증 메일이 발송되었습니다.',
+      duration: 3
     });
   };
 
@@ -130,11 +149,14 @@ class MyPageTemplate extends Component {
                   <tr>
                     <th>이메일</th>
                     <td>
-                      <Input
-                        name="email"
-                        value={email}
-                        onChange={this.handleChange}
-                      />
+                      <div className="button-addon">
+                        <Input
+                          name="email"
+                          value={email}
+                          onChange={this.handleChange}
+                        />
+                        <Button onClick={this.sendAuthEmail}>인증</Button>
+                      </div>
                     </td>
                   </tr>
                 </tbody>

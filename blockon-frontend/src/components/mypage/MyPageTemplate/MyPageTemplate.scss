@@ -1,8 +1,9 @@
 .MyPageTemplate {
   background-color: #fafafa;
 
-  .ant-card + .ant-card {
-    margin-top: 20px;
+  /* message 출력시 나오는 스크롤바 없애기 */
+  .ant-layout-content {
+    overflow-y: hidden;
   }
 
   table {
@@ -32,6 +33,20 @@
       display: flex;
       justify-content: space-between;
       margin-top: 1rem;
+    }
+  }
+
+  .button-addon {
+    display: flex;
+
+    input {
+      padding-right: 57px;
+    }
+
+    button {
+      margin-left: -57px;
+      width: 57px;
+      border-radius: 0 4px 4px 0;
     }
   }
 
