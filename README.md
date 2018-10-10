@@ -11,9 +11,6 @@ Blockon
 <div align="middle">:warning::zap: 1. using Ethereum :zap::warning: </div>
 <!--<div align="middle"><img src="https://github.com/soma-boomable/integrated-repo/blob/master/eos.jpg" style="width="200" height="200"/></div>-->
 <br>
-<div align="middle">:warning::zap: 2. using EOS :zap::warning: </div>
-<!--<div align="middle"><img src="https://github.com/soma-boomable/integrated-repo/blob/master/eos.jpg" style="width="200" height="200"/></div>-->
-<br>
 <div align="middle">:warning::zap: using IPFS :zap::warning: </div>
 <div align="middle"><img src="https://github.com/soma-boomable/integrated-repo/blob/master/IPFS.png?raw=true" style="width:100px;" /></div>
 
@@ -44,21 +41,19 @@ Blockon
 ### 4. Node.js 모듈 Yarn 설치
 	version 1.9.0 이상으로 설치 권장. 
 	
-### 5. web 폴더로 이동 후 npm install 또는 yarn 으로 dependency 설치
+### 5. blockon-backend 및 blockon-frontend 폴더로 이동 후 npm install 또는 yarn 으로 dependency 설치
 	yarn 이 속도가 더 빠르므로 이용 권장.
 
 ### 6. webpack-dev-server 실행
 	yarn start
 	
 ### 7. express 실행
-	yarn server-start	
+	yarn start:server	
 
 ### 6,7 번을 yarn dev로 묶어서 한번에 사용가능.
 	
 ### 8. 브라우저에서 서버 접속
 	http://localhost:3000
-
-### >   2,3번 과정을 묶어서 yarn dev를 통해 실행.
 
 
 ## License
