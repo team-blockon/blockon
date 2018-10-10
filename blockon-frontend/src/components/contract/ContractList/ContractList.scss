@@ -14,10 +14,11 @@
       position: relative;
 
       .content {
-        padding: 3rem 13rem 1.5rem 2.5rem;
+        padding: 3rem 3rem 1.5rem 2.5rem;
 
         .detail {
           display: flex;
+          flex-wrap: wrap;
 
           .image {
             margin-right: 4rem;
