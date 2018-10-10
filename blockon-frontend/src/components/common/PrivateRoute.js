@@ -13,7 +13,8 @@ class PrivateRoute extends Component {
       <Route
         {...rest}
         render={props =>
-          isLogged ? (
+          /* 로그인 상태이거나 localStorage에 로그인 정보가 있을 때 */
+          isLogged || !!localStorage.loggedInfo ? (
             <Component isJunggae={isJunggae} {...props} />
           ) : (
             <Redirect to="/auth/login" />
