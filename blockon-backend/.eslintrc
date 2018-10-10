@@ -1,0 +1,16 @@
+{
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "quotes": [
+      "warn",
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ],
+    "indent": ["warn", 2]
+  }
+}

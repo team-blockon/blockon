@@ -1,4 +1,4 @@
-const Account = require("../../../models/account");
+const Account = require('../../../models/account');
 
 /*
     POST /api/user
@@ -33,8 +33,8 @@ exports.getAccount = (req, res) => {
 exports.getEmailList = async (req, res) => {
   const accounts = await Account.find(
     { email: new RegExp(`^${req.body.value}`) },
-    "-_id"
-  ).select("email");
+    '-_id'
+  ).select('email');
   console.log(accounts);
   const emailList = accounts.map(account => account.email);
   res.json(emailList);
@@ -55,12 +55,12 @@ exports.updateAccountByEthAddress = (req, res) => {
     { ethAddress: req.params.ethAddress },
     {
       $set: {
-        "profile.thumbnail": profile,
+        'profile.thumbnail': profile,
         email
       }
     },
     (err, output) => {
-      res.json({ message: "account updated" });
+      res.json({ message: 'account updated' });
     }
   );
 };
@@ -82,7 +82,7 @@ exports.updateAccountAddressByEthAddress = (req, res) => {
     { ethAddress: req.params.ethAddress },
     { $set: req.body },
     (err, output) => {
-      res.json({ message: "account updated" });
+      res.json({ message: 'account updated' });
     }
   );
 };
