@@ -10,6 +10,8 @@
 
   .point-average {
     display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     background-color: $oc-gray-0;
     padding: 2rem 3rem;
     margin-bottom: 5rem;
@@ -118,6 +120,23 @@
 
       & + li {
         margin-left: 30px;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .ContractReview {
+    .point-average {
+      .image {
+        margin: 0 auto;
+      }
+    }
+    .reviews {
+      flex-wrap: wrap;
+
+      .point {
+        margin: 0 auto;
       }
     }
   }
