@@ -203,7 +203,9 @@ class ContractList extends Component {
             <div className="image">
               {building.photo ? (
                 <img
-                  src={`http://localhost:8000/contracts/${building.photo}`}
+                  src={`http://localhost:8000/uploads/contracts/${
+                    building.photo
+                  }`}
                   alt="maemul"
                 />
               ) : (
@@ -235,16 +237,13 @@ class ContractList extends Component {
     const cards = [];
 
     contractInfoList.forEach(contractInfo => {
-      const contractState = contractInfo.state;
+      const { state: contractState } = contractInfo;
 
       if (
-        activeTab === 'ongoing' &&
-        contractState !== state.COMPLETED_CONTRACT
-      ) {
-        cards.push(this.getCard(contractInfo));
-      } else if (
-        activeTab === 'completed' &&
-        contractState === state.COMPLETED_CONTRACT
+        (activeTab === 'ongoing' &&
+          contractState !== state.COMPLETED_CONTRACT) ||
+        (activeTab === 'completed' &&
+          contractState === state.COMPLETED_CONTRACT)
       ) {
         cards.push(this.getCard(contractInfo));
       }

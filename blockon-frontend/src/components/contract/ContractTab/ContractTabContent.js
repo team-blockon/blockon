@@ -12,6 +12,7 @@ const ContractTabContent = ({
 }) => {
   switch (activeTab) {
   case 'ongoing': // 진행중 거래
+  case 'completed': // 완료된 거래
     if (activeType === 0) {
       return (
         <ContractList
@@ -22,19 +23,12 @@ const ContractTabContent = ({
         />
       );
     } else {
-      return <ContractCard />;
-    }
-  case 'completed': // 완료된 거래
-    if (activeType === 0) {
       return (
-        <ContractList
-          handleSelect={handleSelect}
+        <ContractCard
           contractInfoList={contractInfoList}
           activeTab={activeTab}
         />
       );
-    } else {
-      return <ContractCard />;
     }
   case 'review':
     return <ContractReview />;
