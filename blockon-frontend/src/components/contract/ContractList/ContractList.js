@@ -46,7 +46,7 @@ class ContractList extends Component {
   };
 
   getProgressbarItem = (stepIndex, listClassName, cardIndex, contractType) => {
-    const { handleSelect, accountInstance } = this.props;
+    const { handleSelect, accountInstance, activeTab } = this.props;
 
     const tradeStep = [
       state.DOWN_PAYMENT,
@@ -104,7 +104,8 @@ class ContractList extends Component {
       <li
         className={getListClassName(listClassName)}
         onClick={
-          listClassName === liClass.FIRST_NOT_ACTIVE
+          listClassName === liClass.FIRST_NOT_ACTIVE && // 진행하지 않은 단계 중 첫 번째이면서
+          activeTab !== 'completed' // 완료 단계가 아닐 때
             ? e => {
               handleSelect(
                 accountInstance.address,
