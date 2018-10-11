@@ -21,26 +21,30 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 
 app.use('/uploads', express.static(__dirname + '/uploads'));
-
-/* build */
-// app.use("/", express.static(path.resolve(__dirname, "../../build")));
-
-/* development */
-app.use(
-  '/',
-  express.static(path.resolve(__dirname, '../blockon-frontend/public'))
-);
-
 app.use(express.static('./routes/util'));
 app.use('/api', require('./routes/api'));
 
 /**
- * 클라이언트 사이드 렌더링
- * 리액트 라우터가 렌더링하도록 index 띄운다.
+ * NODE_ENV에 따라 리액트 정적 파일 제공
  */
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, '../blockon-frontend/public/index.html'));
-});
+const BUILD_PATH = '../blockon-frontend/build';
+const PUBLIC_PATH = '../blockon-frontend/public';
+
+switch (process.env.NODE_ENV) {
+  case 'production':
+    app.use('/', express.static(path.resolve(__dirname, BUILD_PATH)));
+    app.get('/*', function(req, res) {
+      res.sendFile(path.join(__dirname, `${BUILD_PATH}/index.html`));
+    });
+    break;
+
+  default:
+    app.use('/', express.static(path.resolve(__dirname, PUBLIC_PATH)));
+    app.get('/*', function(req, res) {
+      res.sendFile(path.join(__dirname, `${PUBLIC_PATH}/index.html`));
+    });
+    break;
+}
 
 /**
  * 채팅 SockJS 서버 설정

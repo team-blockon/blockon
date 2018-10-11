@@ -49,8 +49,10 @@ kill_process 8000
 
 # run server in each mode
 if [[ $1 == 'dev' ]]; then
+  export NODE_ENV=development
   run_in_development_mode
 else
+  export NODE_ENV=production
   run_in_production_mode
 fi
 
