@@ -6,12 +6,7 @@ const AgentList = ({ agents }) => {
     <div className="AgentList">
       {agents.map((agent, index) => (
         <div className="agent" key={index}>
-          <div
-            className="circle"
-            style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}
-          >
-            {agent.place_name.charAt(0)}
-          </div>
+          <div className="circle">{agent.place_name.charAt(0)}</div>
           <div>
             <p>{agent.place_name}</p>
             <p>{agent.road_address_name}</p>

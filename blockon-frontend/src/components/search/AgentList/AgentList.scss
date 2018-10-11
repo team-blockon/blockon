@@ -24,11 +24,14 @@
       width: 70px;
       height: 70px;
       border-radius: 50%;
+      background-color: #fde3cf;
+      color: #f56a00;
       margin-right: 2rem;
       text-align: center;
       line-height: 70px;
       font-size: 1.5rem;
       font-weight: 700;
+      flex-shrink: 0;
     }
 
     p {
