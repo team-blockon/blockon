@@ -82,12 +82,12 @@ const abi = [
       },
       {
         indexed: false,
-        name: 'contractAddress',
-        type: 'address'
+        name: 'contractIndex',
+        type: 'uint256'
       },
       {
         indexed: false,
-        name: 'changedState',
+        name: 'confirmedState',
         type: 'uint8'
       }
     ],
@@ -104,8 +104,8 @@ const abi = [
       },
       {
         indexed: false,
-        name: 'contractAddress',
-        type: 'address'
+        name: 'contractIndex',
+        type: 'uint256'
       },
       {
         indexed: false,
@@ -114,6 +114,18 @@ const abi = [
       }
     ],
     name: 'RevokeConfirmation',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: 'publicAddress',
+        type: 'address'
+      }
+    ],
+    name: 'AthorizeAsAgent',
     type: 'event'
   },
   {
@@ -204,13 +216,8 @@ const abi = [
   },
   {
     constant: false,
-    inputs: [
-      {
-        name: 'contractAddress',
-        type: 'address'
-      }
-    ],
-    name: 'emitChangeContractStateEvent',
+    inputs: [],
+    name: 'athorizeAsAgent',
     outputs: [],
     payable: false,
     stateMutability: 'nonpayable',
@@ -218,8 +225,49 @@ const abi = [
   },
   {
     constant: false,
-    inputs: [],
-    name: 'athorizeAsAgent',
+    inputs: [
+      {
+        name: 'contractAddress',
+        type: 'address'
+      },
+      {
+        name: 'confirmedState',
+        type: 'uint8'
+      }
+    ],
+    name: 'emitConfirmChangeContractStateEvent',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: 'contractAddress',
+        type: 'address'
+      },
+      {
+        name: 'revokedState',
+        type: 'uint8'
+      }
+    ],
+    name: 'emitRevokeConfirmationEvent',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: 'contractAddress',
+        type: 'address'
+      }
+    ],
+    name: 'emitChangeContractStateEvent',
     outputs: [],
     payable: false,
     stateMutability: 'nonpayable',
@@ -277,7 +325,15 @@ const abi = [
     name: 'hasConfirmed',
     outputs: [
       {
-        name: '',
+        name: 'isAgentConfirmed',
+        type: 'bool'
+      },
+      {
+        name: 'isSellerConfirmed',
+        type: 'bool'
+      },
+      {
+        name: 'isBuyerConfirmed',
         type: 'bool'
       }
     ],

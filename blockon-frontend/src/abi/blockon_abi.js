@@ -44,18 +44,6 @@ const abi = [
     type: 'event'
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        name: 'accountAddress',
-        type: 'address'
-      }
-    ],
-    name: 'AthorizeAsAgent',
-    type: 'event'
-  },
-  {
     constant: false,
     inputs: [
       {
