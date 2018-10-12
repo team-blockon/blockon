@@ -73,20 +73,20 @@ export const getContractInfoAt = (accountInstance, index) => {
 };
 
 /**
- * Account 컨트랙트에 저장된 특정 인덱스의 계약상태 변경
- * 중개인이 아니면 상태 변환이 일어나지 않음
+ * Account 컨트랙트에 저장된 특정 인덱스의 계약상태를 변경하는것에 동의함
+ * 모든 구성원이 동의한것이 아니면 상태 변환이 일어나지 않음
  * @param {*} accountInstance 대상 Account 인스턴스
  * @param {*} contractIndex 상태를 변경할 계약 인덱스
  * @param {*} newContractState 새로운 상태
  */
-export const changeContractStateAt = ({
+export const confirmToChangeContractStateAt = ({
   accountInstance,
   contractIndex,
   newContractState
 }) => {
   return new Promise((resolve, reject) => {
     try {
-      accountInstance.changeContractStateAt.sendTransaction(
+      accountInstance.confirmToChangeContractStateAt.sendTransaction(
         contractIndex,
         newContractState,
         (error, result) => {
