@@ -245,14 +245,14 @@ exports.sendAuthEmail = async (req, res) => {
     const emailAuth = await EmailAuth.findOne({ email });
     if (!!emailAuth) {
       switch (emailAuth.status) {
-      case 0:
-      case 1:
-        await EmailAuth.updateToken(email, token);
-        return true;
-      case 2:
-        //이미 가입된 이메일
-        return false;
-      default:
+        case 0:
+        case 1:
+          await EmailAuth.updateToken(email, token);
+          return true;
+        case 2:
+          //이미 가입된 이메일
+          return false;
+        default:
       }
     } else {
       await EmailAuth.create(email, token);
@@ -284,18 +284,18 @@ exports.authEmail = async (req, res) => {
   const updateEmailStatus = async () => {
     const emailAuth = await EmailAuth.findOne({ email });
     switch (emailAuth.status) {
-    case 0:
-      if (emailAuth.token === token) {
+      case 0:
+        //if (emailAuth.token === token) {
         await EmailAuth.updateStatus(email, 1);
         return 'certification';
-      } else {
-        return 'invalid token';
-      }
-    case 1:
-      return 'already certification';
-    case 2:
-      return 'already signed up';
-    default:
+      //} else {
+      //  return 'invalid token';
+      //}
+      case 1:
+        return 'already certification';
+      case 2:
+        return 'already signed up';
+      default:
     }
   };
 
