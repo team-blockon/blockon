@@ -173,21 +173,37 @@ contract("Blockon", async accounts => {
 
   it("confirm to change contract state", async () => {
     // confirm 안되어 있는 상태
-    assert.equal(await agentAccount.hasConfirmed(0, DOWN_PAYMENT), false);
+    let [
+      isAgentConfirmed,
+      isSellerConfirmed,
+      isBuyerConfirmed
+    ] = await agentAccount.hasConfirmed(0, DOWN_PAYMENT);
+    assert.equal(isAgentConfirmed, false);
+    assert.equal(isSellerConfirmed, false);
+    assert.equal(isBuyerConfirmed, false);
 
-    // agent는 confirm 완료
+    // agent는 confirm 완료 seller와 buyer는 confirm 안되어있음
     await agentAccount.confirmToChangeContractStateAt(0, DOWN_PAYMENT);
-    assert.equal(await agentAccount.hasConfirmed(0, DOWN_PAYMENT), true);
-
-    // seller와 buyer confirm 확인. confirm 안되어있음
-    assert.equal(await sellerAccount.hasConfirmed(0, DOWN_PAYMENT), false);
-    assert.equal(await buyerAccount.hasConfirmed(0, DOWN_PAYMENT), false);
+    [
+      isAgentConfirmed,
+      isSellerConfirmed,
+      isBuyerConfirmed
+    ] = await agentAccount.hasConfirmed(0, DOWN_PAYMENT);
+    assert.equal(isAgentConfirmed, true);
+    assert.equal(isSellerConfirmed, false);
+    assert.equal(isBuyerConfirmed, false);
   });
 
   it("revoke comfirmation", async () => {
-    assert.equal(await agentAccount.hasConfirmed(0, DOWN_PAYMENT), true); // 컨펌 된 상태
-    await agentAccount.revokeConfirmationAt(0, DOWN_PAYMENT); // 컨펌 취소
-    assert.equal(await agentAccount.hasConfirmed(0, DOWN_PAYMENT), false); // 취소된것 확인
+    await agentAccount.revokeConfirmationAt(0, DOWN_PAYMENT);
+    let [
+      isAgentConfirmed,
+      isSellerConfirmed,
+      isBuyerConfirmed
+    ] = await agentAccount.hasConfirmed(0, DOWN_PAYMENT);
+    assert.equal(isAgentConfirmed, false);
+    assert.equal(isSellerConfirmed, false);
+    assert.equal(isBuyerConfirmed, false);
   });
 
   it("3 confirmation needed to change contract state", async () => {
@@ -212,7 +228,7 @@ contract("Blockon", async accounts => {
     try {
       await agentAccount.revokeConfirmationAt(0, DOWN_PAYMENT);
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
     }
   });
 });
