@@ -56,6 +56,67 @@ const abi = [
     type: 'event'
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: 'publicAddress',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        name: 'contractAddress',
+        type: 'address'
+      }
+    ],
+    name: 'AddContract',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: 'publicAddress',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        name: 'contractAddress',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        name: 'changedState',
+        type: 'uint8'
+      }
+    ],
+    name: 'ConfirmChangeContractState',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: 'publicAddress',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        name: 'contractAddress',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        name: 'revokedState',
+        type: 'uint8'
+      }
+    ],
+    name: 'RevokeConfirmation',
+    type: 'event'
+  },
+  {
     constant: false,
     inputs: [
       {
@@ -81,7 +142,7 @@ const abi = [
         type: 'uint8'
       }
     ],
-    name: 'changeContractStateAt',
+    name: 'confirmToChangeContractStateAt',
     outputs: [],
     payable: false,
     stateMutability: 'nonpayable',
@@ -99,7 +160,43 @@ const abi = [
         type: 'uint8'
       }
     ],
-    name: 'changeContractState',
+    name: 'confirmToChangeContractState',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: 'index',
+        type: 'uint256'
+      },
+      {
+        name: 'contractStateToRevoke',
+        type: 'uint8'
+      }
+    ],
+    name: 'revokeConfirmationAt',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: 'contractAddress',
+        type: 'address'
+      },
+      {
+        name: 'contractStateToRevoke',
+        type: 'uint8'
+      }
+    ],
+    name: 'revokeConfirmation',
     outputs: [],
     payable: false,
     stateMutability: 'nonpayable',
@@ -114,6 +211,15 @@ const abi = [
       }
     ],
     name: 'emitChangeContractStateEvent',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    constant: false,
+    inputs: [],
+    name: 'athorizeAsAgent',
     outputs: [],
     payable: false,
     stateMutability: 'nonpayable',
@@ -157,12 +263,49 @@ const abi = [
     type: 'function'
   },
   {
-    constant: false,
-    inputs: [],
-    name: 'athorizeAsAgent',
-    outputs: [],
+    constant: true,
+    inputs: [
+      {
+        name: 'index',
+        type: 'uint256'
+      },
+      {
+        name: 'contractState',
+        type: 'uint8'
+      }
+    ],
+    name: 'hasConfirmed',
+    outputs: [
+      {
+        name: '',
+        type: 'bool'
+      }
+    ],
     payable: false,
-    stateMutability: 'nonpayable',
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: 'index',
+        type: 'uint256'
+      },
+      {
+        name: 'contractState',
+        type: 'uint8'
+      }
+    ],
+    name: 'hasExecuted',
+    outputs: [
+      {
+        name: '',
+        type: 'bool'
+      }
+    ],
+    payable: false,
+    stateMutability: 'view',
     type: 'function'
   }
 ];
