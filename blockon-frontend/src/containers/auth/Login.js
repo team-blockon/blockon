@@ -10,7 +10,7 @@ import AuthLink from 'components/auth/AuthLink';
 import * as AuthAPI from 'lib/api/auth';
 import * as Web3Utils from 'lib/web3/utils';
 
-import { Divider } from 'antd';
+import { Divider, message } from 'antd';
 
 class Login extends Component {
   handleChange = event => {
@@ -30,13 +30,17 @@ class Login extends Component {
     const { setLoggedInfo } = this.props;
     const ethAddress = await Web3Utils.getDefaultAccount();
 
-    AuthAPI.login(ethAddress).then(res => {
-      const loggedInfo = res.data;
-      setLoggedInfo(loggedInfo);
+    AuthAPI.login(ethAddress)
+      .then(res => {
+        const loggedInfo = res.data;
+        setLoggedInfo(loggedInfo);
 
-      localStorage.setItem('loggedInfo', JSON.stringify(loggedInfo));
-      history.push('/pricing'); // 나중에 없앨 것!
-    });
+        localStorage.setItem('loggedInfo', JSON.stringify(loggedInfo));
+        history.push('/pricing'); // 나중에 없앨 것!
+      })
+      .catch(() => {
+        message.warning('가입되지 않은 사용자입니다.');
+      });
   };
 
   handleRegister = () => {
