@@ -12,7 +12,7 @@ import * as AuthAPI from 'lib/api/auth';
 import * as UserAPI from 'lib/api/user';
 import * as Web3Utils from 'lib/web3/utils';
 
-import { Upload, Icon, Button, notification } from 'antd';
+import { Upload, Icon, Button, notification, message } from 'antd';
 
 /**
  * 프로필 사진 미리보기를 위한 base64 인코딩
@@ -28,6 +28,7 @@ const getBase64 = (img, callback) => {
 class Register extends Component {
   state = {
     loading: false, // 프로필 사진 업로드 상태
+    emailauth: false,
     username: '',
     email: '',
     authNo: ''
@@ -42,9 +43,11 @@ class Register extends Component {
     });
   };
 
-  handleClick = async () => {
+  handleAuthEmail = async () => {
     const { email } = this.state;
-    await AuthAPI.sendAuthEmail({ email });
+    await AuthAPI.sendAuthEmail({ email }).then(() => {
+      this.setState({ ...this.state, emailauth: true });
+    });
     notification['success']({
       message: '입력하신 이메일로 인증 메일이 발송되었습니다.',
       duration: 3
@@ -52,6 +55,10 @@ class Register extends Component {
   };
 
   handleRegister = async event => {
+    if (this.state.emailauth === false) {
+      message.warning('이메일 인증을 진행해 주세요.');
+    }
+
     const { profileFilename, username, email } = this.state;
     const ethAddress = await Web3Utils.getDefaultAccount();
 
@@ -187,7 +194,7 @@ class Register extends Component {
               <Button
                 type="primary"
                 style={{ height: '44px' }}
-                onClick={this.handleClick}
+                onClick={this.handleAuthEmail}
               >
                 인증
               </Button>
