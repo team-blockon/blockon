@@ -80,7 +80,6 @@ export class SearchTemplate extends Component {
   }
 
   render() {
-    console.log('render');
     const { agents } = this.state;
 
     return (

@@ -57,6 +57,7 @@ class Register extends Component {
   handleRegister = async event => {
     if (this.state.emailauth === false) {
       message.warning('이메일 인증을 진행해 주세요.');
+      return;
     }
 
     const { profileFilename, username, email } = this.state;

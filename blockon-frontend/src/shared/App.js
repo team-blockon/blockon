@@ -22,6 +22,7 @@ import * as userActions from 'store/modules/user';
 
 import Web3 from 'web3';
 import blockonABI from 'abi/blockon_abi';
+import * as Web3Utils from 'lib/web3/utils';
 
 /**
  * 서버와 클라이언트에서 공용으로 사용하는 컴포넌트
@@ -36,7 +37,7 @@ class App extends Component {
     UserActions.setLoggedInfo(loggedInfo);
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     let { web3 } = window;
 
     this.initializeUserInfo();
@@ -57,7 +58,7 @@ class App extends Component {
     web3 = new Web3(this.web3Provider); // web3 객체를 만들어줌
     const contract = web3.eth.contract(blockonABI); // Blockon 컨트랙트 클래스 생성
     window.blockon = contract.at('0x4c49Ae08de294D77A08B1cCB89A1118DD4aD8C9B'); // 컨트랙트 인스턴스 생성
-    web3.eth.defaultAccount = web3.eth.accounts[0]; // 내가 지금 메타마스크에서 사용하고 있는 주소를 defaultAccount로 설정
+    web3.eth.defaultAccount = await Web3Utils.getDefaultAccount(); // 내가 지금 메타마스크에서 사용하고 있는 주소를 defaultAccount로 설정
   }
 
   render() {

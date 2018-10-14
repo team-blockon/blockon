@@ -1,5 +1,3 @@
-import { openNotification } from 'lib/utils';
-
 /**
  * 계약 생성
  * @param {*} agentAddress 중개인 Account 컨트랙트 주소
@@ -16,26 +14,20 @@ export const create = (
   const { blockon } = window;
 
   return new Promise((resolve, reject) => {
-    try {
-      blockon.createContractByAccountAddress.sendTransaction(
-        /* 먼저 createAccount를 호출하고, 생성된 Account 컨트랙트의 주소를 넣음 */
-        agentAddress,
-        sellerAddress,
-        buyerAddress,
-        contractType,
-        (error, result) => {
-          if (!error) {
-            resolve(result);
-          } else {
-            reject(error);
-          }
+    blockon.createContractByAccountAddress.sendTransaction(
+      /* 먼저 createAccount를 호출하고, 생성된 Account 컨트랙트의 주소를 넣음 */
+      agentAddress,
+      sellerAddress,
+      buyerAddress,
+      contractType,
+      (error, result) => {
+        if (!error) {
+          resolve(result);
+        } else {
+          reject(error);
         }
-      );
-    } catch (e) {
-      if (e.message === 'invalid address') {
-        openNotification('잠시 후 다시 시도해 주세요.');
       }
-    }
+    );
   });
 };
 
@@ -85,22 +77,16 @@ export const changeContractStateAt = ({
   newContractState
 }) => {
   return new Promise((resolve, reject) => {
-    try {
-      accountInstance.changeContractStateAt.sendTransaction(
-        contractIndex,
-        newContractState,
-        (error, result) => {
-          if (!error) {
-            resolve(result);
-          } else {
-            reject({ msg: error });
-          }
+    accountInstance.changeContractStateAt.sendTransaction(
+      contractIndex,
+      newContractState,
+      (error, result) => {
+        if (!error) {
+          resolve(result);
+        } else {
+          reject({ msg: error });
         }
-      );
-    } catch (e) {
-      if (e.message === 'invalid address') {
-        openNotification('잠시 후 다시 시도해 주세요.');
       }
-    }
+    );
   });
 };
