@@ -131,7 +131,7 @@ class Register extends Component {
         options.onSuccess(res.data, options.file);
       })
       .catch(err => {
-        console.log(err);
+        message.error('프로필 사진 업로드에 실패했습니다.');
       });
   };
 
