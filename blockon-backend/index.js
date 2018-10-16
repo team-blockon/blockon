@@ -31,19 +31,19 @@ const BUILD_PATH = '../blockon-frontend/build';
 const PUBLIC_PATH = '../blockon-frontend/public';
 
 switch (process.env.NODE_ENV) {
-  case 'production':
-    app.use('/', express.static(path.resolve(__dirname, BUILD_PATH)));
-    app.get('/*', function(req, res) {
-      res.sendFile(path.join(__dirname, `${BUILD_PATH}/index.html`));
-    });
-    break;
+case 'production':
+  app.use('/', express.static(path.resolve(__dirname, BUILD_PATH)));
+  app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname, `${BUILD_PATH}/index.html`));
+  });
+  break;
 
-  default:
-    app.use('/', express.static(path.resolve(__dirname, PUBLIC_PATH)));
-    app.get('/*', function(req, res) {
-      res.sendFile(path.join(__dirname, `${PUBLIC_PATH}/index.html`));
-    });
-    break;
+default:
+  app.use('/', express.static(path.resolve(__dirname, PUBLIC_PATH)));
+  app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname, `${PUBLIC_PATH}/index.html`));
+  });
+  break;
 }
 
 /**

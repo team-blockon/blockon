@@ -9,7 +9,7 @@ const HOST = 'ipfs.infura.io';
 const ipfs = ipfsAPI({ host: HOST, port: PORT, protocol: 'https' });
 
 //허용할 이미지타입
-const imageType = ['jpg','png','jpeg'];
+const imageType = ['jpg', 'png', 'jpeg'];
 
 /**
  * 공인중개사 자격증을 업로드한다.
@@ -18,55 +18,55 @@ const imageType = ['jpg','png','jpeg'];
  * @returns {Promise<void>}
  */
 exports.uploadIdentity = async (req, res) => {
-    const { ethAddress } = req.body;
-    // const ethAddress ='abcdefaad1daaaa'; //테스트용
-    const upload =  multer({
-        storage: multer.memoryStorage(),
-        fileFilter: async (req, file, cb) => {
-            cb(null, FileTypeCheck.uploadFileType(file.mimetype,imageType));
-        }
-    }).single('identity'); // req.file은 identity 필드의 파일 정보
-
-    /**
-     * ipfs에 저장하고 db에 해쉬값을 저장한다.
-     * @param file
-     * @returns {Promise<ethAddress>}
-     */
-    const saveToIPFS = async file =>{
-        console.log(file);
-        const files =
-            [{
-                path: 'identity/' + file.originalname, //파일 이름을 유지하기위해 디렉토리 유지
-                content: file.buffer
-            }];
-        const addedFile = await ipfs.add(files);
-        console.log(addedFile);
-        return Identity.create(ethAddress, addedFile[1].hash);
-    };
-
-
-    //하나의 계정에는 하나의 증명서만 저장
-    if (!!await Identity.findOne({ethAddress})) {
-        res.json({
-            result : false,
-            info : 'existed address'
-        });
-    }else {
-        await upload(req, res, async err => {
-            if(err){
-                res.json({
-                    result : false,
-                    info : err
-                });
-            }else {
-                const info = await saveToIPFS(req.file);
-                res.json({
-                    result : true,
-                    info : info
-                })
-            }
-        });
+  const { ethAddress } = req.body;
+  // const ethAddress ='abcdefaad1daaaa'; //테스트용
+  const upload = multer({
+    storage: multer.memoryStorage(),
+    fileFilter: async (req, file, cb) => {
+      cb(null, FileTypeCheck.uploadFileType(file.mimetype, imageType));
     }
+  }).single('identity'); // req.file은 identity 필드의 파일 정보
+
+  /**
+   * ipfs에 저장하고 db에 해쉬값을 저장한다.
+   * @param file
+   * @returns {Promise<ethAddress>}
+   */
+  const saveToIPFS = async file => {
+    console.log(file);
+    const files = [
+      {
+        path: 'identity/' + file.originalname, //파일 이름을 유지하기위해 디렉토리 유지
+        content: file.buffer
+      }
+    ];
+    const addedFile = await ipfs.add(files);
+    console.log(addedFile);
+    return Identity.create(ethAddress, addedFile[1].hash);
+  };
+
+  //하나의 계정에는 하나의 증명서만 저장
+  if (!!(await Identity.findOne({ ethAddress }))) {
+    res.json({
+      result: false,
+      info: 'existed address'
+    });
+  } else {
+    await upload(req, res, async err => {
+      if (err) {
+        res.json({
+          result: false,
+          info: err
+        });
+      } else {
+        const info = await saveToIPFS(req.file);
+        res.json({
+          result: true,
+          info: info
+        });
+      }
+    });
+  }
 };
 
 /**
@@ -75,8 +75,8 @@ exports.uploadIdentity = async (req, res) => {
  * @returns {Promise<*>}
  */
 const getIdentity = async ethAddress => {
-    const identity = await Identity.findOne({ethAddress});
-    return await ipfs.get(identity.idHash);
+  const identity = await Identity.findOne({ ethAddress });
+  return await ipfs.get(identity.idHash);
 };
 
 /**
@@ -86,17 +86,17 @@ const getIdentity = async ethAddress => {
  * @param res
  * @returns {Promise<void>}
  */
-exports.downloadIdentity = async (req,res) => {
-    const {ethAddress} = req.params;
-    console.log(ethAddress);
-    const download = await getIdentity(ethAddress);
+exports.downloadIdentity = async (req, res) => {
+  const { ethAddress } = req.params;
+  console.log(ethAddress);
+  const download = await getIdentity(ethAddress);
 
-    const filename = download[1].path.split('/')[1];
-    fs.writeFileSync(filename, download[1].content);
-    res.json({
-        result :true,
-        info : download[0].path
-    });
+  const filename = download[1].path.split('/')[1];
+  fs.writeFileSync(filename, download[1].content);
+  res.json({
+    result: true,
+    info: download[0].path
+  });
 };
 
 /**
@@ -105,12 +105,11 @@ exports.downloadIdentity = async (req,res) => {
  * @param res
  * @returns {Promise<void>}
  */
-exports.referenceIdentity = async (req,res) => {
+exports.referenceIdentity = async (req, res) => {
+  const { ethAddress } = req.params;
 
-    const {ethAddress} = req.params;
-
-    const file = await getIdentity(ethAddress);
-    const path = file[1].path;
-    const image = await ipfs.cat(path);
-    res.send(image);
+  const file = await getIdentity(ethAddress);
+  const path = file[1].path;
+  const image = await ipfs.cat(path);
+  res.send(image);
 };

@@ -22,5 +22,8 @@
     "nodemailer": "^4.6.8",
     "randomstring": "^1.1.5",
     "sockjs": "^0.3.19"
+  },
+  "devDependencies": {
+    "prettier-eslint": "^8.8.2"
   }
 }
