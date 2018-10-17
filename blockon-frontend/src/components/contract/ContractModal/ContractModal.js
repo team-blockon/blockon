@@ -15,7 +15,7 @@ class ContractModal extends Component {
       onClose
     } = this.props;
 
-    const { accountInstance } = await Web3User.getAccountInstance();
+    const { accountInstance } = await Web3User.getAccountInfo();
     await changeState({
       accountInstance,
       contractIndex,

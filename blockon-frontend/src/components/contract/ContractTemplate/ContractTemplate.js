@@ -148,7 +148,7 @@ class ContractTemplate extends Component {
      */
 
     // 현재 브라우저에 접속한 유저의 어카운트 계정 인스턴스 생성
-    const { accountInstance } = await Web3User.getAccountInstance();
+    const { accountInstance } = await Web3User.getAccountInfo();
     this.setState({ accountInstance });
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수

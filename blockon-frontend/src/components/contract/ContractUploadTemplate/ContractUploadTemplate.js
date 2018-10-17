@@ -160,10 +160,7 @@ class ContractUploadTemplate extends Component {
   };
 
   async componentDidMount() {
-    const {
-      accountAddress,
-      accountInstance
-    } = await Web3User.getAccountInstance();
+    const { accountAddress, accountInstance } = await Web3User.getAccountInfo();
 
     this.setState(
       produce(draft => {

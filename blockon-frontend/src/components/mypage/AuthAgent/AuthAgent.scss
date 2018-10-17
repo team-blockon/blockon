@@ -1,0 +1,11 @@
+@import "~open-color/open-color";
+
+.AuthAgent {
+  .levelText {
+    font-size: 1rem;
+
+    span {
+      color: $oc-blue-7;
+    }
+  }
+}

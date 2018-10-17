@@ -1,28 +1,18 @@
 import React, { Component } from 'react';
+import UserInfo from '../UserInfo';
+import AuthAgent from '../AuthAgent';
 import * as Web3Utils from 'lib/web3/utils';
+import * as Web3User from 'lib/web3/user';
 import * as AuthAPI from 'lib/api/auth';
 import * as UserAPI from 'lib/api/user';
-import {
-  Layout,
-  Menu,
-  Input,
-  Avatar,
-  Upload,
-  message,
-  Button,
-  notification
-} from 'antd';
+import { Layout, Menu, message, notification } from 'antd';
 import './MyPageTemplate.scss';
 
 const { Content, Sider } = Layout;
 
-const getProfileUrl = thumbnail => {
-  if (!thumbnail) return null;
-  return `http://localhost:8000/uploads/${thumbnail}`;
-};
-
 class MyPageTemplate extends Component {
   state = {
+    key: '1',
     ethAddress: null,
     profile: null,
     username: '',
@@ -43,6 +33,13 @@ class MyPageTemplate extends Component {
     this.setState({
       ...this.state,
       profile: null
+    });
+  };
+
+  handleMenu = ({ key }) => {
+    this.setState({
+      ...this.state,
+      key
     });
   };
 
@@ -78,15 +75,16 @@ class MyPageTemplate extends Component {
   async componentDidMount() {
     const ethAddress = await Web3Utils.getDefaultAccount();
 
-    UserAPI.getAccountByEthAddress(ethAddress).then(res => {
+    Web3User.getAccountInfo().then(({ account, accountInstance }) => {
       const {
         email,
         profile: { username, thumbnail }
-      } = res.data;
+      } = account;
 
       this.setState({
         ...this.state,
         ethAddress,
+        accountInstance,
         profile: thumbnail,
         username,
         email
@@ -95,7 +93,7 @@ class MyPageTemplate extends Component {
   }
 
   render() {
-    const { profile, username, email } = this.state;
+    const { key, accountInstance, profile, username, email } = this.state;
 
     return (
       <div className="MyPageTemplate">
@@ -103,6 +101,7 @@ class MyPageTemplate extends Component {
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Sider width={200} style={{ background: '#fff' }}>
               <Menu
+                onClick={this.handleMenu}
                 mode="vertical"
                 defaultSelectedKeys={['1']}
                 style={{ height: '100%' }}
@@ -111,60 +110,15 @@ class MyPageTemplate extends Component {
                 <Menu.Item key="2">보안인증</Menu.Item>
               </Menu>
             </Sider>
-
             <Content style={{ padding: '0 50px' }}>
-              <h2>회원정보</h2>
-
-              <table>
-                <tbody>
-                  <tr>
-                    <th>사진</th>
-                    <td>
-                      <div className="profile">
-                        <Avatar
-                          size={120}
-                          icon="user"
-                          src={getProfileUrl(profile)}
-                        />
-                        <div className="action">
-                          <Upload
-                            name="profile"
-                            action="/api/auth/profile"
-                            showUploadList={false}
-                            onChange={this.handleProfileChange}
-                          >
-                            <Button>수정</Button>
-                          </Upload>
-                          <Button onClick={this.deleteProfile}>삭제</Button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>이름</th>
-                    <td>
-                      <Input name="username" value={username} disabled />
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>이메일</th>
-                    <td>
-                      <div className="button-addon">
-                        <Input
-                          name="email"
-                          value={email}
-                          onChange={this.handleChange}
-                        />
-                        <Button onClick={this.sendAuthEmail}>인증</Button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <div className="action">
-                <Button onClick={this.handleSubmit}>확인</Button>
-              </div>
+              {key === '1' ? (
+                <UserInfo profile={profile} username={username} email={email} />
+              ) : (
+                <AuthAgent
+                  accountInstance={accountInstance}
+                  username={username}
+                />
+              )}
             </Content>
           </Layout>
         </div>

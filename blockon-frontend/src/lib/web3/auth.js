@@ -1,5 +1,5 @@
 import { openNotification } from 'lib/utils';
-import * as UserAPI from 'lib/api/user';
+import * as Web3User from 'lib/web3/user';
 
 /**
  * Account 생성
@@ -28,15 +28,12 @@ export const createAccount = ethAddress => {
 
 /**
  * 중개인 인증
- * @param {*} ethAddress
  */
-export const athorizeAsAgent = async ethAddress => {
+export const authorizeAsAgent = async () => {
   const { blockon } = window;
 
   return new Promise(async (resolve, reject) => {
-    const res = await UserAPI.getAccountByEthAddress(ethAddress);
-    const accountAddress = res.data.accountAddress;
-
+    const { accountAddress } = await Web3User.getAccountInfo();
     blockon.athorizeAsAgent.sendTransaction(accountAddress, (error, result) => {
       if (!error) {
         resolve({ result });
