@@ -86,7 +86,7 @@ class ContractTemplate extends Component {
    * 블록체인으로 부터 인덱스에 해당하는 컨트랙트의 새로운 상태를 받아와서
    * state.contractInfoList를 업데이트 한다
    */
-  changeContractStateAt = async (accountInstance, index) => {
+  contractStateChanged = async (accountInstance, index) => {
     // 업데이트된 상태 정보 가져오기
     const contractInfo = await Web3Contract.getContractInfoAt(
       accountInstance,
@@ -135,7 +135,7 @@ class ContractTemplate extends Component {
         // 계약 상태가 변경된 것이므로 해당하는 인덱스의 상태 변경
         if (updateType === 2) {
           console.log('계약상태 변경됨');
-          this.changeContractStateAt(accountInstance, contractIndex);
+          this.contractStateChanged(accountInstance, contractIndex);
         }
       }
     );

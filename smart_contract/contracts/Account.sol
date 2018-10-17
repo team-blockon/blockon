@@ -13,8 +13,9 @@ contract Account {
     event UpdateContract(uint8 updateType, uint contractIndex);
 
     event AddContract(address indexed publicAddress, address contractAddress);
-    event ConfirmChangeContractState(address indexed publicAddress, address contractAddress, uint8 changedState);
-    event RevokeConfirmation(address indexed publicAddress, address contractAddress, uint8 revokedState);
+    event ConfirmChangeContractState(address indexed publicAddress, uint contractIndex, uint8 confirmedState);
+    event RevokeConfirmation(address indexed publicAddress, uint contractIndex, uint8 revokedState);
+    event AthorizeAsAgent(address indexed publicAddress);
 
     address public publicAddress;   // 이더리움 퍼블릭 어드레스
     bool public isAgent;            // true이면 중개인
@@ -118,7 +119,6 @@ contract Account {
         validContractState(newContractState) {
         require(contractIndices[contractAddress] != 0, "contract address doesn't exist");
         contractAddress.confirmChangeState(newContractState);
-        emit ConfirmChangeContractState(publicAddress, contractAddress, newContractState);
     }
 
     /**
@@ -143,7 +143,34 @@ contract Account {
         validContractState(contractStateToRevoke) {
         require(contractIndices[contractAddress] != 0, "contract address doesn't exist");
         contractAddress.revokeConfirmation(contractStateToRevoke);
-        emit RevokeConfirmation(publicAddress, contractAddress, contractStateToRevoke);
+    }
+
+    /**
+     * @dev 중개인으로 인증을 한 어카운트를 표시한다. AthorizeAsAgent 이벤트를 발행한다.
+     * Blockon계정에서 Account를 생성하므로, Blockon계정만 사용 할 수 있다.
+     */
+    function athorizeAsAgent() 
+        public
+        onlyOwner {
+        isAgent = true;
+        emit AthorizeAsAgent(publicAddress);
+    }
+
+    //
+    // BaseContarct에서 상태변경이 완료된후, 프론트에 알리기위해 호출할 함수들
+    //
+    /**
+     * @dev 컨트랙트의 상태 변경에 동의가 완료된후, 이벤트를 발행한다.
+     */
+    function emitConfirmChangeContractStateEvent(BaseContract contractAddress, uint8 confirmedState) public {
+        emit ConfirmChangeContractState(publicAddress,  contractIndices[contractAddress] - 1, confirmedState);
+    }
+
+    /**
+     * @dev 컨트랙트의 상태 변경에 동의에대한 취소가 완료된후, 이벤트를 발행한다.
+     */
+    function emitRevokeConfirmationEvent(BaseContract contractAddress, uint8 revokedState) public {
+        emit RevokeConfirmation(publicAddress, contractIndices[contractAddress] - 1, revokedState);
     }
 
     /**
@@ -152,16 +179,6 @@ contract Account {
      */
     function emitChangeContractStateEvent(BaseContract contractAddress) public {
         emit UpdateContract(uint8(2), contractIndices[contractAddress] - 1);
-    }
-
-    /**
-     * @dev 중개인으로 인증을 한 어카운트를 표시한다. 
-     * Blockon계정에서 Account를 생성하므로, Blockon계정만 사용 할 수 있다.
-     */
-    function athorizeAsAgent() 
-        public
-        onlyOwner {
-        isAgent = true;
     }
 
     //
@@ -202,7 +219,9 @@ contract Account {
      * @param contractState 확인하고 싶은 BaseContract의 계약 상태
      * @return confirm했다면 true, 아니면 false
      */
-    function hasConfirmed(uint index, uint8 contractState) public view returns (bool) {
+    function hasConfirmed(uint index, uint8 contractState) 
+        public view 
+        returns (bool isAgentConfirmed, bool isSellerConfirmed, bool isBuyerConfirmed) {
         return contracts[index].hasConfirmed(contractState);
     }
 

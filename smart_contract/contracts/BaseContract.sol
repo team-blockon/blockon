@@ -3,8 +3,6 @@ import "./Account.sol";
 
 contract BaseContract {
 
-    event ConfirmChangeState(address indexed accountAddress, uint8 contractState);
-    event Revocation(address indexed accountAddress, uint8 contractState);
     event Execution(address indexed contractAddress, uint8 contractState);
     event ExecutionFailure(address indexed contractAddress, uint8 contractState);
 
@@ -80,21 +78,30 @@ contract BaseContract {
         relatedAccount(msg.sender)
         notConfirmed(newState, msg.sender) {
         confirmations[newState][msg.sender] = true;
-        emit ConfirmChangeState(msg.sender, newState);
+        
+        // 컨트랙트 상태변경에 동의한 사실을 계약 구성원에게 알림
+        agentAccount.emitConfirmChangeContractStateEvent(this, newState);
+        buyerAccount.emitConfirmChangeContractStateEvent(this, newState);
+        sellerAccount.emitConfirmChangeContractStateEvent(this, newState);
+
         executeChangeState(newState);
     }
 
     /**
-     * @dev newState로 상태를 변환하는것에 동의했던것을 철회한다.
-     * 아직 newState로 상태변환이 일어나지 않았을때만 가능하다
+     * @dev stateToRevoke로 상태를 변환하는것에 동의했던것을 철회한다.
+     * 아직 stateToRevoke로 상태변환이 일어나지 않았을때만 가능하다
      */
-    function revokeConfirmation(uint8 newState)
+    function revokeConfirmation(uint8 stateToRevoke)
         public
         relatedAccount(msg.sender)
-        confirmed(newState, msg.sender)
-        notExecuted(newState) {
-        confirmations[newState][msg.sender] = false;
-        emit Revocation(msg.sender, newState);
+        confirmed(stateToRevoke, msg.sender)
+        notExecuted(stateToRevoke) {
+        confirmations[stateToRevoke][msg.sender] = false;
+
+        // 컨트랙트 상태변경에 동의했던걸 취소한것을 계약 구성원에게 알림
+        agentAccount.emitRevokeConfirmationEvent(this, stateToRevoke);
+        buyerAccount.emitRevokeConfirmationEvent(this, stateToRevoke);
+        sellerAccount.emitRevokeConfirmationEvent(this, stateToRevoke);
     }
 
     /**
@@ -115,9 +122,9 @@ contract BaseContract {
      * @dev 모두에게 동의를 받았다면 true를, 아니면 false를 반환한다.
      */
     function isConfirmed(uint8 newState) internal view returns (bool) {
-        if(confirmations[newState][address(agentAccount)] && 
-        confirmations[newState][address(sellerAccount)] && 
-        confirmations[newState][address(buyerAccount)] ) {
+        if(confirmations[newState][agentAccount] && 
+        confirmations[newState][sellerAccount] && 
+        confirmations[newState][buyerAccount] ) {
             return true;
         } else {
             return false;
@@ -148,13 +155,16 @@ contract BaseContract {
     // front와 연동을 위한 부분
     //
     /**
-     * @dev caller가 _contractState를 confirm했으면 true를 리턴, 아니면 false 리턴
+     * @dev 해당 state에 대해 컨펌 상황을 알아본다
+     * @return (agent, seller, buyer)의 컨펌 여부
      */
     function hasConfirmed(uint8 _contractState) 
         public view 
         relatedAccount(msg.sender)
-        returns (bool) {
-        return confirmations[_contractState][msg.sender];
+        returns (bool isAgentConfirmed, bool isSellerConfirmed, bool isBuyerConfirmed) {
+        isAgentConfirmed = confirmations[_contractState][agentAccount];
+        isSellerConfirmed = confirmations[_contractState][sellerAccount];
+        isBuyerConfirmed = confirmations[_contractState][buyerAccount];
     }
 
     /**

@@ -17,7 +17,7 @@ const initialState = {
 // 액션 생성함수
 export const changeState = createAction(
   CHANGE_STATE,
-  Web3Contract.changeContractStateAt
+  Web3Contract.confirmToChangeContractStateAt
 );
 export const updateEvent = createAction(UPDATE_EVENT, Web3Watch.updateContract);
 

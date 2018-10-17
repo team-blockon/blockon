@@ -12,7 +12,6 @@ contract Blockon {
     event CreateAccount(address indexed publicAddress, address accountAddress);
 
     event CreateContract(address indexed agentAccount, address indexed sellerAccount, address indexed buyerAccount, address baseContract);
-    event AthorizeAsAgent(address indexed accountAddress);
 
     /**
      * @dev 유효한 contract type인지를 검사
@@ -69,7 +68,6 @@ contract Blockon {
      */
     function athorizeAsAgent(Account accountAddress) public {
         require(accountAddress != address(0), "Account address is empty");
-        emit AthorizeAsAgent(accountAddress);
         accountAddress.athorizeAsAgent();
     }
 }

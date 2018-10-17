@@ -69,7 +69,7 @@ class Register extends Component {
     if (!ethAddress || !email) {
       return;
     }
-    await register({ ethAddress, email });
+    await register(ethAddress);
     await registerEvent(ethAddress);
 
     // accountAddress를 제외한 나머지를 DB에 추가
