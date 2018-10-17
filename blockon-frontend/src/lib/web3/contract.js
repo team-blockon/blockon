@@ -14,7 +14,7 @@ export const create = (
   const { blockon } = window;
 
   return new Promise((resolve, reject) => {
-    blockon.createContractByAccountAddress.sendTransaction(
+    blockon.createContract.sendTransaction(
       /* 먼저 createAccount를 호출하고, 생성된 Account 컨트랙트의 주소를 넣음 */
       agentAddress,
       sellerAddress,

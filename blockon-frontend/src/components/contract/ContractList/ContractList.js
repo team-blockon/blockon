@@ -7,18 +7,20 @@ import './ContractList.scss';
 
 // 계약종류 상수
 const type = Object.freeze({
-  TRADE: 1,
-  RENT: 2
+  WOLSE: 1,
+  JEONSE: 2,
+  TRADE: 3
 });
 
 // 계약상태 상수
 const state = Object.freeze({
+  START_TRADE: 0, // 거래시작
   DOWN_PAYMENT: 1, // 계약금 입금
   MIDDLE_PAYMENT: 2, // 중도금 입금
   FINAL_PAYMENT: 3, // 잔금 입금
   REGISTRATION: 4, // 등기 등록 신청
   FIXED_DATE: 5, // 확정일자
-  COMPLETED_CONTRACT: 100 // 완료
+  END_TRADE: 100 // 거래종료
 });
 
 // .progressbar > li에 붙는 클래스 이름 상수
@@ -49,17 +51,19 @@ class ContractList extends Component {
     const { handleSelect, accountInstance, activeTab } = this.props;
 
     const tradeStep = [
+      state.START_TRADE,
       state.DOWN_PAYMENT,
       state.MIDDLE_PAYMENT,
       state.FINAL_PAYMENT,
       state.REGISTRATION,
-      state.COMPLETED_CONTRACT
+      state.END_TRADE
     ];
     const rentStep = [
+      state.START_TRADE,
       state.DOWN_PAYMENT,
       state.FINAL_PAYMENT,
       state.FIXED_DATE,
-      state.COMPLETED_CONTRACT
+      state.END_TRADE
     ];
 
     const nextStep = (currentStep => {
@@ -84,6 +88,8 @@ class ContractList extends Component {
 
     const getStepWord = step => {
       switch (step) {
+      case state.START_TRADE:
+        return '거래시작';
       case state.DOWN_PAYMENT:
         return '계약금';
       case state.MIDDLE_PAYMENT:
@@ -94,8 +100,8 @@ class ContractList extends Component {
         return '등기신청';
       case state.FIXED_DATE:
         return '확정일자';
-      case state.COMPLETED_CONTRACT:
-        return '완료';
+      case state.END_TRADE:
+        return '거래종료';
       default:
       }
     };
@@ -128,18 +134,20 @@ class ContractList extends Component {
 
     if (contractType === type.TRADE) {
       contractStep = [
+        state.START_TRADE,
         state.DOWN_PAYMENT,
         state.MIDDLE_PAYMENT,
         state.FINAL_PAYMENT,
         state.REGISTRATION,
-        state.COMPLETED_CONTRACT
+        state.END_TRADE
       ];
     } else {
       contractStep = [
+        state.START_TRADE,
         state.DOWN_PAYMENT,
         state.FINAL_PAYMENT,
         state.FIXED_DATE,
-        state.COMPLETED_CONTRACT
+        state.END_TRADE
       ];
     }
 
@@ -150,7 +158,7 @@ class ContractList extends Component {
         progressbarList.push(
           this.getProgressbarItem(step, liClass.ACTIVE, cardIndex, contractType)
         );
-      } else if (step === contractState) {
+      } else if (contractState) {
         progressbarList.push(
           this.getProgressbarItem(
             step,
@@ -175,14 +183,17 @@ class ContractList extends Component {
   };
 
   getCard = contractInfo => {
-    const { index, type, state, people, building } = contractInfo;
+    const { index, type: contractType, state, people, building } = contractInfo;
 
     let contractData;
-    if (type === type.TRADE) {
-      contractData = <p>매매 / 10억</p>;
+    if (contractType === type.WOLSE) {
+      contractData = <p>월세 1,000/45</p>;
     }
-    if (type === type.RENT) {
-      contractData = <p>전,월세 / 1000/45 </p>;
+    if (contractType === type.JEONSE) {
+      contractData = <p>전세 5,000</p>;
+    }
+    if (contractType === type.TRADE) {
+      contractData = <p>매매 10억</p>;
     }
 
     const getKoreanBuildingType = eng => {
@@ -241,10 +252,8 @@ class ContractList extends Component {
       const { state: contractState } = contractInfo;
 
       if (
-        (activeTab === 'ongoing' &&
-          contractState !== state.COMPLETED_CONTRACT) ||
-        (activeTab === 'completed' &&
-          contractState === state.COMPLETED_CONTRACT)
+        (activeTab === 'ongoing' && contractState !== state.END_TRADE) ||
+        (activeTab === 'completed' && contractState === state.END_TRADE)
       ) {
         cards.push(this.getCard(contractInfo));
       }
