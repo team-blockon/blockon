@@ -14,19 +14,17 @@ export const create = (
   const { blockon } = window;
 
   return new Promise((resolve, reject) => {
-    try {
-      blockon.createContract.sendTransaction(
-        /* 먼저 createAccount를 호출하고, 생성된 Account 컨트랙트의 주소를 넣음 */
-        agentAddress,
-        sellerAddress,
-        buyerAddress,
-        contractType,
-        (error, result) => {
-          if (!error) {
-            resolve(result);
-          } else {
-            reject(error);
-          }
+    blockon.createContractByAccountAddress.sendTransaction(
+      /* 먼저 createAccount를 호출하고, 생성된 Account 컨트랙트의 주소를 넣음 */
+      agentAddress,
+      sellerAddress,
+      buyerAddress,
+      contractType,
+      (error, result) => {
+        if (!error) {
+          resolve(result);
+        } else {
+          reject(error);
         }
       }
     );
@@ -46,23 +44,17 @@ export const confirmToChangeContractStateAt = ({
   newContractState
 }) => {
   return new Promise((resolve, reject) => {
-    try {
-      accountInstance.confirmToChangeContractStateAt.sendTransaction(
-        contractIndex,
-        newContractState,
-        (error, result) => {
-          if (!error) {
-            resolve(result);
-          } else {
-            reject({ msg: error });
-          }
+    accountInstance.confirmToChangeContractStateAt.sendTransaction(
+      contractIndex,
+      newContractState,
+      (error, result) => {
+        if (!error) {
+          resolve(result);
+        } else {
+          reject({ msg: error });
         }
-      );
-    } catch (e) {
-      if (e.message === 'invalid address') {
-        openNotification('잠시 후 다시 시도해 주세요.');
       }
-    }
+    );
   });
 };
 
@@ -80,23 +72,17 @@ export const revokeConfirmationAt = ({
 }) => {
   // 상태 변경이 취소될때 어떻게 받을것인지???
   return new Promise((resolve, reject) => {
-    try {
-      accountInstance.revokeConfirmationAt.sendTransaction(
-        contractIndex,
-        contractStateToRevoke,
-        (error, result) => {
-          if (!error) {
-            resolve(result);
-          } else {
-            reject({ msg: error });
-          }
+    accountInstance.revokeConfirmationAt.sendTransaction(
+      contractIndex,
+      contractStateToRevoke,
+      (error, result) => {
+        if (!error) {
+          resolve(result);
+        } else {
+          reject({ msg: error });
         }
-      );
-    } catch (e) {
-      if (e.message === 'invalid address') {
-        openNotification('잠시 후 다시 시도해 주세요.');
       }
-    }
+    );
   });
 };
 
