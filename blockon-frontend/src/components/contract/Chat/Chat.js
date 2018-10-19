@@ -7,7 +7,9 @@ import 'react-chat-elements/dist/main.css';
 import './Chat.scss';
 
 const TabPane = Tabs.TabPane;
-const sock = new SockJS('http://localhost:8000/chat');
+const sockjs_server =
+  process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : '';
+const sock = new SockJS(`${sockjs_server}/chat`);
 
 class Chat extends Component {
   constructor(props) {
@@ -91,7 +93,7 @@ class Chat extends Component {
       message.date = new Date(message.date);
 
       this.setState({
-        messageList: [...this.state.messageList, message]
+        maedoMessageList: [...this.state.maedoMessageList, message]
       });
     };
   };

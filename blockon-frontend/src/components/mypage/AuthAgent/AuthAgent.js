@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import * as Web3Auth from 'lib/web3/auth';
 import { Button } from 'antd';
 import './AuthAgent.scss';
