@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  express:
+    build:
+      context: .
+      dockerfile: ./compose/express/Dockerfile
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "8000:8000"
+    command: sh /start.sh
