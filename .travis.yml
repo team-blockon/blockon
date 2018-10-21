@@ -30,7 +30,7 @@ after_script:
   - docker-compose down
 
 before_deploy:
-  - zip latest.zip blockon_express.tar blockon_nginx.tar appspec.yml
+  - zip -r latest.zip blockon_express.tar blockon_nginx.tar scripts docker-compose-deploy.yaml appspec.yml
   - mkdir -p deploy
   - mv latest.zip deploy
 

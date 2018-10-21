@@ -3,3 +3,10 @@ os: linux
 files:
   - source: /
     destination: /home/ec2-user/blockon
+hooks:
+  BeforeInstall:
+    - location: scripts/load_image.sh
+      runas: root
+  ApplicationStart:
+    - location: scripts/start_server.sh
+      runas: root
