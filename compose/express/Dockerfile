@@ -1,11 +1,11 @@
-FROM node:8
+FROM node:8-alpine
 LABEL maintainer="jun097kim <jun097kim@gmail.com>"
 
 RUN mkdir /app
 
 RUN \
-  apt-get update &&\
-  apt-get -y install git
+  apk update &&\
+  apk add git
 
 COPY . /app
 
