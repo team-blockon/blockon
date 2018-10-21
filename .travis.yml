@@ -42,6 +42,17 @@ deploy:
     region: ap-northeast-2
     skip_cleanup: true
     local_dir: deploy
-    on:
+    on: &1
       repo: team-blockon/blockon
       branch: master
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: blockon.house
+    region: ap-northeast-2
+    key: latest.zip
+    bundle_type: zip
+    application: blockon
+    deployment_group: blockon
+    on: *2
