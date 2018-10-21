@@ -4,7 +4,7 @@ files:
   - source: /
     destination: /home/ec2-user/blockon
 hooks:
-  BeforeInstall:
+  Install:
     - location: scripts/load_image.sh
       runas: root
   ApplicationStart:
