@@ -1,5 +1,7 @@
 <img src="https://user-images.githubusercontent.com/16279779/46770397-1a65cd80-cd2a-11e8-8f3d-d96792edc076.png" width="270" alt="blockon">
 
+[![Build Status](https://travis-ci.org/team-blockon/blockon.svg?branch=master)](https://travis-ci.org/team-blockon/blockon)
+
 Blockon is real estate contract management platform based on Ethereum.
 
 ## Dependency
