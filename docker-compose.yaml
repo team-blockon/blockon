@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   express:
+    container_name: express
     build:
       context: .
       dockerfile: ./compose/express/Dockerfile
@@ -10,3 +11,13 @@ services:
     ports:
       - "8000:8000"
     command: sh /start.sh
+    restart: always
+
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: ./compose/nginx/Dockerfile
+    ports:
+      - "80:80"
+    restart: always
