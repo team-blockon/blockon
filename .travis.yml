@@ -22,5 +22,9 @@ before_install:
 script:
   - docker-compose up --build -d
 
+after_success:
+  - docker save -o blockon_express.tar blockon_express
+  - docker save -o blockon_nginx.tar blockon_nginx
+
 after_script:
   - docker-compose down
