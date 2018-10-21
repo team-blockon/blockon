@@ -28,3 +28,20 @@ after_success:
 
 after_script:
   - docker-compose down
+
+before_deploy:
+  - zip latest.zip blockon_express.tar blockon_nginx.tar appspec.yml
+  - mkdir -p deploy
+  - mv latest.zip deploy
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: blockon.house
+    region: ap-northeast-2
+    skip_cleanup: true
+    local_dir: deploy
+    on:
+      repo: team-blockon/blockon
+      branch: master
