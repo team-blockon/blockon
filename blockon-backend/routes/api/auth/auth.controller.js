@@ -224,17 +224,17 @@ exports.sendAuthEmail = async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.email_id, // gmail 계정 아이디를 입력
-      pass: process.env.email_password // gmail 계정의 비밀번호를 입력
+      user: process.env.EMAIL_ID, // gmail 계정 아이디를 입력
+      pass: process.env.EMAIL_PASSWORD // gmail 계정의 비밀번호를 입력
     }
   });
 
   const token = randomstring.generate(8);
   const uri = `${
-    process.env.blockon_uri
+    process.env.BLOCKON_URI
   }/api/auth/authEmail/?email=${email}&token=${token}`;
   const mailOptions = {
-    from: process.env.email_id,
+    from: process.env.EMAIL_ID,
     to: email,
 
     subject: '안녕하세요, BlockOn 입니다. 이메일 인증을 해주세요.',
