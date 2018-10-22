@@ -5,3 +5,4 @@ echo "BLOCKON_URI=$BLOCKON_URI" >> .env
 echo "EMAIL_ID=$EMAIL_ID" >> .env
 echo "EMAIL_PASSWORD=$EMAIL_PASSWORD" >> .env
 mv .env blockon-backend
+ls -a blockon-backend

@@ -19,8 +19,10 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 
+before_script:
+  - source scripts/set_env.sh
+
 script:
-  - sh scripts/set_env.sh
   - docker-compose up --build -d
 
 after_success:
