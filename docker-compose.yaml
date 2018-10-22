@@ -11,6 +11,12 @@ services:
     ports:
       - "8000:8000"
     command: sh /start.sh
+    volumes:
+      - .:/app
+      - ./blockon-backend/.env:/app/blockon-backend/.env
+      - /app/blockon-backend/node_modules
+      - /app/blockon-frontend/node_modules
+      - /app/blockon-frontend/build
     restart: always
 
   nginx:
@@ -20,4 +26,6 @@ services:
       dockerfile: ./compose/nginx/Dockerfile
     ports:
       - "80:80"
+    depends_on:
+      - express
     restart: always
