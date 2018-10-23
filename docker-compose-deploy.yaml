@@ -3,7 +3,7 @@ version: "3.7"
 services:
   express:
     image: blockon_express
-    container_name: express
+    container_name: blockon_express
     environment:
       - NODE_ENV=production
     ports:
@@ -19,7 +19,7 @@ services:
 
   nginx:
     image: blockon_nginx
-    container_name: nginx
+    container_name: blockon_nginx
     ports:
       - "80:80"
     command: nginx -g "daemon off;"

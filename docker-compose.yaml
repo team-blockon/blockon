@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   express:
-    container_name: express
+    container_name: blockon_express
     build:
       context: .
       dockerfile: ./compose/express/Dockerfile
@@ -20,7 +20,7 @@ services:
     restart: always
 
   nginx:
-    container_name: nginx
+    container_name: blockon_nginx
     build:
       context: .
       dockerfile: ./compose/nginx/Dockerfile
