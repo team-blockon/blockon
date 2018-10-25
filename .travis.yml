@@ -47,7 +47,7 @@ deploy:
     local_dir: deploy
     on: &1
       repo: team-blockon/blockon
-      branch: master
+      branch: release
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY
@@ -58,4 +58,22 @@ deploy:
     bundle_type: zip
     application: blockon
     deployment_group: blockon
-    on: *2
+    on: *1
+
+  - provider: s3
+    access_key_id: $DEV_AWS_ACCESS_KEY
+    secret_access_key: $DEV_AWS_SECRET_KEY
+    bucket: dev.blockon.house
+    region: ap-northeast-2
+    skip_cleanup: true
+    local_dir: deploy
+
+  - provider: codedeploy
+    access_key_id: $DEV_AWS_ACCESS_KEY
+    secret_access_key: $DEV_AWS_SECRET_KEY
+    bucket: dev.blockon.house
+    region: ap-northeast-2
+    key: latest.zip
+    bundle_type: zip
+    application: blockon
+    deployment_group: blockon
