@@ -28,26 +28,28 @@ contract("Blockon", async accounts => {
   const FIXED_DATE = 5;
   const COMPLETED_CONTRACT = 100;
 
+  const SERVICE_ACCOUNT = "0xa07ed659cf06fc973d8ad86fc5ad84c953b2595d";
+
   let blockon;
   let agentAddress, sellerAddress, buyerAddress;
   let agentAccount, sellerAccount, buyerAccount;
 
   it("createAccount function, Account initialization check", async () => {
-    blockon = await Blockon.new();
+    blockon = await Blockon.new(SERVICE_ACCOUNT);
 
     // agent account 생성
     agentAddress = accounts[1];
-    let result = await blockon.createAccount(agentAddress);
+    let result = await blockon.createAccount(SERVICE_ACCOUNT, agentAddress);
     agentAccount = Account.at(result.logs[0].args.accountAddress);
 
     // seller account 생성
     sellerAddress = accounts[2];
-    result = await blockon.createAccount(sellerAddress);
+    result = await blockon.createAccount(SERVICE_ACCOUNT, sellerAddress);
     sellerAccount = Account.at(result.logs[0].args.accountAddress);
 
     // buyer account 생성
     buyerAddress = accounts[3];
-    result = await blockon.createAccount(buyerAddress);
+    result = await blockon.createAccount(SERVICE_ACCOUNT, buyerAddress);
     buyerAccount = Account.at(result.logs[0].args.accountAddress);
 
     // account 계정 초기화 체크
