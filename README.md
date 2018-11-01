@@ -4,6 +4,12 @@
 
 Blockon is real estate contract management platform based on Ethereum.
 
+## CI/CD architecture
+
+CI/CD with Travis CI, docker-compose, S3 and CodeDeploy.
+
+<img src="https://user-images.githubusercontent.com/16279779/47846816-8e1c6700-de0c-11e8-8c3f-1eb7d6585e53.png" width="350" alt="Blockon CI/CD">
+
 ## Dependency
 
 Blockon has the dependencies for the following libraries:
