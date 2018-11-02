@@ -155,18 +155,7 @@
       a.active,
       a:hover {
         li {
-          position: relative;
-          color: #554d56;
-
-          &::after {
-            position: absolute;
-            background-color: #554d56;
-            content: "";
-            left: 0;
-            bottom: -2px;
-            width: 100%;
-            height: 2px;
-          }
+          color: #000;
         }
       }
     }

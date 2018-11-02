@@ -1,0 +1,38 @@
+.Pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    height: 15.2px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  ul {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0 79px;
+
+    li {
+      display: inline-block;
+      height: 15.2px;
+      line-height: 15.2px;
+      font-size: 14px;
+      font-weight: 300;
+      color: #888888;
+      cursor: pointer;
+      user-select: none;
+
+      &.active {
+        font-weight: bold;
+        color: #000;
+      }
+
+      & + li {
+        margin-left: 26px;
+      }
+    }
+  }
+}
