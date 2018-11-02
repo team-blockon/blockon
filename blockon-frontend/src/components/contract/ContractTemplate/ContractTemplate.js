@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import produce from 'immer';
 
 import ContractTab from '../ContractTab';
-import ContractTabContent from '../ContractTab/ContractTabContent';
+import ContractCard from '../ContractCard';
 import ContractModal from '../ContractModal';
+import Pagination from 'components/common/Pagination';
 
 import * as ContractAPI from 'lib/api/contract';
 import * as Web3User from 'lib/web3/user';
 import * as Web3Contract from 'lib/web3/contract';
+
+import './ContractTemplate.scss';
 
 // 계약상태 상수
 const COMPLETED_CONTRACT = 100; // 계약 완료
@@ -172,14 +176,7 @@ class ContractTemplate extends Component {
   }
 
   render() {
-    const {
-      activeTab,
-      activeType, // 목록형인지, 카드형인지
-      handleTabSelect,
-      handleTypeSelect,
-      isJunggae,
-      changeState
-    } = this.props;
+    const { activeTab, handleTabSelect, changeState } = this.props;
     const {
       contractModal,
       accountAddress,
@@ -189,32 +186,30 @@ class ContractTemplate extends Component {
     } = this.state;
 
     return (
-      <div
-        className="ContractTemplate"
-        style={
-          activeTab === 'review'
-            ? { backgroundColor: '#fff' }
-            : { backgroundColor: '#fafafa' }
-        }
-      >
+      <div className="ContractTemplate">
         <div className="container content">
           <ContractTab
             activeTab={activeTab}
-            activeType={activeType}
             handleTabSelect={handleTabSelect}
-            handleTypeSelect={handleTypeSelect}
-            activeContractsNum={this.state.activeContractsNum}
-            completedContractsNum={this.state.completedContractsNum}
-            isJunggae={isJunggae}
           />
 
-          <ContractTabContent
-            activeTab={activeTab}
-            activeType={activeType}
+          <div className="control">
+            {activeTab === 'ongoing' ? (
+              <span>진행중 거래 {this.state.activeContractsNum}건</span>
+            ) : (
+              <span>완료된 거래 {this.state.completedContractsNum}건</span>
+            )}
+            <button className="upload">
+              <Link to="/contract/edit">거래 올리기</Link>
+            </button>
+          </div>
+
+          <ContractCard
             contractInfoList={this.state.contractInfoList}
-            accountInstance={this.state.accountInstance}
-            handleSelect={this.handleToggleModal}
+            activeTab={activeTab}
           />
+
+          <Pagination />
 
           {contractModal && (
             <ContractModal

@@ -1,4 +1,4 @@
-import { openNotification } from '../utils';
+import { openNotification } from '../utils/common';
 
 export const check = () => {
   let msg = null;

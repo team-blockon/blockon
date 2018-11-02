@@ -1,0 +1,22 @@
+.ContractTemplate {
+  .control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+
+    span {
+      font-size: 22px;
+      font-weight: 500;
+      color: #222222;
+    }
+
+    button.upload {
+      border: 1px solid #000;
+      outline: none;
+      color: #333;
+      padding: 0.3rem 1rem;
+      font-weight: bold;
+    }
+  }
+}

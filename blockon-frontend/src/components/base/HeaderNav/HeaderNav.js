@@ -8,14 +8,10 @@ import LoggedOutNav from 'components/base/HeaderNav/LoggedOutNav';
 import * as AuthAPI from 'lib/api/auth';
 import './HeaderNav.scss';
 
-export const HeaderNavItem = ({ children, item, to, exact }) => {
+export const HeaderNavItem = ({ children, item, to }) => {
   return (
     <Fragment>
-      <NavLink
-        to={to}
-        activeClassName="active"
-        exact={exact ? true : undefined}
-      >
+      <NavLink to={to} activeClassName="active">
         <li>{children}</li>
       </NavLink>
     </Fragment>
@@ -91,11 +87,8 @@ class HeaderNav extends Component {
         </div>
 
         <ul className={toggled ? 'active' : undefined}>
-          <HeaderNavItem item="about" to="/" exact>
-            소개
-          </HeaderNavItem>
           <HeaderNavItem item="message" to="/search">
-            평점검색
+            중개소찾기
           </HeaderNavItem>
           {this.getUserButtons()}
         </ul>
