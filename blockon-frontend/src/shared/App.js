@@ -6,6 +6,7 @@ import {
   Search,
   Contract,
   ContractUpload,
+  ContractDetail,
   MyPage,
   Pricing,
   Auth
@@ -79,6 +80,11 @@ class App extends Component {
           <PrivateRoute
             path="/contract/edit"
             component={ContractUpload}
+            isLogged={isLogged}
+          />
+          <PrivateRoute
+            path="/contract/:contractNo"
+            component={ContractDetail}
             isLogged={isLogged}
           />
           <PrivateRoute path="/mypage" component={MyPage} isLogged={isLogged} />
