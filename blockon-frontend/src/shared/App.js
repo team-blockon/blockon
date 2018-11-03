@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from 'store/modules/user';
 
-import Web3 from 'web3';
+import Web3 from 'caver-js';
 import blockonABI from 'abi/blockon_abi';
 import * as Web3Utils from 'lib/web3/utils';
 
@@ -55,10 +55,16 @@ class App extends Component {
       return;
     }
 
+    console.log(web3.currentProvider);
+
     web3 = new Web3(this.web3Provider); // web3 객체를 만들어줌
-    const contract = web3.eth.contract(blockonABI); // Blockon 컨트랙트 클래스 생성
-    window.blockon = contract.at('0xb46249ac498ee8f270d63cb13af78d4cd2929eb8'); // 컨트랙트 인스턴스 생성
-    web3.eth.defaultAccount = await Web3Utils.getDefaultAccount(); // 내가 지금 메타마스크에서 사용하고 있는 주소를 defaultAccount로 설정
+    window.blockon = new web3.klay.Contract(
+      blockonABI,
+      '0x6bd496d462d7500e7a4275a3186b735331281ec3'
+    );
+
+    // 아이디와 비번을 치고 로그인하면, DB에서 디폴트어카운트를 받아와서 설저해줘야 한다.
+    // 그렇게된다면, 여기서는 디폴트어카운트를 설정하지 않는것이 맞다.
   }
 
   render() {

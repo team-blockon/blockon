@@ -1,5 +1,3 @@
-const Caver = require("caver-js");
-
 const HOST = "localhost";
 const PORT = "8551";
 const NETWORK_ID = "1000";
