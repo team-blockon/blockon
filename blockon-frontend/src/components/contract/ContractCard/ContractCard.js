@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import * as ContractUtils from 'lib/utils/contract';
-import maemulImage from 'static/images/maemul.png';
+import houseImage from 'static/images/house-1.svg';
 import './ContractCard.scss';
 
 const { cs, getStepWord, getKoreanBuildingType } = ContractUtils;
@@ -30,10 +31,10 @@ const getCards = (contractInfoList, activeTab) => {
                   src={`http://localhost:8000/uploads/contracts/${
                     building.photo
                   }`}
-                  alt="maemul"
+                  alt="house"
                 />
               ) : (
-                <img src={maemulImage} alt="maemul" />
+                <img src={houseImage} alt="house" />
               )}
               <StepBadge>{getStepWord(contractState)}</StepBadge>
             </div>
@@ -50,7 +51,9 @@ const getCards = (contractInfoList, activeTab) => {
                 <span>위치</span>
                 {building.address}
               </p>
-              <p className="view">상세보기</p>
+              <p className="view">
+                <Link to="/contract/1">상세보기</Link>
+              </p>
             </div>
           </div>
         </div>

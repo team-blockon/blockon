@@ -13,8 +13,8 @@ import * as Web3Contract from 'lib/web3/contract';
 
 import './ContractTemplate.scss';
 
-// 계약상태 상수
-const COMPLETED_CONTRACT = 100; // 계약 완료
+import * as ContractUtils from 'lib/utils/contract';
+const { cs } = ContractUtils;
 
 class ContractTemplate extends Component {
   state = {
@@ -27,14 +27,14 @@ class ContractTemplate extends Component {
   handleToggleModal = (
     accountAddress,
     contractIndex,
-    newContractState,
+    newContractStep,
     itemType
   ) => {
     this.setState({
       contractModal: !this.state.contractModal,
       accountAddress,
       contractIndex,
-      newContractState,
+      newContractStep,
       itemType
     });
   };
@@ -50,7 +50,7 @@ class ContractTemplate extends Component {
       index
     );
     const contractType = contractInfo[0].toNumber();
-    const contractState = contractInfo[1].toNumber();
+    const contractStep = contractInfo[1].toNumber();
 
     // 오프체인 데이터 가져오기
     const res = await ContractAPI.get(accountInstance.address, index);
@@ -67,7 +67,7 @@ class ContractTemplate extends Component {
         draft.contractInfoList.unshift({
           index,
           type: contractType,
-          state: contractState,
+          state: contractStep,
           people,
           building
         });
@@ -75,7 +75,7 @@ class ContractTemplate extends Component {
     );
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
-    if (contractState === COMPLETED_CONTRACT) {
+    if (contractStep === cs.COMPLETED_CONTRACT) {
       this.setState({
         completedContractsNum: this.state.completedContractsNum + 1
       });
@@ -96,23 +96,23 @@ class ContractTemplate extends Component {
       accountInstance,
       index
     );
-    const contractState = contractInfo[1].toNumber();
+    const contractStep = contractInfo[1].toNumber();
 
-    console.log('계약상태: ', contractState);
+    console.log('계약단계: ', contractStep);
     console.groupEnd();
 
     this.setState(
       produce(draft => {
         draft.contractInfoList.forEach(info => {
           if (info.index === index) {
-            info.state = contractState;
+            info.state = contractStep;
           }
         });
       })
     );
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
-    if (contractState === COMPLETED_CONTRACT) {
+    if (contractStep === cs.COMPLETED_CONTRACT) {
       this.setState({
         activeContractsNum: this.state.activeContractsNum - 1,
         completedContractsNum: this.state.completedContractsNum + 1
@@ -181,7 +181,7 @@ class ContractTemplate extends Component {
       contractModal,
       accountAddress,
       contractIndex,
-      newContractState,
+      newContractStep,
       itemType
     } = this.state;
 
@@ -216,7 +216,7 @@ class ContractTemplate extends Component {
               onClose={this.handleToggleModal}
               accountAddress={accountAddress}
               contractIndex={contractIndex}
-              newContractState={newContractState}
+              newContractStep={newContractStep}
               itemType={itemType}
               changeState={changeState}
               watchUpdateEvent={this.watchUpdateEvent}
