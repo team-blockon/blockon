@@ -19,4 +19,25 @@
       font-weight: bold;
     }
   }
+
+  .no-list {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 300;
+    color: #b8b8b8;
+
+    img {
+      width: 114px;
+      margin-bottom: 27px;
+    }
+  }
+
+  .content-wrapper {
+    position: relative;
+    min-height: 400px;
+  }
 }

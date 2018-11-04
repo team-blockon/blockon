@@ -1,12 +1,14 @@
 import React from 'react';
 import './Loading.scss';
 
-const Loading = () => {
+const Loading = ({ title, subtitle }) => {
   return (
     <div className="Loading">
-      <div className="bounce1" />
-      <div className="bounce2" />
-      <div className="bounce3" />
+      <div className="loader" />
+      <div className="loadingText">
+        <div className="title">{title}</div>
+        {subtitle}
+      </div>
     </div>
   );
 };

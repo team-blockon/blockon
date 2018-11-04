@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as loadingActions from 'store/modules/loading';
 import { Link } from 'react-router-dom';
 import produce from 'immer';
 
@@ -6,11 +9,13 @@ import ContractTab from '../ContractTab';
 import ContractCard from '../ContractCard';
 import ContractModal from '../ContractModal';
 import Pagination from 'components/common/Pagination';
+import Loading from 'components/common/Loading';
 
 import * as ContractAPI from 'lib/api/contract';
 import * as Web3User from 'lib/web3/user';
 import * as Web3Contract from 'lib/web3/contract';
 
+import NoListImage from 'static/images/no-list.svg';
 import './ContractTemplate.scss';
 
 import * as ContractUtils from 'lib/utils/contract';
@@ -145,7 +150,36 @@ class ContractTemplate extends Component {
     );
   };
 
+  isNoList = () => {
+    const { activeTab, isLoading } = this.props;
+    // 로딩 중이면 일단 보류
+    if (isLoading) return false;
+    // 현재 탭이 진행중 거래 탭이면서 진행중 거래가 0건일 때
+    if (activeTab === 'ongoing' && this.state.activeContractsNum === 0)
+      return true;
+    // 현재 탭이 완료된 거래 탭이면서 완료된 거래가 0건일 때
+    if (activeTab === 'completed' && this.state.completedContractsNum === 0)
+      return true;
+    return false;
+  };
+
+  /**
+   * 로딩 중이지 않을 때에만 카드 반환
+   */
+  getContractCard = () => {
+    const { contractInfoList } = this.state;
+    const { activeTab, isLoading } = this.props;
+    if (isLoading) return null;
+
+    return (
+      <ContractCard contractInfoList={contractInfoList} activeTab={activeTab} />
+    );
+  };
+
   async componentDidMount() {
+    const { LoadingActions } = this.props;
+    LoadingActions.startLoading(); // 로딩 시작
+
     /**
      * 데이터베이스와 블록체인 네트워크로부터 정보를 받아온다
      * state에 정보를 채운다
@@ -162,8 +196,9 @@ class ContractTemplate extends Component {
 
     // 유저가 포함된 컨트랙트들을 state에 추가
     for (let i = 0; i < contractsLength; i++) {
-      this.addContractInfoAt(accountInstance, i);
+      await this.addContractInfoAt(accountInstance, i);
     }
+    LoadingActions.stopLoading(); // 로딩 끝
 
     // state 제대로 들어갔나 확인
     this.state.contractInfoList.forEach(contractInfo => {
@@ -176,7 +211,7 @@ class ContractTemplate extends Component {
   }
 
   render() {
-    const { activeTab, handleTabSelect, changeState } = this.props;
+    const { activeTab, handleTabSelect, changeState, isLoading } = this.props;
     const {
       contractModal,
       accountAddress,
@@ -204,11 +239,21 @@ class ContractTemplate extends Component {
             </button>
           </div>
 
-          <ContractCard
-            contractInfoList={this.state.contractInfoList}
-            activeTab={activeTab}
-          />
+          {/* 거래가 존재하지 않으면 */}
+          {this.isNoList() && (
+            <div className="no-list">
+              <img src={NoListImage} alt="no list" />
+              등록된 거래가 없습니다.
+            </div>
+          )}
 
+          {/* 거래가 존재하면서 로딩 중이면 로딩 인디케이터 띄움 */}
+          {!this.isNoList() && (
+            <div className="content-wrapper">
+              {isLoading && <Loading />}
+              {this.getContractCard()}
+            </div>
+          )}
           <Pagination />
 
           {contractModal && (
@@ -228,4 +273,9 @@ class ContractTemplate extends Component {
   }
 }
 
-export default ContractTemplate;
+export default connect(
+  ({ loading }) => ({ isLoading: loading.isLoading }),
+  dispatch => ({
+    LoadingActions: bindActionCreators(loadingActions, dispatch)
+  })
+)(ContractTemplate);

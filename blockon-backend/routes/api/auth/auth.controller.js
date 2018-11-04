@@ -50,12 +50,12 @@ exports.profile = (req, res) => {
   };
 
   const profileUpload = new Promise((resolve, reject) => {
-    if (fs.existsSync(DIR_PATH) === false) {
+    if (!fs.existsSync(DIR_PATH)) {
       fs.mkdirSync(DIR_PATH);
     }
     upload(req, res, err => {
       if (err) reject(err);
-      if (!!req.file === false) reject(new Error('file type error'));
+      if (!req.file) reject(new Error('file type error'));
       resolve(req.file.filename);
     });
   });
@@ -108,7 +108,7 @@ exports.register = async (req, res) => {
 
   try {
     const accounts = await Account.findByEthAddress(ethAddress);
-    if (!!accounts === false) {
+    if (!accounts) {
       const newAccount = await createAccount();
       if (!!newAccount) {
         const isAdmin = await assignAdmin(newAccount);
