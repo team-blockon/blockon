@@ -1,25 +1,25 @@
 import React from 'react';
 import { Tab, TabItem } from 'components/common/Tab';
 
-const ContractTab = ({ activeTab, handleTabSelect }) => {
+const MyPageTab = ({ activeTab, handleTabSelect }) => {
   return (
     <Tab>
       <TabItem
-        item="ongoing"
+        item="user_info"
         activeItem={activeTab}
         handleSelect={handleTabSelect}
       >
-        진행중 거래
+        회원정보
       </TabItem>
       <TabItem
-        item="completed"
+        item="auth_agent"
         activeItem={activeTab}
         handleSelect={handleTabSelect}
       >
-        완료된 거래
+        중개인인증
       </TabItem>
     </Tab>
   );
 };
 
-export default ContractTab;
+export default MyPageTab;

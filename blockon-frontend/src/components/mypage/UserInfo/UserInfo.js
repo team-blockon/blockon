@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Avatar, Upload, Button, Input } from 'antd';
 import './UserInfo.scss';
 
@@ -9,7 +9,7 @@ const getProfileUrl = thumbnail => {
 
 const UserInfo = ({ profile, username, email }) => {
   return (
-    <Fragment>
+    <div className="UserInfo">
       <h2>회원정보</h2>
       <table>
         <tbody>
@@ -56,7 +56,7 @@ const UserInfo = ({ profile, username, email }) => {
       <div className="action">
         <Button onClick={this.handleSubmit}>확인</Button>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

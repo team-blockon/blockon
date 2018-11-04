@@ -3,7 +3,7 @@ import './InputWithLabel.scss';
 
 const InputWithLabel = ({ label, ...rest }) => {
   return (
-    <div className="InputWithLabel auth">
+    <div className="InputWithLabel">
       <div className="label">{label}</div>
       <input {...rest} />
     </div>

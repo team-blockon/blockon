@@ -1,0 +1,20 @@
+<svg id="그룹_101" data-name="그룹 101" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 73.6 95.1">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke: #b8b8b8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <rect id="사각형_87" data-name="사각형 87" class="cls-1" width="71.6" height="84.4" transform="translate(1 1)"/>
+  <path id="패스_651" data-name="패스 651" class="cls-1" d="M61.5,74.4c.3.4,4,19.7,4,19.7L52.4,88.8,39.3,94.1s3.7-19.3,4-19.7H61.5Z"/>
+  <circle id="타원_73" data-name="타원 73" class="cls-1" cx="13.3" cy="13.3" r="13.3" transform="translate(39.1 50.6)"/>
+  <line id="선_37" data-name="선 37" class="cls-1" x2="36.8" transform="translate(13.2 17.8)"/>
+  <line id="선_38" data-name="선 38" class="cls-1" x2="36.8" transform="translate(13.2 29.8)"/>
+  <line id="선_39" data-name="선 39" class="cls-1" x2="26.3" transform="translate(13.2 43.2)"/>
+</svg>

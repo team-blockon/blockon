@@ -1,0 +1,25 @@
+.InputWithLabel {
+  display: flex;
+  align-items: center;
+
+  & + & {
+    /* 인접한 뒷 Wrapper에 적용 */
+    margin-top: 30.6px;
+  }
+  .label {
+    font-size: 14px;
+    font-weight: 300;
+    color: #222222;
+    width: 122.5px;
+  }
+  input {
+    flex: 1;
+    border: 1px solid #e2e2e2;
+    outline: none;
+    line-height: 34px;
+    font-size: 14px;
+    font-weight: 300;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}

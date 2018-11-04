@@ -1,6 +1,6 @@
 @import "~open-color/open-color";
 
-.InputWithLabel {
+.InputWithLabel.auth {
   & + & {
     /* 인접한 뒷 Wrapper에 적용 */
     margin-top: 1rem;

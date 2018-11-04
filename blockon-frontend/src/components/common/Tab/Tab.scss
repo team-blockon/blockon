@@ -1,11 +1,11 @@
-.ContractTab {
+.Tab {
   display: flex;
   justify-content: center;
 
   ul {
     margin: 0;
     padding: 0;
-    padding-bottom: 2.2rem;
+    padding-bottom: 9.5px;
 
     li {
       display: inline-block;
@@ -34,12 +34,6 @@
         left: 0;
         bottom: -9.5px;
       }
-    }
-  }
-
-  ul.type {
-    li + li {
-      margin-left: 8px;
     }
   }
 }
