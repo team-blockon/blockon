@@ -38,9 +38,7 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    // caver 객체를 만들어줌
-    // 이때 주소를 백엔드에서 동작중인 klaytn 노드의 주소로 해야한다.
-    window.caver = new CaverJs('http://localhost:8551');
+    window.caver = new CaverJs('http://52.79.254.194:8551'); // caver 객체 생성
     let { caver } = window;
 
     this.initializeUserInfo();
