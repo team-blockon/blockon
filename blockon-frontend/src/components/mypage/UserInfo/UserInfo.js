@@ -98,7 +98,7 @@ class UserInfo extends Component {
           placeholder="이름"
           onChange={handleChange}
         />
-        <InputEmail
+        <InputWithLabel
           label="이메일"
           type="email"
           name="email"
