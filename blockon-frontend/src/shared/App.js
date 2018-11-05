@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from 'store/modules/user';
 
-import Web3 from 'caver-js';
+import CaverJs from 'caver-js';
 import blockonABI from 'abi/blockon_abi';
 import * as Web3Utils from 'lib/web3/utils';
 
@@ -38,33 +38,20 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    let { web3 } = window;
+    // caver 객체를 만들어줌
+    // 이때 주소를 백엔드에서 동작중인 klaytn 노드의 주소로 해야한다.
+    window.caver = new CaverJs('http://localhost:8551');
+    let { caver } = window;
 
     this.initializeUserInfo();
 
-    if (web3) {
-      // 메타마스크가 자동으로 브라우저에 인젝트하는
-      // web3가 정의되어 있다면 currentProvider를 가져옴
-      this.web3Provider = web3.currentProvider;
-    } else {
-      // 직접 HttpProvider로 Provier 설정
-      // 로컬에서 full node를 돌리고 있을때 보통 8545 포트
-      // this.web3Provider = new Web3.providers.HttpProvider(
-      //   'http://localhost:8545'
-      // );
-      return;
-    }
-
-    console.log(web3.currentProvider);
-
-    web3 = new Web3(this.web3Provider); // web3 객체를 만들어줌
-    window.blockon = new web3.klay.Contract(
+    window.blockon = new caver.klay.Contract(
       blockonABI,
       '0x6bd496d462d7500e7a4275a3186b735331281ec3'
     );
 
-    // 아이디와 비번을 치고 로그인하면, DB에서 디폴트어카운트를 받아와서 설저해줘야 한다.
-    // 그렇게된다면, 여기서는 디폴트어카운트를 설정하지 않는것이 맞다.
+    // 아이디와 비번을 치고 로그인하면, DB에서 디폴트어카운트를 받아와서 설정해줘야 한다.
+    // caver.klay.defaultAccount = "받아온 키스토어에서 퍼블릭어드레스 뽑은것"
   }
 
   render() {
