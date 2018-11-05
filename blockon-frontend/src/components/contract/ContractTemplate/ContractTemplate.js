@@ -249,7 +249,7 @@ class ContractTemplate extends Component {
 
           {/* 거래가 존재하면서 로딩 중이면 로딩 인디케이터 띄움 */}
           {!this.isNoList() && (
-            <div className="content-wrapper">
+            <div className="loading-wrapper">
               {isLoading && <Loading />}
               {this.getContractCard()}
             </div>
