@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import InputWithLabel from 'components/common/InputWithLabel';
 import * as Web3Auth from 'lib/web3/auth';
-import CertificateImage from 'static/images/certificate.svg';
+import certificateImage from 'static/images/certificate.svg';
 import './AuthAgent.scss';
 
 class AuthAgent extends Component {
@@ -15,7 +15,7 @@ class AuthAgent extends Component {
   };
 
   handleChange = event => {
-    const { name, value } = event;
+    const { name, value } = event.target;
     this.setState({
       ...this.state,
       [name]: value
@@ -79,7 +79,7 @@ class AuthAgent extends Component {
             {file && <img src={file} alt="certificate" />}
             {!file && (
               <Fragment>
-                <img src={CertificateImage} alt="certificate" />
+                <img src={certificateImage} alt="certificate" />
                 공인중개사자격증 등록
               </Fragment>
             )}

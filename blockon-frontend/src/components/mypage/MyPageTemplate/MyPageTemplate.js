@@ -102,7 +102,12 @@ class MyPageTemplate extends Component {
             handleTabSelect={this.handleTabSelect}
           />
           {activeTab === 'user_info' && (
-            <UserInfo profile={profile} username={username} email={email} />
+            <UserInfo
+              profile={profile}
+              username={username}
+              email={email}
+              handleChange={this.handleChange}
+            />
           )}
           {activeTab === 'auth_agent' && (
             <AuthAgent accountInstance={accountInstance} username={username} />

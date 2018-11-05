@@ -4,39 +4,6 @@
   width: 345px;
   margin: 0 auto;
 
-  input[type="file"] {
-    display: none;
-  }
-
-  .upload {
-    text-align: center;
-    margin: 41px 0;
-
-    .icon-with-text {
-      display: inline-flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: 12px;
-      font-weight: 300;
-      color: #4e5379;
-      cursor: pointer;
-
-      img {
-        width: 71.6px;
-        margin-bottom: 11.4px;
-      }
-    }
-  }
-
-  hr {
-    width: 108px;
-    border: 0;
-    border-top: solid 1px #e2e2e2;
-    margin-top: 41px;
-    margin-bottom: 34px;
-  }
-
   p.notice {
     font-size: 12px;
     font-weight: 300;
@@ -46,23 +13,6 @@
 
     span {
       color: #e62323;
-    }
-  }
-
-  .action {
-    text-align: center;
-    margin-top: 45.3px;
-
-    button {
-      outline: none;
-      border: none;
-      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-      background-color: #ffc107;
-      font-size: 16px;
-      font-weight: 500;
-      color: #ffffff;
-      padding: 8px 43px;
-      cursor: pointer;
     }
   }
 
