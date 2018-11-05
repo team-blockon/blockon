@@ -1,6 +1,4 @@
 .MyPageTemplate {
-  background-color: #fafafa;
-
   /* message 출력시 나오는 스크롤바 없애기 */
   .ant-layout-content {
     overflow-y: hidden;
@@ -36,21 +34,55 @@
     }
   }
 
-  .button-addon {
-    display: flex;
+  /* 마이페이지 탭 콘텐츠 공통 CSS 시작 */
+  input[type="file"] {
+    display: none;
+  }
 
-    input {
-      padding-right: 57px;
-    }
+  .upload {
+    text-align: center;
+    margin: 41px 0;
 
-    button {
-      margin-left: -57px;
-      width: 57px;
-      border-radius: 0 4px 4px 0;
+    .icon-with-text {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 300;
+      color: #4e5379;
+      cursor: pointer;
+
+      img {
+        width: 71.6px;
+        margin-bottom: 11.4px;
+      }
     }
+  }
+
+  hr {
+    width: 108px;
+    border: 0;
+    border-top: solid 1px #e2e2e2;
+    margin-top: 41px;
+    margin-bottom: 34px;
   }
 
   .action {
-    margin-top: 1rem;
+    text-align: center;
+    margin-top: 45.3px;
+
+    button {
+      outline: none;
+      border: none;
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+      background-color: #ffc107;
+      font-size: 16px;
+      font-weight: 500;
+      color: #ffffff;
+      padding: 8px 43px;
+      cursor: pointer;
+    }
   }
+  /* 마이페이지 탭 콘텐츠 공통 CSS 끝 */
 }

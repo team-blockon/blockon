@@ -5,7 +5,7 @@ const LoggedInNav = ({ handleLogout }) => {
   return (
     <Fragment>
       <HeaderNavItem item="contract" to="/contract">
-        계약관리
+        거래목록
       </HeaderNavItem>
       <HeaderNavItem item="mypage" to="/mypage">
         마이페이지

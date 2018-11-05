@@ -9,7 +9,7 @@ class ContractModal extends Component {
   handleSubmit = async () => {
     const {
       contractIndex, // 상태를 변경할 계약 인덱스
-      newContractState, // 새로운 상태
+      newContractStep, // 새로운 단계
       changeState,
       watchUpdateEvent,
       onClose
@@ -19,7 +19,7 @@ class ContractModal extends Component {
     await changeState({
       accountInstance,
       contractIndex,
-      newContractState
+      newContractStep
     });
     await watchUpdateEvent();
     onClose();

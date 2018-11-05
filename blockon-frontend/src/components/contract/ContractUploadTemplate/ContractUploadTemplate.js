@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import produce from 'immer';
 import axios from 'axios';
-import Loading from 'components/common/Loading';
 
 import * as UserAPI from 'lib/api/user';
 import * as ContractAPI from 'lib/api/contract';
 import * as Web3User from 'lib/web3/user';
 import * as Web3Contract from 'lib/web3/contract';
+import Loading from 'components/common/Loading';
 
 import { AutoComplete, Radio, DatePicker } from 'antd';
 import { Upload, Icon } from 'antd';
@@ -75,6 +75,9 @@ class ContractUploadTemplate extends Component {
 
     // 메소드 호출 전 null 체크
     if (!agentAddress || !sellerAddress || !buyerAddress || !type) {
+      console.log(
+        'agentAddress or sellerAddress or buyerAddress or type is null!'
+      );
       return;
     }
 
@@ -379,18 +382,6 @@ class ContractUploadTemplate extends Component {
                 <RadioButton value={2}>전세</RadioButton>
                 <RadioButton value={3}>매매</RadioButton>
               </RadioGroup>
-            </div>
-            <div className="form-group">
-              <label className="form-label">계약상황</label>
-              <div className="progressbar-wrapper">
-                <ul className="progressbar">
-                  <li className={'first-not-active'}>계약금</li>
-                  <li>중도금</li>
-                  <li>잔금처리</li>
-                  <li>등기신청</li>
-                  <li>완료</li>
-                </ul>
-              </div>
             </div>
           </div>
 

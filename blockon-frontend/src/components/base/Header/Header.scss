@@ -14,11 +14,7 @@ header.landing {
     box-shadow: 0 2px 4px rgba(85, 77, 86, 0.2);
     background-color: #fff;
     transition: background-color 0.2s linear; // 스크롤 되었을 경우, background-color가 일정한 속도로 변화
-
-    //navbar가 상단고정.
-    position: fixed;
     z-index: 10;
-    width: 100%;
 
     .logo {
       height: 30px;
@@ -26,12 +22,11 @@ header.landing {
     }
   }
 
-  .menu.container {
+  .menu {
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    //margin: 0 30px;
   }
 }
 
@@ -44,21 +39,17 @@ header.landing {
     box-shadow: 0 2px 4px rgba(85, 77, 86, 0.2);
     background-color: #fff;
     transition: background-color 0.2s linear; // 스크롤 되었을 경우, background-color가 일정한 속도로 변화
-
-    //navbar가 상단고정.
-    position: fixed;
     z-index: 10;
-    width: 100%;
 
     .logo {
       height: 40px;
     }
   }
 
-  .menu.container {
+  .menu {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 0 auto;
+    margin: 0 2rem;
   }
 }
