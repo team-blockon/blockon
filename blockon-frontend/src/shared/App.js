@@ -45,7 +45,7 @@ class App extends Component {
 
     window.blockon = new caver.klay.Contract(
       blockonABI,
-      '0x6bd496d462d7500e7a4275a3186b735331281ec3'
+      '0x88b1ac416f4634a5d576166cdeeaeb472a652625'
     );
 
     // 아이디와 비번을 치고 로그인하면, DB에서 디폴트어카운트를 받아와서 설정해줘야 한다.
