@@ -1,16 +1,15 @@
 import * as UserAPI from 'lib/api/user';
-import * as Web3Utils from 'lib/web3/utils';
+import * as CaverUtils from 'lib/caver/utils';
+import caver from 'lib/caver';
 import accountABI from 'abi/account_abi';
 
 export const getAccountInfo = () => {
-  const { web3 } = window;
-
   return new Promise(async (resolve, reject) => {
-    const ethAddress = await Web3Utils.getDefaultAccount();
-    const res = await UserAPI.getAccountByEthAddress(ethAddress);
+    const defaultAccount = CaverUtils.getDefaultAccount();
+    const res = await UserAPI.getAccountByKlaytnAddress(defaultAccount);
 
     const accountAddress = res.data.accountAddress;
-    const accountInstance = web3.eth.contract(accountABI).at(accountAddress);
+    const accountInstance = new caver.klay.Contract(accountABI, accountAddress);
 
     resolve({ account: res.data, accountAddress, accountInstance });
   });

@@ -1,31 +1,34 @@
 import { createAction, handleActions } from 'redux-actions';
 import produce from 'immer';
 import { applyPenders } from 'redux-pender';
-import * as Web3Auth from 'lib/web3/auth';
-import * as Web3Watch from 'lib/web3/watch';
+import * as CaverContract from 'lib/caver/contract';
+import * as CaverWatch from 'lib/caver/watch';
 
 // 액션 타입
-const REGISTER = 'web3/auth/REGISTER';
-const REGISTER_EVENT = 'web3/auth/REGISTER_EVENT';
+const CHANGE_STATE = 'caver/contract/CHANGE_STATE';
+const UPDATE_EVENT = 'caver/contract/UPDATE_EVENT';
 
 const initialState = {
   error: null,
-  ethAddress: null,
-  accountAddress: null
+  updateType: null,
+  contractIndex: null
 };
 
 // 액션 생성함수
-export const register = createAction(REGISTER, Web3Auth.createAccount);
-export const registerEvent = createAction(
-  REGISTER_EVENT,
-  Web3Watch.createAccount
+export const changeState = createAction(
+  CHANGE_STATE,
+  CaverContract.confirmToChangeContractStateAt
+);
+export const updateEvent = createAction(
+  UPDATE_EVENT,
+  CaverWatch.updateContract
 );
 
 const reducer = handleActions({}, initialState);
 
 export default applyPenders(reducer, [
   {
-    type: REGISTER,
+    type: CHANGE_STATE,
     onError: (state, action) => {
       return produce(state, draft => {
         const { msg } = action.payload;
@@ -38,13 +41,13 @@ export default applyPenders(reducer, [
     }
   },
   {
-    type: REGISTER_EVENT,
+    type: UPDATE_EVENT,
     onSuccess: (state, action) => {
-      const { accountAddress, publicAddress } = action.payload;
+      const { updateType, contractIndex } = action.payload;
       return {
         ...state,
-        ethAddress: publicAddress,
-        accountAddress
+        updateType,
+        contractIndex
       };
     },
     onError: (state, action) => {

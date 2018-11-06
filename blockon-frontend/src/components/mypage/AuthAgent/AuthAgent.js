@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import InputWithLabel from 'components/common/InputWithLabel';
 import Loading from 'components/common/Loading';
 import * as IdentityAPI from 'lib/api/identity';
-import * as Web3Auth from 'lib/web3/auth';
+import * as CaverAuth from 'lib/caver/auth';
 import certificateImage from 'static/images/certificate.svg';
 import './AuthAgent.scss';
 
@@ -63,7 +63,7 @@ class AuthAgent extends Component {
   };
 
   handleAuth = () => {
-    Web3Auth.authorizeAsAgent();
+    CaverAuth.authorizeAsAgent();
   };
 
   async componentDidMount() {

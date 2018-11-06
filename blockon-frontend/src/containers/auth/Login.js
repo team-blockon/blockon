@@ -8,7 +8,7 @@ import AuthButton from 'components/auth/AuthButton';
 import AuthLink from 'components/auth/AuthLink';
 
 import * as AuthAPI from 'lib/api/auth';
-import * as Web3Utils from 'lib/web3/utils';
+import * as CaverUtils from 'lib/caver/utils';
 
 import { Divider, message } from 'antd';
 
@@ -24,13 +24,10 @@ class Login extends Component {
 
   handleLogin = async () => {
     const { history } = this.props; // 나중에 없앨 것!
-
-    if (!Web3Utils.check()) return;
-
     const { setLoggedInfo } = this.props;
-    const ethAddress = await Web3Utils.getDefaultAccount();
+    const defaultAccount = CaverUtils.getDefaultAccount();
 
-    AuthAPI.login(ethAddress)
+    AuthAPI.login(defaultAccount)
       .then(res => {
         const loggedInfo = res.data;
         setLoggedInfo(loggedInfo);
@@ -45,8 +42,6 @@ class Login extends Component {
 
   handleRegister = () => {
     const { history } = this.props;
-    if (!Web3Utils.check()) return;
-
     history.push('/auth/register');
   };
 

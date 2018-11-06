@@ -1,18 +1,18 @@
-import * as Web3Utils from 'lib/web3/utils';
+import * as CaverUtils from 'lib/caver/utils';
 
 /**
  * CreateAccount 이벤트 구독
- * @param {*} ethAddress
+ * @param {*} klaytnAddress
  */
-export const createAccount = ethAddress => {
+export const createAccount = klaytnAddress => {
   const { blockon } = window;
 
   return new Promise((resolve, reject) => {
     // CreateAccount 이벤트 필터
-    // publicAddress가 ethAddress인 이벤트 로그만
+    // publicAddress가 klaytnAddress인 이벤트 로그만
     // 범위는 첫 번째 블록부터 마지막 블록까지
     const createAccountEvent = blockon.CreateAccount(
-      { publicAddress: ethAddress },
+      { publicAddress: klaytnAddress },
       {
         fromBlock: 0,
         toBlock: 'latest'
@@ -38,7 +38,7 @@ export const createAccount = ethAddress => {
 export const updateContract = accountInstance => {
   return new Promise(async (resolve, reject) => {
     // 마지막 블록 넘버 가져오기
-    let latestBlock = await Web3Utils.getLatestBlockNumber();
+    let latestBlock = await CaverUtils.getLatestBlockNumber();
 
     // issue: Ganache에서 UpdateContract 이벤트 안 받아짐
     // UpdateEvent 이벤트 필터
@@ -71,7 +71,7 @@ export const updateContract = accountInstance => {
 export const athorizeAsAgent = accountInstance => {
   return new Promise(async (resolve, reject) => {
     // 마지막 블록 넘버 가져오기
-    let latestBlock = await Web3Utils.getLatestBlockNumber();
+    let latestBlock = await CaverUtils.getLatestBlockNumber();
 
     // issue: Ganache에서 AthorizeAsAgent 이벤트 안 받아짐
     // AthorizeAsAgent 이벤트 필터

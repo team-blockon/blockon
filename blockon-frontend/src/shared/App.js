@@ -21,9 +21,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from 'store/modules/user';
 
-import CaverJs from 'caver-js';
+import caver from 'lib/caver';
 import blockonABI from 'abi/blockon_abi';
-import * as Web3Utils from 'lib/web3/utils';
 
 /**
  * 서버와 클라이언트에서 공용으로 사용하는 컴포넌트
@@ -39,9 +38,6 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    window.caver = new CaverJs('http://52.79.254.194:8551'); // caver 객체 생성
-    let { caver } = window;
-
     this.initializeUserInfo();
 
     window.blockon = new caver.klay.Contract(
@@ -50,7 +46,7 @@ class App extends Component {
     );
 
     // 아이디와 비번을 치고 로그인하면, DB에서 디폴트어카운트를 받아와서 설정해줘야 한다.
-    // caver.klay.defaultAccount = "받아온 키스토어에서 퍼블릭어드레스 뽑은것"
+    caver.klay.defaultAccount = '0x88e5838c0089d77da47848b727bd75950427639a';
   }
 
   render() {

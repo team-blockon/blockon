@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { register, registerEvent } from 'store/modules/web3/auth';
+import { register, registerEvent } from 'store/modules/caver/auth';
 
 import AuthContent from 'components/auth/AuthContent';
 import InputWithLabel from 'components/auth/InputWithLabel';
@@ -11,7 +11,7 @@ import Loading from 'components/common/Loading';
 
 import * as AuthAPI from 'lib/api/auth';
 import * as UserAPI from 'lib/api/user';
-import * as Web3Utils from 'lib/web3/utils';
+import * as CaverUtils from 'lib/caver/utils';
 
 import { Upload, Icon, Button, notification, message } from 'antd';
 
@@ -71,27 +71,30 @@ class Register extends Component {
     }
 
     const { profileFilename, username, email } = this.state;
-    const ethAddress = await Web3Utils.getDefaultAccount();
+    const defaultAccount = CaverUtils.getDefaultAccount();
 
     /* 컨트랙트 내에서 계정 생성 성공시 이벤트를 받아 / 라우트로 리다이렉트 */
     const { register, registerEvent, history } = this.props;
 
-    if (!ethAddress || !email) {
+    if (!defaultAccount || !email) {
       return;
     }
-    await register(ethAddress);
-    await registerEvent(ethAddress);
+    await register(defaultAccount);
+    await registerEvent(defaultAccount);
 
     // accountAddress를 제외한 나머지를 DB에 추가
     await AuthAPI.register({
-      ethAddress,
+      klaytnAddress: defaultAccount,
       profileFilename,
       username,
       email
     });
 
     const { accountAddress } = this.props;
-    await UserAPI.updateAccountAddressByEthAddress(accountAddress, ethAddress);
+    await UserAPI.updateAccountAddressByKlaytnAddress(
+      accountAddress,
+      defaultAccount
+    );
 
     history.push('/');
   };
@@ -209,9 +212,9 @@ class Register extends Component {
 }
 
 export default connect(
-  ({ web3Auth, pender }) => ({
-    accountAddress: web3Auth.accountAddress,
-    loading: pender.pending['web3/auth/REGISTER_EVENT']
+  ({ caverAuth, pender }) => ({
+    accountAddress: caverAuth.accountAddress,
+    loading: pender.pending['caver/auth/REGISTER_EVENT']
   }),
   { register, registerEvent }
 )(Register);

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import MyPageTab from '../MyPageTab';
 import UserInfo from '../UserInfo';
 import AuthAgent from '../AuthAgent';
-import * as Web3Utils from 'lib/web3/utils';
-import * as Web3User from 'lib/web3/user';
+import * as CaverUtils from 'lib/caver/utils';
+import * as CaverUser from 'lib/caver/user';
 import * as AuthAPI from 'lib/api/auth';
 import * as UserAPI from 'lib/api/user';
 import { message, notification } from 'antd';
@@ -12,7 +12,7 @@ import './MyPageTemplate.scss';
 class MyPageTemplate extends Component {
   state = {
     activeTab: 'user_info',
-    ethAddress: null,
+    defaultAccount: null,
     profile: null,
     username: '',
     email: ''
@@ -67,10 +67,10 @@ class MyPageTemplate extends Component {
   };
 
   handleSubmit = () => {
-    const { ethAddress, profile, email } = this.state;
+    const { defaultAccount, profile, email } = this.state;
 
-    UserAPI.updateAccountByEthAddress({
-      ethAddress,
+    UserAPI.updateAccountByKlaytnAddress({
+      klaytnAddress: defaultAccount,
       profile,
       email
     }).then(res => {
@@ -79,9 +79,9 @@ class MyPageTemplate extends Component {
   };
 
   async componentDidMount() {
-    const ethAddress = await Web3Utils.getDefaultAccount();
+    const defaultAccount = CaverUtils.getDefaultAccount();
 
-    Web3User.getAccountInfo().then(({ account, accountInstance }) => {
+    CaverUser.getAccountInfo().then(({ account, accountInstance }) => {
       const {
         email,
         profile: { username, thumbnail }
@@ -89,7 +89,7 @@ class MyPageTemplate extends Component {
 
       this.setState({
         ...this.state,
-        ethAddress,
+        defaultAccount,
         accountInstance,
         profile: thumbnail,
         username,
