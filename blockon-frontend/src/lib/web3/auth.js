@@ -1,4 +1,4 @@
-import { openNotification } from 'lib/utils';
+import { openNotification } from 'lib/utils/common';
 import * as Web3User from 'lib/web3/user';
 
 /**

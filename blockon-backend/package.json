@@ -8,6 +8,7 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
+    "@google-cloud/vision": "^0.22.1",
     "array-equal": "^1.0.0",
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.0.0",
@@ -15,12 +16,14 @@
     "hangul-js": "^0.2.5",
     "ipfs-api": "^24.0.2",
     "jsonwebtoken": "^8.3.0",
+    "mkdirp": "^0.5.1",
     "mongoose": "^5.3.1",
     "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.9.1",
     "multer": "^1.4.0",
     "nodemailer": "^4.6.8",
     "randomstring": "^1.1.5",
+    "request": "^2.88.0",
     "sockjs": "^0.3.19"
   },
   "devDependencies": {

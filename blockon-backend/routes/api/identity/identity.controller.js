@@ -3,6 +3,8 @@ const multer = require('multer');
 const fs = require('fs');
 const Identity = require('../../../models/identity');
 const FileTypeCheck = require('../../util/FileTypeCheck');
+const request = require('request');
+const vision = require('@google-cloud/vision');
 
 const PORT = '5001';
 const HOST = 'ipfs.infura.io';
@@ -18,12 +20,13 @@ const imageType = ['jpg', 'png', 'jpeg'];
  * @returns {Promise<void>}
  */
 exports.uploadIdentity = async (req, res) => {
-  const { ethAddress } = req.body;
-  // const ethAddress ='abcdefaad1daaaa'; //테스트용
+  // const { ethAddress } = req.body;
+  const ethAddress = 'abcdefaad1daaaa'; //테스트용
   const upload = multer({
     storage: multer.memoryStorage(),
     fileFilter: async (req, file, cb) => {
-      cb(null, FileTypeCheck.uploadFileType(file.mimetype, imageType));
+      // cb(null, FileTypeCheck.uploadFileType(file.mimetype, imageType));
+      cb(null, true);
     }
   }).single('identity'); // req.file은 identity 필드의 파일 정보
 
@@ -70,13 +73,109 @@ exports.uploadIdentity = async (req, res) => {
 };
 
 /**
+ * google vision api를 사용하여 공인중개사 자격증번호와 이름 추출
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.check = async (req, res) => {
+  const upload = multer({
+    storage: multer.memoryStorage(),
+    fileFilter: async (req, file, cb) => {
+      // cb(null, FileTypeCheck.uploadFileType(file.mimetype, imageType));
+      cb(null, true);
+    }
+  }).single('identity');
+
+  const client = new vision.ImageAnnotatorClient();
+
+  await upload(req, res, async err => {
+    client
+      .textDetection(req.file.buffer)
+      .then(results => {
+        let text = results[0].fullTextAnnotation.text;
+        text = text.replace(/\s/g, '');
+        const numberIndex = text.indexOf('자격증번호:');
+        const agentNumber = text.slice(numberIndex + 6, numberIndex + 19);
+        const nameIndex = text.indexOf('성명');
+        const agentName = text.slice(nameIndex + 3, nameIndex + 6);
+        const birthIndex = text.indexOf('생년월일');
+        const birth = text
+          .slice(birthIndex + 5, birthIndex + 14)
+          .replace('년', '-')
+          .replace('월', '-');
+
+        //취득일 추출
+        let acquireDateIndex = text.indexOf('증명합니다.');
+        let acquireDate = text.slice(acquireDateIndex + 6);
+        acquireDateIndex = acquireDate.indexOf('년');
+        acquireDate = acquireDate
+          .slice(acquireDateIndex - 4, acquireDateIndex + 5)
+          .replace('년', '-')
+          .replace('월', '-')
+          .replace('일', '');
+
+        res.json({
+          agentNumber,
+          agentName,
+          birth,
+          acquireDate
+        });
+      })
+      .catch(err => {
+        console.error('ERROR:', err);
+      });
+  });
+};
+
+/**
+ * 공인중개사 인증시 자격번호 확인
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.isRightIdentity = async (req, res) => {
+  const { agentName, name, agentNumber } = req.query;
+
+  const url =
+    'http://apis.data.go.kr/1611000/nsdi/EstateBrkpgService/attr/getEBBrokerInfo'; /*URL*/
+  let queryParams =
+    '?' +
+    'ServiceKey=gJBPzjIAuMVVKB%2Bk5uYkqBP6yFZAvD0kYsIzKpBhI5FgEPwWDPhPXBO07%2BzvCmkdQtxOhUV3H8Ge%2FB0Aasxf7g%3D%3D' /*Service Key*/ +
+    // + '&bsnmCmpnm=' + encodeURIComponent(agentName) /*사업자상호*/
+    '&brkrNm=' +
+    encodeURIComponent(name) /*중개업자명*/ +
+    '&format=json' /*응답결과 형식(xml 또는 json)*/ +
+    '&numOfRows=100' /*검색건수*/ +
+    '&pageNo=1'; /*페이지번호*/
+
+  request(url + queryParams, 'GET', (err, result, body) => {
+    console.log(JSON.parse(body).EBBrokers);
+    const info = JSON.parse(body).EBBrokers.field[0];
+    if (!!info) {
+      res.json({
+        result: agentNumber === info.crqfcNo
+      });
+    } else {
+      res.json({
+        result: false
+      });
+    }
+  });
+};
+
+/**
  * db에 저장되어있는 ipfs해쉬값을 불러오기 위한 함수
  * @param ethAddress
  * @returns {Promise<*>}
  */
 const getIdentity = async ethAddress => {
   const identity = await Identity.findOne({ ethAddress });
-  return await ipfs.get(identity.idHash);
+  try {
+    return await ipfs.get(identity.idHash);
+  } catch (e) {
+    return e;
+  }
 };
 
 /**

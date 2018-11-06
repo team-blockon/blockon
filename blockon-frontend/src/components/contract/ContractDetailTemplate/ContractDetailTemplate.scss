@@ -1,0 +1,181 @@
+@import "~open-color/open-color";
+
+.ContractDetailTemplate {
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .list-wrapper {
+    flex: 1;
+    flex-direction: column;
+    margin-right: 26px;
+    max-width: 588px;
+
+    .card {
+      position: relative;
+
+      p.title {
+        font-size: 22px;
+        font-weight: 500;
+        color: #222222;
+        margin-top: 63px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+      }
+
+      .content {
+        display: flex;
+
+        .detail {
+          margin-left: 12.6px;
+        }
+      }
+
+      .notice {
+        font-size: 12px;
+        font-weight: 300;
+        line-height: 1.5;
+        color: #828c8e;
+      }
+
+      .agreement {
+        .StepBadge {
+          margin: 0 17px;
+        }
+
+        .notice {
+          margin-bottom: 12px;
+        }
+
+        .table {
+          .thead {
+            border: 1px solid #e2e2e2;
+            color: #828c8e;
+          }
+
+          .tbody {
+            color: #888888;
+
+            .tr + .tr {
+              border-top: 1px solid #e2e2e2;
+            }
+          }
+
+          .tr {
+            display: flex;
+            padding: 0 5px;
+
+            .td {
+              padding: 9px;
+              width: 15%;
+            }
+          }
+        }
+      }
+
+      .action {
+        text-align: center;
+        margin-top: 3.5rem;
+
+        .radio {
+          margin-bottom: 30px;
+          display: flex;
+          justify-content: center;
+
+          span {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+
+            & + span {
+              margin-left: 63.7px;
+            }
+
+            img {
+              width: 23.6px;
+              margin-right: 16.7px;
+            }
+          }
+        }
+
+        button {
+          outline: none;
+          border: none;
+          box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+          background-color: #ffc107;
+          font-size: 23px;
+          font-weight: 500;
+          color: #ffffff;
+          padding: 10px 58px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+.progressbar-wrapper {
+  width: 90%;
+  margin: 0 auto;
+
+  .progressbar {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    counter-reset: step;
+
+    li {
+      list-style: none;
+      flex: 1;
+      position: relative;
+      text-align: center;
+
+      &::before {
+        counter-increment: step;
+        content: counter(step);
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        display: block; /* li 위로 올라가도록 */
+        text-align: center;
+        margin: 0 auto 14px auto; /* 원 위아래 여백 */
+        border-radius: 50%; /* 원으로 만들기 */
+        background-color: #353a4c; /* z-index와 함께 선 overlap 막기 */
+        position: relative;
+        z-index: 2;
+        color: #fff;
+      }
+
+      /* 스텝간 연결선 */
+      &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        border: 1px solid #4e5379;
+        top: 16px; /* 세로 가운데에 위치하도록 32의 절반 */
+        left: -50%;
+        z-index: 1;
+      }
+
+      /* 첫번째 녀석은 왼쪽에 연결선이 없어야 */
+      &:first-child::after {
+        content: none;
+      }
+
+      &:not(.active) {
+        color: rgba(0, 0, 0, 0.5);
+
+        &::before {
+          background-color: #acb2ce;
+        }
+        &::after {
+          border: 1px dashed #acb2ce;
+        }
+      }
+    }
+  }
+}

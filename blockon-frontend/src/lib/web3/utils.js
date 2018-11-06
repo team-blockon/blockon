@@ -1,4 +1,4 @@
-import { openNotification } from '../utils';
+import { openNotification } from '../utils/common';
 
 export const check = () => {
   let msg = null;
@@ -6,9 +6,10 @@ export const check = () => {
 
   if (!window.web3 || !window.web3.currentProvider.isMetaMask) {
     msg = '메타마스크 설치 필요';
-    desc = 'Chrome 웹 스토어에서 메타마스크를 설치해 주세요.';
+    desc = 'Chrome 웹 스토어에서 메타마스크를 설치해주세요.';
   } else if (window.web3.eth.accounts.length === 0) {
     msg = '메타마스크 로그인 필요';
+    desc = '메타마스크를 열고 로그인해주세요.';
   } /* else if (window.web3.version.network !== '1') {
     msg = '메인넷 연결 필요';
   } */ else {

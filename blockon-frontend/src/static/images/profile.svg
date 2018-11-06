@@ -1,0 +1,44 @@
+<svg id="그룹_107" data-name="그룹 107" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 78.4 78.4">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-2, .cls-4 {
+        stroke: #b8b8b8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+
+      .cls-3 {
+        clip-path: url(#clip-path-2);
+      }
+
+      .cls-4 {
+        fill: none;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <circle id="타원_76" data-name="타원 76" cx="38.2" cy="38.2" r="38.2"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <circle id="타원_78" data-name="타원 78" cx="38.2" cy="38.2" r="38.2" transform="translate(0 0)"/>
+    </clipPath>
+  </defs>
+  <g id="그룹_106" data-name="그룹 106" transform="translate(1 1)">
+    <g id="그룹_104" data-name="그룹 104" class="cls-1" transform="translate(0 0)">
+      <path id="패스_653" data-name="패스 653" class="cls-2" d="M1,86.592C1,62.717,18.147,43.4,39.2,43.4S77.4,62.717,77.4,86.592" transform="translate(-1 2.614)"/>
+    </g>
+    <g id="그룹_105" data-name="그룹 105" class="cls-3" transform="translate(0)">
+      <circle id="타원_77" data-name="타원 77" class="cls-2" cx="12.914" cy="12.914" r="12.914" transform="translate(25.286 15.736)"/>
+    </g>
+  </g>
+  <circle id="타원_79" data-name="타원 79" class="cls-4" cx="38.2" cy="38.2" r="38.2" transform="translate(1 1)"/>
+</svg>

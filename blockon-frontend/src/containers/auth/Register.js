@@ -5,6 +5,7 @@ import { register, registerEvent } from 'store/modules/web3/auth';
 
 import AuthContent from 'components/auth/AuthContent';
 import InputWithLabel from 'components/auth/InputWithLabel';
+import InputEmail from 'components/common/InputEmail';
 import AuthButton from 'components/auth/AuthButton';
 import Loading from 'components/common/Loading';
 
@@ -45,17 +46,26 @@ class Register extends Component {
 
   handleAuthEmail = async () => {
     const { email } = this.state;
-    await AuthAPI.sendAuthEmail({ email }).then(() => {
+    const res = await AuthAPI.sendAuthEmail({ email });
+    if (!res || !res.data) {
+      return;
+    }
+    if (res.data.result) {
       this.setState({ ...this.state, emailauth: true });
-    });
-    notification['success']({
-      message: '입력하신 이메일로 인증 메일이 발송되었습니다.',
-      duration: 3
-    });
+      notification['success']({
+        message: '입력하신 이메일로 인증 메일이 발송되었습니다.',
+        duration: 3
+      });
+    } else {
+      notification['error']({
+        message: '이미 존재하는 이메일입니다',
+        duration: 3
+      });
+    }
   };
 
   handleRegister = async event => {
-    if (this.state.emailauth === false) {
+    if (!this.state.emailauth) {
       message.warning('이메일 인증을 진행해 주세요.');
       return;
     }
@@ -182,25 +192,15 @@ class Register extends Component {
             placeholder="이름"
             onChange={this.handleChange}
           />
-          <div className="InputWithLabel">
-            <div className="label">이메일</div>
-            <div style={{ display: 'flex' }}>
-              <input
-                type="text"
-                name="email"
-                value={email}
-                placeholder="이메일"
-                onChange={this.handleChange}
-              />
-              <Button
-                type="primary"
-                style={{ height: '44px' }}
-                onClick={this.handleAuthEmail}
-              >
-                인증
-              </Button>
-            </div>
-          </div>
+          <InputEmail
+            label="이메일"
+            type="email"
+            name="email"
+            value={email}
+            placeholder="이메일"
+            onChange={this.handleChange}
+            sendAuthEmail={this.handleAuthEmail}
+          />
           <AuthButton onClick={this.handleRegister}>회원가입</AuthButton>
         </AuthContent>
       </Fragment>

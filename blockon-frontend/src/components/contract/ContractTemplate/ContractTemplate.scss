@@ -1,0 +1,44 @@
+.ContractTemplate {
+  .control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 23.5px;
+    margin-bottom: 15px;
+
+    span {
+      font-size: 22px;
+      font-weight: 500;
+      color: #222222;
+    }
+
+    button.upload {
+      border: 1px solid #000;
+      outline: none;
+      background-color: #ffffff;
+      color: #333;
+      padding: 0.3rem 1rem;
+      font-weight: bold;
+    }
+  }
+
+  .no-list {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 300;
+    color: #b8b8b8;
+
+    img {
+      width: 114px;
+      margin-bottom: 27px;
+    }
+  }
+
+  .loading-wrapper {
+    min-height: 400px;
+  }
+}
