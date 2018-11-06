@@ -1,5 +1,5 @@
 import { openNotification } from 'lib/utils/common';
-import * as Web3User from 'lib/web3/user';
+import * as CaverUser from 'lib/caver/user';
 
 /**
  * Account 생성
@@ -33,7 +33,7 @@ export const authorizeAsAgent = async () => {
   const { blockon } = window;
 
   return new Promise(async (resolve, reject) => {
-    const { accountAddress } = await Web3User.getAccountInfo();
+    const { accountAddress } = await CaverUser.getAccountInfo();
     blockon.athorizeAsAgent.sendTransaction(accountAddress, (error, result) => {
       if (!error) {
         resolve({ result });

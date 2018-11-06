@@ -12,8 +12,8 @@ import Pagination from 'components/common/Pagination';
 import Loading from 'components/common/Loading';
 
 import * as ContractAPI from 'lib/api/contract';
-import * as Web3User from 'lib/web3/user';
-import * as Web3Contract from 'lib/web3/contract';
+import * as CaverUser from 'lib/caver/user';
+import * as CaverContract from 'lib/caver/contract';
 
 import NoListImage from 'static/images/no-list.svg';
 import './ContractTemplate.scss';
@@ -50,7 +50,7 @@ class ContractTemplate extends Component {
    */
   addContractInfoAt = async (accountInstance, index) => {
     // 온체인 데이터 가져오기
-    const contractInfo = await Web3Contract.getContractInfoAt(
+    const contractInfo = CaverContract.getContractInfoAt(
       accountInstance,
       index
     );
@@ -97,7 +97,7 @@ class ContractTemplate extends Component {
    */
   contractStateChanged = async (accountInstance, index) => {
     // 업데이트된 상태 정보 가져오기
-    const contractInfo = await Web3Contract.getContractInfoAt(
+    const contractInfo = CaverContract.getContractInfoAt(
       accountInstance,
       index
     );
@@ -186,13 +186,11 @@ class ContractTemplate extends Component {
      */
 
     // 현재 브라우저에 접속한 유저의 어카운트 계정 인스턴스 생성
-    const { accountInstance } = await Web3User.getAccountInfo();
+    const { accountInstance } = await CaverUser.getAccountInfo();
     this.setState({ accountInstance });
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
-    const contractsLength = await Web3Contract.getContractsLength(
-      accountInstance
-    );
+    const contractsLength = CaverContract.getContractsLength(accountInstance);
 
     // 유저가 포함된 컨트랙트들을 state에 추가
     for (let i = 0; i < contractsLength; i++) {

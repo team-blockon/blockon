@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { changeState, updateEvent } from 'store/modules/web3/contract';
+import { changeState, updateEvent } from 'store/modules/caver/contract';
 import ContractTemplate from 'components/contract/ContractTemplate';
 
 class ContractContainer extends Component {

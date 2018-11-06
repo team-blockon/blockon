@@ -5,8 +5,8 @@ import axios from 'axios';
 
 import * as UserAPI from 'lib/api/user';
 import * as ContractAPI from 'lib/api/contract';
-import * as Web3User from 'lib/web3/user';
-import * as Web3Contract from 'lib/web3/contract';
+import * as CaverUser from 'lib/caver/user';
+import * as CaverContract from 'lib/caver/contract';
 import Loading from 'components/common/Loading';
 
 import { AutoComplete, Radio, DatePicker } from 'antd';
@@ -82,7 +82,7 @@ class ContractUploadTemplate extends Component {
     }
 
     // 계약 생성 및 이벤트 구독
-    await Web3Contract.create(agentAddress, sellerAddress, buyerAddress, type);
+    await CaverContract.create(agentAddress, sellerAddress, buyerAddress, type);
     const { contractIndex } = await updateEvent(accountInstance);
 
     this.setState(
@@ -163,7 +163,10 @@ class ContractUploadTemplate extends Component {
   };
 
   async componentDidMount() {
-    const { accountAddress, accountInstance } = await Web3User.getAccountInfo();
+    const {
+      accountAddress,
+      accountInstance
+    } = await CaverUser.getAccountInfo();
 
     this.setState(
       produce(draft => {
