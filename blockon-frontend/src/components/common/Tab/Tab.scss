@@ -1,0 +1,39 @@
+.Tab {
+  display: flex;
+  justify-content: center;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 9.5px;
+
+    li {
+      display: inline-block;
+      font-size: 16px;
+      list-style: none;
+      cursor: pointer;
+      color: #888888;
+      position: relative;
+      width: 146px;
+      text-align: center;
+
+      &.active {
+        color: #000;
+
+        &::after {
+          background-color: #2a2a2a;
+        }
+      }
+
+      &::after {
+        content: "";
+        width: 146px;
+        height: 2px;
+        background-color: rgba(136, 136, 136, 0.4);
+        position: absolute;
+        left: 0;
+        bottom: -9.5px;
+      }
+    }
+  }
+}

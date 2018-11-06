@@ -1,6 +1,21 @@
 @import "~open-color/open-color";
 
 .AuthAgent {
+  width: 345px;
+  margin: 0 auto;
+
+  p.notice {
+    font-size: 12px;
+    font-weight: 300;
+    color: #828c8e;
+    margin: 0;
+    margin-top: 20px;
+
+    span {
+      color: #e62323;
+    }
+  }
+
   .levelText {
     font-size: 1rem;
 

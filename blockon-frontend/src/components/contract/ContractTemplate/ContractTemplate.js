@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as loadingActions from 'store/modules/loading';
+import { Link } from 'react-router-dom';
 import produce from 'immer';
 
 import ContractTab from '../ContractTab';
-import ContractTabContent from '../ContractTab/ContractTabContent';
+import ContractCard from '../ContractCard';
 import ContractModal from '../ContractModal';
+import Pagination from 'components/common/Pagination';
+import Loading from 'components/common/Loading';
 
 import * as ContractAPI from 'lib/api/contract';
-import * as Web3User from 'lib/web3/user';
-import * as Web3Contract from 'lib/web3/contract';
+import * as CaverUser from 'lib/caver/user';
+import * as CaverContract from 'lib/caver/contract';
 
-// 계약상태 상수
-const COMPLETED_CONTRACT = 100; // 계약 완료
+import NoListImage from 'static/images/no-list.svg';
+import './ContractTemplate.scss';
+
+import * as ContractUtils from 'lib/utils/contract';
+const { cs } = ContractUtils;
 
 class ContractTemplate extends Component {
   state = {
@@ -23,14 +32,14 @@ class ContractTemplate extends Component {
   handleToggleModal = (
     accountAddress,
     contractIndex,
-    newContractState,
+    newContractStep,
     itemType
   ) => {
     this.setState({
       contractModal: !this.state.contractModal,
       accountAddress,
       contractIndex,
-      newContractState,
+      newContractStep,
       itemType
     });
   };
@@ -41,12 +50,12 @@ class ContractTemplate extends Component {
    */
   addContractInfoAt = async (accountInstance, index) => {
     // 온체인 데이터 가져오기
-    const contractInfo = await Web3Contract.getContractInfoAt(
+    const contractInfo = CaverContract.getContractInfoAt(
       accountInstance,
       index
     );
     const contractType = contractInfo[0].toNumber();
-    const contractState = contractInfo[1].toNumber();
+    const contractStep = contractInfo[1].toNumber();
 
     // 오프체인 데이터 가져오기
     const res = await ContractAPI.get(accountInstance.address, index);
@@ -63,7 +72,7 @@ class ContractTemplate extends Component {
         draft.contractInfoList.unshift({
           index,
           type: contractType,
-          state: contractState,
+          state: contractStep,
           people,
           building
         });
@@ -71,7 +80,7 @@ class ContractTemplate extends Component {
     );
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
-    if (contractState === COMPLETED_CONTRACT) {
+    if (contractStep === cs.COMPLETED_CONTRACT) {
       this.setState({
         completedContractsNum: this.state.completedContractsNum + 1
       });
@@ -88,27 +97,27 @@ class ContractTemplate extends Component {
    */
   contractStateChanged = async (accountInstance, index) => {
     // 업데이트된 상태 정보 가져오기
-    const contractInfo = await Web3Contract.getContractInfoAt(
+    const contractInfo = CaverContract.getContractInfoAt(
       accountInstance,
       index
     );
-    const contractState = contractInfo[1].toNumber();
+    const contractStep = contractInfo[1].toNumber();
 
-    console.log('계약상태: ', contractState);
+    console.log('계약단계: ', contractStep);
     console.groupEnd();
 
     this.setState(
       produce(draft => {
         draft.contractInfoList.forEach(info => {
           if (info.index === index) {
-            info.state = contractState;
+            info.state = contractStep;
           }
         });
       })
     );
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
-    if (contractState === COMPLETED_CONTRACT) {
+    if (contractStep === cs.COMPLETED_CONTRACT) {
       this.setState({
         activeContractsNum: this.state.activeContractsNum - 1,
         completedContractsNum: this.state.completedContractsNum + 1
@@ -141,25 +150,53 @@ class ContractTemplate extends Component {
     );
   };
 
+  isNoList = () => {
+    const { activeTab, isLoading } = this.props;
+    // 로딩 중이면 일단 보류
+    if (isLoading) return false;
+    // 현재 탭이 진행중 거래 탭이면서 진행중 거래가 0건일 때
+    if (activeTab === 'ongoing' && this.state.activeContractsNum === 0)
+      return true;
+    // 현재 탭이 완료된 거래 탭이면서 완료된 거래가 0건일 때
+    if (activeTab === 'completed' && this.state.completedContractsNum === 0)
+      return true;
+    return false;
+  };
+
+  /**
+   * 로딩 중이지 않을 때에만 카드 반환
+   */
+  getContractCard = () => {
+    const { contractInfoList } = this.state;
+    const { activeTab, isLoading } = this.props;
+    if (isLoading) return null;
+
+    return (
+      <ContractCard contractInfoList={contractInfoList} activeTab={activeTab} />
+    );
+  };
+
   async componentDidMount() {
+    const { LoadingActions } = this.props;
+    LoadingActions.startLoading(); // 로딩 시작
+
     /**
      * 데이터베이스와 블록체인 네트워크로부터 정보를 받아온다
      * state에 정보를 채운다
      */
 
     // 현재 브라우저에 접속한 유저의 어카운트 계정 인스턴스 생성
-    const { accountInstance } = await Web3User.getAccountInfo();
+    const { accountInstance } = await CaverUser.getAccountInfo();
     this.setState({ accountInstance });
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
-    const contractsLength = await Web3Contract.getContractsLength(
-      accountInstance
-    );
+    const contractsLength = CaverContract.getContractsLength(accountInstance);
 
     // 유저가 포함된 컨트랙트들을 state에 추가
     for (let i = 0; i < contractsLength; i++) {
-      this.addContractInfoAt(accountInstance, i);
+      await this.addContractInfoAt(accountInstance, i);
     }
+    LoadingActions.stopLoading(); // 로딩 끝
 
     // state 제대로 들어갔나 확인
     this.state.contractInfoList.forEach(contractInfo => {
@@ -172,56 +209,57 @@ class ContractTemplate extends Component {
   }
 
   render() {
-    const {
-      activeTab,
-      activeType, // 목록형인지, 카드형인지
-      handleTabSelect,
-      handleTypeSelect,
-      isJunggae,
-      changeState
-    } = this.props;
+    const { activeTab, handleTabSelect, changeState, isLoading } = this.props;
     const {
       contractModal,
       accountAddress,
       contractIndex,
-      newContractState,
+      newContractStep,
       itemType
     } = this.state;
 
     return (
-      <div
-        className="ContractTemplate"
-        style={
-          activeTab === 'review'
-            ? { backgroundColor: '#fff' }
-            : { backgroundColor: '#fafafa' }
-        }
-      >
+      <div className="ContractTemplate">
         <div className="container content">
           <ContractTab
             activeTab={activeTab}
-            activeType={activeType}
             handleTabSelect={handleTabSelect}
-            handleTypeSelect={handleTypeSelect}
-            activeContractsNum={this.state.activeContractsNum}
-            completedContractsNum={this.state.completedContractsNum}
-            isJunggae={isJunggae}
           />
 
-          <ContractTabContent
-            activeTab={activeTab}
-            activeType={activeType}
-            contractInfoList={this.state.contractInfoList}
-            accountInstance={this.state.accountInstance}
-            handleSelect={this.handleToggleModal}
-          />
+          <div className="control">
+            {activeTab === 'ongoing' ? (
+              <span>진행중 거래 {this.state.activeContractsNum}건</span>
+            ) : (
+              <span>완료된 거래 {this.state.completedContractsNum}건</span>
+            )}
+            <button className="upload">
+              <Link to="/contract/edit">거래 올리기</Link>
+            </button>
+          </div>
+
+          {/* 거래가 존재하지 않으면 */}
+          {this.isNoList() && (
+            <div className="no-list">
+              <img src={NoListImage} alt="no list" />
+              등록된 거래가 없습니다.
+            </div>
+          )}
+
+          {/* 거래가 존재하면서 로딩 중이면 로딩 인디케이터 띄움 */}
+          {!this.isNoList() && (
+            <div className="loading-wrapper">
+              {isLoading && <Loading />}
+              {this.getContractCard()}
+            </div>
+          )}
+          <Pagination />
 
           {contractModal && (
             <ContractModal
               onClose={this.handleToggleModal}
               accountAddress={accountAddress}
               contractIndex={contractIndex}
-              newContractState={newContractState}
+              newContractStep={newContractStep}
               itemType={itemType}
               changeState={changeState}
               watchUpdateEvent={this.watchUpdateEvent}
@@ -233,4 +271,9 @@ class ContractTemplate extends Component {
   }
 }
 
-export default ContractTemplate;
+export default connect(
+  ({ loading }) => ({ isLoading: loading.isLoading }),
+  dispatch => ({
+    LoadingActions: bindActionCreators(loadingActions, dispatch)
+  })
+)(ContractTemplate);

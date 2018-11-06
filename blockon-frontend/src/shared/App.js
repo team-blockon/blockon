@@ -6,6 +6,7 @@ import {
   Search,
   Contract,
   ContractUpload,
+  ContractDetail,
   MyPage,
   Pricing,
   Auth
@@ -20,9 +21,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from 'store/modules/user';
 
-import CaverJs from 'caver-js';
+import caver from 'lib/caver';
 import blockonABI from 'abi/blockon_abi';
-import * as Web3Utils from 'lib/web3/utils';
 
 /**
  * 서버와 클라이언트에서 공용으로 사용하는 컴포넌트
@@ -38,18 +38,15 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    window.caver = new CaverJs('http://52.79.254.194:8551'); // caver 객체 생성
-    let { caver } = window;
-
     this.initializeUserInfo();
 
     window.blockon = new caver.klay.Contract(
       blockonABI,
-      '0x6bd496d462d7500e7a4275a3186b735331281ec3'
+      '0x88b1ac416f4634a5d576166cdeeaeb472a652625'
     );
 
     // 아이디와 비번을 치고 로그인하면, DB에서 디폴트어카운트를 받아와서 설정해줘야 한다.
-    // caver.klay.defaultAccount = "받아온 키스토어에서 퍼블릭어드레스 뽑은것"
+    caver.klay.defaultAccount = '0x88e5838c0089d77da47848b727bd75950427639a';
   }
 
   render() {
@@ -70,6 +67,11 @@ class App extends Component {
           <PrivateRoute
             path="/contract/edit"
             component={ContractUpload}
+            isLogged={isLogged}
+          />
+          <PrivateRoute
+            path="/contract/:contractNo"
+            component={ContractDetail}
             isLogged={isLogged}
           />
           <PrivateRoute path="/mypage" component={MyPage} isLogged={isLogged} />

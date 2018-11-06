@@ -1,0 +1,43 @@
+.InputWithLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & + & {
+    /* 인접한 뒷 Wrapper에 적용 */
+    margin-top: 30.6px;
+  }
+  .label {
+    //flex-basis: 120px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #222222;
+  }
+  .inputContainer {
+    display: flex;
+
+    input {
+      width: 200px;
+      border: 1px solid #e2e2e2;
+      outline: none;
+      line-height: 34px;
+      font-size: 14px;
+      font-weight: 300;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+    input.inputWithBtn {
+      width: 150px;
+    }
+    button {
+      width: 50px;
+      border: 0;
+      outline: none;
+      background-color: #4e5379;
+      color: #fff;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+  }
+
+}

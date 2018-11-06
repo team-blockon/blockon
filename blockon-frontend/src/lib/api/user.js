@@ -1,10 +1,10 @@
 import defaultClient from 'lib/defaultClient';
 
-export const updateAccountAddressByEthAddress = (
+export const updateAccountAddressByKlaytnAddress = (
   accountAddress,
-  ethAddress
+  klaytnAddress
 ) => {
-  return defaultClient.put(`/api/user/${ethAddress}/address`, {
+  return defaultClient.put(`/api/user/${klaytnAddress}/address`, {
     accountAddress
   });
 };
@@ -15,9 +15,9 @@ export const getEmailList = value => {
   });
 };
 
-export const getAccountByEthAddress = ethAddress => {
+export const getAccountByKlaytnAddress = klaytnAddress => {
   return defaultClient.post('/api/user', {
-    ethAddress
+    klaytnAddress
   });
 };
 
@@ -27,8 +27,12 @@ export const getAccountByEamil = email => {
   });
 };
 
-export const updateAccountByEthAddress = ({ ethAddress, profile, email }) => {
-  return defaultClient.put(`/api/user/${ethAddress}`, {
+export const updateAccountByKlaytnAddress = ({
+  klaytnAddress,
+  profile,
+  email
+}) => {
+  return defaultClient.put(`/api/user/${klaytnAddress}`, {
     profile,
     email
   });

@@ -1,11 +1,16 @@
 .Chat {
+  float: right;
   display: flex;
   flex-direction: column;
   height: 350px;
+  width: 274px;
   background-color: #fff;
   padding: 0.3rem;
   margin-bottom: 1rem;
   border: 1px solid #ebebeb;
+  margin-top: 135px;
+  position: sticky;
+  top: 200px;
 
   .message-list {
     flex: 1;

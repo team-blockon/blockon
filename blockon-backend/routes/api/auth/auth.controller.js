@@ -6,6 +6,11 @@ const fs = require('fs');
 const EmailAuth = require('../../../models/emailAuth');
 const nodemailer = require('nodemailer');
 const randomstring = require('randomstring');
+const CryptoUtil = require('../../util/CryptoUtil');
+const Caver = require('caver-js');
+
+const caver = new Caver('ws://52.79.254.194:8552');
+const blockonAbi = require('../../../abi/blockon_abi');
 
 const DIR_PATH = path.resolve(__dirname, '../../../uploads');
 
@@ -50,12 +55,12 @@ exports.profile = (req, res) => {
   };
 
   const profileUpload = new Promise((resolve, reject) => {
-    if (fs.existsSync(DIR_PATH) === false) {
+    if (!fs.existsSync(DIR_PATH)) {
       fs.mkdirSync(DIR_PATH);
     }
     upload(req, res, err => {
       if (err) reject(err);
-      if (!!req.file === false) reject(new Error('file type error'));
+      if (!req.file) reject(new Error('file type error'));
       resolve(req.file.filename);
     });
   });
@@ -82,54 +87,56 @@ exports.profile = (req, res) => {
 */
 
 exports.register = async (req, res) => {
-  const { ethAddress, profileFilename, username, email } = req.body;
-  const createAccount = async () => {
-    const emailAuth = await EmailAuth.findOne({ email });
-    let account = null;
-    if (emailAuth.status === 1) {
-      account = await Account.create(
-        ethAddress,
-        profileFilename,
-        username,
-        email
-      );
-      await EmailAuth.updateStatus(email, 2);
-    }
-    return account;
-  };
+  const { profileFilename, username, email, password } = req.body;
+  //아이디 중복체크
+  const account = await Account.findOne({ email });
+  if (!!account) {
+    res.json({
+      result: false
+    });
+  } else {
+    const caverAccount = caver.klay.accounts.create(
+      '12345678901234567890123456789012'
+    );
+    const keyStore = caver.klay.accounts.encrypt(
+      caverAccount.privateKey,
+      password
+    );
 
-  const assignAdmin = async account => {
-    if ((await Account.countDocuments({}).exec()) === 1) {
-      await account.assignAdmin();
-      return true;
-    }
-    return false;
-  };
+    const blockonContract = new caver.klay.Contract(
+      blockonAbi,
+      '0x88b1ac416f4634a5d576166cdeeaeb472a652625'
+    );
 
-  try {
-    const accounts = await Account.findByEthAddress(ethAddress);
-    if (!!accounts === false) {
-      const newAccount = await createAccount();
-      if (!!newAccount) {
-        const isAdmin = await assignAdmin(newAccount);
+    blockonContract.methods
+      .createAccount(caverAccount.address)
+      .send({
+        from: '0xf83967363e197cfebf6daeec8e09751fc8fa2d06',
+        gas: 300000
+      })
+      .on('error', console.error);
+
+    blockonContract.events.CreateAccount(
+      { filter: { publicAddress: caverAccount.address }, fromBlock: 0 },
+      async (error, event) => {
+        console.log('event error:', error);
+        console.log('event:', event);
+
+        const accountAddress = event.returnValues.accountAddress;
+        const pwdHash = CryptoUtil.hashing(password);
+        await Account.create(
+          keyStore,
+          accountAddress,
+          profileFilename,
+          username,
+          email,
+          pwdHash
+        );
         res.json({
-          message: 'registered successfully',
-          admin: isAdmin
-        });
-      } else {
-        res.status(409).json({
-          message: 'invalid email'
+          result: true
         });
       }
-    } else {
-      res.status(409).json({
-        message: 'already sign up'
-      });
-    }
-  } catch (err) {
-    res.status(409).json({
-      message: err
-    });
+    );
   }
 };
 
