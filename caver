@@ -1,0 +1,26 @@
+<transaction 보내기>
+    - Blockon.createAccount()
+    - Blockon.createCountract()
+
+// db로 부터 받아오는 유틸리티 함수를 만들어야한다.
+const privateKey = '0x0ea86a4535195cac0e03cdc8503ead8002e480dac8b6e18208d03a5666bab3dc';
+const address = '0x54718d2EAbeA330f3EA9b9F604f243c404392935';
+
+// 트랜잭션 오브젝트 생성, const로 해도되는지 확인
+let txParams = {
+  nonce : caver.utils.toHex(0),     // 0으로 하면 자동으로 입력될것인가??
+  from: address,                    // 자신의 퍼블릭 어드레스
+  gasPrice: 25000000000,            // 고정
+  gasLimit: 9900000,                // 이건 어떻게 놔야할지.. 해보고 안되면 estimateGas를 한후 그값으로
+  to: '0x7D42EA99f2e72474B70B596130cFC1F4aa080069',
+  value: caver.utils.toHex(caver.utils.toPeb("3", "KLAY")),     //value가 전달될것은 없을듯
+  chainId: 1000,
+};
+
+caver.klay.accounts.signTransaction(txParams, privateKey)
+  .then(({ rawTransaction }) => {
+    caver.klay.sendSignedTransaction(rawTransaction)
+       .once('confirmation', (confirmationNumber, receipt) => {
+          // 컴펌되었을때 해줄 행동
+        });      
+  });
