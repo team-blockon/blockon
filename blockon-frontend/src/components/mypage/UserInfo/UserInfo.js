@@ -14,9 +14,7 @@ class UserInfo extends Component {
   state = {
     file: null,
     id: '',
-    password: '',
-    username: '',
-    email: ''
+    password: ''
   };
 
   handleChange = event => {
@@ -35,7 +33,13 @@ class UserInfo extends Component {
 
   render() {
     const { file, id, password } = this.state;
-    const { profile, username, email, handleChange } = this.props;
+    const {
+      profile,
+      username,
+      email,
+      handleChange,
+      sendAuthEmail
+    } = this.props;
 
     return (
       <div className="UserInfo">
@@ -105,7 +109,7 @@ class UserInfo extends Component {
           value={email}
           placeholder="이메일"
           onChange={handleChange}
-          sendAuthEmail={this.sendAuthEmail}
+          sendAuthEmail={sendAuthEmail}
         />
         <div className="action">
           <button onClick={this.handleSubmit}>확인</button>

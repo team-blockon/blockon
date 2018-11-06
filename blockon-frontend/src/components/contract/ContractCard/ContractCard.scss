@@ -84,6 +84,11 @@
       padding: 12px 0;
     }
   }
+
+  &::after {
+    content: "";
+    flex-basis: 270px;
+  }
 }
 
 .StepBadge {
