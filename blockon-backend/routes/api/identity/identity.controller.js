@@ -21,12 +21,12 @@ const imageType = ['jpg', 'png', 'jpeg'];
  */
 exports.uploadIdentity = async (req, res) => {
   // const { ethAddress } = req.body;
-  const ethAddress ='abcdefaad1daaaa'; //테스트용
+  const ethAddress = 'abcdefaad1daaaa'; //테스트용
   const upload = multer({
     storage: multer.memoryStorage(),
     fileFilter: async (req, file, cb) => {
       // cb(null, FileTypeCheck.uploadFileType(file.mimetype, imageType));
-        cb(null, true);
+      cb(null, true);
     }
   }).single('identity'); // req.file은 identity 필드의 파일 정보
 
@@ -79,48 +79,53 @@ exports.uploadIdentity = async (req, res) => {
  * @returns {Promise<void>}
  */
 exports.check = async (req, res) => {
-    const upload = multer({
-        storage: multer.memoryStorage(),
-        fileFilter: async (req, file, cb) => {
-            // cb(null, FileTypeCheck.uploadFileType(file.mimetype, imageType));
-            cb(null,true);
-        }
-    }).single('identity');
+  const upload = multer({
+    storage: multer.memoryStorage(),
+    fileFilter: async (req, file, cb) => {
+      // cb(null, FileTypeCheck.uploadFileType(file.mimetype, imageType));
+      cb(null, true);
+    }
+  }).single('identity');
 
-    const client = new vision.ImageAnnotatorClient();
+  const client = new vision.ImageAnnotatorClient();
 
-    await upload(req, res, async err => {
-        client
-            .textDetection(req.file.buffer)
-            .then(results => {
-                let text = results[0].fullTextAnnotation.text;
-                text = text.replace(/\s/g,'');
-                const numberIndex = text.indexOf("자격증번호:");
-                const agentNumber = text.slice(numberIndex + 6, numberIndex + 19);
-                const nameIndex = text.indexOf("성명");
-                const agentName = text.slice(nameIndex + 3, nameIndex + 6);
-                const birthIndex = text.indexOf("생년월일");
-                const birth = text.slice(birthIndex + 5, birthIndex + 14)
-                    .replace("년","-").replace("월","-");
+  await upload(req, res, async err => {
+    client
+      .textDetection(req.file.buffer)
+      .then(results => {
+        let text = results[0].fullTextAnnotation.text;
+        text = text.replace(/\s/g, '');
+        const numberIndex = text.indexOf('자격증번호:');
+        const agentNumber = text.slice(numberIndex + 6, numberIndex + 19);
+        const nameIndex = text.indexOf('성명');
+        const agentName = text.slice(nameIndex + 3, nameIndex + 6);
+        const birthIndex = text.indexOf('생년월일');
+        const birth = text
+          .slice(birthIndex + 5, birthIndex + 14)
+          .replace('년', '-')
+          .replace('월', '-');
 
-                //취득일 추출
-                let acquireDateIndex = text.indexOf("증명합니다.");
-                let acquireDate = text.slice(acquireDateIndex + 6);
-                acquireDateIndex = acquireDate.indexOf("년");
-                acquireDate = acquireDate.slice(acquireDateIndex - 4, acquireDateIndex + 5)
-                    .replace("년","-").replace("월","-").replace("일","");
+        //취득일 추출
+        let acquireDateIndex = text.indexOf('증명합니다.');
+        let acquireDate = text.slice(acquireDateIndex + 6);
+        acquireDateIndex = acquireDate.indexOf('년');
+        acquireDate = acquireDate
+          .slice(acquireDateIndex - 4, acquireDateIndex + 5)
+          .replace('년', '-')
+          .replace('월', '-')
+          .replace('일', '');
 
-                res.json({
-                    agentNumber,
-                    agentName,
-                    birth,
-                    acquireDate
-                })
-            })
-            .catch(err => {
-                console.error('ERROR:', err);
-            });
-    });
+        res.json({
+          agentNumber,
+          agentName,
+          birth,
+          acquireDate
+        });
+      })
+      .catch(err => {
+        console.error('ERROR:', err);
+      });
+  });
 };
 
 /**
@@ -130,29 +135,32 @@ exports.check = async (req, res) => {
  * @returns {Promise<void>}
  */
 exports.isRightIdentity = async (req, res) => {
+  const { agentName, name, agentNumber } = req.query;
 
-  const {agentName, name, agentNumber} = req.query;
+  const url =
+    'http://apis.data.go.kr/1611000/nsdi/EstateBrkpgService/attr/getEBBrokerInfo'; /*URL*/
+  let queryParams =
+    '?' +
+    'ServiceKey=gJBPzjIAuMVVKB%2Bk5uYkqBP6yFZAvD0kYsIzKpBhI5FgEPwWDPhPXBO07%2BzvCmkdQtxOhUV3H8Ge%2FB0Aasxf7g%3D%3D' /*Service Key*/ +
+    // + '&bsnmCmpnm=' + encodeURIComponent(agentName) /*사업자상호*/
+    '&brkrNm=' +
+    encodeURIComponent(name) /*중개업자명*/ +
+    '&format=json' /*응답결과 형식(xml 또는 json)*/ +
+    '&numOfRows=100' /*검색건수*/ +
+    '&pageNo=1'; /*페이지번호*/
 
-  const url = 'http://apis.data.go.kr/1611000/nsdi/EstateBrkpgService/attr/getEBBrokerInfo'; /*URL*/
-  let queryParams = '?' + 'ServiceKey=gJBPzjIAuMVVKB%2Bk5uYkqBP6yFZAvD0kYsIzKpBhI5FgEPwWDPhPXBO07%2BzvCmkdQtxOhUV3H8Ge%2FB0Aasxf7g%3D%3D' /*Service Key*/
-  // + '&bsnmCmpnm=' + encodeURIComponent(agentName) /*사업자상호*/
-  + '&brkrNm=' + encodeURIComponent(name) /*중개업자명*/
-  + '&format=json' /*응답결과 형식(xml 또는 json)*/
-  + '&numOfRows=100' /*검색건수*/
-  + '&pageNo=1'; /*페이지번호*/
-
-  request(url + queryParams, "GET", (err, result, body) => {
-      console.log(JSON.parse(body).EBBrokers);
-      const info = JSON.parse(body).EBBrokers.field[0];
-      if(!!info) {
-          res.json({
-              result: agentNumber === info.crqfcNo
-          });
-      }else{
-          res.json({
-              result : false
-          });
-      }
+  request(url + queryParams, 'GET', (err, result, body) => {
+    console.log(JSON.parse(body).EBBrokers);
+    const info = JSON.parse(body).EBBrokers.field[0];
+    if (!!info) {
+      res.json({
+        result: agentNumber === info.crqfcNo
+      });
+    } else {
+      res.json({
+        result: false
+      });
+    }
   });
 };
 
@@ -164,9 +172,9 @@ exports.isRightIdentity = async (req, res) => {
 const getIdentity = async ethAddress => {
   const identity = await Identity.findOne({ ethAddress });
   try {
-      return await ipfs.get(identity.idHash);
-  }catch (e) {
-      return e;
+    return await ipfs.get(identity.idHash);
+  } catch (e) {
+    return e;
   }
 };
 

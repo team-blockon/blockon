@@ -52,11 +52,18 @@ class MyPageTemplate extends Component {
 
   sendAuthEmail = async () => {
     const { email } = this.state;
-    await AuthAPI.sendAuthEmail({ email });
-    notification['success']({
-      message: '입력하신 이메일로 인증 메일이 발송되었습니다.',
-      duration: 3
-    });
+    const res = await AuthAPI.sendAuthEmail({ email });
+    if (res.data.result) {
+      notification['success']({
+        message: '입력하신 이메일로 인증 메일이 발송되었습니다.',
+        duration: 3
+      });
+    } else {
+      notification['error']({
+        message: '이미 존재하는 이메일입니다',
+        duration: 3
+      });
+    }
   };
 
   handleSubmit = () => {
@@ -107,6 +114,7 @@ class MyPageTemplate extends Component {
               username={username}
               email={email}
               handleChange={this.handleChange}
+              sendAuthEmail={this.sendAuthEmail}
             />
           )}
           {activeTab === 'auth_agent' && (
