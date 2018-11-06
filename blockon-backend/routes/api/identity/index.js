@@ -1,11 +1,12 @@
 const router = require('express').Router();
 
-const { uploadIdentity, referenceIdentity,downloadIdentity, isRightIdentity, check } = require('./identity.controller');
+const { uploadIdentity, referenceIdentity,downloadIdentity, setAgent } = require('./identity.controller');
 
 router.post('/', uploadIdentity);
-router.get('/:ethAddress', referenceIdentity);
-router.get('/download/:ethAddress',downloadIdentity);
-router.get('/check/agent', isRightIdentity);
-router.post('/check/pdf', check);
+router.get('/:accountAddress', referenceIdentity);
+router.get('/download/:accountAddress',downloadIdentity);
+router.post('/setAgent', setAgent);
+// router.get('/check/agent', isRightIdentity);
+// router.post('/check/pdf', check);
 
 module.exports = router;
