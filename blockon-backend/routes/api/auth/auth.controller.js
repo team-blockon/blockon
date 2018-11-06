@@ -9,10 +9,7 @@ const randomstring = require('randomstring');
 const CryptoUtil = require('../../util/CryptoUtil');
 const Caver = require('caver-js');
 
-const caverHttp = new Caver("http://52.79.254.194:8551");
-const caver = new Caver("ws://52.79.254.194:8546" );
-// caver.klay.Contract.setProvider("ws://52.79.254.194:8546");
-// caver.setProvider(new Caver.providers.WebsocketProvider('ws://52.79.254.194:8546'));
+const caver = new Caver('ws://52.79.254.194:8552');
 const blockonAbi = require('../../../abi/blockon_abi');
 
 const DIR_PATH = path.resolve(__dirname, '../../../uploads');
@@ -91,46 +88,57 @@ exports.profile = (req, res) => {
 
 exports.register = async (req, res) => {
   const { profileFilename, username, email, password } = req.body;
-    //아이디 중복체크
-    let account = await Account.findOne({email});
-    if(!!account){
+  //아이디 중복체크
+  const account = await Account.findOne({ email });
+  if (!!account) {
+    res.json({
+      result: false
+    });
+  } else {
+    const caverAccount = caver.klay.accounts.create(
+      '12345678901234567890123456789012'
+    );
+    const keyStore = caver.klay.accounts.encrypt(
+      caverAccount.privateKey,
+      password
+    );
+
+    const blockonContract = new caver.klay.Contract(
+      blockonAbi,
+      '0x88b1ac416f4634a5d576166cdeeaeb472a652625'
+    );
+
+    blockonContract.methods
+      .createAccount(caverAccount.address)
+      .send({
+        from: '0xf83967363e197cfebf6daeec8e09751fc8fa2d06',
+        gas: 300000
+      })
+      .on('error', console.error);
+
+    blockonContract.events.CreateAccount(
+      { filter: { publicAddress: caverAccount.address }, fromBlock: 0 },
+      async (error, event) => {
+        console.log('event error:', error);
+        console.log('event:', event);
+
+        const accountAddress = event.returnValues.accountAddress;
+        const pwdHash = CryptoUtil.hashing(password);
+        await Account.create(
+          keyStore,
+          accountAddress,
+          profileFilename,
+          username,
+          email,
+          pwdHash
+        );
         res.json({
-            result : false
+          result: true
         });
-    }else {
-        const caverAccount = await caver.klay.accounts.create("12345678901234567890123456789012");
-        const keyStore = await caver.klay.accounts.encrypt(caverAccount.privateKey, password);
-
-        const blockonContract = new caver.klay.Contract(blockonAbi, "0x88b1ac416f4634a5d576166cdeeaeb472a652625");
-
-
-        let accountAddress = null;
-        blockonContract.methods.createAccount(caverAccount.address).send({
-            from: "0xf83967363e197cfebf6daeec8e09751fc8fa2d06",
-            gas: 300000
-        });
-
-        console.log(blockonContract.events)
-        blockonContract.events.CreateAccount({filter:{publicAddress: caverAccount.address}, fromBlock: 0}, async (error, event) => {
-          console.log(error);
-          console.log(event);
-            accountAddress = event.returnValues.accountAddress;
-            const pwdHash = await CryptoUtil.hashing(password);
-            await Account.create(
-                keyStore,
-                accountAddress,
-                profileFilename,
-                username,
-                email,
-                pwdHash
-            );
-            res.json({
-                result: true
-            });
-        });
-    }
+      }
+    );
+  }
 };
-
 
 /*
     POST /api/auth/login

@@ -10,6 +10,7 @@
   "dependencies": {
     "@google-cloud/vision": "^0.22.1",
     "array-equal": "^1.0.0",
+    "caver-js": "^0.0.1-e",
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
