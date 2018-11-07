@@ -6,6 +6,7 @@ import accountABI from 'abi/account_abi';
 export const getAccountInfo = () => {
   return new Promise(async (resolve, reject) => {
     const defaultAccount = CaverUtils.getDefaultAccount();
+    if (!defaultAccount) return;
     const res = await UserAPI.getAccountByKlaytnAddress(defaultAccount);
 
     const accountAddress = res.data.accountAddress;

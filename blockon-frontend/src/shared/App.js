@@ -44,9 +44,6 @@ class App extends Component {
       blockonABI,
       '0x88b1ac416f4634a5d576166cdeeaeb472a652625'
     );
-
-    // 아이디와 비번을 치고 로그인하면, DB에서 디폴트어카운트를 받아와서 설정해줘야 한다.
-    caver.klay.defaultAccount = '0x88e5838c0089d77da47848b727bd75950427639a';
   }
 
   render() {

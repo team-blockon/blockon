@@ -1,3 +1,6 @@
+import * as CaverUtils from 'lib/caver/utils';
+import { getDefaultAccount } from './utils';
+
 /**
  * 계약 생성
  * @param {*} agentAddress 중개인 Account 컨트랙트 주소
@@ -14,7 +17,7 @@ export const create = (
   const { blockon } = window;
 
   return new Promise((resolve, reject) => {
-    blockon.createContract.sendTransaction(
+    blockon.methods.createContract().sendTransaction(
       /* 먼저 createAccount를 호출하고, 생성된 Account 컨트랙트의 주소를 넣음 */
       agentAddress,
       sellerAddress,
@@ -92,13 +95,13 @@ export const revokeConfirmationAt = ({
  */
 export const getContractsLength = accountInstance => {
   return new Promise((resolve, reject) => {
-    accountInstance.getContractsLength((error, result) => {
-      if (!error) {
-        resolve(result);
-      } else {
-        reject(error);
-      }
-    });
+    accountInstance.methods
+      .getContractsLength()
+      .call({ from: getDefaultAccount() })
+      .then(result => {
+        console.log(result);
+      });
+    // CaverUtils.sendTransaction(accountInstance, 'getContractsLength');
   });
 };
 
