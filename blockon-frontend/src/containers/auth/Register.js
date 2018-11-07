@@ -1,19 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { register, registerEvent } from 'store/modules/caver/auth';
+import { register } from 'store/modules/caver/auth';
 
 import AuthContent from 'components/auth/AuthContent';
-import InputWithLabel from 'components/auth/InputWithLabel';
+import InputWithLabel from 'components/common/InputWithLabel';
 import InputEmail from 'components/common/InputEmail';
 import AuthButton from 'components/auth/AuthButton';
 import Loading from 'components/common/Loading';
 
 import * as AuthAPI from 'lib/api/auth';
-import * as UserAPI from 'lib/api/user';
-import * as CaverUtils from 'lib/caver/utils';
 
-import { Upload, Icon, Button, notification, message } from 'antd';
+import { Upload, Icon, notification, message } from 'antd';
 
 /**
  * 프로필 사진 미리보기를 위한 base64 인코딩
@@ -30,8 +28,9 @@ class Register extends Component {
   state = {
     loading: false, // 프로필 사진 업로드 상태
     emailauth: false,
-    username: '',
     email: '',
+    password: '',
+    username: '',
     authNo: ''
   };
 
@@ -69,34 +68,22 @@ class Register extends Component {
       message.warning('이메일 인증을 진행해 주세요.');
       return;
     }
+    const { profileFilename, email, password, username } = this.state;
+    const { history } = this.props;
 
-    const { profileFilename, username, email } = this.state;
-    const defaultAccount = CaverUtils.getDefaultAccount();
-
-    /* 컨트랙트 내에서 계정 생성 성공시 이벤트를 받아 / 라우트로 리다이렉트 */
-    const { register, registerEvent, history } = this.props;
-
-    if (!defaultAccount || !email) {
+    if (!email || !password) {
       return;
     }
-    await register(defaultAccount);
-    await registerEvent(defaultAccount);
 
     // accountAddress를 제외한 나머지를 DB에 추가
-    await AuthAPI.register({
-      klaytnAddress: defaultAccount,
+    AuthAPI.register({
       profileFilename,
-      username,
-      email
+      email,
+      password,
+      username
+    }).then(res => {
+      history.push('/');
     });
-
-    const { accountAddress } = this.props;
-    await UserAPI.updateAccountAddressByKlaytnAddress(
-      accountAddress,
-      defaultAccount
-    );
-
-    history.push('/');
   };
 
   handleKeyPress = event => {
@@ -150,7 +137,7 @@ class Register extends Component {
   };
 
   render() {
-    const { imageUrl, username, email } = this.state;
+    const { imageUrl, email, password, username } = this.state;
     const { loading } = this.props;
 
     const uploadButton = (
@@ -187,14 +174,6 @@ class Register extends Component {
               )}
             </Upload>
           </div>
-          <InputWithLabel
-            label="이름"
-            type="text"
-            name="username"
-            value={username}
-            placeholder="이름"
-            onChange={this.handleChange}
-          />
           <InputEmail
             label="이메일"
             type="email"
@@ -203,6 +182,21 @@ class Register extends Component {
             placeholder="이메일"
             onChange={this.handleChange}
             sendAuthEmail={this.handleAuthEmail}
+          />
+          <InputWithLabel
+            label="비밀번호"
+            type="password"
+            name="password"
+            value={password}
+            placeholder="비밀번호"
+            onChange={this.handleChange}
+          />
+          <InputWithLabel
+            label="이름"
+            name="username"
+            value={username}
+            placeholder="이름"
+            onChange={this.handleChange}
           />
           <AuthButton onClick={this.handleRegister}>회원가입</AuthButton>
         </AuthContent>
@@ -216,5 +210,5 @@ export default connect(
     accountAddress: caverAuth.accountAddress,
     loading: pender.pending['caver/auth/REGISTER_EVENT']
   }),
-  { register, registerEvent }
+  { register }
 )(Register);

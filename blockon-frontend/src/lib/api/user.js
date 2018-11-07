@@ -16,13 +16,13 @@ export const getEmailList = value => {
 };
 
 export const getAccountByKlaytnAddress = klaytnAddress => {
-  return defaultClient.post('/api/user', {
+  return defaultClient.post('/api/user/find/klaytn', {
     klaytnAddress
   });
 };
 
 export const getAccountByEamil = email => {
-  return defaultClient.post('/api/user', {
+  return defaultClient.post('/api/user/find/email', {
     email
   });
 };

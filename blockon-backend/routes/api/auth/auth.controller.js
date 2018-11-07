@@ -79,15 +79,15 @@ exports.profile = (req, res) => {
 /*
     POST /api/auth/register
     {
-      ethAddress,
       profileFilename,
-      username,
-      email
+      email,
+      password,
+      username
     }
 */
 
 exports.register = async (req, res) => {
-  const { profileFilename, username, email, password } = req.body;
+  const { profileFilename, email, password, username } = req.body;
   //아이디 중복체크
   const account = await Account.findOne({ email });
   if (!!account) {
@@ -163,17 +163,17 @@ exports.register = async (req, res) => {
 */
 
 exports.login = (req, res) => {
-  const { ethAddress } = req.body;
+  const { email, password } = req.body;
+  const pwdHash = CryptoUtil.hashing(password);
   const secret = process.env.SECRET_KEY;
 
   // 유저의 정보를 확인하고, token 발급
   const check = account => {
-    const { profile, isJunggae } = account;
+    const { _id, profile, isJunggae, keyStore } = account;
     const loggedInfo = {
       profile,
       isJunggae
     };
-
     if (!account) {
       // 유저가 존재하지 않음
       throw new Error('login failed');
@@ -182,9 +182,8 @@ exports.login = (req, res) => {
       const p = new Promise((resolve, reject) => {
         jwt.sign(
           {
-            _id: account._id,
-            admin: account.admin,
-            ethAddress
+            _id,
+            keyStore
           },
           secret,
           {
@@ -194,7 +193,7 @@ exports.login = (req, res) => {
           },
           (err, token) => {
             if (err) reject(err);
-            resolve({ token, loggedInfo });
+            resolve({ token, loggedInfo, keyStore });
           }
         );
       });
@@ -203,12 +202,12 @@ exports.login = (req, res) => {
   };
 
   // token 응답
-  const respond = ({ token, loggedInfo }) => {
+  const respond = ({ token, loggedInfo, keyStore }) => {
     res.cookie('access_token', token, {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 유효기간 7일
       httpOnly: true
     });
-    res.json(loggedInfo);
+    res.json({ loggedInfo, keyStore });
   };
 
   // 에러 발생
@@ -219,7 +218,7 @@ exports.login = (req, res) => {
   };
 
   // 유저 찾기
-  Account.findByEthAddress(ethAddress)
+  Account.findOne({ email, pwdHash })
     .then(check)
     .then(respond)
     .catch(onError);

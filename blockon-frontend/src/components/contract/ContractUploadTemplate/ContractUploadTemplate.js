@@ -75,6 +75,9 @@ class ContractUploadTemplate extends Component {
 
     // 메소드 호출 전 null 체크
     if (!agentAddress || !sellerAddress || !buyerAddress || !type) {
+      console.log('agentAddress', agentAddress);
+      console.log('sellerAddress', sellerAddress);
+      console.log('buyerAddress', buyerAddress);
       console.log(
         'agentAddress or sellerAddress or buyerAddress or type is null!'
       );

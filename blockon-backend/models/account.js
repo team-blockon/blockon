@@ -22,10 +22,14 @@ const Account = new Schema({
 
 // Account 도큐먼트 생성
 Account.statics.create = function(
-  keyStore,accountAddress, profileFilename,
-  username, email, pwdHash
+  keyStore,
+  accountAddress,
+  profileFilename,
+  username,
+  email,
+  pwdHash
 ) {
-    const account = new this({
+  const account = new this({
     keyStore,
     accountAddress,
     profile: {

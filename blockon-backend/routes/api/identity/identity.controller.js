@@ -5,7 +5,7 @@ const Identity = require('../../../models/identity');
 const FileTypeCheck = require('../../util/FileTypeCheck');
 
 const Caver = require('caver-js');
-const caver = new Caver("http://52.79.254.194:8551");
+const caver = new Caver('http://52.79.254.194:8551');
 
 const blockonAbi = require('../../../abi/blockon_abi');
 const Account = require('../../../models/account');
@@ -19,11 +19,11 @@ const ipfs = ipfsAPI({ host: HOST, port: PORT, protocol: 'https' });
 //허용할 이미지타입
 const imageType = ['jpg', 'png', 'jpeg'];
 const upload = multer({
-    storage: multer.memoryStorage(),
-    fileFilter: async (req, file, cb) => {
-        cb(null, FileTypeCheck.uploadFileType(file.mimetype, imageType));
-        // cb(null, true);
-    }
+  storage: multer.memoryStorage(),
+  fileFilter: async (req, file, cb) => {
+    cb(null, FileTypeCheck.uploadFileType(file.mimetype, imageType));
+    // cb(null, true);
+  }
 }).single('identity'); // req.file은 identity 필드의 파일 정보
 /**
  * 공인중개사 자격증을 업로드한다.
@@ -174,7 +174,6 @@ exports.check = async (req, res) => {
 //     }
 //   });
 const isRightIdentity = (agentNumber, agentName, birth, acquireDate) => {
-
   // const {agentName, name, agentNumber} = req.query;
   //
   // const url = 'http://apis.data.go.kr/1611000/nsdi/EstateBrkpgService/attr/getEBBrokerInfo'; /*URL*/
@@ -198,31 +197,37 @@ const isRightIdentity = (agentNumber, agentName, birth, acquireDate) => {
   //         });
   //     }
   // });
-    return true;
+  return true;
 };
 
 exports.setAgent = async (req, res) => {
-    const {agentNumber, agentName, birth, acquireDate, email} = req.body;
+  const { agentNumber, agentName, birth, acquireDate, email } = req.body;
 
-    if(isRightIdentity(agentNumber,agentName,birth,acquireDate)){
-      const account = await Account.findOne({email});
-      if(!!account) {
-          const blockonContract = await new caver.klay.Contract(blockonAbi, "0x88b1ac416f4634a5d576166cdeeaeb472a652625");
-          const accountAddress = account.accountAddress;
-          console.log(blockonContract);
-          console.log(account);
-          await blockonContract.methods.athorizeAsAgent(accountAddress).send({
-              from : "0xf83967363e197cfebf6daeec8e09751fc8fa2d06",
-              gas: 300000
-          }).on('confirmation', async (confirmationNumber,receipt) => {
-              console.log(receipt);
-              await Account.update({email}, {isAgent : true});
-          });
-      }
+  if (isRightIdentity(agentNumber, agentName, birth, acquireDate)) {
+    const account = await Account.findOne({ email });
+    const accountAddress = account.accountAddress;
+
+    if (!!account) {
+      const blockonContract = new caver.klay.Contract(
+        blockonAbi,
+        '0x88b1ac416f4634a5d576166cdeeaeb472a652625'
+      );
+
+      blockonContract.methods
+        .athorizeAsAgent(accountAddress)
+        .send({
+          from: '0xf83967363e197cfebf6daeec8e09751fc8fa2d06',
+          gas: 300000
+        })
+        .on('confirmation', async (confirmationNumber, receipt) => {
+          console.log(receipt);
+          await Account.update({ email }, { isAgent: true });
+        });
     }
-    res.json({
-        result : true
-    });
+  }
+  res.json({
+    result: true
+  });
 };
 
 /**
