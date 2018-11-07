@@ -95,48 +95,62 @@ exports.register = async (req, res) => {
       result: false
     });
   } else {
-    const caverAccount = caver.klay.accounts.create(
-      '12345678901234567890123456789012'
-    );
-    const keyStore = caver.klay.accounts.encrypt(
-      caverAccount.privateKey,
-      password
-    );
+    //email 인증 상태 확인
+    const emailAuth = await EmailAuth.findOne({ email });
 
-    const blockonContract = new caver.klay.Contract(
-      blockonAbi,
-      '0x88b1ac416f4634a5d576166cdeeaeb472a652625'
-    );
+    if(emailAuth.status === 1){
+      //이메일 인증 가입처리
+      await EmailAuth.updateStatus(email, 2);
 
-    blockonContract.methods
-      .createAccount(caverAccount.address)
-      .send({
-        from: '0xf83967363e197cfebf6daeec8e09751fc8fa2d06',
-        gas: 300000
-      })
-      .on('error', console.error);
-
-    blockonContract.events.CreateAccount(
-      { filter: { publicAddress: caverAccount.address }, fromBlock: 0 },
-      async (error, event) => {
-        console.log('event error:', error);
-        console.log('event:', event);
-
-        const accountAddress = event.returnValues.accountAddress;
-        const pwdHash = CryptoUtil.hashing(password);
-        await Account.create(
-          keyStore,
-          accountAddress,
-          profileFilename,
-          username,
-          email,
-          pwdHash
+        const caverAccount = caver.klay.accounts.create(
+            '12345678901234567890123456789012'
         );
-        res.json({
-          result: true
-        });
-      }
-    );
+        const keyStore = caver.klay.accounts.encrypt(
+            caverAccount.privateKey,
+            password
+        );
+
+        const blockonContract = new caver.klay.Contract(
+            blockonAbi,
+            '0x88b1ac416f4634a5d576166cdeeaeb472a652625'
+        );
+
+        blockonContract.methods
+            .createAccount(caverAccount.address)
+            .send({
+                from: '0xf83967363e197cfebf6daeec8e09751fc8fa2d06',
+                gas: 300000
+            })
+            .on('error', console.error);
+
+        blockonContract.events.CreateAccount(
+            { filter: { publicAddress: caverAccount.address }, fromBlock: 0 },
+            async (error, event) => {
+                console.log('event error:', error);
+                console.log('event:', event);
+
+                const accountAddress = event.returnValues.accountAddress;
+                const pwdHash = CryptoUtil.hashing(password);
+                await Account.create(
+                    keyStore,
+                    accountAddress,
+                    profileFilename,
+                    username,
+                    email,
+                    pwdHash
+                );
+
+                res.json({
+                    result: true
+                });
+            }
+        );
+    }else{
+      //인증받지 않았거나 가입된 상태일경우
+      res.json({
+          result: false
+      });
+    }
   }
 };
 
@@ -236,16 +250,14 @@ exports.sendAuthEmail = async (req, res) => {
     }
   });
 
-  const token = randomstring.generate(8);
-  const uri = `${
-    process.env.BLOCKON_URI
-  }/api/auth/authEmail/?email=${email}&token=${token}`;
+  const token = randomstring.generate(6);
+  const uri = `${process.env.BLOCKON_URI}/api/auth/authEmail/?email=${email}&token=${token}`;
   const mailOptions = {
     from: process.env.EMAIL_ID,
     to: email,
 
     subject: '안녕하세요, BlockOn 입니다. 이메일 인증을 해주세요.',
-    html: `<p>BlockOn Email 인증</p><a href="${uri}">인증하기</a>`
+    html: `<p>BlockOn Email 인증</p><br/>인증번호:${token}`
   };
 
   const createEmailAuth = async () => {
@@ -287,28 +299,48 @@ exports.sendAuthEmail = async (req, res) => {
  * @param res
  */
 exports.authEmail = async (req, res) => {
-  const { email, token } = req.query;
+  const { email, token } = req.body;
   const updateEmailStatus = async () => {
     const emailAuth = await EmailAuth.findOne({ email });
+    console.log(emailAuth);
     switch (emailAuth.status) {
     case 0:
-      //if (emailAuth.token === token) {
+      if (emailAuth.token === token) {
       await EmailAuth.updateStatus(email, 1);
-      return 'certification';
-      //} else {
-      //  return 'invalid token';
-      //}
+      return 1;
+      } else {
+       return 2;
+      }
     case 1:
-      return 'already certification';
+      return 3;
     case 2:
-      return 'already signed up';
+      return 4;
     default:
     }
   };
 
+  // 1:certification 2:invalid token 3: already certificated 4:already signed up
   try {
-    let result = await updateEmailStatus();
-    res.send(`<script>alert('${result}');close();</script>`);
+    const result = await updateEmailStatus();
+    let info = null;
+    switch (result) {
+        case 1:
+          info = "certification";
+          break;
+        case 2:
+          info = "invalid token";
+          break;
+        case 3:
+          info = "already certificated";
+          break;
+        case 4:
+          info = "already signed up";
+          break;
+    }
+    res.json({
+        result,
+        info
+    });
   } catch (err) {
     res.send(`<script>alert('${err}'); close();</script>`);
   }
