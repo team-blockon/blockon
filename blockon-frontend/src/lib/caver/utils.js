@@ -17,9 +17,9 @@ export const getLatestBlockNumber = () => {
 /**
  * 트랜잭션 사인 및 전송
  */
-export const sendTransaction = (contractInstance, functionName) => {
+export const sendTransaction = (contractInstance, functionName, ...rest) => {
   const to = contractInstance._address;
-  const abi = contractInstance.methods[`${functionName}`]().encodeABI();
+  const abi = contractInstance.methods[`${functionName}`](...rest).encodeABI();
   const privateKey = JSON.parse(sessionStorage.getItem('privateKey'));
 
   const txObject = {

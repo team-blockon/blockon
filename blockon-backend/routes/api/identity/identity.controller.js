@@ -5,9 +5,10 @@ const Identity = require('../../../models/identity');
 const FileTypeCheck = require('../../util/FileTypeCheck');
 
 const Caver = require('caver-js');
-const caver = new Caver('http://52.79.254.194:8551');
+const caver = new Caver('ws://52.79.254.194:8552');
 
 const blockonAbi = require('../../../abi/blockon_abi');
+const accountAbi = require('../../../abi/account_abi');
 const Account = require('../../../models/account');
 // const request = require('request');
 // const vision = require('@google-cloud/vision');
@@ -207,22 +208,34 @@ exports.setAgent = async (req, res) => {
     const account = await Account.findOne({ email });
     const accountAddress = account.accountAddress;
 
+    caver.klay.accounts.wallet.add(
+      '0x9cb574351119f9cfe94330c60f85ae438718b15ca4419291b3ba2c6dc084c39f'
+    );
+
     if (!!account) {
       const blockonContract = new caver.klay.Contract(
         blockonAbi,
-        '0x88b1ac416f4634a5d576166cdeeaeb472a652625'
+        '0xd65933cdf7f8422977a0b9261e5334a88c635429'
+      );
+      const accountContract = new caver.klay.Contract(
+        accountAbi,
+        accountAddress
       );
 
-      blockonContract.methods
-        .athorizeAsAgent(accountAddress)
-        .send({
-          from: '0xf83967363e197cfebf6daeec8e09751fc8fa2d06',
-          gas: 300000
-        })
-        .on('confirmation', async (confirmationNumber, receipt) => {
-          console.log(receipt);
-          await Account.update({ email }, { isAgent: true });
-        });
+      // blockonContract.methods
+      //   .athorizeAsAgent(accountAddress)
+      //   .send({
+      //     from: '0xf83967363e197cfebf6daeec8e09751fc8fa2d06',
+      //     gas: 200000
+      //   })
+      //   .on('confirmation', async (confirmationNumber, receipt) => {
+      //     console.log(receipt);
+      //     await Account.update({ email }, { isAgent: true });
+      //   })
+      //   .on('error', console.error);
+
+      const isAgent = await accountContract.methods.isAgent().call();
+      console.log('isAgent:', isAgent);
     }
   }
   res.json({

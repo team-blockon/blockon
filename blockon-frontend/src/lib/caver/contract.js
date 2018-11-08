@@ -1,3 +1,4 @@
+import caver from 'lib/caver';
 import * as CaverUtils from 'lib/caver/utils';
 import { getDefaultAccount } from './utils';
 
@@ -15,22 +16,28 @@ export const create = (
   contractType
 ) => {
   const { blockon } = window;
+  console.log(agentAddress, sellerAddress, buyerAddress, contractType);
 
   return new Promise((resolve, reject) => {
-    blockon.methods.createContract().sendTransaction(
-      /* 먼저 createAccount를 호출하고, 생성된 Account 컨트랙트의 주소를 넣음 */
+    CaverUtils.sendTransaction(
+      blockon,
+      'createContract',
       agentAddress,
       sellerAddress,
       buyerAddress,
-      contractType,
-      (error, result) => {
-        if (!error) {
-          resolve(result);
-        } else {
-          reject(error);
-        }
-      }
+      contractType
     );
+    // blockon.methods.createContract().sendTransaction(
+    //   /* 먼저 createAccount를 호출하고, 생성된 Account 컨트랙트의 주소를 넣음 */
+
+    //   (error, result) => {
+    //     if (!error) {
+    //       resolve(result);
+    //     } else {
+    //       reject(error);
+    //     }
+    //   }
+    // );
   });
 };
 
@@ -98,12 +105,19 @@ export const getContractsLength = accountInstance => {
     /**
      * 에러: Couldn't decode uint256 from ABI: 0x
      */
-    const length = await accountInstance.methods.getContractsLength().call({
-      from: getDefaultAccount(),
-      gas: '200000'
-    });
+    caver.klay
+      .call({
+        to: accountInstance._address,
+        data: accountInstance.methods.getContractsLength().encodeABI()
+      })
+      .then(console.log);
 
-    console.log(length);
+    // const length = await accountInstance.methods.getContractsLength().call({
+    //   from: getDefaultAccount(),
+    //   gas: '200000'
+    // });
+
+    // console.log(length);
     // CaverUtils.sendTransaction(accountInstance, 'getContractsLength');
   });
 };

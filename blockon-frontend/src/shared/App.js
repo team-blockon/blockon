@@ -42,7 +42,7 @@ class App extends Component {
 
     window.blockon = new caver.klay.Contract(
       blockonABI,
-      '0x88b1ac416f4634a5d576166cdeeaeb472a652625'
+      '0xd65933cdf7f8422977a0b9261e5334a88c635429'
     );
   }
 

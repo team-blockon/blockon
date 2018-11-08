@@ -98,57 +98,57 @@ exports.register = async (req, res) => {
     //email 인증 상태 확인
     const emailAuth = await EmailAuth.findOne({ email });
 
-    if(emailAuth.status === 1){
+    if (emailAuth.status === 1) {
       //이메일 인증 가입처리
       await EmailAuth.updateStatus(email, 2);
 
-        const caverAccount = caver.klay.accounts.create(
-            '12345678901234567890123456789012'
-        );
-        const keyStore = caver.klay.accounts.encrypt(
-            caverAccount.privateKey,
-            password
-        );
+      const caverAccount = caver.klay.accounts.create(
+        '12345678901234567890123456789012'
+      );
+      const keyStore = caver.klay.accounts.encrypt(
+        caverAccount.privateKey,
+        password
+      );
 
-        const blockonContract = new caver.klay.Contract(
-            blockonAbi,
-            '0x88b1ac416f4634a5d576166cdeeaeb472a652625'
-        );
+      const blockonContract = new caver.klay.Contract(
+        blockonAbi,
+        '0xd65933cdf7f8422977a0b9261e5334a88c635429'
+      );
 
-        blockonContract.methods
-            .createAccount(caverAccount.address)
-            .send({
-                from: '0xf83967363e197cfebf6daeec8e09751fc8fa2d06',
-                gas: 300000
-            })
-            .on('error', console.error);
+      blockonContract.methods
+        .createAccount(caverAccount.address)
+        .send({
+          from: '0xf83967363e197cfebf6daeec8e09751fc8fa2d06',
+          gas: 300000
+        })
+        .on('error', console.error);
 
-        blockonContract.events.CreateAccount(
-            { filter: { publicAddress: caverAccount.address }, fromBlock: 0 },
-            async (error, event) => {
-                console.log('event error:', error);
-                console.log('event:', event);
+      blockonContract.events.CreateAccount(
+        { filter: { publicAddress: caverAccount.address }, fromBlock: 0 },
+        async (error, event) => {
+          console.log('event error:', error);
+          console.log('event:', event);
 
-                const accountAddress = event.returnValues.accountAddress;
-                const pwdHash = CryptoUtil.hashing(password);
-                await Account.create(
-                    keyStore,
-                    accountAddress,
-                    profileFilename,
-                    username,
-                    email,
-                    pwdHash
-                );
+          const accountAddress = event.returnValues.accountAddress;
+          const pwdHash = CryptoUtil.hashing(password);
+          await Account.create(
+            keyStore,
+            accountAddress,
+            profileFilename,
+            username,
+            email,
+            pwdHash
+          );
 
-                res.json({
-                    result: true
-                });
-            }
-        );
-    }else{
+          res.json({
+            result: true
+          });
+        }
+      );
+    } else {
       //인증받지 않았거나 가입된 상태일경우
       res.json({
-          result: false
+        result: false
       });
     }
   }
@@ -250,7 +250,9 @@ exports.sendAuthEmail = async (req, res) => {
   });
 
   const token = randomstring.generate(6);
-  const uri = `${process.env.BLOCKON_URI}/api/auth/authEmail/?email=${email}&token=${token}`;
+  const uri = `${
+    process.env.BLOCKON_URI
+  }/api/auth/authEmail/?email=${email}&token=${token}`;
   const mailOptions = {
     from: process.env.EMAIL_ID,
     to: email,
@@ -305,10 +307,10 @@ exports.authEmail = async (req, res) => {
     switch (emailAuth.status) {
     case 0:
       if (emailAuth.token === token) {
-      await EmailAuth.updateStatus(email, 1);
-      return 1;
+        await EmailAuth.updateStatus(email, 1);
+        return 1;
       } else {
-       return 2;
+        return 2;
       }
     case 1:
       return 3;
@@ -323,22 +325,22 @@ exports.authEmail = async (req, res) => {
     const result = await updateEmailStatus();
     let info = null;
     switch (result) {
-        case 1:
-          info = "certification";
-          break;
-        case 2:
-          info = "invalid token";
-          break;
-        case 3:
-          info = "already certificated";
-          break;
-        case 4:
-          info = "already signed up";
-          break;
+    case 1:
+      info = 'certification';
+      break;
+    case 2:
+      info = 'invalid token';
+      break;
+    case 3:
+      info = 'already certificated';
+      break;
+    case 4:
+      info = 'already signed up';
+      break;
     }
     res.json({
-        result,
-        info
+      result,
+      info
     });
   } catch (err) {
     res.send(`<script>alert('${err}'); close();</script>`);

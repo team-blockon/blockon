@@ -188,7 +188,7 @@ contract Account {
      * @dev contracts 리스트의 길이에 대한 getter
      * @return uint contracts 리스트의 길이
      */
-    function getContractsLength() public view returns (uint) {
+    function getContractsLength() public view returns (uint contractsLength) {
         return contracts.length;
     }
 
@@ -231,7 +231,7 @@ contract Account {
      * @param contractState 확인하고 싶은 BaseContract의 계약 상태
      * @return 이미 변경됬다면 true, 아니면 false
      */
-    function hasExecuted(uint index, uint8 contractState) public view returns (bool) {
+    function hasExecuted(uint index, uint8 contractState) public view returns (bool isChanged) {
         return contracts[index].hasExecuted(contractState);
     }
 }
