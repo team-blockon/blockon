@@ -1,7 +1,7 @@
 import Caver from 'caver-js';
 
 export const config = {
-  rpcURL: 'http://52.79.254.194:8551'
+  rpcURL: 'ws://52.79.254.194:8552'
 };
 
 export const cav = new Caver(config.rpcURL);

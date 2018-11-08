@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import InputWithLabel from 'components/common/InputWithLabel';
 import InputEmail from 'components/common/InputEmail';
 import profileImage from 'static/images/profile.svg';
-import { Avatar, Upload, Button, Input } from 'antd';
+import { Avatar, Upload, Button } from 'antd';
 import './UserInfo.scss';
 
 const getProfileUrl = thumbnail => {
@@ -81,12 +81,14 @@ class UserInfo extends Component {
             <Button onClick={this.deleteProfile}>삭제</Button>
           </div>
         </div> */}
-        <InputWithLabel
-          label="아이디"
-          name="id"
-          value={id}
-          placeholder="아이디"
-          onChange={this.handleChange}
+        <InputEmail
+          label="이메일"
+          type="email"
+          name="email"
+          value={email}
+          placeholder="이메일"
+          onChange={handleChange}
+          sendAuthEmail={sendAuthEmail}
         />
         <InputWithLabel
           label="비밀번호"
@@ -102,15 +104,7 @@ class UserInfo extends Component {
           placeholder="이름"
           onChange={handleChange}
         />
-        <InputWithLabel
-          label="이메일"
-          type="email"
-          name="email"
-          value={email}
-          placeholder="이메일"
-          onChange={handleChange}
-          sendAuthEmail={sendAuthEmail}
-        />
+
         <div className="action">
           <button onClick={this.handleSubmit}>확인</button>
         </div>

@@ -94,13 +94,16 @@ export const revokeConfirmationAt = ({
  * @param {*} accountInstance 대상 Account 인스턴스
  */
 export const getContractsLength = accountInstance => {
-  return new Promise((resolve, reject) => {
-    accountInstance.methods
-      .getContractsLength()
-      .call({ from: getDefaultAccount() })
-      .then(result => {
-        console.log(result);
-      });
+  return new Promise(async (resolve, reject) => {
+    /**
+     * 에러: Couldn't decode uint256 from ABI: 0x
+     */
+    const length = await accountInstance.methods.getContractsLength().call({
+      from: getDefaultAccount(),
+      gas: '200000'
+    });
+
+    console.log(length);
     // CaverUtils.sendTransaction(accountInstance, 'getContractsLength');
   });
 };
