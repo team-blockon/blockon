@@ -38,6 +38,7 @@ class App extends Component {
 
   // 새로고침시 로그인 유지
   initializeUserInfo = () => {
+    if (!this.loggedInfo) return;
     const { UserActions } = this.props;
     UserActions.setLoggedInfo(this.loggedInfo);
   };
