@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import penderMiddleware from 'redux-pender';
 
 import Root from './client/Root';
-import registerServiceWorker from './registerServiceWorker';
+import * as serviceWorker from './serviceWorker';
 import 'antd/dist/antd.css';
 import './index.scss';
 
@@ -30,4 +30,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
-registerServiceWorker();
+serviceWorker.unregister();
