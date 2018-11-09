@@ -28,13 +28,18 @@ import blockonABI from 'abi/blockon_abi';
  * 서버와 클라이언트에서 공용으로 사용하는 컴포넌트
  */
 class App extends Component {
+  // 새로고침시 defaultAccount 유지
+  constructor() {
+    super();
+    this.loggedInfo = JSON.parse(localStorage.getItem('loggedInfo'));
+    if (!this.loggedInfo) return;
+    caver.klay.defaultAccount = `0x${this.loggedInfo.klaytnAddress}`;
+  }
+
   // 새로고침시 로그인 유지
   initializeUserInfo = () => {
-    const loggedInfo = JSON.parse(localStorage.getItem('loggedInfo'));
-    if (!loggedInfo) return;
-
     const { UserActions } = this.props;
-    UserActions.setLoggedInfo(loggedInfo);
+    UserActions.setLoggedInfo(this.loggedInfo);
   };
 
   async componentDidMount() {

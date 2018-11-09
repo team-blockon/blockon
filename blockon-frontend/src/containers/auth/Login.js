@@ -38,7 +38,7 @@ class Login extends Component {
       .then(res => {
         const { loggedInfo, keyStore } = res.data;
         setLoggedInfo(loggedInfo);
-        caver.klay.defaultAccount = `0x${keyStore.address}`;
+        caver.klay.defaultAccount = `0x${loggedInfo.klaytnAddress}`;
 
         // keystore에서 프라이빗 키를 가져옴
         const { privateKey: privateKeyFromKeystore } = CaverWallet.decrypt(

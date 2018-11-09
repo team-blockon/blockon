@@ -180,7 +180,8 @@ exports.login = (req, res) => {
     const { _id, profile, isJunggae, keyStore } = account;
     const loggedInfo = {
       profile,
-      isJunggae
+      isJunggae,
+      klaytnAddress: keyStore.address
     };
     if (!account) {
       // 유저가 존재하지 않음

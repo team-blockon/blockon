@@ -215,11 +215,11 @@ exports.setAgent = async (req, res) => {
       );
       const accountContract = new caver.klay.Contract(
         accountAbi,
-        '0x09719c9935562E146185Fb8c43c17aB02f735eD3'
+        accountAddress
       );
 
       blockonContract.methods
-        .athorizeAsAgent('0x09719c9935562E146185Fb8c43c17aB02f735eD3')
+        .athorizeAsAgent(accountAddress)
         .send({
           from: '0xfe9e54d6c5f13156b82c29a4157a22e91cc20fbb',
           gas: 200000
