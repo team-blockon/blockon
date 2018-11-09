@@ -244,7 +244,7 @@ class ContractUploadTemplate extends Component {
 
     return (
       <div className="ContractUploadTemplate">
-        {loading && <Loading />}
+        {/* {loading && <Loading />} */}
         <div className="container content">
           <h1>계약등록</h1>
           <h2>거래당사자</h2>

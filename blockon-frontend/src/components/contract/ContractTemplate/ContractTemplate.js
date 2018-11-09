@@ -101,7 +101,7 @@ class ContractTemplate extends Component {
       accountInstance,
       index
     );
-    const contractStep = contractInfo[1].toNumber();
+    const contractStep = Number(contractInfo.contractState);
 
     console.log('계약단계: ', contractStep);
     console.groupEnd();
@@ -125,13 +125,18 @@ class ContractTemplate extends Component {
     }
   };
 
+  sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  };
+
   watchUpdateEvent = () => {
     const { updateEvent } = this.props;
     const { accountInstance } = this.state;
 
     // 체이닝을 위한 Promise 리턴
     return updateEvent(accountInstance).then(
-      ({ updateType, contractIndex }) => {
+      async ({ updateType, contractIndex }) => {
+        await this.sleep(200);
         console.group(`${contractIndex}번 계약 업데이트됨`);
 
         // 계약이 추가된 것이므로 state에 새로 생성된 계약 추가
@@ -208,6 +213,8 @@ class ContractTemplate extends Component {
       console.log('건물주소: ' + contractInfo.building.address);
       console.groupEnd();
     });
+
+    this.watchUpdateEvent();
   }
 
   render() {
