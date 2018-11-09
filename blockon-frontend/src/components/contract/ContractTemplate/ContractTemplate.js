@@ -54,8 +54,8 @@ class ContractTemplate extends Component {
       accountInstance,
       index
     );
-    const contractType = contractInfo.contractType;
-    const contractStep = contractInfo.contractState;
+    const contractType = Number(contractInfo.contractType);
+    const contractStep = Number(contractInfo.contractState);
 
     // 오프체인 데이터 가져오기
     const res = await ContractAPI.get(accountInstance._address, index);
