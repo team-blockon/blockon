@@ -1,19 +1,42 @@
 const Account = require('../../../models/account');
 
 /*
-    POST /api/user
+    POST /api/user/find/klaytn
     {
-      email|ethAddress
+      klaytnAddress
     }
 */
 
 /**
- * 이메일 주소나 ethAddress로 Account 찾기
+ * Klaytn address로 Account 찾기
  * @param {*} req
  * @param {*} res
  */
-exports.getAccount = (req, res) => {
-  Account.findOne(req.body, (err, account) => {
+exports.getAccountByKlaytnAddress = (req, res) => {
+  const { klaytnAddress } = req.body;
+  Account.findOne(
+    { 'keyStore.address': klaytnAddress.slice(2).toLowerCase() },
+    (err, account) => {
+      res.json(account);
+    }
+  );
+};
+
+/*
+    POST /api/user/find/klaytn
+    {
+      email
+    }
+*/
+
+/**
+ * Klaytn address로 Account 찾기
+ * @param {*} req
+ * @param {*} res
+ */
+exports.getAccountByEmail = (req, res) => {
+  const { email } = req.body;
+  Account.findOne({ email }, (err, account) => {
     res.json(account);
   });
 };
@@ -59,28 +82,6 @@ exports.updateAccountByEthAddress = (req, res) => {
         email
       }
     },
-    (err, output) => {
-      res.json({ message: 'account updated' });
-    }
-  );
-};
-
-/*
-    PUT /api/user/:ethAddress/address
-    {
-      accountAddress
-    }
-*/
-
-/**
- * ethAddress와 일치하는 document에 accountAddress를 추가합니다.
- * @param {*} req
- * @param {*} res
- */
-exports.updateAccountAddressByEthAddress = (req, res) => {
-  Account.update(
-    { ethAddress: req.params.ethAddress },
-    { $set: req.body },
     (err, output) => {
       res.json({ message: 'account updated' });
     }

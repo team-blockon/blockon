@@ -1,5 +1,8 @@
-import React, { Fragment } from 'react';
-import { Avatar, Upload, Button, Input } from 'antd';
+import React, { Component, Fragment } from 'react';
+import InputWithLabel from 'components/common/InputWithLabel';
+import InputEmail from 'components/common/InputEmail';
+import profileImage from 'static/images/profile.svg';
+import { Avatar, Upload, Button } from 'antd';
 import './UserInfo.scss';
 
 const getProfileUrl = thumbnail => {
@@ -7,57 +10,107 @@ const getProfileUrl = thumbnail => {
   return `http://localhost:8000/uploads/${thumbnail}`;
 };
 
-const UserInfo = ({ profile, username, email }) => {
-  return (
-    <Fragment>
-      <h2>회원정보</h2>
-      <table>
-        <tbody>
-          <tr>
-            <th>사진</th>
-            <td>
-              <div className="profile">
-                <Avatar size={120} icon="user" src={getProfileUrl(profile)} />
-                <div className="action">
-                  <Upload
-                    name="profile"
-                    action="/api/auth/profile"
-                    showUploadList={false}
-                    onChange={this.handleProfileChange}
-                  >
-                    <Button>수정</Button>
-                  </Upload>
-                  <Button onClick={this.deleteProfile}>삭제</Button>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th>이름</th>
-            <td>
-              <Input name="username" value={username} disabled />
-            </td>
-          </tr>
-          <tr>
-            <th>이메일</th>
-            <td>
-              <div className="button-addon">
-                <Input
-                  name="email"
-                  value={email}
-                  onChange={this.handleChange}
-                />
-                <Button onClick={this.sendAuthEmail}>인증</Button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div className="action">
-        <Button onClick={this.handleSubmit}>확인</Button>
+class UserInfo extends Component {
+  state = {
+    file: null,
+    id: '',
+    password: ''
+  };
+
+  handleChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      ...this.state,
+      [name]: value
+    });
+  };
+
+  handleFileChange = event => {
+    this.setState({
+      file: URL.createObjectURL(event.target.files[0])
+    });
+  };
+
+  render() {
+    const { file, id, password } = this.state;
+    const {
+      profile,
+      username,
+      email,
+      handleChange,
+      sendAuthEmail
+    } = this.props;
+
+    return (
+      <div className="UserInfo">
+        <input
+          type="file"
+          ref={ref => {
+            this.upload = ref;
+          }}
+          onChange={this.handleFileChange}
+        />
+        <div className="upload">
+          <div
+            className="icon-with-text"
+            onClick={() => {
+              this.upload.click();
+            }}
+          >
+            {file && <img src={file} alt="profile" />}
+            {!file && (
+              <Fragment>
+                <img src={profileImage} alt="profile" />
+                프로필 사진 변경
+              </Fragment>
+            )}
+          </div>
+        </div>
+        <hr />
+        {/* <div className="profile">
+          <Avatar size={120} icon="user" src={getProfileUrl(profile)} />
+          <div className="action">
+            <Upload
+              name="profile"
+              action="/api/auth/profile"
+              showUploadList={false}
+              onChange={this.handleProfileChange}
+            >
+              <Button>수정</Button>
+            </Upload>
+            <Button onClick={this.deleteProfile}>삭제</Button>
+          </div>
+        </div> */}
+        <InputEmail
+          label="이메일"
+          type="email"
+          name="email"
+          value={email}
+          placeholder="이메일"
+          onChange={handleChange}
+          sendAuthEmail={sendAuthEmail}
+        />
+        <InputWithLabel
+          label="비밀번호"
+          name="password"
+          value={password}
+          placeholder="비밀번호"
+          onChange={this.handleChange}
+        />
+        <InputWithLabel
+          label="이름"
+          name="username"
+          value={username}
+          placeholder="이름"
+          onChange={handleChange}
+        />
+
+        <div className="action">
+          <button onClick={this.handleSubmit}>확인</button>
+        </div>
       </div>
-    </Fragment>
-  );
-};
+    );
+  }
+}
 
 export default UserInfo;

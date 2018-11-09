@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateEvent } from 'store/modules/web3/contract';
+import { updateEvent } from 'store/modules/caver/contract';
 import ContractUploadTemplate from 'components/contract/ContractUploadTemplate';
 
 class ContractUploadContainer extends Component {
@@ -13,6 +13,6 @@ class ContractUploadContainer extends Component {
 }
 
 export default connect(
-  ({ pender }) => ({ loading: pender.pending['web3/contract/UPDATE_EVENT'] }),
+  ({ pender }) => ({ loading: pender.pending['caver/contract/UPDATE_EVENT'] }),
   { updateEvent }
 )(ContractUploadContainer);

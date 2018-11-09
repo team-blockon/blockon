@@ -1,0 +1,24 @@
+.InputWithLabel + .InputEmail {
+  margin-top: 30.6px;
+}
+
+.InputEmail + .InputWithLabel {
+  margin-top: 30.6px;
+}
+
+.InputEmail {
+  display: flex;
+
+  .InputWithLabel {
+    flex: 1;
+  }
+
+  button {
+    border: 0;
+    outline: none;
+    background-color: #4e5379;
+    color: #fff;
+    padding: 0 1rem;
+    cursor: pointer;
+  }
+}

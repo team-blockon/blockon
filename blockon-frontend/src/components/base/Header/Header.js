@@ -46,7 +46,7 @@ class Header extends Component {
           landing: location.pathname === '/' && !scrolled
         })}
       >
-        <div className="menu container">
+        <div className="menu">
           <Link to="/">
             <img
               src={location.pathname === '/' && !scrolled ? Logo : LogoBlack}

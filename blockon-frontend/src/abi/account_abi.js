@@ -279,7 +279,7 @@ const abi = [
     name: 'getContractsLength',
     outputs: [
       {
-        name: '',
+        name: 'contractsLength',
         type: 'uint256'
       }
     ],
@@ -356,7 +356,7 @@ const abi = [
     name: 'hasExecuted',
     outputs: [
       {
-        name: '',
+        name: 'isChanged',
         type: 'bool'
       }
     ],

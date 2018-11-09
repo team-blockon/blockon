@@ -4,18 +4,19 @@ export const sendAuthEmail = ({ email }) => {
   return defaultClient.post('/api/auth/sendAuthEmail', { email });
 };
 
-export const register = ({ ethAddress, profileFilename, username, email }) => {
+export const register = ({ profileFilename, email, password, username }) => {
   return defaultClient.post('/api/auth/register', {
-    ethAddress,
     profileFilename,
-    username,
-    email
+    email,
+    password,
+    username
   });
 };
 
-export const login = ethAddress => {
+export const login = ({ email, password }) => {
   return defaultClient.post('/api/auth/login', {
-    ethAddress
+    email,
+    password
   });
 };
 
