@@ -13,6 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "caver-js": "^0.0.1-c"
+    "caver-js": "^0.0.1-f"
   }
 }

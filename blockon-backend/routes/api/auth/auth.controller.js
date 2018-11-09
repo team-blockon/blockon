@@ -98,59 +98,67 @@ exports.register = async (req, res) => {
     //email 인증 상태 확인
     const emailAuth = await EmailAuth.findOne({ email });
 
-    if (emailAuth.status === 1) {
-      //이메일 인증 가입처리
-      await EmailAuth.updateStatus(email, 2);
+    // if (emailAuth.status === 1) {
+    //이메일 인증 가입처리
+    // await EmailAuth.updateStatus(email, 2);
 
-      const caverAccount = caver.klay.accounts.create(
-        '12345678901234567890123456789012'
-      );
-      const keyStore = caver.klay.accounts.encrypt(
-        caverAccount.privateKey,
-        password
-      );
+    const caverAccount = caver.klay.accounts.create(
+      '12345678901234567890123456789012'
+    );
+    const keyStore = caver.klay.accounts.encrypt(
+      caverAccount.privateKey,
+      password
+    );
 
-      const blockonContract = new caver.klay.Contract(
-        blockonAbi,
-        '0xd65933cdf7f8422977a0b9261e5334a88c635429'
-      );
+    const blockonContract = new caver.klay.Contract(
+      blockonAbi,
+      '0xbb2834280affc578307fb70d05887e19115e6eb6'
+    );
 
-      blockonContract.methods
-        .createAccount(caverAccount.address)
-        .send({
-          from: '0xf83967363e197cfebf6daeec8e09751fc8fa2d06',
-          gas: 300000
-        })
-        .on('error', console.error);
-
-      blockonContract.events.CreateAccount(
-        { filter: { publicAddress: caverAccount.address }, fromBlock: 0 },
-        async (error, event) => {
-          console.log('event error:', error);
-          console.log('event:', event);
-
-          const accountAddress = event.returnValues.accountAddress;
-          const pwdHash = CryptoUtil.hashing(password);
-          await Account.create(
-            keyStore,
-            accountAddress,
-            profileFilename,
-            username,
-            email,
-            pwdHash
-          );
-
-          res.json({
-            result: true
-          });
-        }
-      );
-    } else {
-      //인증받지 않았거나 가입된 상태일경우
-      res.json({
-        result: false
+    blockonContract.methods
+      .createAccount(caverAccount.address)
+      .send({
+        from: '0xfe9e54d6c5f13156b82c29a4157a22e91cc20fbb',
+        gas: 3000000
+      })
+      .on('transactionHash', hash => {
+        console.log('hash:', hash);
+      })
+      .on('receipt', receipt => {
+        console.log('receipt:', receipt);
+      })
+      .on('error', error => {
+        console.error('error:', error);
       });
-    }
+
+    blockonContract.events.CreateAccount(
+      { filter: { publicAddress: caverAccount.address }, fromBlock: 0 },
+      async (error, event) => {
+        console.log('event error:', error);
+        console.log('event:', event);
+
+        const accountAddress = event.returnValues.accountAddress;
+        const pwdHash = CryptoUtil.hashing(password);
+        await Account.create(
+          keyStore,
+          accountAddress,
+          profileFilename,
+          username,
+          email,
+          pwdHash
+        );
+
+        res.json({
+          result: true
+        });
+      }
+    );
+    // } else {
+    //   //인증받지 않았거나 가입된 상태일경우
+    //   res.json({
+    //     result: false
+    //   });
+    // }
   }
 };
 

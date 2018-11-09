@@ -112,12 +112,12 @@ export const getContractsLength = accountInstance => {
       })
       .then(console.log);
 
-    // const length = await accountInstance.methods.getContractsLength().call({
-    //   from: getDefaultAccount(),
-    //   gas: '200000'
-    // });
+    const length = await accountInstance.methods.getContractsLength().call({
+      from: getDefaultAccount(),
+      gas: '200000'
+    });
+    console.log(length);
 
-    // console.log(length);
     // CaverUtils.sendTransaction(accountInstance, 'getContractsLength');
   });
 };

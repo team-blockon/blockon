@@ -64,10 +64,10 @@ class Register extends Component {
   };
 
   handleRegister = async event => {
-    if (!this.state.emailauth) {
-      message.warning('이메일 인증을 진행해 주세요.');
-      return;
-    }
+    // if (!this.state.emailauth) {
+    //   message.warning('이메일 인증을 진행해 주세요.');
+    //   return;
+    // }
     const { profileFilename, email, password, username } = this.state;
     const { history } = this.props;
 
@@ -75,7 +75,6 @@ class Register extends Component {
       return;
     }
 
-    // accountAddress를 제외한 나머지를 DB에 추가
     AuthAPI.register({
       profileFilename,
       email,

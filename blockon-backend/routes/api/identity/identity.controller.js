@@ -208,31 +208,27 @@ exports.setAgent = async (req, res) => {
     const account = await Account.findOne({ email });
     const accountAddress = account.accountAddress;
 
-    caver.klay.accounts.wallet.add(
-      '0x9cb574351119f9cfe94330c60f85ae438718b15ca4419291b3ba2c6dc084c39f'
-    );
-
     if (!!account) {
       const blockonContract = new caver.klay.Contract(
         blockonAbi,
-        '0xd65933cdf7f8422977a0b9261e5334a88c635429'
+        '0xbb2834280affc578307fb70d05887e19115e6eb6'
       );
       const accountContract = new caver.klay.Contract(
         accountAbi,
-        accountAddress
+        '0x09719c9935562E146185Fb8c43c17aB02f735eD3'
       );
 
-      // blockonContract.methods
-      //   .athorizeAsAgent(accountAddress)
-      //   .send({
-      //     from: '0xf83967363e197cfebf6daeec8e09751fc8fa2d06',
-      //     gas: 200000
-      //   })
-      //   .on('confirmation', async (confirmationNumber, receipt) => {
-      //     console.log(receipt);
-      //     await Account.update({ email }, { isAgent: true });
-      //   })
-      //   .on('error', console.error);
+      blockonContract.methods
+        .athorizeAsAgent('0x09719c9935562E146185Fb8c43c17aB02f735eD3')
+        .send({
+          from: '0xfe9e54d6c5f13156b82c29a4157a22e91cc20fbb',
+          gas: 200000
+        })
+        .on('confirmation', async (confirmationNumber, receipt) => {
+          console.log(receipt);
+          await Account.update({ email }, { isAgent: true });
+        })
+        .on('error', console.error);
 
       const isAgent = await accountContract.methods.isAgent().call();
       console.log('isAgent:', isAgent);
