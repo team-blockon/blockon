@@ -1,6 +1,5 @@
 import caver from 'lib/caver';
 import * as CaverUtils from 'lib/caver/utils';
-import { getDefaultAccount } from './utils';
 
 /**
  * 계약 생성
@@ -18,27 +17,15 @@ export const create = (
   const { blockon } = window;
   console.log(agentAddress, sellerAddress, buyerAddress, contractType);
 
-  return new Promise((resolve, reject) => {
-    CaverUtils.sendTransaction(
-      blockon,
-      'createContract',
-      agentAddress,
-      sellerAddress,
-      buyerAddress,
-      contractType
-    );
-    // blockon.methods.createContract().sendTransaction(
-    //   /* 먼저 createAccount를 호출하고, 생성된 Account 컨트랙트의 주소를 넣음 */
-
-    //   (error, result) => {
-    //     if (!error) {
-    //       resolve(result);
-    //     } else {
-    //       reject(error);
-    //     }
-    //   }
-    // );
-  });
+  CaverUtils.sendTransaction(
+    blockon,
+    'createContract',
+    /* 먼저 createAccount를 호출하고, 생성된 Account 컨트랙트의 주소를 넣음 */
+    agentAddress,
+    sellerAddress,
+    buyerAddress,
+    contractType
+  );
 };
 
 /**
@@ -101,25 +88,7 @@ export const revokeConfirmationAt = ({
  * @param {*} accountInstance 대상 Account 인스턴스
  */
 export const getContractsLength = accountInstance => {
-  return new Promise(async (resolve, reject) => {
-    /**
-     * 에러: Couldn't decode uint256 from ABI: 0x
-     */
-    caver.klay
-      .call({
-        to: accountInstance._address,
-        data: accountInstance.methods.getContractsLength().encodeABI()
-      })
-      .then(console.log);
-
-    const length = await accountInstance.methods.getContractsLength().call({
-      from: getDefaultAccount(),
-      gas: '200000'
-    });
-    console.log(length);
-
-    // CaverUtils.sendTransaction(accountInstance, 'getContractsLength');
-  });
+  return accountInstance.methods.getContractsLength().call();
 };
 
 /**
@@ -128,15 +97,11 @@ export const getContractsLength = accountInstance => {
  * @param {*} contractIndex 조회할 계약의 인덱스
  */
 export const getContractInfoAt = (accountInstance, contractIndex) => {
-  return new Promise((resolve, reject) => {
-    accountInstance.getContractInfoAt(contractIndex, (error, result) => {
-      if (!error) {
-        resolve(result);
-      } else {
-        reject(error);
-      }
-    });
-  });
+  const privateKey = JSON.parse(sessionStorage.getItem('privateKey'));
+  caver.klay.accounts.wallet.add(
+    caver.klay.accounts.privateKeyToAccount(privateKey)
+  );
+  return accountInstance.methods.getContractInfoAt(contractIndex).call();
 };
 
 /**

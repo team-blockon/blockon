@@ -50,15 +50,15 @@ class ContractTemplate extends Component {
    */
   addContractInfoAt = async (accountInstance, index) => {
     // 온체인 데이터 가져오기
-    const contractInfo = CaverContract.getContractInfoAt(
+    const contractInfo = await CaverContract.getContractInfoAt(
       accountInstance,
       index
     );
-    const contractType = contractInfo[0].toNumber();
-    const contractStep = contractInfo[1].toNumber();
+    const contractType = contractInfo.contractType;
+    const contractStep = contractInfo.contractState;
 
     // 오프체인 데이터 가져오기
-    const res = await ContractAPI.get(accountInstance.address, index);
+    const res = await ContractAPI.get(accountInstance._address, index);
     // building을 가져오기 전 null 체크
     // 어떤 문제로 인해 몽고DB에 정보가 올라가지 않은 경우
     if (!res || !res.data || !res.data.building) {
@@ -190,7 +190,9 @@ class ContractTemplate extends Component {
     this.setState({ accountInstance });
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
-    const contractsLength = CaverContract.getContractsLength(accountInstance);
+    const contractsLength = await CaverContract.getContractsLength(
+      accountInstance
+    );
 
     // 유저가 포함된 컨트랙트들을 state에 추가
     for (let i = 0; i < contractsLength; i++) {

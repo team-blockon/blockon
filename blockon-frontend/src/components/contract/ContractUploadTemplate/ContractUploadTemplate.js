@@ -85,7 +85,7 @@ class ContractUploadTemplate extends Component {
     }
 
     // 계약 생성 및 이벤트 구독
-    await CaverContract.create(agentAddress, sellerAddress, buyerAddress, type);
+    CaverContract.create(agentAddress, sellerAddress, buyerAddress, type);
     const { contractIndex } = await updateEvent(accountInstance);
 
     this.setState(
