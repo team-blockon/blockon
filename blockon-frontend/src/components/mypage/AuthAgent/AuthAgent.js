@@ -3,7 +3,6 @@ import InputWithLabel from 'components/common/InputWithLabel';
 import Loading from 'components/common/Loading';
 import * as IdentityAPI from 'lib/api/identity';
 import * as CaverAuth from 'lib/caver/auth';
-import * as CaverUtils from 'lib/caver/utils';
 import certificateImage from 'static/images/certificate.svg';
 import './AuthAgent.scss';
 
@@ -51,26 +50,7 @@ class AuthAgent extends Component {
 
   isAgent = accountInstance => {
     if (!accountInstance) return;
-
-    return new Promise((resolve, reject) => {
-      /**
-       * 에러: Couldn't decode uint256 from ABI: 0x
-       */
-      accountInstance.methods
-        .isAgent()
-        .call({
-          from: CaverUtils.getDefaultAccount(),
-          chainId: 1000
-        })
-        .then(res => {
-          console.log(res);
-          resolve(res);
-        })
-        .catch(err => {
-          console.log(err);
-          reject(err);
-        });
-    });
+    return accountInstance.methods.isAgent().call();
   };
 
   handleAuth = () => {
@@ -79,11 +59,11 @@ class AuthAgent extends Component {
 
   async componentDidMount() {
     const { accountInstance } = this.props;
-    const { result } = await this.isAgent(accountInstance);
+    const isAgent = await this.isAgent(accountInstance);
 
     this.setState({
       ...this.state,
-      isAgent: result
+      isAgent
     });
   }
 

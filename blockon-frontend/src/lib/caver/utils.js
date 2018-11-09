@@ -26,9 +26,7 @@ export const sendTransaction = (contractInstance, functionName, ...rest) => {
     from: getDefaultAccount(),
     to,
     data: abi,
-    gas: 2000000,
-    gasPrice: '25000000000',
-    chainId: 1000
+    gas: 3000000
   };
 
   caver.klay.accounts
