@@ -469,10 +469,10 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-caver-js@^0.0.1-f:
-  version "0.0.1-f"
-  resolved "https://registry.yarnpkg.com/caver-js/-/caver-js-0.0.1-f.tgz#a2992a4af9cbb3f79d0294cc8c269f5960726bf3"
-  integrity sha512-rluVteFUQjdWe3srqVNJR+l7nJsRwaJpssZ+RhFrFmsre6FpiH52ZqZtewA1ZssmOGT5jJS8EswTwrLclt0KNw==
+caver-js@^0.0.1-h:
+  version "0.0.1-h"
+  resolved "https://registry.yarnpkg.com/caver-js/-/caver-js-0.0.1-h.tgz#f2afd895b3c54493029638a2a351f2c8965111dc"
+  integrity sha512-dA5jsXVkXmWkiIoGh262G5pkemube7vg0Hu+O8PWf4+6VJylJhLGHKkJHlS6U5Zj3K7aSbVJsHN7nbrp9N9Cfg==
   dependencies:
     any-promise "1.3.0"
     bignumber "^1.1.0"
