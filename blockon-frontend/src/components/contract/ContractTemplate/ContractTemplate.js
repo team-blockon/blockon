@@ -248,7 +248,11 @@ class ContractTemplate extends Component {
 
     // 현재 브라우저에 접속한 유저의 어카운트 계정 인스턴스 생성
     const { accountInstance } = await CaverUser.getAccountInfo();
-    this.setState({ accountInstance });
+    this.setState({ accountInstance }, () => {
+      this.watchUpdateEvent();
+      this.watchConfirmChangeContractStateEvent();
+      this.watchRevokeConfirmationEvent();
+    });
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
     const contractsLength = await CaverContract.getContractsLength(
@@ -273,10 +277,6 @@ class ContractTemplate extends Component {
       console.log('건물주소: ' + contractInfo.building.address);
       console.groupEnd();
     });
-
-    this.watchUpdateEvent();
-    this.watchConfirmChangeContractStateEvent();
-    this.watchRevokeConfirmationEvent();
   }
 
   render() {
