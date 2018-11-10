@@ -40,19 +40,14 @@ export const confirmToChangeContractStateAt = ({
   contractIndex,
   newContractState
 }) => {
-  return new Promise((resolve, reject) => {
-    accountInstance.confirmToChangeContractStateAt.sendTransaction(
-      contractIndex,
-      newContractState,
-      (error, result) => {
-        if (!error) {
-          resolve(result);
-        } else {
-          reject({ msg: error });
-        }
-      }
-    );
-  });
+  console.log(contractIndex, newContractState);
+
+  CaverUtils.sendTransaction(
+    accountInstance,
+    'confirmToChangeContractStateAt',
+    contractIndex,
+    newContractState
+  );
 };
 
 /**
