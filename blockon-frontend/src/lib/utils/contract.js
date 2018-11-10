@@ -59,6 +59,31 @@ export const getStepWord = step => {
   }
 };
 
+export const getNextStep = (contractType, currentStep) => {
+  switch (contractType) {
+  case ct.TRADE:
+    for (const [index, step] of tradeStep.entries()) {
+      if (step === currentStep) {
+        return tradeStep[index + 1];
+      }
+    }
+    break;
+  case ct.WOLSE:
+  case ct.JEONSE:
+    for (const [index, step] of rentStep.entries()) {
+      if (step === currentStep) {
+        return rentStep[index + 1];
+      }
+    }
+    break;
+  default:
+  }
+};
+
+export const getAgreementWord = agreement => {
+  return agreement ? '동의' : '미동의';
+};
+
 export const getKoreanBuildingType = eng => {
   const map = {
     jutaek: '주택',

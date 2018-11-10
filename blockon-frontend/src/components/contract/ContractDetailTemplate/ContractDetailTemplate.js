@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import Chat from '../Chat';
 import * as ContractUtils from 'lib/utils/contract';
@@ -9,10 +10,11 @@ import './ContractDetailTemplate.scss';
 
 const {
   ct,
-  cs,
   tradeStep,
   rentStep,
   getStepWord,
+  getNextStep,
+  getAgreementWord,
   getKoreanBuildingType
 } = ContractUtils;
 
@@ -26,28 +28,6 @@ const BuildingTypeBadge = ({ children }) => {
 
 class ContractDetailTemplate extends Component {
   getProgressbarItem = (stepIndex, contractStep, cardIndex, contractType) => {
-    const { handleSelect, accountInstance, activeTab } = this.props;
-
-    const nextStep = (currentStep => {
-      switch (contractType) {
-      case ct.TRADE:
-        for (const [index, step] of tradeStep.entries()) {
-          if (step === currentStep) {
-            return tradeStep[index + 1];
-          }
-        }
-        break;
-      case ct.RENT:
-        for (const [index, step] of rentStep.entries()) {
-          if (step === currentStep) {
-            return rentStep[index + 1];
-          }
-        }
-        break;
-      default:
-      }
-    })(stepIndex);
-
     return (
       <li
         className={classNames({ active: stepIndex <= contractStep })}
@@ -72,17 +52,23 @@ class ContractDetailTemplate extends Component {
     );
   };
 
-  getCard = contractInfo => {
-    const { index, type: contractType, state, building } = contractInfo;
+  getCard = () => {
+    const { contractInfo } = this.props.location.state;
+    const { index, type, state, confirmInfo, building } = contractInfo;
+    const {
+      isAgentConfirmed,
+      isSellerConfirmed,
+      isBuyerConfirmed
+    } = confirmInfo;
 
     let contractData;
-    if (contractType === ct.WOLSE) {
+    if (type === ct.WOLSE) {
       contractData = <p>월세 1,000/45</p>;
     }
-    if (contractType === ct.JEONSE) {
+    if (type === ct.JEONSE) {
       contractData = <p>전세 5,000</p>;
     }
-    if (contractType === ct.TRADE) {
+    if (type === ct.TRADE) {
       contractData = <p>매매 10억</p>;
     }
 
@@ -90,7 +76,7 @@ class ContractDetailTemplate extends Component {
       <div className="card">
         <div className="progressbar-wrapper">
           <ul className="progressbar">
-            {this.getProgressbarList(contractType, state, index)}
+            {this.getProgressbarList(type, state, index)}
           </ul>
         </div>
 
@@ -129,7 +115,7 @@ class ContractDetailTemplate extends Component {
         <div className="agreement">
           <p className="title">
             다음 단계는
-            <StepBadge>{getStepWord(state)}</StepBadge>
+            <StepBadge>{getStepWord(getNextStep(type, state))}</StepBadge>
             단계입니다.
           </p>
           <div className="notice">
@@ -137,29 +123,29 @@ class ContractDetailTemplate extends Component {
             이동됩니다.
           </div>
 
-          <div class="table">
-            <div class="thead">
-              <div class="tr">
-                <div class="td">관계</div>
-                <div class="td">이름</div>
-                <div class="td">동의여부</div>
+          <div className="table">
+            <div className="thead">
+              <div className="tr">
+                <div className="td">관계</div>
+                <div className="td">이름</div>
+                <div className="td">동의여부</div>
               </div>
             </div>
-            <div class="tbody">
-              <div class="tr">
-                <div class="td">중개인</div>
-                <div class="td">김수연</div>
-                <div class="td">동의</div>
+            <div className="tbody">
+              <div className="tr">
+                <div className="td">중개인</div>
+                <div className="td">김수연</div>
+                <div className="td">{getAgreementWord(isAgentConfirmed)}</div>
               </div>
-              <div class="tr">
-                <div class="td">매수인</div>
-                <div class="td">최세은</div>
-                <div class="td">미동의</div>
+              <div className="tr">
+                <div className="td">매수인</div>
+                <div className="td">최세은</div>
+                <div className="td">{getAgreementWord(isSellerConfirmed)}</div>
               </div>
-              <div class="tr">
-                <div class="td">매도인</div>
-                <div class="td">강민구</div>
-                <div class="td">동의</div>
+              <div className="tr">
+                <div className="td">매도인</div>
+                <div className="td">강민구</div>
+                <div className="td">{getAgreementWord(isBuyerConfirmed)}</div>
               </div>
             </div>
           </div>
@@ -190,28 +176,14 @@ class ContractDetailTemplate extends Component {
     return card;
   };
 
-  getLists = () => {
-    const { contractInfo, activeTab } = this.props;
-
-    if (
-      (activeTab === 'ongoing' && contractInfo.state !== cs.END_TRADE) ||
-      (activeTab === 'completed' && contractInfo.state === cs.END_TRADE)
-    ) {
-      return this.getCard(contractInfo);
-    }
-
-    return null;
-  };
-
   render() {
-    const {
-      contractInfo: { people }
-    } = this.props;
+    const { contractInfo } = this.props.location.state;
+    const { people } = contractInfo;
 
     return (
       <div className="ContractDetailTemplate">
         <div className="container content">
-          <div className="list-wrapper">{this.getLists()}</div>
+          <div className="list-wrapper">{this.getCard()}</div>
           <Chat party={people} />
         </div>
       </div>
@@ -219,4 +191,4 @@ class ContractDetailTemplate extends Component {
   }
 }
 
-export default ContractDetailTemplate;
+export default withRouter(ContractDetailTemplate);

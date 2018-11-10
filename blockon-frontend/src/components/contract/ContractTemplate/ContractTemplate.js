@@ -140,26 +140,23 @@ class ContractTemplate extends Component {
     const { updateEvent } = this.props;
     const { accountInstance } = this.state;
 
-    // 체이닝을 위한 Promise 리턴
-    return updateEvent(accountInstance).then(
-      async ({ updateType, contractIndex }) => {
-        await this.sleep(200);
-        console.group(`${contractIndex}번 계약 업데이트됨`);
+    updateEvent(accountInstance).then(async ({ updateType, contractIndex }) => {
+      await this.sleep(200);
+      console.group(`${contractIndex}번 계약 업데이트됨`);
 
-        // 계약이 추가된 것이므로 state에 새로 생성된 계약 추가
-        if (updateType === 1) {
-          console.log('계약 추가됨');
-          console.groupEnd();
-          this.addContractInfoAt(accountInstance, contractIndex);
-        } // 계약 추가했을 때 이벤트로는 안들어오고 다시 componentDidMount가 호출되는듯
+      // 계약이 추가된 것이므로 state에 새로 생성된 계약 추가
+      if (updateType === 1) {
+        console.log('계약 추가됨');
+        console.groupEnd();
+        this.addContractInfoAt(accountInstance, contractIndex);
+      } // 계약 추가했을 때 이벤트로는 안들어오고 다시 componentDidMount가 호출되는듯
 
-        // 계약 상태가 변경된 것이므로 해당하는 인덱스의 상태 변경
-        if (updateType === 2) {
-          console.log('계약상태 변경됨');
-          this.contractStateChanged(accountInstance, contractIndex);
-        }
+      // 계약 상태가 변경된 것이므로 해당하는 인덱스의 상태 변경
+      if (updateType === 2) {
+        console.log('계약상태 변경됨');
+        this.contractStateChanged(accountInstance, contractIndex);
       }
-    );
+    });
   };
 
   updateConfirmInfo = async (contractIndex, constractState) => {
