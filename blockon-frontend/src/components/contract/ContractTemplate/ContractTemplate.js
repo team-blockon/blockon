@@ -26,7 +26,8 @@ class ContractTemplate extends Component {
     contractModal: false, // 모달을 보일건지 여부
     activeContractsNum: 0, // 진행중계약 개수
     completedContractsNum: 0, // 완료된계약 개수
-    contractInfoList: [] // {index, type, state, confirmInfo, people, building} 리스트
+    contractInfoList: [], // {index, type, state, confirmInfo, people, building} 리스트
+    currentPage: 1
   }; // confirmInfo : {isAgentConfirmed, isSellerConfirmed, isBuyerConfirmed}
 
   handleToggleModal = (
@@ -228,13 +229,24 @@ class ContractTemplate extends Component {
    * 로딩 중이지 않을 때에만 카드 반환
    */
   getContractCard = () => {
-    const { contractInfoList } = this.state;
+    const { contractInfoList, currentPage } = this.state;
     const { activeTab, isLoading } = this.props;
     if (isLoading) return null;
 
     return (
-      <ContractCard contractInfoList={contractInfoList} activeTab={activeTab} />
+      <ContractCard
+        contractInfoList={contractInfoList}
+        currentPage={currentPage}
+        activeTab={activeTab}
+      />
     );
+  };
+
+  changePage = pageNo => {
+    this.setState({
+      ...this.state,
+      currentPage: pageNo
+    });
   };
 
   async componentDidMount() {
@@ -282,6 +294,8 @@ class ContractTemplate extends Component {
   render() {
     const { activeTab, handleTabSelect, changeState, isLoading } = this.props;
     const {
+      contractInfoList,
+      currentPage,
       contractModal,
       accountAddress,
       contractIndex,
@@ -323,7 +337,11 @@ class ContractTemplate extends Component {
               {this.getContractCard()}
             </div>
           )}
-          <Pagination />
+          <Pagination
+            listLength={contractInfoList.length}
+            changePage={this.changePage}
+            currentPage={currentPage}
+          />
 
           {contractModal && (
             <ContractModal

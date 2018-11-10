@@ -14,8 +14,16 @@ const BuildingTypeBadge = ({ children }) => {
   return <span className="BuildingTypeBadge">{children}</span>;
 };
 
-const getCards = (contractInfoList, activeTab) => {
-  return contractInfoList.map((contractInfo, index) => {
+const getCards = (contractInfoList, currentPage, activeTab) => {
+  // 9개씩 출력되도록 페이지네이션
+  const startIndex = (currentPage - 1) * 9;
+  const endIndex =
+    contractInfoList.length > currentPage * 9 // 리스트 길이가 현재 페이지 * 9보다 작으면 끝까지 출력
+      ? startIndex + 9
+      : contractInfoList.length;
+
+  const subList = contractInfoList.slice(startIndex, endIndex);
+  return subList.map((contractInfo, index) => {
     const { building, state: contractState } = contractInfo;
 
     if (
@@ -71,9 +79,11 @@ const getCards = (contractInfoList, activeTab) => {
   });
 };
 
-const ContractCard = ({ contractInfoList, activeTab }) => {
+const ContractCard = ({ contractInfoList, currentPage, activeTab }) => {
   return (
-    <div className="card-wrapper">{getCards(contractInfoList, activeTab)}</div>
+    <div className="card-wrapper">
+      {getCards(contractInfoList, currentPage, activeTab)}
+    </div>
   );
 };
 
