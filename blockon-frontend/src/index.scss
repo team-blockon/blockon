@@ -23,6 +23,12 @@ body {
   }
 }
 
+@media (max-width: 480px) {
+  .container {
+    width: 85%;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;

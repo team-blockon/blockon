@@ -76,6 +76,12 @@
   }
 }
 
+@media (max-width: 767px) {
+  .card-wrapper {
+    justify-content: center;
+  }
+}
+
 .card-wrapper {
   .card {
     width: 270px;
