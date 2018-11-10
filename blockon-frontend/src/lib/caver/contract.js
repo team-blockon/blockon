@@ -40,7 +40,7 @@ export const confirmToChangeContractStateAt = ({
   contractIndex,
   newContractState
 }) => {
-  console.log(contractIndex, newContractState);
+  console.log(accountInstance, contractIndex, newContractState);
 
   CaverUtils.sendTransaction(
     accountInstance,

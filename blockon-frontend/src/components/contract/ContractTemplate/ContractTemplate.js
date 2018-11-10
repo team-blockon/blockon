@@ -193,7 +193,7 @@ class ContractTemplate extends Component {
         fromBlock: 'latest' //어쩌면 latest블록에서 -10정도 해주는게 좋을수도.
       },
       (error, event) => {
-        const { contractIndex, confirmedState } = event.returnValue;
+        const { contractIndex, confirmedState } = event.returnValues;
         this.updateConfirmInfo(contractIndex, confirmedState);
       }
     );
@@ -206,7 +206,7 @@ class ContractTemplate extends Component {
         fromBlock: 'latest'
       },
       (error, event) => {
-        const { contractIndex, revokedState } = event.returnValue;
+        const { contractIndex, revokedState } = event.returnValues;
         this.updateConfirmInfo(contractIndex, revokedState);
       }
     );

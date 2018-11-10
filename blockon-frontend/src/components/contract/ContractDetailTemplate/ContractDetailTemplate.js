@@ -178,13 +178,17 @@ class ContractDetailTemplate extends Component {
 
   confirmButtonHandler = () => {
     const { contractInfo } = this.props.location.state;
-    const { index: contractIndex, state: currentState } = contractInfo;
+    const {
+      index: contractIndex,
+      state: currentState,
+      type: contractType
+    } = contractInfo;
 
-    CaverContract.confirmToChangeContractStateAt(
-      this.state.accountInstance,
+    CaverContract.confirmToChangeContractStateAt({
+      accountInstance: this.state.accountInstance,
       contractIndex,
-      getNextStep(currentState)
-    );
+      newContractState: getNextStep(contractType, currentState)
+    });
   };
 
   async componentDidMount() {
