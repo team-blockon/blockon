@@ -14,9 +14,8 @@ services:
     command: sh /start.sh
     volumes:
       - .:/app
-      - ./blockon-backend/.env:/app/blockon-backend/.env
+      # 호스트에 이미 디렉터리가 존재하여 컨테이너의 디렉터리가 가려지는 것 방지
       - /app/blockon-backend/node_modules
-      - /app/blockon-frontend/node_modules
       - /app/blockon-frontend/build
 
   nginx:
