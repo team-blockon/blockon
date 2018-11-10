@@ -26,8 +26,8 @@ class ContractTemplate extends Component {
     contractModal: false, // 모달을 보일건지 여부
     activeContractsNum: 0, // 진행중계약 개수
     completedContractsNum: 0, // 완료된계약 개수
-    contractInfoList: [] // {index, type, state, building} 리스트
-  };
+    contractInfoList: [] // {index, type, state, confirmInfo, people, building} 리스트
+  }; // confirmInfo : {isAgentConfirmed, isSellerConfirmed, isBuyerConfirmed}
 
   handleToggleModal = (
     accountAddress,
@@ -57,6 +57,12 @@ class ContractTemplate extends Component {
     const contractType = Number(contractInfo.contractType);
     const contractStep = Number(contractInfo.contractState);
 
+    const confirmInfo = await CaverContract.hasConfirmed(
+      accountInstance,
+      index,
+      contractStep
+    );
+
     // 오프체인 데이터 가져오기
     const res = await ContractAPI.get(accountInstance._address, index);
     // building을 가져오기 전 null 체크
@@ -73,6 +79,7 @@ class ContractTemplate extends Component {
           index,
           type: contractType,
           state: contractStep,
+          confirmInfo,
           people,
           building
         });
@@ -155,6 +162,58 @@ class ContractTemplate extends Component {
     );
   };
 
+  updateConfirmInfo = async (contractIndex, constractState) => {
+    const { accountInstance } = this.state;
+    const confirmInfo = await CaverContract.hasConfirmed(
+      accountInstance,
+      contractIndex,
+      constractState
+    );
+    if (
+      confirmInfo.isAgentConfirmed &&
+      confirmInfo.isSellerConfirmed &&
+      confirmInfo.isBuyerConfirmed
+    ) {
+      return;
+    } else {
+      this.setState(
+        produce(draft => {
+          draft.contractInfoList.forEach(info => {
+            if (info.index === constractState) {
+              info.confirmInfo = confirmInfo;
+            }
+          });
+        })
+      );
+    }
+  };
+
+  watchConfirmChangeContractStateEvent = () => {
+    const { accountInstance } = this.state;
+    accountInstance.events.ConfirmChangeContractState(
+      {
+        fromBlock: 'latest' //어쩌면 latest블록에서 -10정도 해주는게 좋을수도.
+      },
+      (error, event) => {
+        const { contractIndex, confirmedState } = event.returnValue;
+        this.updateConfirmInfo(contractIndex, confirmedState);
+      }
+    );
+  };
+
+  watchRevokeConfirmationEvent = () => {
+    const { accountInstance } = this.state;
+    accountInstance.events.RevokeConfirmation(
+      {
+        fromBlock: 'latest'
+      },
+      (error, event) => {
+        const { contractIndex, revokedState } = event.returnValue;
+        this.updateConfirmInfo(contractIndex, revokedState);
+      }
+    );
+  };
+
   isNoList = () => {
     const { activeTab, isLoading } = this.props;
     // 로딩 중이면 일단 보류
@@ -210,11 +269,17 @@ class ContractTemplate extends Component {
       console.group(`${contractInfo.index}번 계약`);
       console.log('계약종류: ' + contractInfo.type);
       console.log('계약상태: ' + contractInfo.state);
+      console.log('동의여부:');
+      console.log('----중개인: ' + contractInfo.confirmInfo.isAgentConfirmed);
+      console.log('----매도인: ' + contractInfo.confirmInfo.isSellerConfirmed);
+      console.log('----매수인: ' + contractInfo.confirmInfo.isBuyerConfirmed);
       console.log('건물주소: ' + contractInfo.building.address);
       console.groupEnd();
     });
 
     this.watchUpdateEvent();
+    this.watchConfirmChangeContractStateEvent();
+    this.watchRevokeConfirmationEvent();
   }
 
   render() {

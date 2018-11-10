@@ -112,39 +112,11 @@ export const getContractInfoAt = (accountInstance, contractIndex) => {
  * @return [bool isAgentConfirmed, bool isSellerConfirmed, bool isBuyerConfirmed]
  */
 export const hasConfirmed = (accountInstance, contractIndex, contractState) => {
-  return new Promise((resolve, reject) => {
-    accountInstance.hasConfirmed(
-      contractIndex,
-      contractState,
-      (error, result) => {
-        if (!error) {
-          resolve(result);
-        } else {
-          reject(error);
-        }
-      }
-    );
-  });
-};
-
-/**
- * Account 컨트랙트에 저장된 특정 인덱스의 계약에대해, 계약 상태 변경 여부를 반환
- * @param {*} accountInstance 대상 Account 인스턴스
- * @param {*} contractIndex 조회할 계약의 인덱스
- * @param {*} contractState 조회할 컨트랙트 상태
- */
-export const hasExecuted = (accountInstance, contractIndex, contractState) => {
-  return new Promise((resolve, reject) => {
-    accountInstance.hasExecuted(
-      contractIndex,
-      contractState,
-      (error, result) => {
-        if (!error) {
-          resolve(result);
-        } else {
-          reject(error);
-        }
-      }
-    );
-  });
+  const privateKey = JSON.parse(sessionStorage.getItem('privateKey'));
+  caver.klay.accounts.wallet.add(
+    caver.klay.accounts.privateKeyToAccount(privateKey)
+  );
+  return accountInstance.methods
+    .hasConfirmed(contractIndex, contractState)
+    .call();
 };
