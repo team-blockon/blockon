@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import Chat from '../Chat';
 import * as ContractUtils from 'lib/utils/contract';
+import * as CaverUser from 'lib/caver/user';
+import * as CaverContract from 'lib/caver/contract';
 import houseImage from 'static/images/house-1.svg';
 import agreeIcon from 'static/images/icon/agree.svg';
 import disagreeIcon from 'static/images/icon/disagree.svg';
@@ -27,7 +29,7 @@ const BuildingTypeBadge = ({ children }) => {
 };
 
 class ContractDetailTemplate extends Component {
-  getProgressbarItem = (stepIndex, contractStep, cardIndex, contractType) => {
+  getProgressbarItem = (stepIndex, contractStep) => {
     return (
       <li
         className={classNames({ active: stepIndex <= contractStep })}
@@ -38,7 +40,7 @@ class ContractDetailTemplate extends Component {
     );
   };
 
-  getProgressbarList = (contractType, contractStep, cardIndex) => {
+  getProgressbarList = (contractType, contractStep) => {
     let allSteps;
 
     if (contractType === ct.TRADE) {
@@ -47,9 +49,7 @@ class ContractDetailTemplate extends Component {
       allSteps = rentStep;
     }
 
-    return allSteps.map(step =>
-      this.getProgressbarItem(step, contractStep, cardIndex, contractType)
-    );
+    return allSteps.map(step => this.getProgressbarItem(step, contractStep));
   };
 
   getCard = () => {
@@ -76,7 +76,7 @@ class ContractDetailTemplate extends Component {
       <div className="card">
         <div className="progressbar-wrapper">
           <ul className="progressbar">
-            {this.getProgressbarList(type, state, index)}
+            {this.getProgressbarList(type, state)}
           </ul>
         </div>
 
@@ -168,13 +168,29 @@ class ContractDetailTemplate extends Component {
               <img src={disagreeIcon} alt="disagree" /> 미동의
             </span>
           </div>
-          <button>확인</button>
+          <button onClick={this.confirmButtonHandler}>확인</button>
         </div>
       </div>
     );
 
     return card;
   };
+
+  confirmButtonHandler = () => {
+    const { contractInfo } = this.props.location.state;
+    const { index: contractIndex, state: currentState } = contractInfo;
+
+    CaverContract.confirmToChangeContractStateAt(
+      this.state.accountInstance,
+      contractIndex,
+      getNextStep(currentState)
+    );
+  };
+
+  async componentDidMount() {
+    const { accountInstance } = await CaverUser.getAccountInfo();
+    this.setState({ accountInstance });
+  }
 
   render() {
     const { contractInfo } = this.props.location.state;
