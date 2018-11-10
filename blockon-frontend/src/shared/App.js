@@ -73,8 +73,13 @@ class App extends Component {
             isLogged={isLogged}
           />
           <PrivateRoute
-            path="/contract/:contractNo"
-            component={ContractDetail}
+            path="/contract/detail"
+            render={({ location }) => (
+              <ContractDetail
+                contractInfo={location.state.contractInfo}
+                activeTab={location.state.activeTab}
+              />
+            )}
             isLogged={isLogged}
           />
           <PrivateRoute path="/mypage" component={MyPage} isLogged={isLogged} />

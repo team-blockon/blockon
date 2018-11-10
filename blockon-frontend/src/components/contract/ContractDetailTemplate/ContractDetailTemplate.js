@@ -219,24 +219,4 @@ class ContractDetailTemplate extends Component {
   }
 }
 
-ContractDetailTemplate.defaultProps = {
-  activeTab: 'ongoing',
-  contractInfo: {
-    state: cs.DOWN_PAYMENT,
-    people: {
-      _id: '5bc74247e4a6555f463a729f',
-      agentAddress: '0x399d863b10a2269238b2488ba30a8a062f0f97c5',
-      sellerAddress: '0x35c9bad6cd7ff4e2ad24d62ef5fa13d1ec344a61',
-      buyerAddress: '0xad39152534d84dccca4150428b8b172c06ff6260'
-    },
-    building: {
-      _id: '5bc74247e4a6555f463a72a0',
-      type: 'apartment',
-      name: '아남타워',
-      address: '서울 강남구 역삼동 702-10',
-      photo: null
-    }
-  }
-};
-
 export default ContractDetailTemplate;

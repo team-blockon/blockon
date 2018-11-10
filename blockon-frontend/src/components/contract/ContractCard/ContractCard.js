@@ -16,7 +16,11 @@ const BuildingTypeBadge = ({ children }) => {
 
 const getCards = (contractInfoList, activeTab) => {
   return contractInfoList.map((contractInfo, index) => {
-    const { building, state: contractState } = contractInfo;
+    const {
+      building,
+      state: contractState,
+      index: contractIndex
+    } = contractInfo;
 
     if (
       (activeTab === 'ongoing' && contractState !== cs.COMPLETED_CONTRACT) ||
@@ -52,7 +56,14 @@ const getCards = (contractInfoList, activeTab) => {
                 {building.address}
               </p>
               <p className="view">
-                <Link to="/contract/1">상세보기</Link>
+                <Link
+                  to={{
+                    pathname: '/contract/detail',
+                    state: { contractInfo, activeTab }
+                  }}
+                >
+                  상세보기
+                </Link>
               </p>
             </div>
           </div>
