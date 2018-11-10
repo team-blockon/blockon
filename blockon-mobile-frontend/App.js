@@ -1,10 +1,8 @@
-import React, { Component } from "react";
-import Root from "./src/Components/Root";
+import React from 'react';
+import { WebView } from 'react-native';
 
-class App extends Component {
+export default class App extends React.Component {
   render() {
-    return <Root />;
+    return <WebView source={{uri: 'http://52.79.254.194'}} />
   }
 }
-
-export default App;
