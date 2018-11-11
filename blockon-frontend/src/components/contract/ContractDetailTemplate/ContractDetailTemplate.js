@@ -235,18 +235,9 @@ class ContractDetailTemplate extends Component {
       contractIndex,
       constractState
     );
-    const {
-      isAgentConfirmed,
-      isSellerConfirmed,
-      isBuyerConfirmed
-    } = confirmInfo;
 
-    const newContractInfo = this.state.contractInfo;
-    newContractInfo.confirmInfo = {
-      isAgentConfirmed,
-      isSellerConfirmed,
-      isBuyerConfirmed
-    };
+    const newContractInfo = { ...this.state.contractInfo };
+    newContractInfo.confirmInfo = confirmInfo;
     this.setState({
       contractInfo: newContractInfo
     });
