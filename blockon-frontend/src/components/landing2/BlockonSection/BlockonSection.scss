@@ -1,0 +1,135 @@
+.BlockonSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  text-align: left;
+
+  .slogan {
+    padding: 0;
+    p:nth-child(1) {
+      font-weight: 500;
+    }
+    p:nth-child(2) {
+      font-weight: normal;
+      color: #707070;
+    }
+  }
+
+  .featureContainer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+    .feature {
+      display: flex;
+      flex-flow: column wrap;
+      align-items: center;
+      margin-top: 30px;
+
+      img {
+        width: 100px;
+        height: 100px;
+      }
+      .explanation {
+        margin-top: 30px;
+        .title {
+          font-weight: 500;
+        }
+      }
+      p {
+        font-size: 13pt;
+      }
+    }
+
+  }
+}
+
+
+@media (min-width: 320px) {
+  .BlockonSection {
+    padding: 10px 10px;
+
+    .slogan {
+      p:nth-child(1) {
+        font-size: 12pt;
+      }
+      p:nth-child(2) {
+        font-size: 9pt;
+      }
+    }
+    .featureContainer > div {
+      width: 265px;
+    }
+    .featureContainer {
+      .feature {
+        padding-left: 40px;
+        p {
+          font-size: 11pt;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 650px) {
+  .BlockonSection {
+    padding: 30px 30px;
+
+    .slogan {
+      p:nth-child(1) {
+        font-size: 15pt;
+      }
+      p:nth-child(2) {
+        font-size: 12pt;
+      }
+    }
+    .featureContainer > div {
+      width: 265px;
+    }
+    .featureContainer {
+      .feature {
+        padding: 0;
+        p {
+          font-size: 13pt;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .BlockonSection {
+    padding: 50px 100px;
+
+    .slogan {
+      p:nth-child(1) {
+        font-size: 20pt;
+      }
+      p:nth-child(2) {
+        font-size: 15pt;
+      }
+    }
+    .featureContainer > div {
+      width: 265px;
+      height: 380px;
+    }
+    .feature {
+      padding: 0;
+    }
+  }
+}
+@media (min-width: 1280px){
+  .BlockonSection {
+    padding: 75px 200px;
+
+    .featureContainer > div {
+      width: 265px;
+      height: 380px;
+    }
+    .feature {
+      padding: 0;
+    }
+  }
+}
