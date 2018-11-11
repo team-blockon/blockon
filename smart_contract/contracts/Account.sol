@@ -96,9 +96,7 @@ contract Account {
      *                      100 - 완료
      */
     function confirmToChangeContractStateAt(uint index, uint8 newContractState) 
-        public
-        validContractState(newContractState) {
-        require(index < contracts.length, "contracts array : index out of bound");
+        public {
         confirmToChangeContractState(contracts[index], newContractState);
     }
 
@@ -115,9 +113,7 @@ contract Account {
      *                      100 - 완료
      */
     function confirmToChangeContractState(BaseContract contractAddress, uint8 newContractState) 
-        public
-        validContractState(newContractState) {
-        require(contractIndices[contractAddress] != 0, "contract address doesn't exist");
+        public {
         contractAddress.confirmChangeState(newContractState);
     }
 

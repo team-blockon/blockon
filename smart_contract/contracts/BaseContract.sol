@@ -74,9 +74,7 @@ contract BaseContract {
      * @dev newState로 상태를 변환하는것에 동의한다.
      */
     function confirmChangeState(uint8 newState) 
-        public 
-        relatedAccount(msg.sender)
-        notConfirmed(newState, msg.sender) {
+        public {
         confirmations[newState][msg.sender] = true;
         
         // 컨트랙트 상태변경에 동의한 사실을 계약 구성원에게 알림

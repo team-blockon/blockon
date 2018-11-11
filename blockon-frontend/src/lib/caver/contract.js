@@ -40,18 +40,25 @@ export const confirmToChangeContractStateAt = ({
   contractIndex,
   newContractState
 }) => {
-  const privateKey = JSON.parse(sessionStorage.getItem('privateKey'));
-  caver.klay.accounts.wallet.add(
-    caver.klay.accounts.privateKeyToAccount(privateKey)
+  CaverUtils.sendTransaction(
+    accountInstance,
+    'confirmToChangeContractStateAt',
+    contractIndex,
+    newContractState
   );
 
-  accountInstance.methods
-    .confirmToChangeContractStateAt(contractIndex, newContractState)
-    .send({
-      from: caver.klay.accounts.wallet[0].address,
-      gas: 3000000
-    })
-    .on('error', console.error);
+  // const privateKey = JSON.parse(sessionStorage.getItem('privateKey'));
+  // caver.klay.accounts.wallet.add(
+  //   caver.klay.accounts.privateKeyToAccount(privateKey)
+  // );
+
+  // accountInstance.methods
+  //   .confirmToChangeContractStateAt(contractIndex, newContractState)
+  //   .send({
+  //     from: caver.klay.accounts.wallet[0].address,
+  //     gas: 3000000
+  //   })
+  //   .on('error', console.error);
 };
 
 /**

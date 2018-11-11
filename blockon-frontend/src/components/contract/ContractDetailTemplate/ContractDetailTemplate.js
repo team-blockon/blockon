@@ -235,19 +235,21 @@ class ContractDetailTemplate extends Component {
       contractIndex,
       constractState
     );
-    if (
-      confirmInfo.isAgentConfirmed &&
-      confirmInfo.isSellerConfirmed &&
-      confirmInfo.isBuyerConfirmed
-    ) {
-      return;
-    } else {
-      const newContractInfo = this.state.contractInfo;
-      newContractInfo.confirmInfo = confirmInfo;
-      this.setState({
-        contractInfo: newContractInfo
-      });
-    }
+    const {
+      isAgentConfirmed,
+      isSellerConfirmed,
+      isBuyerConfirmed
+    } = confirmInfo;
+
+    const newContractInfo = this.state.contractInfo;
+    newContractInfo.confirmInfo = {
+      isAgentConfirmed,
+      isSellerConfirmed,
+      isBuyerConfirmed
+    };
+    this.setState({
+      contractInfo: newContractInfo
+    });
   };
 
   async componentDidMount() {
@@ -270,7 +272,7 @@ class ContractDetailTemplate extends Component {
         <div className="ContractDetailTemplate">
           <div className="container content">
             <div className="list-wrapper">{this.getCard()}</div>
-            <Chat party={people} />
+            {/* <Chat party={people} /> */}
           </div>
         </div>
       );
