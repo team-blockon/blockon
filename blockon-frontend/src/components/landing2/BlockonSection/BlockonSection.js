@@ -9,7 +9,7 @@ const BlockonSection = () => {
     <section className="BlockonSection">
       <div className="slogan">
         <p>부동산 계약, 이제 안심하세요.</p>
-        <p>블록체인 기반 부동산 계약 시스템 BLOCKON 은</p>
+        <p>블록체인 기반 부동산 계약 관리 플랫폼 BLOCKON은</p>
       </div>
       <div className="featureContainer">
         <div className="feature">
@@ -17,9 +17,9 @@ const BlockonSection = () => {
             <img src={gradeIcon} alt="grade" />
           </div>
           <div className="explanation">
-            <p className="title">공인중개소 평점시스템</p>
+            <p className="title">공인중개소 평점 시스템</p>
             <p>
-              공인중개사의 평점을
+              공인중개소의 평점을
               <br />
               위치 기반으로 편리하게
               <br />

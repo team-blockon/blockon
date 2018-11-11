@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35.959 33.341">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ffc107;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+        stroke-width: 1.83px;
+      }
+    </style>
+  </defs>
+  <g id="그룹_183" data-name="그룹 183" transform="translate(-715.265 -1573)">
+    <ellipse id="타원_60" data-name="타원 60" class="cls-1" cx="17.98" cy="16.671" rx="17.98" ry="16.671" transform="translate(715.265 1573)"/>
+    <path id="패스_635" data-name="패스 635" class="cls-2" d="M1548.4,1655.6l7.539,6.878-7.539,6.746" transform="translate(-818.302 -73.1)"/>
+  </g>
+</svg>

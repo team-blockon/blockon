@@ -7,13 +7,18 @@
   text-align: left;
 
   .slogan {
-    padding: 0;
     p:nth-child(1) {
       font-weight: 500;
     }
     p:nth-child(2) {
       font-weight: normal;
       color: #707070;
+    }
+  }
+
+  @media (min-width: 320px) {
+    .slogan {
+      text-align: center;
     }
   }
 

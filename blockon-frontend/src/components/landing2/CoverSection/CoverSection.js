@@ -11,7 +11,7 @@ const CoverSection = ({
   return (
     <section className="CoverContainer">
       <div className="subtitleDiv">
-        부동산 거래는 안전하게, 공인중개소 검색은 쉽게
+        안전한 거래를 함께할 중개소를 찾아보세요.
       </div>
       <div className="searchDiv">
         <AutoComplete dataSource={dataSource} onSearch={handleSearch}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import blockonIcon from 'static/images/icon/blockon-icon.svg';
-import checkIcon from 'static/images/icon/check.png';
+import checkIcon from 'static/images/icon/send.svg';
 import './AppSection.scss';
 
 const AppSection = () => {

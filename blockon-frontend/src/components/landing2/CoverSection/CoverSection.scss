@@ -1,5 +1,5 @@
 .CoverContainer {
-  background: url('../../../static/images/landingbackground.png') fixed;
+  background: url("../../../static/images/landingbackground.png") fixed;
   -webkit-background-size: 100%;
   background-size: 100%;
   display: flex;
@@ -9,7 +9,7 @@
   .subtitleDiv {
     font-weight: 300;
     text-align: center;
-    color: rgba(255, 255, 255, 0.71);
+    color: #fff;
   }
   .searchDiv {
     border: solid 1px #262626;
@@ -20,7 +20,8 @@
       border: none;
       outline: none;
       color: #333;
-      background: url("../../../static/images/icon/search.png") no-repeat 10px 8px;
+      background: url("../../../static/images/icon/search.svg") no-repeat 10px
+        8px;
       padding-left: 35px;
       background-size: 15px;
     }
@@ -33,13 +34,13 @@
     background-size: 130%;
     .subtitleDiv {
       margin-top: 60px;
-      font-size: 15px;
+      font-size: 19px;
     }
     .searchDiv {
       margin-top: 10px;
       width: 250px;
 
-      input{
+      input {
         width: 240px;
       }
       input.ant-input.agent {
@@ -63,7 +64,7 @@
     .searchDiv {
       width: 350px;
 
-      input{
+      input {
         width: 300px;
       }
       input.ant-input.agent {
@@ -87,7 +88,7 @@
       width: 400px;
       margin-top: 20px;
 
-      input{
+      input {
         width: 350px;
       }
       input.ant-input.agent {
@@ -114,7 +115,7 @@
       width: 550px;
       margin-top: 35px;
 
-      input{
+      input {
         width: 450px;
       }
       input.ant-input.agent {
