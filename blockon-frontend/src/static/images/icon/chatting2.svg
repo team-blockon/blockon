@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 118.723 109.34">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-2, .cls-4 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+
+      .cls-1 {
+        stroke-linejoin: round;
+      }
+
+      .cls-2, .cls-4 {
+        stroke-linejoin: bevel;
+      }
+
+      .cls-3 {
+        fill: #ffc107;
+      }
+
+      .cls-4 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="그룹_62" data-name="그룹 62" transform="translate(1 1)">
+    <path id="패스_630" data-name="패스 630" class="cls-1" d="M1.5,114.536h0C1.5,100.674,6.689,89.3,13.087,89.3H30.93c6.4,0,11.587,11.374,11.587,25.236H1.5Z" transform="translate(-1.5 -26.887)"/>
+    <ellipse id="타원_51" data-name="타원 51" class="cls-2" cx="12.44" cy="12.44" rx="12.44" ry="12.44" transform="translate(8.033 42.794)"/>
+    <g id="그룹_61" data-name="그룹 61" transform="translate(75.707 42.794)">
+      <path id="패스_631" data-name="패스 631" class="cls-1" d="M108,114.536h0c0-13.862,5.189-25.236,11.587-25.236H137.43c6.4,0,11.587,11.374,11.587,25.236H108Z" transform="translate(-108 -69.68)"/>
+      <path id="패스_632" data-name="패스 632" class="cls-1" d="M144.28,74.14A12.44,12.44,0,1,1,131.84,61.7a12.243,12.243,0,0,1,2.772.284A12.45,12.45,0,0,1,144.28,74.14Z" transform="translate(-111.296 -61.7)"/>
+    </g>
+    <path id="패스_633" data-name="패스 633" class="cls-1" d="M45.1,138.824h0c0-18.482,6.966-33.624,15.426-33.624H84.268c8.459,0,15.426,15.141,15.426,33.624H45.1Z" transform="translate(-14.107 -31.484)"/>
+    <path id="패스_634" data-name="패스 634" class="cls-1" d="M52.269,1.5C42.175,1.5,34,9.177,34,18.561a16.451,16.451,0,0,0,5.331,12.014A19.073,19.073,0,0,0,52.2,35.55h.782l6.469,6.042V35.55H86.6c10.023,0,18.269-7.677,18.269-17.061A16.451,16.451,0,0,0,99.541,6.476,19.073,19.073,0,0,0,86.675,1.5H52.269Z" transform="translate(-10.897 -1.5)"/>
+    <ellipse id="타원_52" data-name="타원 52" class="cls-3" cx="4.336" cy="4.336" rx="4.336" ry="4.336" transform="translate(34.903 12.298)"/>
+    <ellipse id="타원_53" data-name="타원 53" class="cls-3" cx="4.336" cy="4.336" rx="4.336" ry="4.336" transform="translate(50.898 12.298)"/>
+    <ellipse id="타원_54" data-name="타원 54" class="cls-3" cx="4.336" cy="4.336" rx="4.336" ry="4.336" transform="translate(68.029 12.298)"/>
+    <ellipse id="타원_55" data-name="타원 55" class="cls-4" cx="3.128" cy="3.128" rx="3.128" ry="3.128" transform="translate(38.529 14.786)"/>
+    <ellipse id="타원_56" data-name="타원 56" class="cls-4" cx="3.128" cy="3.128" rx="3.128" ry="3.128" transform="translate(55.163 14.786)"/>
+    <ellipse id="타원_57" data-name="타원 57" class="cls-4" cx="3.128" cy="3.128" rx="3.128" ry="3.128" transform="translate(71.868 14.786)"/>
+    <ellipse id="타원_58" data-name="타원 58" class="cls-3" cx="16.279" cy="16.279" rx="16.279" ry="16.279" transform="translate(39.808 51.395)"/>
+    <ellipse id="타원_59" data-name="타원 59" class="cls-4" cx="16.279" cy="16.279" rx="16.279" ry="16.279" transform="translate(42.012 51.395)"/>
+  </g>
+</svg>

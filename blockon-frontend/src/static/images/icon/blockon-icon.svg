@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: #ffc107;
+      }
+
+      .cls-3 {
+        fill: none;
+        stroke: #2b2b2b;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+        stroke-width: 0.944px;
+      }
+    </style>
+  </defs>
+  <g id="그룹_111" data-name="그룹 111" transform="translate(-604 -1398)">
+    <rect id="사각형_89" data-name="사각형 89" class="cls-1" width="72" height="72" rx="12" transform="translate(604 1398)"/>
+    <g id="그룹_108" data-name="그룹 108" transform="translate(0 -46)">
+      <path id="패스_1" data-name="패스 1" class="cls-2" d="M496.556,33.7,478,41.528l.1,25.128,18.942-8.408Z" transform="translate(162.094 1427.783)"/>
+      <g id="그룹_5" data-name="그룹 5" transform="translate(614 1461)">
+        <g id="그룹_15" data-name="그룹 15">
+          <g id="그룹_4" data-name="그룹 4">
+            <g id="그룹_3" data-name="그룹 3">
+              <rect id="사각형_4" data-name="사각형 4" class="cls-3" width="25.804" height="25.804" transform="translate(0 8.408)"/>
+              <path id="패스_2" data-name="패스 2" class="cls-3" d="M503.2,41.9V67.7H477.4" transform="translate(-451.886 -33.492)"/>
+              <path id="패스_3" data-name="패스 3" class="cls-3" d="M477.7,68.3l19.232-8.5,6.282,8.5" transform="translate(-451.896 -34.092)"/>
+              <path id="패스_4" data-name="패스 4" class="cls-3" d="M497.6,58.714V33.2l6.282,8.311" transform="translate(-452.564 -33.2)"/>
+              <line id="선_1" data-name="선 1" class="cls-3" y1="8.601" x2="19.232" transform="translate(25.804)"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
