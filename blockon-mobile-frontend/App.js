@@ -5,7 +5,7 @@ export default class App extends Component {
   render() {
     return (
       <WebView
-        source={{ uri: "http://52.79.254.194" }}
+        source={{ uri: "http://52.79.41.43" }}
         style={styles.app}
         useWebKit={Platform.OS === "ios" ? true : false}
       />
