@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import Chat from '../Chat';
+import * as ContractAPI from 'lib/api/contract';
 import * as ContractUtils from 'lib/utils/contract';
 import * as CaverUser from 'lib/caver/user';
 import * as CaverContract from 'lib/caver/contract';
@@ -252,15 +253,51 @@ class ContractDetailTemplate extends Component {
     });
   };
 
-  async componentDidMount() {
-    const { contractInfo } = this.props.location.state;
-    await this.setState({ contractInfo });
+  async initializeContractInfo(accountInstance) {
+    // 온체인 데이터 가져오기
+    const { contractIndex } = this.props.location.state;
+    const contractInfo = await CaverContract.getContractInfoAt(
+      accountInstance,
+      contractIndex
+    );
+    const contractType = Number(contractInfo.contractType);
+    const contractStep = Number(contractInfo.contractState);
 
+    const confirmInfo = await CaverContract.hasConfirmed(
+      accountInstance,
+      contractIndex,
+      getNextStep(contractType, contractStep)
+    );
+
+    // 오프체인 데이터 가져오기
+    const res = await ContractAPI.get(accountInstance._address, contractIndex);
+
+    if (!res || !res.data || !res.data.building) {
+      return;
+    }
+    const { people, building } = res.data;
+
+    this.setState({
+      contractInfo: {
+        index: contractIndex,
+        type: contractType,
+        state: contractStep,
+        confirmInfo,
+        people,
+        building
+      }
+    });
+  }
+
+  async componentDidMount() {
     const { accountInstance } = await CaverUser.getAccountInfo();
+
     this.setState({ accountInstance }, () => {
       this.watchConfirmChangeContractStateEvent();
       this.watchRevokeConfirmationEvent();
     });
+
+    this.initializeContractInfo(accountInstance);
   }
 
   render() {
