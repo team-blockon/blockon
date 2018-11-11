@@ -9,7 +9,7 @@ const randomstring = require('randomstring');
 const CryptoUtil = require('../../util/CryptoUtil');
 const Caver = require('caver-js');
 
-const caver = new Caver('ws://52.79.254.194:8552');
+const caver = new Caver('ws://52.79.41.43:8552');
 const blockonAbi = require('../../../abi/blockon_abi');
 
 const DIR_PATH = path.resolve(__dirname, '../../../uploads');

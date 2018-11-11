@@ -10,7 +10,7 @@ const TabPane = Tabs.TabPane;
 const sockjs_server =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:8000'
-    : 'http://52.79.254.194';
+    : 'http://52.79.41.43';
 const sock = new SockJS(`${sockjs_server}/chat`);
 
 class Chat extends Component {
