@@ -333,7 +333,6 @@ class ContractUploadTemplate extends Component {
               <RadioGroup
                 name="type"
                 onChange={this.handleBuildingChange}
-                defaultValue="jutaek"
                 buttonStyle="solid"
               >
                 <RadioButton value="jutaek">주택</RadioButton>
@@ -399,7 +398,6 @@ class ContractUploadTemplate extends Component {
               <RadioGroup
                 name="type"
                 onChange={this.handleContractChange}
-                defaultValue="wolse"
                 buttonStyle="solid"
               >
                 <RadioButton value={1}>월세</RadioButton>
