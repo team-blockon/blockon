@@ -29,6 +29,9 @@ const BuildingTypeBadge = ({ children }) => {
 };
 
 class ContractDetailTemplate extends Component {
+  state = {
+    contractInfo: null
+  };
   getProgressbarItem = (stepIndex, contractStep) => {
     return (
       <li
@@ -53,7 +56,7 @@ class ContractDetailTemplate extends Component {
   };
 
   getCard = () => {
-    const { contractInfo } = this.props.location.state;
+    const { contractInfo } = this.state;
     const { index, type, state, confirmInfo, building } = contractInfo;
     const {
       isAgentConfirmed,
@@ -177,7 +180,7 @@ class ContractDetailTemplate extends Component {
   };
 
   confirmButtonHandler = () => {
-    const { contractInfo } = this.props.location.state;
+    const { contractInfo } = this.state;
     const {
       index: contractIndex,
       state: currentState,
@@ -191,23 +194,89 @@ class ContractDetailTemplate extends Component {
     });
   };
 
+  watchConfirmChangeContractStateEvent = () => {
+    const { accountInstance } = this.state;
+    accountInstance.events.ConfirmChangeContractState(
+      {
+        fromBlock: 'latest'
+      },
+      (error, event) => {
+        if (error) {
+          console.log(error);
+        } else {
+          const { contractIndex, confirmedState } = event.returnValues;
+          this.updateConfirmInfo(contractIndex, confirmedState);
+        }
+      }
+    );
+  };
+
+  watchRevokeConfirmationEvent = () => {
+    const { accountInstance } = this.state;
+    accountInstance.events.RevokeConfirmation(
+      {
+        fromBlock: 'latest'
+      },
+      (error, event) => {
+        if (error) {
+          console.log(error);
+        } else {
+          const { contractIndex, revokedState } = event.returnValues;
+          this.updateConfirmInfo(contractIndex, revokedState);
+        }
+      }
+    );
+  };
+
+  updateConfirmInfo = async (contractIndex, constractState) => {
+    const { accountInstance } = this.state;
+    const confirmInfo = await CaverContract.hasConfirmed(
+      accountInstance,
+      contractIndex,
+      constractState
+    );
+    if (
+      confirmInfo.isAgentConfirmed &&
+      confirmInfo.isSellerConfirmed &&
+      confirmInfo.isBuyerConfirmed
+    ) {
+      return;
+    } else {
+      const newContractInfo = this.state.contractInfo;
+      newContractInfo.confirmInfo = confirmInfo;
+      this.setState({
+        contractInfo: newContractInfo
+      });
+    }
+  };
+
   async componentDidMount() {
+    const { contractInfo } = this.props.location.state;
+    await this.setState({ contractInfo });
+
     const { accountInstance } = await CaverUser.getAccountInfo();
-    this.setState({ accountInstance });
+    this.setState({ accountInstance }, () => {
+      this.watchConfirmChangeContractStateEvent();
+      this.watchRevokeConfirmationEvent();
+    });
   }
 
   render() {
-    const { contractInfo } = this.props.location.state;
-    const { people } = contractInfo;
+    if (!!this.state.contractInfo) {
+      const { contractInfo } = this.state;
+      const { people } = contractInfo;
 
-    return (
-      <div className="ContractDetailTemplate">
-        <div className="container content">
-          <div className="list-wrapper">{this.getCard()}</div>
-          <Chat party={people} />
+      return (
+        <div className="ContractDetailTemplate">
+          <div className="container content">
+            <div className="list-wrapper">{this.getCard()}</div>
+            <Chat party={people} />
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return <div>Loading</div>;
+    }
   }
 }
 

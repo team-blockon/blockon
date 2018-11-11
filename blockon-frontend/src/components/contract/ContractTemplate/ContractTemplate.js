@@ -160,58 +160,6 @@ class ContractTemplate extends Component {
     });
   };
 
-  updateConfirmInfo = async (contractIndex, constractState) => {
-    const { accountInstance } = this.state;
-    const confirmInfo = await CaverContract.hasConfirmed(
-      accountInstance,
-      contractIndex,
-      constractState
-    );
-    if (
-      confirmInfo.isAgentConfirmed &&
-      confirmInfo.isSellerConfirmed &&
-      confirmInfo.isBuyerConfirmed
-    ) {
-      return;
-    } else {
-      this.setState(
-        produce(draft => {
-          draft.contractInfoList.forEach(info => {
-            if (info.index === constractState) {
-              info.confirmInfo = confirmInfo;
-            }
-          });
-        })
-      );
-    }
-  };
-
-  watchConfirmChangeContractStateEvent = () => {
-    const { accountInstance } = this.state;
-    accountInstance.events.ConfirmChangeContractState(
-      {
-        fromBlock: 'latest' //어쩌면 latest블록에서 -10정도 해주는게 좋을수도.
-      },
-      (error, event) => {
-        const { contractIndex, confirmedState } = event.returnValues;
-        this.updateConfirmInfo(contractIndex, confirmedState);
-      }
-    );
-  };
-
-  watchRevokeConfirmationEvent = () => {
-    const { accountInstance } = this.state;
-    accountInstance.events.RevokeConfirmation(
-      {
-        fromBlock: 'latest'
-      },
-      (error, event) => {
-        const { contractIndex, revokedState } = event.returnValues;
-        this.updateConfirmInfo(contractIndex, revokedState);
-      }
-    );
-  };
-
   isNoList = () => {
     const { activeTab, isLoading } = this.props;
     // 로딩 중이면 일단 보류
@@ -262,8 +210,6 @@ class ContractTemplate extends Component {
     const { accountInstance } = await CaverUser.getAccountInfo();
     this.setState({ accountInstance }, () => {
       this.watchUpdateEvent();
-      this.watchConfirmChangeContractStateEvent();
-      this.watchRevokeConfirmationEvent();
     });
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
