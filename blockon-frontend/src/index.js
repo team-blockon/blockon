@@ -13,6 +13,7 @@ import 'antd/lib/auto-complete/style/css';
 import 'antd/lib/button/style/css';
 import 'antd/lib/date-picker/style/css';
 import 'antd/lib/radio/style/css';
+import 'antd/lib/popover/style/css';
 import 'antd/lib/tabs/style/css';
 import 'antd/lib/upload/style/css';
 import './index.scss';

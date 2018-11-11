@@ -5,7 +5,7 @@ const Identity = require('../../../models/identity');
 const FileTypeCheck = require('../../util/FileTypeCheck');
 
 const Caver = require('caver-js');
-const caver = new Caver('ws://52.79.254.194:8552');
+const caver = new Caver('ws://52.79.41.43:8552');
 
 const blockonAbi = require('../../../abi/blockon_abi');
 const accountAbi = require('../../../abi/account_abi');
