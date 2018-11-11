@@ -12,6 +12,7 @@ import Pagination from 'components/common/Pagination';
 import Loading from 'components/common/Loading';
 
 import * as ContractAPI from 'lib/api/contract';
+import * as CaverAuth from 'lib/caver/auth';
 import * as CaverUser from 'lib/caver/user';
 import * as CaverContract from 'lib/caver/contract';
 
@@ -208,7 +209,9 @@ class ContractTemplate extends Component {
 
     // 현재 브라우저에 접속한 유저의 어카운트 계정 인스턴스 생성
     const { accountInstance } = await CaverUser.getAccountInfo();
-    this.setState({ accountInstance }, () => {
+    const isAgent = await CaverAuth.isAgent(accountInstance);
+
+    this.setState({ accountInstance, isAgent }, () => {
       this.watchUpdateEvent();
     });
 
@@ -263,9 +266,11 @@ class ContractTemplate extends Component {
             ) : (
               <span>완료된 거래 {this.state.completedContractsNum}건</span>
             )}
-            <button className="upload">
-              <Link to="/contract/edit">거래 올리기</Link>
-            </button>
+            {!!this.state.isAgent && (
+              <button className="upload">
+                <Link to="/contract/edit">거래 올리기</Link>
+              </button>
+            )}
           </div>
 
           {/* 거래가 존재하지 않으면 */}

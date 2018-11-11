@@ -43,3 +43,11 @@ export const authorizeAsAgent = async () => {
     });
   });
 };
+
+/**
+ * 중개인 여부
+ * @param {*} accountInstance
+ */
+export const isAgent = accountInstance => {
+  return accountInstance.methods.isAgent().call();
+};
