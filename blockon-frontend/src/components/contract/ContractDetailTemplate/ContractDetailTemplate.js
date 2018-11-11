@@ -239,12 +239,21 @@ class ContractDetailTemplate extends Component {
 
     const newContractInfo = { ...this.state.contractInfo };
     newContractInfo.confirmInfo = confirmInfo;
-    this.setState({
+    await this.setState({
       contractInfo: newContractInfo
     });
+
+    if (
+      confirmInfo.isAgentConfirmed === true &&
+      confirmInfo.isSellerConfirmed === true &&
+      confirmInfo.isBuyerConfirmed === true
+    ) {
+      this.initializeContractInfo();
+    }
   };
 
-  async initializeContractInfo(accountInstance) {
+  async initializeContractInfo() {
+    const { accountInstance } = this.state;
     // 온체인 데이터 가져오기
     const { contractIndex } = this.props.location.state;
     const contractInfo = await CaverContract.getContractInfoAt(
@@ -257,7 +266,9 @@ class ContractDetailTemplate extends Component {
     const confirmInfo = await CaverContract.hasConfirmed(
       accountInstance,
       contractIndex,
-      getNextStep(contractType, contractStep)
+      contractStep === ContractUtils.cs.END_TRADE
+        ? contractStep
+        : getNextStep(contractType, contractStep)
     );
 
     // 오프체인 데이터 가져오기
@@ -284,11 +295,10 @@ class ContractDetailTemplate extends Component {
     const { accountInstance } = await CaverUser.getAccountInfo();
 
     this.setState({ accountInstance }, () => {
+      this.initializeContractInfo();
       this.watchConfirmChangeContractStateEvent();
       this.watchRevokeConfirmationEvent();
     });
-
-    this.initializeContractInfo(accountInstance);
   }
 
   render() {
