@@ -22,6 +22,7 @@
         margin-top: 63px;
         margin-bottom: 12px;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
       }
 
@@ -30,6 +31,16 @@
 
         .detail {
           margin-left: 12.6px;
+        }
+      }
+
+      @media (max-width: 790px) {
+        .content {
+          flex-direction: column;
+
+          .detail {
+            margin-left: 0;
+          }
         }
       }
 
@@ -69,7 +80,7 @@
 
             .td {
               padding: 9px;
-              width: 15%;
+              width: 86.4px;
             }
           }
         }
