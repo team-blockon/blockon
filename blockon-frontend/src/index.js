@@ -8,7 +8,13 @@ import penderMiddleware from 'redux-pender';
 
 import Root from './client/Root';
 import * as serviceWorker from './serviceWorker';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
+import 'antd/lib/auto-complete/style/css';
+import 'antd/lib/button/style/css';
+import 'antd/lib/date-picker/style/css';
+import 'antd/lib/radio/style/css';
+import 'antd/lib/tabs/style/css';
+import 'antd/lib/upload/style/css';
 import './index.scss';
 
 // 리덕스 개발자 도구 적용

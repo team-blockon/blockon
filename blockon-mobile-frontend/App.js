@@ -1,10 +1,20 @@
 import React, { Component } from "react";
-import Root from "./src/Components/Root";
+import { WebView, StyleSheet, Platform, StatusBar } from "react-native";
 
-class App extends Component {
+export default class App extends Component {
   render() {
-    return <Root />;
+    return (
+      <WebView
+        source={{ uri: "http://52.79.254.194" }}
+        style={styles.app}
+        useWebKit={Platform.OS === "ios" ? true : false}
+      />
+    );
   }
 }
 
-export default App;
+const styles = StyleSheet.create({
+  app: {
+    marginTop: Platform.OS === "ios" ? 18 : StatusBar.currentHeight
+  }
+});

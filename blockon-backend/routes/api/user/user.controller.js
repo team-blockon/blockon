@@ -57,9 +57,13 @@ exports.getEmailList = async (req, res) => {
   const accounts = await Account.find(
     { email: new RegExp(`^${req.body.value}`) },
     '-_id'
-  ).select('email');
-  console.log(accounts);
-  const emailList = accounts.map(account => account.email);
+  );
+
+  const emailList = accounts.map(account => ({
+    username: account.profile.username,
+    email: account.email
+  }));
+
   res.json(emailList);
 };
 

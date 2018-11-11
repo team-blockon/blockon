@@ -12,6 +12,7 @@ import Pagination from 'components/common/Pagination';
 import Loading from 'components/common/Loading';
 
 import * as ContractAPI from 'lib/api/contract';
+import * as CaverAuth from 'lib/caver/auth';
 import * as CaverUser from 'lib/caver/user';
 import * as CaverContract from 'lib/caver/contract';
 
@@ -160,58 +161,6 @@ class ContractTemplate extends Component {
     });
   };
 
-  updateConfirmInfo = async (contractIndex, constractState) => {
-    const { accountInstance } = this.state;
-    const confirmInfo = await CaverContract.hasConfirmed(
-      accountInstance,
-      contractIndex,
-      constractState
-    );
-    if (
-      confirmInfo.isAgentConfirmed &&
-      confirmInfo.isSellerConfirmed &&
-      confirmInfo.isBuyerConfirmed
-    ) {
-      return;
-    } else {
-      this.setState(
-        produce(draft => {
-          draft.contractInfoList.forEach(info => {
-            if (info.index === constractState) {
-              info.confirmInfo = confirmInfo;
-            }
-          });
-        })
-      );
-    }
-  };
-
-  watchConfirmChangeContractStateEvent = () => {
-    const { accountInstance } = this.state;
-    accountInstance.events.ConfirmChangeContractState(
-      {
-        fromBlock: 'latest' //어쩌면 latest블록에서 -10정도 해주는게 좋을수도.
-      },
-      (error, event) => {
-        const { contractIndex, confirmedState } = event.returnValue;
-        this.updateConfirmInfo(contractIndex, confirmedState);
-      }
-    );
-  };
-
-  watchRevokeConfirmationEvent = () => {
-    const { accountInstance } = this.state;
-    accountInstance.events.RevokeConfirmation(
-      {
-        fromBlock: 'latest'
-      },
-      (error, event) => {
-        const { contractIndex, revokedState } = event.returnValue;
-        this.updateConfirmInfo(contractIndex, revokedState);
-      }
-    );
-  };
-
   isNoList = () => {
     const { activeTab, isLoading } = this.props;
     // 로딩 중이면 일단 보류
@@ -260,10 +209,10 @@ class ContractTemplate extends Component {
 
     // 현재 브라우저에 접속한 유저의 어카운트 계정 인스턴스 생성
     const { accountInstance } = await CaverUser.getAccountInfo();
-    this.setState({ accountInstance }, () => {
+    const isAgent = await CaverAuth.isAgent(accountInstance);
+
+    this.setState({ accountInstance, isAgent }, () => {
       this.watchUpdateEvent();
-      this.watchConfirmChangeContractStateEvent();
-      this.watchRevokeConfirmationEvent();
     });
 
     // 현재 브라우저에 접속한 유저가 포함된 계약의 개수
@@ -317,9 +266,11 @@ class ContractTemplate extends Component {
             ) : (
               <span>완료된 거래 {this.state.completedContractsNum}건</span>
             )}
-            <button className="upload">
-              <Link to="/contract/edit">거래 올리기</Link>
-            </button>
+            {!!this.state.isAgent && (
+              <button className="upload">
+                <Link to="/contract/edit">거래 올리기</Link>
+              </button>
+            )}
           </div>
 
           {/* 거래가 존재하지 않으면 */}

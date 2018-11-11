@@ -1,27 +1,30 @@
 {
   "expo": {
-    "name": "blockon-mobile-frontend",
-    "description": "This project is really great.",
-    "slug": "blockon-mobile-frontend",
+    "name": "BLOCKON",
+    "description": "Blockon mobile frontend using WebView",
+    "slug": "BLOCKON",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "primaryColor": "#ffffff",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "house.blockon"
+    },
+    "android": {
+      "package": "house.blockon"
     }
   }
 }

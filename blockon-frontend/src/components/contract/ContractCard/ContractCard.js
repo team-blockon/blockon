@@ -24,7 +24,11 @@ const getCards = (contractInfoList, currentPage, activeTab) => {
 
   const subList = contractInfoList.slice(startIndex, endIndex);
   return subList.map((contractInfo, index) => {
-    const { building, state: contractState } = contractInfo;
+    const {
+      building,
+      state: contractState,
+      index: contractIndex
+    } = contractInfo;
 
     if (
       (activeTab === 'ongoing' && contractState !== cs.COMPLETED_CONTRACT) ||
@@ -63,7 +67,7 @@ const getCards = (contractInfoList, currentPage, activeTab) => {
                 <Link
                   to={{
                     pathname: '/contract/detail',
-                    state: { contractInfo }
+                    state: { contractIndex }
                   }}
                 >
                   상세보기

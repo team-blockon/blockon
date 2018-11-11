@@ -16,8 +16,11 @@
     }
   }
 
-  .levelText {
-    font-size: 1rem;
+  .complete {
+    font-size: 14px;
+    font-weight: 300;
+    color: #222;
+    text-align: center;
 
     span {
       color: $oc-blue-7;

@@ -112,7 +112,7 @@ exports.register = async (req, res) => {
 
     const blockonContract = new caver.klay.Contract(
       blockonAbi,
-      '0xbb2834280affc578307fb70d05887e19115e6eb6'
+      '0xee326f1044718e6a613ce949f644277524c429d1'
     );
 
     blockonContract.methods

@@ -48,24 +48,32 @@ class AuthAgent extends Component {
     });
   };
 
-  isAgent = accountInstance => {
-    if (!accountInstance) return;
-    return accountInstance.methods.isAgent().call();
-  };
-
   handleAuth = () => {
     CaverAuth.authorizeAsAgent();
   };
 
   async componentDidMount() {
     const { accountInstance } = this.props;
-    const isAgent = await this.isAgent(accountInstance);
+    const isAgent = await CaverAuth.isAgent(accountInstance);
 
     this.setState({
       ...this.state,
       isAgent
     });
   }
+
+  getCompleteMsg = () => {
+    return (
+      <div className="AuthAgent" style={{ margin: '41px auto' }}>
+        <p className="complete">
+          {this.props.username}
+          님은 <span>중개인인증</span>을 완료하였습니다.
+          <br />
+          거래목록 페이지에서 <span>거래 등록</span>이 가능합니다.
+        </p>
+      </div>
+    );
+  };
 
   render() {
     const {
@@ -77,7 +85,10 @@ class AuthAgent extends Component {
       isAgent,
       isLoading
     } = this.state;
-    // const { username } = this.props;
+
+    if (isAgent) {
+      return this.getCompleteMsg();
+    }
 
     return (
       <div className="AuthAgent">
@@ -145,13 +156,6 @@ class AuthAgent extends Component {
         <div className="action">
           <button onClick={() => this.handleAuth()}>확인</button>
         </div>
-        {/* {isAgent && (
-          <p className="levelText">
-            {username}
-            님의 보안등급은 현재 <span>공인중개사</span>
-            입니다.
-          </p>
-        )} */}
       </div>
     );
   }
