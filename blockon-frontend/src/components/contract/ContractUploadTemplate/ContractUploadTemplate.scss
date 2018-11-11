@@ -2,16 +2,24 @@
 
 .ContractUploadTemplate {
   h1 {
-    font-weight: 100;
-    font-size: 1.2rem;
+    font-size: 22px;
+    font-weight: 500;
+    color: #222;
+    margin-bottom: 23.5px;
   }
 
   h2 {
-    font-weight: 100;
-    font-size: 1.3rem;
-    border-bottom: 1px solid #333;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    font-size: 17px;
+    font-weight: 500;
+    padding-bottom: 11px;
+    border-bottom: 1px solid #7a7a7a;
+    margin-bottom: 23.5px;
+  }
+
+  .form-inline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
 
   .form-group {
@@ -20,19 +28,22 @@
     align-items: center;
 
     label.form-label {
-      min-width: 7rem;
+      font-size: 14px;
+      font-weight: 300;
+      color: #222;
+      width: 183.5px;
     }
 
     input {
-      border: 1px solid $oc-gray-4;
-      background-color: $oc-gray-0;
-      padding: 10px 13px;
-      border-radius: 3px;
-      font-size: 0.9rem;
+      outline: none;
+      border: 1px solid #e2e2e2;
+      padding: 0 13px;
+      height: 43px;
+      font-size: 14px;
 
       &[type="text"],
       &[type="email"] {
-        width: 350px;
+        width: 450px;
       }
     }
   }
@@ -41,15 +52,15 @@
     text-align: center;
 
     button {
-      padding-top: 0.9rem;
-      padding-bottom: 0.9rem;
-      background: #353a4c;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 10px 0;
+      background-color: #ffc107;
       color: white;
       font-size: 1rem;
-      width: 150px;
-      border-radius: 5px;
-      border: none;
-      letter-spacing: 3px;
+      width: 158px;
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     }
   }
 

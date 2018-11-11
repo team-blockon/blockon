@@ -7,12 +7,14 @@ import * as UserAPI from 'lib/api/user';
 import * as ContractAPI from 'lib/api/contract';
 import * as CaverUser from 'lib/caver/user';
 import * as CaverContract from 'lib/caver/contract';
-import Loading from 'components/common/Loading';
+import * as ContractUtils from 'lib/utils/contract';
 
-import { AutoComplete, Radio, DatePicker } from 'antd';
-import { Upload, Icon } from 'antd';
+import Autocomplete from './Autocomplete';
+
+import { Radio, Upload, Icon, DatePicker } from 'antd';
 import './ContractUploadTemplate.scss';
 
+const { ct } = ContractUtils;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
@@ -27,9 +29,14 @@ const getBase64 = (img, callback) => {
   reader.readAsDataURL(img);
 };
 
+const getSuggestions = value => {
+  if (value.length === 0) return Promise.resolve([]);
+  return UserAPI.getEmailList(value);
+};
+
 class ContractUploadTemplate extends Component {
   state = {
-    dataSource: [], // 자동완성 아이템 리스트
+    suggestions: [], // 자동완성 아이템 리스트
     accountInstance: null, // 이벤트 구독 대상 Account 인스턴스
     sellerEmail: '', // 매도인 이메일
     buyerEmail: '', // 매수인 이메일
@@ -51,6 +58,160 @@ class ContractUploadTemplate extends Component {
         date: null, // 거래일자
         type: null // 계약종류
       }
+    }
+  };
+
+  /**
+   * value 값에 따라 자동완성 아이템 리스트 변경
+   */
+  onSuggestionsFetchRequested = ({ value }) => {
+    getSuggestions(value).then(res => {
+      this.setState(
+        produce(draft => {
+          draft.suggestions = res.data;
+        })
+      );
+    });
+  };
+
+  onSuggestionsClearRequested = () => {
+    this.setState(
+      produce(draft => {
+        draft.suggestions = [];
+      })
+    );
+  };
+
+  /**
+   * 건물형태, 건물명 인풋 상태 관리
+   */
+  handleBuildingChange = event => {
+    const { name, value } = event.target;
+    this.setState(
+      produce(draft => {
+        draft.formData.building[name] = value;
+      })
+    );
+  };
+
+  /**
+   * 건물주소 인풋을 클릭할 때 호출
+   */
+  handleBuildingAddressClick = () => {
+    const { daum } = window;
+    const self = this;
+
+    daum.postcode.load(function() {
+      new daum.Postcode({
+        oncomplete: function(data) {
+          self.setState(
+            produce(draft => {
+              draft.formData.building.address = data.jibunAddress;
+            })
+          );
+        }
+      }).open();
+    });
+  };
+
+  /**
+   * 매물사진 업로드 상태 변경
+   */
+  handlePhotoChange = info => {
+    const { status, originFileObj, response } = info.file;
+
+    if (status === 'uploading') {
+      this.setState({ loading: true });
+      return;
+    }
+    if (status === 'done') {
+      getBase64(originFileObj, imageUrl => {
+        this.setState(
+          produce(draft => {
+            draft.imageUrl = imageUrl;
+            draft.formData.building.photo = response.path;
+            draft.loading = false;
+          })
+        );
+      });
+    }
+  };
+
+  /**
+   * multipart/form-data 요청을 위한 커스텀 요청 생성
+   */
+  customRequest = options => {
+    const formData = new FormData();
+    formData.append('thumbnail', options.file);
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    };
+
+    axios
+      .post(options.action, formData, config)
+      .then(res => {
+        options.onSuccess(res.data, options.file);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  /**
+   * 거래일자 인풋 관리
+   */
+  handleDateChange = (date, dateString) => {
+    this.setState(
+      produce(draft => {
+        draft.formData.contract.date = dateString;
+      })
+    );
+  };
+
+  /**
+   * 계약종류 인풋 관리
+   */
+  handleContractChange = event => {
+    const { name, value } = event.target;
+    this.setState(
+      produce(draft => {
+        draft.formData.contract[name] = value;
+      })
+    );
+  };
+
+  getPriceField = () => {
+    switch (this.state.formData.contract.type) {
+    case ct.WOLSE:
+      return (
+        <div className="form-inline">
+          <div className="form-group">
+            <label className="form-label">보증금</label>
+            <input placeholder="보증금" />
+          </div>
+          <div className="form-group">
+            <label className="form-label">월세</label>
+            <input placeholder="월세" />
+          </div>
+        </div>
+      );
+    case ct.JEONSE:
+      return (
+        <div className="form-group">
+          <label className="form-label">보증금</label>
+          <input placeholder="보증금" />
+        </div>
+      );
+    case ct.TRADE:
+      return (
+        <div className="form-group">
+          <label className="form-label">매매가</label>
+          <input placeholder="매매가" />
+        </div>
+      );
+    default:
     }
   };
 
@@ -98,73 +259,6 @@ class ContractUploadTemplate extends Component {
     history.push('/contract');
   };
 
-  /**
-   * 건물형태, 건물명 인풋 상태 관리
-   */
-  handleBuildingChange = event => {
-    const { name, value } = event.target;
-    this.setState(
-      produce(draft => {
-        draft.formData.building[name] = value;
-      })
-    );
-  };
-
-  /**
-   * 건물주소 인풋을 클릭할 때 호출
-   */
-  handleBuildingAddressClick = () => {
-    const { daum } = window;
-    const self = this;
-
-    daum.postcode.load(function() {
-      new daum.Postcode({
-        oncomplete: function(data) {
-          self.setState(
-            produce(draft => {
-              draft.formData.building.address = data.jibunAddress;
-            })
-          );
-        }
-      }).open();
-    });
-  };
-
-  /**
-   * 계약종류 인풋 관리
-   */
-  handleContractChange = event => {
-    const { name, value } = event.target;
-    this.setState(
-      produce(draft => {
-        draft.formData.contract[name] = value;
-      })
-    );
-  };
-
-  /**
-   * 거래일자 인풋 관리
-   */
-  handleDateChange = (date, dateString) => {
-    this.setState(
-      produce(draft => {
-        draft.formData.contract.date = dateString;
-      })
-    );
-  };
-
-  /**
-   * value 값에 따라 자동완성 아이템 리스트 변경
-   */
-  handleSearch = value => {
-    UserAPI.getEmailList(value).then(res => {
-      const emailList = res.data;
-      this.setState({
-        dataSource: emailList
-      });
-    });
-  };
-
   async componentDidMount() {
     const {
       accountAddress,
@@ -179,60 +273,8 @@ class ContractUploadTemplate extends Component {
     );
   }
 
-  /**
-   * 매물사진 업로드 상태 변경
-   */
-  handlePhotoChange = info => {
-    const { status, originFileObj, response } = info.file;
-
-    if (status === 'uploading') {
-      this.setState({ loading: true });
-      return;
-    }
-    if (status === 'done') {
-      getBase64(originFileObj, imageUrl => {
-        this.setState(
-          produce(draft => {
-            draft.imageUrl = imageUrl;
-            draft.formData.building.photo = response.path;
-            draft.loading = false;
-          })
-        );
-      });
-    }
-  };
-
-  /**
-   * multipart/form-data 요청을 위한 커스텀 요청 생성
-   */
-  customRequest = options => {
-    const formData = new FormData();
-    formData.append('thumbnail', options.file);
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data'
-      }
-    };
-
-    axios
-      .post(options.action, formData, config)
-      .then(res => {
-        options.onSuccess(res.data, options.file);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
   render() {
-    const { loading } = this.props;
-    const {
-      dataSource,
-      sellerEmail,
-      buyerEmail,
-      formData,
-      imageUrl
-    } = this.state;
+    const { suggestions, formData, imageUrl } = this.state;
     const { name, address } = formData.building;
 
     const uploadButton = (
@@ -244,67 +286,43 @@ class ContractUploadTemplate extends Component {
 
     return (
       <div className="ContractUploadTemplate">
-        {/* {loading && <Loading />} */}
         <div className="container content">
-          <h1>계약등록</h1>
+          <h1>거래 올리기</h1>
           <h2>거래당사자</h2>
           <div>
             <div className="form-group">
               <label className="form-label">매수인</label>
-              <AutoComplete
+              <Autocomplete
+                type="email"
                 name="buyerEmail"
-                dataSource={dataSource}
-                onChange={value => {
-                  this.setState(
-                    produce(draft => {
-                      draft.buyerEmail = value;
-                    })
-                  );
+                placeholder="이메일 주소로 검색하세요"
+                onChange={suggestionValue => {
+                  this.setState({
+                    ...this.state,
+                    buyerEmail: suggestionValue
+                  });
                 }}
-                onSelect={value => {
-                  this.setState(
-                    produce(draft => {
-                      draft.buyerEmail = value;
-                    })
-                  );
-                }}
-                onSearch={this.handleSearch}
-              >
-                <input
-                  type="email"
-                  value={buyerEmail}
-                  name="buyerEmail"
-                  placeholder="이메일 주소로 검색하세요"
-                />
-              </AutoComplete>
+                suggestions={suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+              />
             </div>
             <div className="form-group">
               <label className="form-label">매도인</label>
-              <AutoComplete
-                dataSource={dataSource}
-                onChange={value => {
-                  this.setState(
-                    produce(draft => {
-                      draft.sellerEmail = value;
-                    })
-                  );
+              <Autocomplete
+                type="email"
+                name="sellerEmail"
+                placeholder="이메일 주소로 검색하세요"
+                onChange={suggestionValue => {
+                  this.setState({
+                    ...this.state,
+                    sellerEmail: suggestionValue
+                  });
                 }}
-                onSelect={value => {
-                  this.setState(
-                    produce(draft => {
-                      draft.sellerEmail = value;
-                    })
-                  );
-                }}
-                onSearch={this.handleSearch}
-              >
-                <input
-                  type="email"
-                  value={sellerEmail}
-                  name="sellerEmail"
-                  placeholder="이메일 주소로 검색하세요"
-                />
-              </AutoComplete>
+                suggestions={suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+              />
             </div>
           </div>
 
@@ -389,11 +407,12 @@ class ContractUploadTemplate extends Component {
                 <RadioButton value={3}>매매</RadioButton>
               </RadioGroup>
             </div>
+            {this.getPriceField()}
           </div>
 
           <div className="action">
             <button type="button" onClick={this.handleSubmit}>
-              계약등록
+              거래등록
             </button>
           </div>
         </div>
