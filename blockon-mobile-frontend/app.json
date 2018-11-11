@@ -20,7 +20,11 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "house.blockon"
+    },
+    "android": {
+      "package": "house.blockon"
     }
   }
 }
