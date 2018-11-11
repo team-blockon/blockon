@@ -48,18 +48,13 @@ class AuthAgent extends Component {
     });
   };
 
-  isAgent = accountInstance => {
-    if (!accountInstance) return;
-    return accountInstance.methods.isAgent().call();
-  };
-
   handleAuth = () => {
     CaverAuth.authorizeAsAgent();
   };
 
   async componentDidMount() {
     const { accountInstance } = this.props;
-    const isAgent = await this.isAgent(accountInstance);
+    const isAgent = await CaverAuth.isAgent(accountInstance);
 
     this.setState({
       ...this.state,

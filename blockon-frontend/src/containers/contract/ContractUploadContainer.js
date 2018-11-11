@@ -5,14 +5,12 @@ import ContractUploadTemplate from 'components/contract/ContractUploadTemplate';
 
 class ContractUploadContainer extends Component {
   render() {
-    const { updateEvent, loading } = this.props;
-    return (
-      <ContractUploadTemplate updateEvent={updateEvent} loading={loading} />
-    );
+    const { updateEvent } = this.props;
+    return <ContractUploadTemplate updateEvent={updateEvent} />;
   }
 }
 
 export default connect(
-  ({ pender }) => ({ loading: pender.pending['caver/contract/UPDATE_EVENT'] }),
+  null,
   { updateEvent }
 )(ContractUploadContainer);
