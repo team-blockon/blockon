@@ -18,9 +18,6 @@
   }
 
   .featureContainer {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
     margin-top: 20px;
     .feature {
       display: flex;
@@ -63,8 +60,10 @@
       width: 265px;
     }
     .featureContainer {
+      display: flex;
+      flex-flow: column wrap;
+      align-items: center;
       .feature {
-        padding-left: 40px;
         p {
           font-size: 11pt;
         }
@@ -89,6 +88,9 @@
       width: 265px;
     }
     .featureContainer {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
       .feature {
         padding: 0;
         p {

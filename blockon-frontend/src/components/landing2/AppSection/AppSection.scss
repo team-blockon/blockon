@@ -38,3 +38,13 @@
     }
   }
 }
+
+@media (max-width: 649px) {
+  .phoneInput {
+    width: 250px;
+    justify-content: space-between;
+    input {
+      width: 150px;
+    }
+  }
+}
