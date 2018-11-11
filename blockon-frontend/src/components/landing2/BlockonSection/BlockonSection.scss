@@ -25,8 +25,10 @@
     .feature {
       display: flex;
       flex-flow: column wrap;
+      justify-content: center;
       align-items: center;
       margin-top: 30px;
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.08);
 
       img {
         width: 100px;
@@ -42,10 +44,8 @@
         font-size: 13pt;
       }
     }
-
   }
 }
-
 
 @media (min-width: 320px) {
   .BlockonSection {
@@ -120,7 +120,7 @@
     }
   }
 }
-@media (min-width: 1280px){
+@media (min-width: 1280px) {
   .BlockonSection {
     padding: 75px 200px;
 

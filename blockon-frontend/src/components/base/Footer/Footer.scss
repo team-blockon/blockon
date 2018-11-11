@@ -1,91 +1,11 @@
-footer.landing {
-  padding-top: 10rem;
-}
-
 footer {
-  padding-top: 5rem;
-  padding-bottom: 3rem;
-  background-color: #353a4c;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  background-color: #4f5664;
   color: #fff;
 
-  @media only screen and (max-width: 980px) {
-    .footer-top {
-      display: block; //1st option
-      //flex-flow: column wrap;   //second option
-
-      .company {
-        padding-left: 0;
-        text-align: center;
-      }
-    }
-  }
-  @media only screen and (min-width: 981px) {
-    .footer-top {
-      display: flex;
-
-      .company {
-        padding-left: 3rem;
-      }
-    }
-  }
-  .footer-top {
-    .company {
-      img {
-        height: 122px;
-        max-width: 260px;
-      }
-    }
-
-    nav {
-      flex-grow: 1;
-
-      ul {
-        display: inline-block;
-        margin: 0;
-        padding: 0;
-
-        li {
-          list-style: none;
-
-          & + li {
-            padding-top: 0.8rem;
-          }
-        }
-      }
-    }
-    @media only screen and (max-width: 980px) {
-      nav {
-        display: none; //1st option
-        /*display: flex;            //second option
-        justify-content: center;
-        padding-top: 3rem;
-        div{
-          padding: 1rem;
-        }      */ //through here
-      }
-    }
-    @media only screen and (min-width: 981px) {
-      nav {
-        display: flex;
-        padding-left: 8rem;
-        justify-content: space-around;
-      }
-    }
-  }
-
-  hr {
-    border: none;
-    border-top: 2px solid #fff;
-    margin-top: 1.5rem;
-    margin-bottom: 2.5rem;
-  }
-
   .copyright {
+    font-size: 14px;
     text-align: center;
-  }
-  @media only screen and (max-width: 980px) {
-    .copyright {
-      font-size: 9pt;
-    }
   }
 }

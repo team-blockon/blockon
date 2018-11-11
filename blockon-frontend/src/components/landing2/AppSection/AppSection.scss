@@ -24,6 +24,7 @@
     flex-flow: row nowrap;
     input {
       border: 0;
+      outline: none;
       height: 40px;
       margin-left: 19px;
       &::placeholder {
@@ -32,7 +33,7 @@
     }
     img {
       width: 30px;
-      height:30px;
+      height: 30px;
       margin-top: 5px;
       margin-right: 5px;
     }
