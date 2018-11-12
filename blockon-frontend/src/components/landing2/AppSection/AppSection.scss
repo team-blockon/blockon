@@ -31,11 +31,14 @@
         color: #e2e2e2;
       }
     }
-    img {
-      width: 30px;
-      height: 30px;
-      margin-top: 5px;
-      margin-right: 5px;
+    .confirm {
+      cursor: pointer;
+      img {
+        width: 30px;
+        height: 30px;
+        margin-top: 5px;
+        margin-right: 5px;
+      }
     }
   }
 }
@@ -49,4 +52,3 @@
     }
   }
 }
-
