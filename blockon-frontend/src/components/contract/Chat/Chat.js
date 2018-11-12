@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Tabs } from 'antd';
 import { MessageList, Input, Button } from 'react-chat-elements';
+import * as ChatAPI from 'lib/api/chat';
 import * as CaverUser from 'lib/caver/user';
 import * as CaverAuth from 'lib/caver/auth';
 import SockJS from 'sockjs-client';
@@ -36,11 +37,16 @@ class Chat extends Component {
     const { sellerAddress, buyerAddress } = this.props.party;
     const receiver = activeTab === '1' ? sellerAddress : buyerAddress;
 
-    this.setState({
-      ...this.state,
-      receiver,
-      messageList: [] // 메시지 목록 초기화
-    });
+    this.setState(
+      {
+        ...this.state,
+        receiver,
+        messageList: [] // 메시지 목록 초기화
+      },
+      () => {
+        this.initializeMessages(receiver);
+      }
+    );
 
     this.createConversation(receiver);
   };
@@ -110,9 +116,55 @@ class Chat extends Component {
     input.input.focus();
   };
 
+  /* 0. DB에서 채팅 기록 가져오기 */
+  initializeMessages = receiver => {
+    const { sender } = this.state;
+    const { contractId } = this.props;
+
+    ChatAPI.getMessages({
+      contractId,
+      sender,
+      receiver
+    }).then(res => {
+      const { senderMessages, receiverMessages } = res.data;
+
+      let i = 0;
+      let j = 0;
+
+      // 메시지 송수신자 구분없이 날짜 순으로 정렬하여 삽입
+      while (i < senderMessages.length && j < receiverMessages.length) {
+        const senderDate = new Date(senderMessages[i].createdAt);
+        const receiverDate = new Date(receiverMessages[j].createdAt);
+
+        if (senderDate.getTime() < receiverDate.getTime()) {
+          this.addMessage('left', senderMessages[i].content, senderDate);
+          i++;
+        } else {
+          this.addMessage('right', receiverMessages[j].content, receiverDate);
+          j++;
+        }
+      }
+
+      for (; i < senderMessages.length; i++) {
+        this.addMessage(
+          'left',
+          senderMessages[j].content,
+          new Date(senderMessages[j].createdAt)
+        );
+      }
+      for (; j < receiverMessages.length; j++) {
+        this.addMessage(
+          'right',
+          receiverMessages[j].content,
+          new Date(receiverMessages[j].createdAt)
+        );
+      }
+    });
+  };
+
   componentDidMount = async () => {
     const {
-      accountAddress,
+      accountAddress: sender,
       accountInstance
     } = await CaverUser.getAccountInfo();
     const isAgent = await CaverAuth.isAgent(accountInstance);
@@ -126,9 +178,11 @@ class Chat extends Component {
     this.setState({
       ...this.state,
       isAgent,
-      sender: accountAddress,
+      sender,
       receiver
     });
+
+    this.initializeMessages(receiver);
 
     /* 2. 대화 생성 */
     // 채팅 참가자는 본인과 수신자
