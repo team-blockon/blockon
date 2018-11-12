@@ -6,4 +6,10 @@
   main {
     flex: 1;
   }
+
+  main.auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
