@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
+import Loading from 'components/common/Loading';
 import Chat from '../Chat';
 import * as ContractAPI from 'lib/api/contract';
 import * as ContractUtils from 'lib/utils/contract';
@@ -349,12 +350,12 @@ class ContractDetailTemplate extends Component {
         <div className="ContractDetailTemplate">
           <div className="container content">
             <div className="list-wrapper">{this.getCard()}</div>
-            {/* <Chat party={people} /> */}
+            <Chat party={people} />
           </div>
         </div>
       );
     } else {
-      return <div>Loading</div>;
+      return <Loading />;
     }
   }
 }

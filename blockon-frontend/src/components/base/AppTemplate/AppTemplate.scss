@@ -5,6 +5,7 @@
 
   main {
     flex: 1;
+    position: relative; // Loading 컴포넌트가 main을 덮도록 함
   }
 
   main.auth {
