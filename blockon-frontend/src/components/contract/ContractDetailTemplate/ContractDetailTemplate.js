@@ -266,7 +266,7 @@ class ContractDetailTemplate extends Component {
     const confirmInfo = await CaverContract.hasConfirmed(
       accountInstance,
       contractIndex,
-      contractStep === ContractUtils.cs.END_TRADE
+      contractStep === ContractUtils.cs.COMPLETED_CONTRACT
         ? contractStep
         : getNextStep(contractType, contractStep)
     );

@@ -20,13 +20,13 @@ const getCards = (contractInfoList, currentPage, activeTab) => {
   // 현재 탭이 진행중 거래 탭
   if (activeTab === 'ongoing') {
     filteredContractInfoList = contractInfoList.filter(
-      contractInfo => contractInfo.state !== ContractUtils.cs.END_TRADE
+      contractInfo => contractInfo.state !== ContractUtils.cs.COMPLETED_CONTRACT
     );
   }
   // 현재 탭이 완료된 거래 탭
   if (activeTab === 'completed') {
     filteredContractInfoList = contractInfoList.filter(
-      contractInfo => contractInfo.state === ContractUtils.cs.END_TRADE
+      contractInfo => contractInfo.state === ContractUtils.cs.COMPLETED_CONTRACT
     );
   }
 

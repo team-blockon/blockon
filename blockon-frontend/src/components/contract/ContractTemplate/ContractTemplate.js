@@ -89,7 +89,7 @@ class ContractTemplate extends Component {
     );
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
-    if (contractStep === cs.END_TRADE) {
+    if (contractStep === cs.COMPLETED_CONTRACT) {
       this.setState({
         completedContractsNum: this.state.completedContractsNum + 1
       });
@@ -126,7 +126,7 @@ class ContractTemplate extends Component {
     );
 
     // 진행중 거래와 완료된 거래의 개수를 업데이트
-    if (contractStep === cs.END_TRADE) {
+    if (contractStep === cs.COMPLETED_CONTRACT) {
       this.setState({
         activeContractsNum: this.state.activeContractsNum - 1,
         completedContractsNum: this.state.completedContractsNum + 1

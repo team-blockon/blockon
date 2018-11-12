@@ -13,7 +13,7 @@ export const cs = Object.freeze({
   FINAL_PAYMENT: 3, // 잔금 입금
   REGISTRATION: 4, // 등기 등록 신청
   FIXED_DATE: 5, // 확정일자
-  END_TRADE: 100 // 거래종료
+  COMPLETED_CONTRACT: 100 // 거래종료
 });
 
 // 매매 단계
@@ -23,7 +23,7 @@ export const tradeStep = [
   cs.MIDDLE_PAYMENT,
   cs.FINAL_PAYMENT,
   cs.REGISTRATION,
-  cs.END_TRADE
+  cs.COMPLETED_CONTRACT
 ];
 
 // 전월세 단계
@@ -32,7 +32,7 @@ export const rentStep = [
   cs.DOWN_PAYMENT,
   cs.FINAL_PAYMENT,
   cs.FIXED_DATE,
-  cs.END_TRADE
+  cs.COMPLETED_CONTRACT
 ];
 
 /**
@@ -53,7 +53,7 @@ export const getStepWord = step => {
     return '등기신청';
   case cs.FIXED_DATE:
     return '확정일자';
-  case cs.END_TRADE:
+  case cs.COMPLETED_CONTRACT:
     return '거래종료';
   default:
   }
