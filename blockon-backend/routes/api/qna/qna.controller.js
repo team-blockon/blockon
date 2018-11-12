@@ -1,5 +1,5 @@
 const Qna = require('../../../models/qna');
-const MailUtil = require('../../util/MailUtil');
+const MailUtil = require('../../../lib/utils/MailUtil');
 
 exports.save = (req, res) => {
   const { name, email, phone, feedback } = req.body;

@@ -2,7 +2,7 @@ const ipfsAPI = require('ipfs-api');
 const multer = require('multer');
 const fs = require('fs');
 const Identity = require('../../../models/identity');
-const FileTypeCheck = require('../../util/FileTypeCheck');
+const FileTypeCheck = require('../../../lib/utils/FileTypeCheck');
 
 const Caver = require('caver-js');
 const caver = new Caver('ws://52.79.41.43:8552');

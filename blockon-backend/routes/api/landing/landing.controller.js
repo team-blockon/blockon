@@ -1,4 +1,4 @@
-const MailUtil = require('../../util/MailUtil');
+const MailUtil = require('../../../lib/utils/MailUtil');
 
 exports.subscribe = (req, res) => {
   const { email } = req.body;

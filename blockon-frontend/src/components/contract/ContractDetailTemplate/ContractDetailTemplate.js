@@ -317,10 +317,11 @@ class ContractDetailTemplate extends Component {
     if (!res || !res.data || !res.data.building) {
       return;
     }
-    const { people, building } = res.data;
+    const { _id, people, building } = res.data;
 
     this.setState({
       contractInfo: {
+        id: _id, // 계약 ID가 다르면 채팅 참여자가 같아도 구분
         index: contractIndex,
         type: contractType,
         state: contractStep,
@@ -350,7 +351,7 @@ class ContractDetailTemplate extends Component {
         <div className="ContractDetailTemplate">
           <div className="container content">
             <div className="list-wrapper">{this.getCard()}</div>
-            <Chat party={people} />
+            <Chat contractId={contractInfo.id} party={people} />
           </div>
         </div>
       );

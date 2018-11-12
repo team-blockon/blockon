@@ -6,7 +6,7 @@ const fs = require('fs');
 const EmailAuth = require('../../../models/emailAuth');
 const nodemailer = require('nodemailer');
 const randomstring = require('randomstring');
-const CryptoUtil = require('../../util/CryptoUtil');
+const CryptoUtil = require('../../../lib/utils/CryptoUtil');
 const Caver = require('caver-js');
 
 const caver = new Caver('ws://52.79.41.43:8552');
