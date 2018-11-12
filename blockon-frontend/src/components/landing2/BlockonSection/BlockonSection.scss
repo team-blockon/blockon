@@ -16,12 +16,6 @@
     }
   }
 
-  @media (min-width: 320px) {
-    .slogan {
-      text-align: center;
-    }
-  }
-
   .featureContainer {
     margin-top: 20px;
     .feature {
@@ -54,6 +48,7 @@
     padding: 10px 10px;
 
     .slogan {
+      text-align: center;
       p:nth-child(1) {
         font-size: 12pt;
       }
@@ -111,6 +106,7 @@
     padding: 50px 100px;
 
     .slogan {
+      text-align: left;
       p:nth-child(1) {
         font-size: 20pt;
       }
