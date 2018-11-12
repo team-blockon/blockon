@@ -13,7 +13,7 @@ const AppSection = () => {
       <p>스마트폰에서 더욱 편리하게 사용하세요.</p>
       <div className="phoneInput">
         <input placeholder="010-xxxx-xxxx" />
-        <div>
+        <div className="confirm">
           <img src={checkIcon} alt="confirm" />
         </div>
       </div>

@@ -31,7 +31,6 @@ class Login extends Component {
 
   handleLogin = async () => {
     const { email, password } = this.state;
-    const { history } = this.props; // 나중에 없앨 것!
     const { setLoggedInfo } = this.props;
 
     AuthAPI.login({ email, password })
@@ -51,8 +50,6 @@ class Login extends Component {
           'privateKey',
           JSON.stringify(privateKeyFromKeystore)
         );
-
-        history.push('/pricing'); // 나중에 없앨 것!
       })
       .catch(() => {
         message.warning('가입되지 않은 사용자입니다.');
