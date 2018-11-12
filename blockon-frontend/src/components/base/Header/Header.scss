@@ -1,7 +1,7 @@
 @import "~open-color/open-color";
 
 header.landing {
-  background: url(../../../static/images/landingbackground.png) fixed;
+  background: url(../../../static/images/bg-landing.jpg) fixed;
   background-size: 100%;
   box-shadow: none;
 }
@@ -50,6 +50,7 @@ header.landing {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 0 2rem;
+    padding: 0 2rem;
+    width: 100%;
   }
 }

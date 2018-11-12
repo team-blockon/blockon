@@ -9,7 +9,6 @@ import penderMiddleware from 'redux-pender';
 import Root from './client/Root';
 import * as serviceWorker from './serviceWorker';
 // import 'antd/dist/antd.css';
-import 'antd/lib/auto-complete/style/css';
 import 'antd/lib/button/style/css';
 import 'antd/lib/date-picker/style/css';
 import 'antd/lib/radio/style/css';

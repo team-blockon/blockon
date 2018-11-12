@@ -1,5 +1,5 @@
 .CoverContainer {
-  background: url("../../../static/images/landingbackground.png") fixed;
+  background: url("../../../static/images/bg-landing.jpg") fixed;
   -webkit-background-size: 100%;
   background-size: 100%;
   display: flex;
@@ -12,10 +12,10 @@
     color: #fff;
   }
   .searchDiv {
-    border: solid 1px #262626;
     background-color: #ffffff;
+    border-radius: 5px;
 
-    input.ant-input.agent {
+    input {
       font-size: 1rem;
       border: none;
       outline: none;
@@ -24,6 +24,7 @@
         8px;
       padding-left: 35px;
       background-size: 15px;
+      width: 100%;
     }
   }
 }
@@ -38,16 +39,10 @@
     }
     .searchDiv {
       margin-top: 10px;
-      width: 250px;
+      width: 280px;
 
       input {
-        width: 240px;
-      }
-      input.ant-input.agent {
         font-size: 0.8rem;
-        &::placeholder {
-          font-size: 7pt;
-        }
       }
     }
   }
@@ -59,19 +54,13 @@
     background-size: 100%;
     .subtitleDiv {
       margin-top: 100px;
-      font-size: 20px;
+      font-size: 24px;
     }
     .searchDiv {
       width: 350px;
 
       input {
-        width: 300px;
-      }
-      input.ant-input.agent {
         font-size: 1rem;
-        &::placeholder {
-          font-size: 9pt;
-        }
       }
     }
   }
@@ -89,16 +78,10 @@
       margin-top: 20px;
 
       input {
-        width: 350px;
-      }
-      input.ant-input.agent {
         font-size: 1rem;
         height: 37px;
         background-position: 10px 10px;
         padding-left: 45px;
-        &::placeholder {
-          font-size: 11pt;
-        }
       }
     }
   }
@@ -116,17 +99,11 @@
       margin-top: 35px;
 
       input {
-        width: 450px;
-      }
-      input.ant-input.agent {
         font-size: 1.3rem;
         height: 55px;
         background-position: 20px 18px;
         background-size: 20px;
         padding-left: 70px;
-        &::placeholder {
-          font-size: 12pt;
-        }
       }
     }
   }
