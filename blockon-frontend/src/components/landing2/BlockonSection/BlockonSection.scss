@@ -21,7 +21,17 @@
     height: 380px;
   }
   .featureContainer {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
     margin-top: 20px;
+    @media (min-width: 880px) {
+      & {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+      }
+    }
     .feature {
       display: flex;
       flex-flow: column wrap;
@@ -65,9 +75,6 @@
       height: 300px;
     }
     .featureContainer {
-      display: flex;
-      flex-flow: column wrap;
-      align-items: center;
       .feature {
         p {
           font-size: 11pt;
@@ -90,11 +97,7 @@
       }
     }
     .featureContainer {
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: space-between;
       .feature {
-        padding: 0;
         p {
           font-size: 12pt;
         }
