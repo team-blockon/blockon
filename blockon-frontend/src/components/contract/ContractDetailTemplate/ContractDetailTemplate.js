@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import Chat from '../Chat';
@@ -116,64 +116,103 @@ class ContractDetailTemplate extends Component {
           </div>
         </div>
 
-        <div className="agreement">
-          <p className="title">
-            다음 단계는
-            <StepBadge>{getStepWord(getNextStep(type, state))}</StepBadge>
-            단계입니다.
-          </p>
-          <div className="notice">
-            중개인, 매수인, 매도인 모두의 동의가 확인되면 자동으로 단계가
-            이동됩니다.
-          </div>
+        {state === ContractUtils.cs.COMPLETED_CONTRACT ? (
+          <div className="agreement">
+            <p className="title">
+              이 계약은 <StepBadge>완료</StepBadge>되었습니다.
+            </p>
 
-          <div className="table">
-            <div className="thead">
-              <div className="tr">
-                <div className="td">관계</div>
-                <div className="td">이름</div>
-                <div className="td">동의여부</div>
+            <div className="table">
+              <div className="thead">
+                <div className="tr">
+                  <div className="td">관계</div>
+                  <div className="td">이름</div>
+                </div>
               </div>
-            </div>
-            <div className="tbody">
-              <div className="tr">
-                <div className="td">중개인</div>
-                <div className="td">김수연</div>
-                <div className="td">{getAgreementWord(isAgentConfirmed)}</div>
-              </div>
-              <div className="tr">
-                <div className="td">매수인</div>
-                <div className="td">최세은</div>
-                <div className="td">{getAgreementWord(isSellerConfirmed)}</div>
-              </div>
-              <div className="tr">
-                <div className="td">매도인</div>
-                <div className="td">강민구</div>
-                <div className="td">{getAgreementWord(isBuyerConfirmed)}</div>
+              <div className="tbody">
+                <div className="tr">
+                  <div className="td">중개인</div>
+                  <div className="td">김수연</div>
+                </div>
+                <div className="tr">
+                  <div className="td">매수인</div>
+                  <div className="td">최세은</div>
+                </div>
+                <div className="tr">
+                  <div className="td">매도인</div>
+                  <div className="td">강민구</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <p className="title">유의사항</p>
-        <div className="notice">
-          매매계약을 체결할 때는 당사자 간 약정이 있는 경우를 제외하고는 통상
-          매매대금의 10%에 해당하는 금액(근저당 등이 설정되었거나 전세금이 있는
-          경우에는 전체 매매대금에서 그 금액을 제외한 금액의 10%에 해당하는
-          금액)을 계약금으로 지급하는 것이 관례입니다. 이 계약금은 매매계약을
-          해제하는 경우에 상대방에 대한 손해배상의 기준이 됩니다.
-        </div>
+        ) : (
+          <Fragment>
+            <div className="agreement">
+              <p className="title">
+                다음 단계는
+                <StepBadge>{getStepWord(getNextStep(type, state))}</StepBadge>
+                단계입니다.
+              </p>
+              <div className="notice">
+                중개인, 매수인, 매도인 모두의 동의가 확인되면 자동으로 단계가
+                이동됩니다.
+              </div>
 
-        <div className="action">
-          <div className="radio">
-            <span>
-              <img src={agreeIcon} alt="agree" /> 동의
-            </span>
-            <span>
-              <img src={disagreeIcon} alt="disagree" /> 미동의
-            </span>
-          </div>
-          <button onClick={this.confirmButtonHandler}>확인</button>
-        </div>
+              <div className="table">
+                <div className="thead">
+                  <div className="tr">
+                    <div className="td">관계</div>
+                    <div className="td">이름</div>
+                    <div className="td">동의여부</div>
+                  </div>
+                </div>
+                <div className="tbody">
+                  <div className="tr">
+                    <div className="td">중개인</div>
+                    <div className="td">김수연</div>
+                    <div className="td">
+                      {getAgreementWord(isAgentConfirmed)}
+                    </div>
+                  </div>
+                  <div className="tr">
+                    <div className="td">매수인</div>
+                    <div className="td">최세은</div>
+                    <div className="td">
+                      {getAgreementWord(isSellerConfirmed)}
+                    </div>
+                  </div>
+                  <div className="tr">
+                    <div className="td">매도인</div>
+                    <div className="td">강민구</div>
+                    <div className="td">
+                      {getAgreementWord(isBuyerConfirmed)}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="title">유의사항</p>
+            <div className="notice">
+              매매계약을 체결할 때는 당사자 간 약정이 있는 경우를 제외하고는
+              통상 매매대금의 10%에 해당하는 금액(근저당 등이 설정되었거나
+              전세금이 있는 경우에는 전체 매매대금에서 그 금액을 제외한 금액의
+              10%에 해당하는 금액)을 계약금으로 지급하는 것이 관례입니다. 이
+              계약금은 매매계약을 해제하는 경우에 상대방에 대한 손해배상의
+              기준이 됩니다.
+            </div>
+            <div className="action">
+              <div className="radio">
+                <span>
+                  <img src={agreeIcon} alt="agree" /> 동의
+                </span>
+                <span>
+                  <img src={disagreeIcon} alt="disagree" /> 미동의
+                </span>
+              </div>
+              <button onClick={this.confirmButtonHandler}>확인</button>
+            </div>
+          </Fragment>
+        )}
       </div>
     );
 
