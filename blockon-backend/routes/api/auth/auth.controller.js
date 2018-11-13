@@ -8,6 +8,7 @@ const nodemailer = require('nodemailer');
 const randomstring = require('randomstring');
 const CryptoUtil = require('../../../lib/utils/CryptoUtil');
 const Caver = require('caver-js');
+const axios = require('axios');
 
 const caver = new Caver('ws://52.79.41.43:8552');
 const blockonAbi = require('../../../abi/blockon_abi');
@@ -147,6 +148,17 @@ exports.register = async (req, res) => {
           email,
           pwdHash
         );
+
+        // run klay faucet
+        axios
+          .get(
+            `https://apiwallet.klaytn.com/faucet?address=${
+              caverAccount.address
+            }`
+          )
+          .then(res => {
+            console.log('faucet:', res.data);
+          });
 
         res.json({
           result: true

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "array-equal": "^1.0.0",
+    "axios": "^0.18.0",
     "caver-js": "^0.0.1-h",
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.0.0",
