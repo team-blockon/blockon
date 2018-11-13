@@ -5,8 +5,10 @@ import {
   Platform,
   StatusBar,
   View,
-  Button
+  TouchableOpacity,
+  Text
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default class App extends Component {
   _refreshWebView = async () => {
@@ -32,9 +34,9 @@ export default class App extends Component {
         />
         <View style={styles.buttonContainerSizer}>
           <View style={styles.buttonContainer}>
-            <Button title="이전" onPress={this._goPreviousPage} />
-            <Button title="새로고침" onPress={this._refreshWebView} />
-            <Button title="다음" onPress={this._goNextPage} />
+            <CustomButton iconName="navigate-before" title="이전" />
+            <CustomButton iconName="refresh" title="새로고침" />
+            <CustomButton iconName="navigate-next" title="다음" />
           </View>
         </View>
       </View>
@@ -42,18 +44,30 @@ export default class App extends Component {
   }
 }
 
+const CustomButton = ({ iconName, title }) => (
+  <TouchableOpacity style={styles.button} onPress={this._goNextPage}>
+    <MaterialIcons name={iconName} size={32} color="white" />
+    <Text style={{ color: "white" }}>{title}</Text>
+  </TouchableOpacity>
+);
+
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
     marginTop: Platform.OS === "ios" ? 18 : StatusBar.currentHeight
   },
   buttonContainerSizer: {
-    height: 40
+    height: 60
   },
   buttonContainer: {
     flex: 1,
     flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#4f5664"
+  },
+  button: {
+    flex: 1,
     justifyContent: "center",
-    backgroundColor: "#444444"
+    alignItems: "center"
   }
 });
