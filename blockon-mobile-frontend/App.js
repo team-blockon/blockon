@@ -34,9 +34,9 @@ export default class App extends Component {
         />
         <View style={styles.buttonContainerSizer}>
           <View style={styles.buttonContainer}>
-            <CustomButton iconName="navigate-before" title="이전" />
-            <CustomButton iconName="refresh" title="새로고침" />
-            <CustomButton iconName="navigate-next" title="다음" />
+            <CustomButton iconName="navigate-before" title="이전" buttonHandler={this._goPreviousPage} />
+            <CustomButton iconName="refresh" title="새로고침" buttonHandler={this._refreshWebView} />
+            <CustomButton iconName="navigate-next" title="다음" buttonHandler={this._goNextPage} />
           </View>
         </View>
       </View>
@@ -44,8 +44,8 @@ export default class App extends Component {
   }
 }
 
-const CustomButton = ({ iconName, title }) => (
-  <TouchableOpacity style={styles.button} onPress={this._goNextPage}>
+const CustomButton = ({ iconName, title, buttonHandler }) => (
+  <TouchableOpacity style={styles.button} onPress={buttonHandler}>
     <MaterialIcons name={iconName} size={32} color="#444444" />
     <Text style={{ color: "#444444" }}>{title}</Text>
   </TouchableOpacity>
