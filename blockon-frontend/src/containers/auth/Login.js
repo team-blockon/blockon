@@ -36,7 +36,6 @@ class Login extends Component {
     AuthAPI.login({ email, password })
       .then(res => {
         const { loggedInfo, keyStore } = res.data;
-        setLoggedInfo(loggedInfo);
         caver.klay.defaultAccount = `0x${loggedInfo.klaytnAddress}`;
 
         // keystore에서 프라이빗 키를 가져옴
@@ -50,6 +49,8 @@ class Login extends Component {
           'privateKey',
           JSON.stringify(privateKeyFromKeystore)
         );
+
+        setLoggedInfo(loggedInfo); // 호출 후 리다이렉트되므로 반드시 마지막에
       })
       .catch(() => {
         message.warning('가입되지 않은 사용자입니다.');
