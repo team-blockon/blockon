@@ -1,5 +1,6 @@
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 @import "~open-color/open-color";
+@import "lib/utils/StyleUtils.scss";
 
 body {
   margin: 0;
@@ -33,20 +34,98 @@ a {
   color: inherit;
   text-decoration: none;
 
+  &:hover {
+    color: inherit;
+  }
   &:focus {
     text-decoration: none;
   }
 }
 
+/* antd 버튼 스타일 초기화 */
 .ant-btn-primary,
 .ant-btn-primary:active {
-  background-color: #ffda44;
-  border-color: #ffda44;
+  background-color: #4e5379;
+  border-color: #4e5379;
 
   &:hover,
   &:focus {
-    background-color: #fff;
-    border-color: #ffda44;
-    color: #ffda44;
+    background-color: #4e5379;
+    border-color: #4e5379;
+    box-shadow: shadow(1);
   }
+}
+
+/* antd 인풋 스타일 초기화 */
+.ant-input {
+  border: 0;
+  &:hover {
+    border-color: #e2e2e2;
+  }
+  &:focus {
+    border-color: inherit;
+    box-shadow: none;
+    border-right-width: 0;
+  }
+}
+
+.ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
+  border-color: inherit;
+  border-right-width: 0;
+}
+
+.ant-input-search > .ant-input-suffix > .ant-input-search-button {
+  border-radius: 4px;
+}
+
+/* antd 라디오 스타일 초기화 */
+.ant-radio-button-wrapper:hover,
+.ant-radio-button-wrapper-focused {
+  color: inherit;
+}
+
+.ant-radio-group-solid
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+  border-color: #4e5379;
+  background: #4e5379;
+}
+
+.ant-radio-group-solid
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  background: #4e5379;
+  border-color: #4e5379;
+}
+
+.ant-radio-button-wrapper-checked {
+  box-shadow: -1px 0 0 0 #4e5379;
+
+  &:hover {
+    box-shadow: -1px 0 0 0 #4e5379;
+  }
+  &:active {
+    box-shadow: -1px 0 0 0 #4e5379;
+  }
+}
+
+.ant-radio-group-solid
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):active {
+  border-color: #4e5379;
+  background: #4e5379;
+}
+
+.ant-radio-button-wrapper:first-child {
+  border-radius: 0;
+}
+
+.ant-radio-button-wrapper:last-child {
+  border-radius: 0;
+}
+
+/* antd 업로드 스타일 초기화 */
+.ant-upload.ant-upload-select-picture-card {
+  border-radius: 0;
+}
+
+.ant-upload.ant-upload-select-picture-card:hover {
+  border-color: #d9d9d9;
 }
