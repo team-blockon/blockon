@@ -11,7 +11,7 @@ import * as ContractUtils from 'lib/utils/contract';
 
 import Autocomplete from './Autocomplete';
 
-import { Radio, Upload, Icon, DatePicker } from 'antd';
+import { Radio, Upload, Icon, DatePicker, Modal } from 'antd';
 import './ContractUploadTemplate.scss';
 
 const { ct } = ContractUtils;
@@ -32,6 +32,13 @@ const getBase64 = (img, callback) => {
 const getSuggestions = value => {
   if (value.length === 0) return Promise.resolve([]);
   return UserAPI.getEmailList(value);
+};
+
+const existContractError = () => {
+  Modal.error({
+    title: '계약이 이미 존재합니다.',
+    content: '해당 주소에 진행중인 계약이 이미 존재합니다.'
+  });
 };
 
 class ContractUploadTemplate extends Component {
@@ -215,11 +222,25 @@ class ContractUploadTemplate extends Component {
     }
   };
 
+  isExistContract = async (buildingName, buildingAddress) => {
+    const res = await ContractAPI.isExistContract({
+      buildingName,
+      buildingAddress
+    });
+    return res.data.result;
+  };
+
   handleSubmit = async () => {
     const { accountInstance, sellerEmail, buyerEmail, formData } = this.state;
+    const { name: buildingName, address: buildingAddress } = formData.building;
     const { agentAddress } = formData.people;
     const { type } = formData.contract;
     const { updateEvent, history } = this.props;
+
+    if (await this.isExistContract(buildingName, buildingAddress)) {
+      existContractError();
+      return;
+    }
 
     // 매도인, 매수인 이메일로 각각의 accountAddress를 가져옴
     const seller = await UserAPI.getAccountByEamil(sellerEmail);

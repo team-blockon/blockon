@@ -167,3 +167,26 @@ exports.getContractByIndex = (req, res) => {
     res.json(contract);
   });
 };
+
+/*
+    POST /api/contract/exist
+    {
+      buildingName,
+      buildingAddress
+    }
+*/
+
+exports.isExistContract = (req, res) => {
+  const { buildingName, buildingAddress } = req.body;
+
+  Contract.findOne({
+    'building.name': buildingName,
+    'building.address': buildingAddress
+  }).then(contract => {
+    if (!!contract) {
+      res.json({ result: true });
+    } else {
+      res.json({ result: false });
+    }
+  });
+};
