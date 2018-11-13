@@ -5,7 +5,10 @@ RUN mkdir /app
 
 RUN \
   apk update &&\
-  apk add git
+  apk add git &&\
+  apk add python2 &&\
+  apk add g++&&\
+  apk add make
 
 COPY . /app
 

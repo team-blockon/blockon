@@ -5,17 +5,12 @@
 
   main {
     flex: 1;
+    position: relative; // Loading 컴포넌트가 main을 덮도록 함
   }
 
-  @media (max-width: 1040px) {
-    main {
-      margin-top: 56px;
-    }
-  }
-
-  @media (min-width: 1041px) {
-    main {
-      margin-top: 66px;
-    }
+  main.auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

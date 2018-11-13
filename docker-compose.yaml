@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   express:
+    image: blockon_express
     container_name: blockon_express
     build:
       context: .
@@ -13,13 +14,12 @@ services:
     command: sh /start.sh
     volumes:
       - .:/app
-      - ./blockon-backend/.env:/app/blockon-backend/.env
+      # 호스트에 이미 디렉터리가 존재하여 컨테이너의 디렉터리가 가려지는 것 방지
       - /app/blockon-backend/node_modules
-      - /app/blockon-frontend/node_modules
       - /app/blockon-frontend/build
-    restart: always
 
   nginx:
+    image: blockon_nginx
     container_name: blockon_nginx
     build:
       context: .
@@ -28,4 +28,3 @@ services:
       - "80:80"
     depends_on:
       - express
-    restart: always

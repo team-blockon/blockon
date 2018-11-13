@@ -1,18 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { register, registerEvent } from 'store/modules/web3/auth';
+import { register } from 'store/modules/caver/auth';
 
 import AuthContent from 'components/auth/AuthContent';
-import InputWithLabel from 'components/auth/InputWithLabel';
+import InputWithLabel from 'components/common/InputWithLabel';
+import InputEmail from 'components/common/InputEmail';
 import AuthButton from 'components/auth/AuthButton';
 import Loading from 'components/common/Loading';
 
 import * as AuthAPI from 'lib/api/auth';
-import * as UserAPI from 'lib/api/user';
-import * as Web3Utils from 'lib/web3/utils';
 
-import { Upload, Icon, Button, notification, message } from 'antd';
+import { Upload, Icon, notification, message } from 'antd';
 
 /**
  * 프로필 사진 미리보기를 위한 base64 인코딩
@@ -29,8 +28,9 @@ class Register extends Component {
   state = {
     loading: false, // 프로필 사진 업로드 상태
     emailauth: false,
-    username: '',
     email: '',
+    password: '',
+    username: '',
     authNo: ''
   };
 
@@ -45,45 +45,44 @@ class Register extends Component {
 
   handleAuthEmail = async () => {
     const { email } = this.state;
-    await AuthAPI.sendAuthEmail({ email }).then(() => {
+    const res = await AuthAPI.sendAuthEmail({ email });
+    if (!res || !res.data) {
+      return;
+    }
+    if (res.data.result) {
       this.setState({ ...this.state, emailauth: true });
-    });
-    notification['success']({
-      message: '입력하신 이메일로 인증 메일이 발송되었습니다.',
-      duration: 3
-    });
+      notification['success']({
+        message: '입력하신 이메일로 인증 메일이 발송되었습니다.',
+        duration: 3
+      });
+    } else {
+      notification['error']({
+        message: '이미 존재하는 이메일입니다',
+        duration: 3
+      });
+    }
   };
 
   handleRegister = async event => {
-    if (this.state.emailauth === false) {
-      message.warning('이메일 인증을 진행해 주세요.');
+    // if (!this.state.emailauth) {
+    //   message.warning('이메일 인증을 진행해 주세요.');
+    //   return;
+    // }
+    const { profileFilename, email, password, username } = this.state;
+    const { history } = this.props;
+
+    if (!email || !password) {
       return;
     }
 
-    const { profileFilename, username, email } = this.state;
-    const ethAddress = await Web3Utils.getDefaultAccount();
-
-    /* 컨트랙트 내에서 계정 생성 성공시 이벤트를 받아 / 라우트로 리다이렉트 */
-    const { register, registerEvent, history } = this.props;
-
-    if (!ethAddress || !email) {
-      return;
-    }
-    await register(ethAddress);
-    await registerEvent(ethAddress);
-
-    // accountAddress를 제외한 나머지를 DB에 추가
-    await AuthAPI.register({
-      ethAddress,
+    AuthAPI.register({
       profileFilename,
-      username,
-      email
+      email,
+      password,
+      username
+    }).then(res => {
+      history.push('/');
     });
-
-    const { accountAddress } = this.props;
-    await UserAPI.updateAccountAddressByEthAddress(accountAddress, ethAddress);
-
-    history.push('/');
   };
 
   handleKeyPress = event => {
@@ -137,7 +136,7 @@ class Register extends Component {
   };
 
   render() {
-    const { imageUrl, username, email } = this.state;
+    const { imageUrl, email, password, username } = this.state;
     const { loading } = this.props;
 
     const uploadButton = (
@@ -174,33 +173,30 @@ class Register extends Component {
               )}
             </Upload>
           </div>
+          <InputEmail
+            label="이메일"
+            type="email"
+            name="email"
+            value={email}
+            placeholder="이메일"
+            onChange={this.handleChange}
+            sendAuthEmail={this.handleAuthEmail}
+          />
+          <InputWithLabel
+            label="비밀번호"
+            type="password"
+            name="password"
+            value={password}
+            placeholder="비밀번호"
+            onChange={this.handleChange}
+          />
           <InputWithLabel
             label="이름"
-            type="text"
             name="username"
             value={username}
             placeholder="이름"
             onChange={this.handleChange}
           />
-          <div className="InputWithLabel">
-            <div className="label">이메일</div>
-            <div style={{ display: 'flex' }}>
-              <input
-                type="text"
-                name="email"
-                value={email}
-                placeholder="이메일"
-                onChange={this.handleChange}
-              />
-              <Button
-                type="primary"
-                style={{ height: '44px' }}
-                onClick={this.handleAuthEmail}
-              >
-                인증
-              </Button>
-            </div>
-          </div>
           <AuthButton onClick={this.handleRegister}>회원가입</AuthButton>
         </AuthContent>
       </Fragment>
@@ -209,9 +205,9 @@ class Register extends Component {
 }
 
 export default connect(
-  ({ web3Auth, pender }) => ({
-    accountAddress: web3Auth.accountAddress,
-    loading: pender.pending['web3/auth/REGISTER_EVENT']
+  ({ caverAuth, pender }) => ({
+    accountAddress: caverAuth.accountAddress,
+    loading: pender.pending['caver/auth/REGISTER_EVENT']
   }),
-  { register, registerEvent }
+  { register }
 )(Register);

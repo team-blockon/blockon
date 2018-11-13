@@ -7,7 +7,7 @@ auth.post('/register', controller.register);
 auth.post('/login', controller.login);
 auth.post('/logout', controller.logout);
 auth.post('/sendAuthEmail', controller.sendAuthEmail);
-auth.get('/authEmail', controller.authEmail);
+auth.post('/authEmail', controller.authEmail);
 
 auth.use('/check', authMiddleware);
 auth.get('/check');

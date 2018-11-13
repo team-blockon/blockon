@@ -8,6 +8,7 @@ const qna = require('./qna');
 const agent = require('./agent');
 const landing = require('./landing');
 const identity = require('./identity');
+const chat = require('./chat');
 
 api.use('/auth', auth);
 // api.use('/user', authMiddleware);
@@ -19,5 +20,6 @@ api.use('/qna', qna);
 api.use('/agent', agent);
 api.use('/landing', landing);
 api.use('/identity', identity);
+api.use('/chat', chat);
 
 module.exports = api;

@@ -5,49 +5,116 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding-left: 2rem;
-  padding-right: 2rem;
 
   .card {
     display: flex;
     flex-direction: column;
-    border: 1px solid #ebebeb;
     margin-bottom: 3rem;
     background-color: #fff;
 
-    .no {
-      text-align: right;
-      margin: 0;
-      padding: 0.5rem 1.5rem;
-    }
-
     .content {
+      position: relative;
+
       .image {
         text-align: center;
+        width: 270px;
 
         img {
           max-width: 100%;
           max-height: 200px;
+        }
+
+        .StepBadge {
+          position: absolute;
+          top: 8px;
+          left: 12px;
+        }
+      }
+
+      .detail {
+        width: 270px;
+
+        p {
+          margin: 0;
+          padding-left: 18px;
+
+          & + p {
+            margin-top: 0.5rem;
+          }
+        }
+
+        p.info {
+          color: #888888;
+
+          span {
+            display: inline-block;
+            width: 60px;
+            font-size: 14px;
+            font-weight: 300;
+            color: #222222;
+          }
+        }
+
+        p.building {
+          font-size: 19px;
+          font-weight: 500;
+          padding-top: 7.5px;
+          padding-bottom: 7.5px;
+          border-bottom: 1px solid #e2e2e2;
+        }
+
+        p.view {
+          font-size: 14px;
+          font-weight: 300;
+          padding-top: 5.5px;
+          padding-bottom: 5.5px;
+          border-top: 1px solid #e2e2e2;
+          cursor: pointer;
         }
       }
     }
   }
 }
 
+@media (max-width: 767px) {
+  .card-wrapper {
+    justify-content: center;
+  }
+}
+
 .card-wrapper {
   .card {
-    max-width: 250px;
+    width: 270px;
 
     .content > .detail {
-      padding: 1.2rem 1.5rem;
-
-      p {
-        margin: 0;
-
-        & + p {
-          margin-top: 0.5rem;
-        }
-      }
+      padding: 12px 0;
     }
   }
+
+  &::after {
+    content: "";
+    flex-basis: 270px;
+  }
+}
+
+.StepBadge {
+  display: inline-block;
+  text-align: center;
+  width: 102px;
+  height: 29px;
+  line-height: 29px;
+  border-radius: 15px;
+  background-color: #1864ab;
+  font-size: 14px;
+  color: #fff;
+}
+
+.BuildingTypeBadge {
+  width: 35px;
+  height: 18px;
+  background-color: #f3f3f3;
+  font-size: 9px;
+  font-weight: 500;
+  padding: 5px;
+  margin-left: 18px;
 }

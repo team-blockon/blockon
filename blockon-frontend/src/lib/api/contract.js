@@ -7,3 +7,10 @@ export const create = contract => {
 export const get = (accountAddress, index) => {
   return defaultClient.post(`/api/contract/${index}`, { accountAddress });
 };
+
+export const isExistContract = ({ buildingName, buildingAddress }) => {
+  return defaultClient.post('/api/contract/exist', {
+    buildingName,
+    buildingAddress
+  });
+};

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const sockjs = require('sockjs');
+const chat = require('./lib/chat');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 
@@ -46,32 +47,26 @@ default:
   break;
 }
 
-/**
- * 채팅 SockJS 서버 설정
- */
-const clients = {}; // 접속된 모든 유저
-
-// 메시지 보낸 유저를 제외한 모든 유저에게 브로드캐스팅
-const broadcast = (connId, message) => {
-  for (const client in clients) {
-    if (client !== connId) {
-      clients[client].write(JSON.stringify(message));
-    }
-  }
-};
-
 // 1. Chat sockjs server
 const sockjs_chat = sockjs.createServer();
 
 sockjs_chat.on('connection', conn => {
-  clients[conn.id] = conn;
+  conn.on('data', async strMsg => {
+    const msg = JSON.parse(strMsg);
+    console.log('message:', msg);
 
-  conn.on('data', message => {
-    broadcast(conn.id, JSON.parse(message));
+    switch (msg.type) {
+    case 'CREATE_CONVERSATION':
+      chat.createConversation(conn, msg);
+      break;
+    case 'SEND_MESSAGE':
+      chat.sendMessage(conn.id, msg);
+      break;
+    }
   });
 
   conn.on('close', () => {
-    delete clients[conn.id];
+    // delete clients[conn.id];ㄴ
   });
 });
 

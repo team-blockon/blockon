@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as Web3User from 'lib/web3/user';
+import * as CaverUser from 'lib/caver/user';
 
 import { MdClose as CloseIcon } from 'react-icons/lib/md';
 import { Button } from 'antd';
@@ -9,17 +9,17 @@ class ContractModal extends Component {
   handleSubmit = async () => {
     const {
       contractIndex, // 상태를 변경할 계약 인덱스
-      newContractState, // 새로운 상태
+      newContractStep, // 새로운 단계
       changeState,
       watchUpdateEvent,
       onClose
     } = this.props;
 
-    const { accountInstance } = await Web3User.getAccountInfo();
+    const { accountInstance } = await CaverUser.getAccountInfo();
     await changeState({
       accountInstance,
       contractIndex,
-      newContractState
+      newContractStep
     });
     await watchUpdateEvent();
     onClose();

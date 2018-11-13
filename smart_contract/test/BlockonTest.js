@@ -28,25 +28,26 @@ contract("Blockon", async accounts => {
   const FIXED_DATE = 5;
   const COMPLETED_CONTRACT = 100;
 
+  const SERVICE_ACCOUNT = "0xa07ed659cf06fc973d8ad86fc5ad84c953b2595d";
+  const agentAddress = "0x7c21c7ba088a082d756f65ac95cafd09b11f9ec3";
+  const sellerAddress = "0xacc09f71242015fd5e9be7591570f50d219877b8";
+  const buyerAddress = "0x51691f7f8b758aeab9feb8aef9f05e6410c09449";
+
   let blockon;
-  let agentAddress, sellerAddress, buyerAddress;
   let agentAccount, sellerAccount, buyerAccount;
 
   it("createAccount function, Account initialization check", async () => {
     blockon = await Blockon.new();
 
     // agent account 생성
-    agentAddress = accounts[1];
     let result = await blockon.createAccount(agentAddress);
     agentAccount = Account.at(result.logs[0].args.accountAddress);
 
     // seller account 생성
-    sellerAddress = accounts[2];
     result = await blockon.createAccount(sellerAddress);
     sellerAccount = Account.at(result.logs[0].args.accountAddress);
 
     // buyer account 생성
-    buyerAddress = accounts[3];
     result = await blockon.createAccount(buyerAddress);
     buyerAccount = Account.at(result.logs[0].args.accountAddress);
 

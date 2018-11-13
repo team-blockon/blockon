@@ -6,8 +6,8 @@ contract Blockon {
 
     /**
      * @dev createAccount 함수 호출시 발행, 입력된 퍼블릭어드레스와 그 어드레스와 연동된 어카운트 계약 주소를 반환
-     * @param publicAddress 어카운트를 생성할 이더리움 퍼블릭 어드레스
-     * @param accountAddress 해당 이더리움 퍼블릭 어드레스에 대해 생성된 account 계약의 주소 
+     * @param publicAddress 어카운트를 생성할 퍼블릭 어드레스
+     * @param accountAddress 해당 퍼블릭 어드레스에 대해 생성된 account 계약의 주소 
      */
     event CreateAccount(address indexed publicAddress, address accountAddress);
 
@@ -22,11 +22,28 @@ contract Blockon {
         _;
     }
 
+    address owner;  //Blockon을 배포한 퍼블릭어드레스
+
     /**
-     * @dev 이더리움 주소와 연동되는 새로운 Account 스마트 컨트랙트를 생성하고, 데이터베이스에 추가한다.
-     * @param publicAddress 생성할 어카운트 소유주의 이더리움 퍼블릭 어드레스
+     * @dev 블락콘을 배포한 퍼블릭 어드레스인지인지 확인
      */
-    function createAccount(address publicAddress) public {
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Caller have to be owner(service address)");
+        _;
+    }
+
+    /**
+     * @dev 생성자. Blockon을 배포한 퍼블릭 어드레스를 onwer에 저장
+     */
+    constructor() public {
+        owner = msg.sender;
+    } 
+
+    /**
+     * @dev 퍼블릭어드레스와 연동되는 새로운 Account 스마트 컨트랙트를 생성하고, 데이터베이스에 추가한다.
+     * @param publicAddress 생성할 어카운트 소유주의 퍼블릭 어드레스
+     */
+    function createAccount(address publicAddress) public onlyOwner() {
         require(publicAddress != address(0), "public address should not be empty");
         Account account = new Account(publicAddress);
         // 생성된 어카운트 주소를 이벤트로 찍어야지 외부에서 어카운트 계정의 주소를 확인할수 있다.
@@ -66,7 +83,7 @@ contract Blockon {
      * @dev 중개인 인증을 완료한 어카운트에 대해서, 어카운트 컨트랙트에 중개인이라고 표시를 한다.
      * @param accountAddress 중개인 인증을 할 account 계약 계정 주소
      */
-    function athorizeAsAgent(Account accountAddress) public {
+    function athorizeAsAgent(Account accountAddress) public onlyOwner() {
         require(accountAddress != address(0), "Account address is empty");
         accountAddress.athorizeAsAgent();
     }

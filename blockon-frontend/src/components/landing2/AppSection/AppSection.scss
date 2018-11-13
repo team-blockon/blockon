@@ -1,0 +1,54 @@
+.AppSection {
+  height: 350px;
+  background-color: #f4f6fa;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+
+  img {
+    margin-top: 70px;
+    margin-bottom: 20px;
+    height: 72px;
+    width: 72px;
+  }
+  p:nth-child(2) {
+    font-weight: 500;
+    font-size: 15pt;
+  }
+  .phoneInput {
+    height: 43px;
+    border-radius: 22px;
+    border: solid 1px #707070;
+    background-color: #ffffff;
+    display: flex;
+    flex-flow: row nowrap;
+    input {
+      border: 0;
+      outline: none;
+      height: 40px;
+      margin-left: 19px;
+      &::placeholder {
+        color: #e2e2e2;
+      }
+    }
+    .confirm {
+      cursor: pointer;
+      img {
+        width: 30px;
+        height: 30px;
+        margin-top: 5px;
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+@media (max-width: 649px) {
+  .phoneInput {
+    width: 250px;
+    justify-content: space-between;
+    input {
+      width: 150px;
+    }
+  }
+}

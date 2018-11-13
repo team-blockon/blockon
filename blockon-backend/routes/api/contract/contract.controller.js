@@ -3,6 +3,7 @@ const Contract = require('../../../models/contract');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const mkdirp = require('mkdirp');
 
 const DIR_PATH = path.resolve(__dirname, '../../../uploads/contracts');
 
@@ -79,12 +80,13 @@ exports.photo = (req, res) => {
   };
 
   const photoUpload = new Promise((resolve, reject) => {
-    if (fs.existsSync(DIR_PATH) === false) {
-      fs.mkdirSync(DIR_PATH);
+    // 디렉토리가 존재하지 않으면 생성(mkdir -p)
+    if (!fs.existsSync(DIR_PATH)) {
+      mkdirp.sync(DIR_PATH);
     }
     upload(req, res, err => {
       if (err) reject(err);
-      if (!!req.file === false) reject(new Error('file type error'));
+      if (!req.file) reject(new Error('file type error'));
       resolve(req.file.filename);
     });
   });
@@ -163,5 +165,28 @@ exports.getContractByIndex = (req, res) => {
   }).then(contract => {
     console.log('contract', contract);
     res.json(contract);
+  });
+};
+
+/*
+    POST /api/contract/exist
+    {
+      buildingName,
+      buildingAddress
+    }
+*/
+
+exports.isExistContract = (req, res) => {
+  const { buildingName, buildingAddress } = req.body;
+
+  Contract.findOne({
+    'building.name': buildingName,
+    'building.address': buildingAddress
+  }).then(contract => {
+    if (!!contract) {
+      res.json({ result: true });
+    } else {
+      res.json({ result: false });
+    }
   });
 };

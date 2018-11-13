@@ -17,7 +17,7 @@ contract Account {
     event RevokeConfirmation(address indexed publicAddress, uint contractIndex, uint8 revokedState);
     event AthorizeAsAgent(address indexed publicAddress);
 
-    address public publicAddress;   // 이더리움 퍼블릭 어드레스
+    address public publicAddress;   // 퍼블릭 어드레스
     bool public isAgent;            // true이면 중개인
     BaseContract[] contracts;       // 해당 유저가 포함된 계약의 주소 리스트
     address owner;                  // 어카운트를 생성한 blockon 계약 계정이 저장될것
@@ -58,7 +58,7 @@ contract Account {
 
     /**
      * @dev 생성자. Account 계약 계정을 생성한 blockon 계약 계정의 주소를 저장한다.
-     * @param _publicAddress Account 계약 계정의 주인 이더리움 퍼블릭 어드레스
+     * @param _publicAddress Account 계약 계정의 주인 퍼블릭 어드레스
      */
     constructor(address _publicAddress) public {
         publicAddress = _publicAddress;
@@ -96,9 +96,7 @@ contract Account {
      *                      100 - 완료
      */
     function confirmToChangeContractStateAt(uint index, uint8 newContractState) 
-        public
-        validContractState(newContractState) {
-        require(index < contracts.length, "contracts array : index out of bound");
+        public {
         confirmToChangeContractState(contracts[index], newContractState);
     }
 
@@ -115,9 +113,7 @@ contract Account {
      *                      100 - 완료
      */
     function confirmToChangeContractState(BaseContract contractAddress, uint8 newContractState) 
-        public
-        validContractState(newContractState) {
-        require(contractIndices[contractAddress] != 0, "contract address doesn't exist");
+        public {
         contractAddress.confirmChangeState(newContractState);
     }
 
@@ -188,7 +184,7 @@ contract Account {
      * @dev contracts 리스트의 길이에 대한 getter
      * @return uint contracts 리스트의 길이
      */
-    function getContractsLength() public view returns (uint) {
+    function getContractsLength() public view returns (uint contractsLength) {
         return contracts.length;
     }
 
@@ -231,7 +227,7 @@ contract Account {
      * @param contractState 확인하고 싶은 BaseContract의 계약 상태
      * @return 이미 변경됬다면 true, 아니면 false
      */
-    function hasExecuted(uint index, uint8 contractState) public view returns (bool) {
+    function hasExecuted(uint index, uint8 contractState) public view returns (bool isChanged) {
         return contracts[index].hasExecuted(contractState);
     }
 }

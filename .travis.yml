@@ -33,7 +33,7 @@ after_script:
   - docker-compose down
 
 before_deploy:
-  - zip -r latest.zip blockon-backend blockon-frontend/build blockon_express.tar blockon_nginx.tar scripts docker-compose-deploy.yaml appspec.yml
+  - zip -r latest.zip blockon-backend blockon-frontend/build blockon_express.tar blockon_nginx.tar scripts docker-compose.yaml appspec.yml
   - mkdir -p deploy
   - mv latest.zip deploy
 
@@ -67,6 +67,9 @@ deploy:
     region: ap-northeast-2
     skip_cleanup: true
     local_dir: deploy
+    on: &2
+      repo: team-blockon/blockon
+      branch: master
 
   - provider: codedeploy
     access_key_id: $DEV_AWS_ACCESS_KEY
@@ -77,3 +80,4 @@ deploy:
     bundle_type: zip
     application: blockon
     deployment_group: blockon
+    on: *2

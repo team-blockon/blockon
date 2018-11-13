@@ -6,6 +6,7 @@ import {
   Search,
   Contract,
   ContractUpload,
+  ContractDetail,
   MyPage,
   Pricing,
   Auth
@@ -20,45 +21,35 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from 'store/modules/user';
 
-import Web3 from 'web3';
+import caver from 'lib/caver';
 import blockonABI from 'abi/blockon_abi';
-import * as Web3Utils from 'lib/web3/utils';
 
 /**
  * 서버와 클라이언트에서 공용으로 사용하는 컴포넌트
  */
 class App extends Component {
+  // 새로고침시 defaultAccount 유지
+  constructor() {
+    super();
+    this.loggedInfo = JSON.parse(localStorage.getItem('loggedInfo'));
+    if (!this.loggedInfo) return;
+    caver.klay.defaultAccount = `0x${this.loggedInfo.klaytnAddress}`;
+  }
+
   // 새로고침시 로그인 유지
   initializeUserInfo = () => {
-    const loggedInfo = JSON.parse(localStorage.getItem('loggedInfo'));
-    if (!loggedInfo) return;
-
+    if (!this.loggedInfo) return;
     const { UserActions } = this.props;
-    UserActions.setLoggedInfo(loggedInfo);
+    UserActions.setLoggedInfo(this.loggedInfo);
   };
 
   async componentDidMount() {
-    let { web3 } = window;
-
     this.initializeUserInfo();
 
-    if (web3) {
-      // 메타마스크가 자동으로 브라우저에 인젝트하는
-      // web3가 정의되어 있다면 currentProvider를 가져옴
-      this.web3Provider = web3.currentProvider;
-    } else {
-      // 직접 HttpProvider로 Provier 설정
-      // 로컬에서 full node를 돌리고 있을때 보통 8545 포트
-      // this.web3Provider = new Web3.providers.HttpProvider(
-      //   'http://localhost:8545'
-      // );
-      return;
-    }
-
-    web3 = new Web3(this.web3Provider); // web3 객체를 만들어줌
-    const contract = web3.eth.contract(blockonABI); // Blockon 컨트랙트 클래스 생성
-    window.blockon = contract.at('0xb46249ac498ee8f270d63cb13af78d4cd2929eb8'); // 컨트랙트 인스턴스 생성
-    web3.eth.defaultAccount = await Web3Utils.getDefaultAccount(); // 내가 지금 메타마스크에서 사용하고 있는 주소를 defaultAccount로 설정
+    window.blockon = new caver.klay.Contract(
+      blockonABI,
+      '0xee326f1044718e6a613ce949f644277524c429d1'
+    );
   }
 
   render() {
@@ -79,6 +70,11 @@ class App extends Component {
           <PrivateRoute
             path="/contract/edit"
             component={ContractUpload}
+            isLogged={isLogged}
+          />
+          <PrivateRoute
+            path="/contract/detail"
+            component={ContractDetail}
             isLogged={isLogged}
           />
           <PrivateRoute path="/mypage" component={MyPage} isLogged={isLogged} />
