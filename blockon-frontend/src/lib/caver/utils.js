@@ -20,7 +20,7 @@ export const getLatestBlockNumber = () => {
 export const sendTransaction = (contractInstance, functionName, ...rest) => {
   const to = contractInstance._address;
   const abi = contractInstance.methods[`${functionName}`](...rest).encodeABI();
-  const privateKey = JSON.parse(sessionStorage.getItem('privateKey'));
+  const privateKey = JSON.parse(localStorage.getItem('privateKey'));
 
   const txObject = {
     from: getDefaultAccount(),
