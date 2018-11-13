@@ -46,7 +46,7 @@ class Login extends Component {
         );
 
         localStorage.setItem('loggedInfo', JSON.stringify(loggedInfo));
-        sessionStorage.setItem(
+        localStorage.setItem(
           'privateKey',
           JSON.stringify(privateKeyFromKeystore)
         );

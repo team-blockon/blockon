@@ -47,7 +47,7 @@ export const confirmToChangeContractStateAt = ({
     newContractState
   );
 
-  // const privateKey = JSON.parse(sessionStorage.getItem('privateKey'));
+  // const privateKey = JSON.parse(localStorage.getItem('privateKey'));
   // caver.klay.accounts.wallet.add(
   //   caver.klay.accounts.privateKeyToAccount(privateKey)
   // );
@@ -103,7 +103,7 @@ export const getContractsLength = accountInstance => {
  * @param {*} contractIndex 조회할 계약의 인덱스
  */
 export const getContractInfoAt = (accountInstance, contractIndex) => {
-  const privateKey = JSON.parse(sessionStorage.getItem('privateKey'));
+  const privateKey = JSON.parse(localStorage.getItem('privateKey'));
   caver.klay.accounts.wallet.add(
     caver.klay.accounts.privateKeyToAccount(privateKey)
   );
@@ -118,7 +118,7 @@ export const getContractInfoAt = (accountInstance, contractIndex) => {
  * @return [bool isAgentConfirmed, bool isSellerConfirmed, bool isBuyerConfirmed]
  */
 export const hasConfirmed = (accountInstance, contractIndex, contractState) => {
-  const privateKey = JSON.parse(sessionStorage.getItem('privateKey'));
+  const privateKey = JSON.parse(localStorage.getItem('privateKey'));
   caver.klay.accounts.wallet.add(
     caver.klay.accounts.privateKeyToAccount(privateKey)
   );
