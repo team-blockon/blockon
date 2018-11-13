@@ -19,7 +19,7 @@ const AgentMarker = ({ agent }) => {
   return (
     <div className="AgentMarker">
       <Popover content={getContent(agent)} title={agent.place_name}>
-        <img src={marker} alt="marker" style={{ width: '40px' }} />
+        <img src={marker} alt="marker" />
       </Popover>
     </div>
   );
