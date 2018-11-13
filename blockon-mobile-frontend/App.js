@@ -46,8 +46,8 @@ export default class App extends Component {
 
 const CustomButton = ({ iconName, title }) => (
   <TouchableOpacity style={styles.button} onPress={this._goNextPage}>
-    <MaterialIcons name={iconName} size={32} color="white" />
-    <Text style={{ color: "white" }}>{title}</Text>
+    <MaterialIcons name={iconName} size={32} color="#444444" />
+    <Text style={{ color: "#444444" }}>{title}</Text>
   </TouchableOpacity>
 );
 
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#4f5664"
+    backgroundColor: "#f0f0f0"
   },
   button: {
     flex: 1,
