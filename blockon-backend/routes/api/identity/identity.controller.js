@@ -225,13 +225,11 @@ exports.setAgent = async (req, res) => {
           gas: 200000
         })
         .on('confirmation', async (confirmationNumber, receipt) => {
-          console.log(receipt);
+          const isAgent = await accountContract.methods.isAgent().call();
+          console.log('isAgent:', isAgent);
           await Account.update({ email }, { isAgent: true });
         })
         .on('error', console.error);
-
-      const isAgent = await accountContract.methods.isAgent().call();
-      console.log('isAgent:', isAgent);
     }
   }
   res.json({

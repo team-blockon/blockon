@@ -49,7 +49,11 @@ class AuthAgent extends Component {
   };
 
   handleAuth = () => {
-    CaverAuth.authorizeAsAgent();
+    const loggedInfo = JSON.parse(localStorage.getItem('loggedInfo'));
+    IdentityAPI.setAgent({ email: loggedInfo.email }).then(res => {
+      const result = res.data;
+      this.setState({ isAgent: result });
+    });
   };
 
   async componentDidMount() {

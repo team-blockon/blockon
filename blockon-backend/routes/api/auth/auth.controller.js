@@ -189,10 +189,11 @@ exports.login = (req, res) => {
 
   // 유저의 정보를 확인하고, token 발급
   const check = account => {
-    const { _id, profile, isJunggae, keyStore } = account;
+    const { _id, email, profile, isAgent, keyStore } = account;
     const loggedInfo = {
+      email,
       profile,
-      isJunggae,
+      isAgent,
       klaytnAddress: keyStore.address
     };
     if (!account) {
