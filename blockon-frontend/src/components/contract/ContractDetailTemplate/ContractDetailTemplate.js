@@ -59,7 +59,7 @@ class ContractDetailTemplate extends Component {
 
   getCard = () => {
     const { contractInfo } = this.state;
-    const { index, type, state, confirmInfo, building } = contractInfo;
+    const { type, state, confirmInfo, building } = contractInfo;
     const {
       isAgentConfirmed,
       isSellerConfirmed,
@@ -89,12 +89,7 @@ class ContractDetailTemplate extends Component {
         <div className="content">
           <div className="image">
             {building.photo ? (
-              <img
-                src={`http://localhost:8000/uploads/contracts/${
-                  building.photo
-                }`}
-                alt="house"
-              />
+              <img src={`uploads/contracts/${building.photo}`} alt="house" />
             ) : (
               <img src={houseImage} alt="house" />
             )}

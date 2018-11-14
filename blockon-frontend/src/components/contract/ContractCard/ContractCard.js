@@ -4,7 +4,7 @@ import * as ContractUtils from 'lib/utils/contract';
 import houseImage from 'static/images/house-1.svg';
 import './ContractCard.scss';
 
-const { cs, getStepWord, getKoreanBuildingType } = ContractUtils;
+const { getStepWord, getKoreanBuildingType } = ContractUtils;
 
 const StepBadge = ({ children }) => {
   return <span className="StepBadge">{children}</span>;
@@ -52,12 +52,7 @@ const getCards = (contractInfoList, currentPage, activeTab) => {
         <div className="content">
           <div className="image">
             {building.photo ? (
-              <img
-                src={`http://localhost:8000/uploads/contracts/${
-                  building.photo
-                }`}
-                alt="house"
-              />
+              <img src={`uploads/contracts/${building.photo}`} alt="house" />
             ) : (
               <img src={houseImage} alt="house" />
             )}

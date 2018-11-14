@@ -92,6 +92,7 @@ class UserInfo extends Component {
         />
         <InputWithLabel
           label="비밀번호"
+          type="password"
           name="password"
           value={password}
           placeholder="비밀번호"

@@ -66,7 +66,7 @@ sockjs_chat.on('connection', conn => {
   });
 
   conn.on('close', () => {
-    // delete clients[conn.id];ㄴ
+    // delete clients[conn.id];
   });
 });
 
