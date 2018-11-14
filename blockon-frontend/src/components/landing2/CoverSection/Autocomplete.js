@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import Autosuggest from 'react-autosuggest';
 import './Autocomplete.scss';
 
@@ -16,11 +17,28 @@ class Autocomplete extends Component {
     suggestions: []
   };
 
-  onChange = (event, { newValue }) => {
+  goToSearchPage = value => {
+    const { history } = this.props;
+    history.push(`/search?q=${value}`);
+  };
+
+  onChange = (event, { newValue, method }) => {
+    const { onChange } = this.props;
+
     this.setState({
       value: newValue
     });
-    this.props.onChange(newValue);
+    onChange(newValue);
+
+    if (method === 'click') {
+      this.goToSearchPage(newValue);
+    }
+  };
+
+  onKeyPress = e => {
+    if (e.key === 'Enter') {
+      this.goToSearchPage(e.target.value);
+    }
   };
 
   render() {
@@ -32,7 +50,8 @@ class Autocomplete extends Component {
       // value, onChange를 props로 받으면
       // 자동완성 아이템을 선택하더라도 onChange가 호출되지 않는듯
       value,
-      onChange: this.onChange
+      onChange: this.onChange,
+      onKeyPress: this.onKeyPress
     };
 
     return (
@@ -53,4 +72,4 @@ class Autocomplete extends Component {
   }
 }
 
-export default Autocomplete;
+export default withRouter(Autocomplete);

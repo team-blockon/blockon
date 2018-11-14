@@ -64,6 +64,7 @@ class CoverSection extends Component {
             name="agent"
             placeholder="관심지역 또는 공인중개소를 검색해보세요."
             onChange={suggestionValue => {
+              console.log(suggestionValue);
               this.setState({
                 ...this.state,
                 agent: suggestionValue
