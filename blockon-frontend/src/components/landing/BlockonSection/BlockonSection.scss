@@ -1,42 +1,138 @@
-/*.BlockonSection {
-  text-align: center;
-  padding-top: 70px;
-  padding-bottom: 70px;
-  color: #333;
+.BlockonSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  text-align: left;
+
+  .slogan {
+    p:nth-child(1) {
+      font-weight: 500;
+    }
+    p:nth-child(2) {
+      font-weight: normal;
+      color: #707070;
+    }
+  }
+
+  .featureContainer > div {
+    width: 265px;
+    height: 380px;
+  }
+  .featureContainer {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    margin-top: 20px;
+    @media (min-width: 880px) {
+      & {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+      }
+    }
+    .feature {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30px;
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.08);
+
+      img {
+        width: 100px;
+        height: 100px;
+      }
+      .explanation {
+        margin-top: 30px;
+        .title {
+          font-weight: 500;
+        }
+      }
+      p {
+        font-size: 13pt;
+      }
+    }
+  }
 }
 
 @media (min-width: 320px) {
   .BlockonSection {
-    font-size: 0.9rem;
-    line-height: 1.7;
+    padding: 50px 10px;
 
-    .logo {
-      height: 101px;
-      margin-bottom: 2.5rem;
+    .slogan {
+      text-align: center;
+      p:nth-child(1) {
+        font-size: 13pt;
+      }
+      p:nth-child(2) {
+        font-size: 11pt;
+      }
     }
-
-    p {
-      margin-top: 0;
-      margin-bottom: 0;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
+    .featureContainer > div {
+      width: 265px;
+      height: 300px;
+    }
+    .featureContainer {
+      .feature {
+        p {
+          font-size: 11pt;
+        }
+      }
     }
   }
 }
 
-@media (min-width: 750px) {
+@media (min-width: 650px) {
   .BlockonSection {
-    font-size: 1.2rem;
+    padding: 30px 30px;
 
-    .logo {
-      height: 120px;
-      margin-bottom: 1.5rem;
+    .slogan {
+      p:nth-child(1) {
+        font-size: 15pt;
+      }
+      p:nth-child(2) {
+        font-size: 12pt;
+      }
     }
-
-    p {
-      margin-top: 0.6rem;
-      margin-bottom: 0.6rem;
+    .featureContainer {
+      .feature {
+        p {
+          font-size: 12pt;
+        }
+      }
     }
   }
 }
-*/
+
+@media (min-width: 1024px) {
+  .BlockonSection {
+    padding: 60px 0;
+    width: 900px;
+    margin: 0 auto;
+
+    .slogan {
+      text-align: left;
+      p:nth-child(1) {
+        font-size: 20pt;
+      }
+      p:nth-child(2) {
+        font-size: 15pt;
+      }
+    }
+
+    .featureContainer {
+      .feature {
+        p {
+          font-size: 13pt;
+        }
+      }
+    }
+  }
+}
+@media (min-width: 1280px) {
+  .BlockonSection {
+    padding: 75px 0;
+  }
+}
