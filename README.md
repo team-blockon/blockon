@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/team-blockon/blockon.svg?branch=master)](https://travis-ci.org/team-blockon/blockon)
 
-Blockon is real estate contract management platform based on Ethereum.
+Blockon is real estate contract management platform based on Klaytn.
 
 ## CI/CD architecture
 
