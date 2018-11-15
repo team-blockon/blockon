@@ -11,6 +11,6 @@ export const getImageUrl = imagePath => {
   if (process.env.NODE_ENV === 'development') {
     return `http://localhost:8000/uploads/${imagePath}`;
   } else {
-    return `uploads/${imagePath}`;
+    return `/uploads/${imagePath}`;
   }
 };
