@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import StepBadge from '../StepBadge';
+import { getImageUrl } from 'lib/utils/common';
 import * as ContractUtils from 'lib/utils/contract';
 import houseImage from 'static/images/house-1.svg';
 import './ContractCard.scss';
@@ -53,7 +54,10 @@ const getCards = (contractInfoList, currentPage, activeTab) => {
         <div className="content">
           <div className="image">
             {building.photo ? (
-              <img src={`uploads/contracts/${building.photo}`} alt="house" />
+              <img
+                src={getImageUrl(`contracts/${building.photo}`)}
+                alt="house"
+              />
             ) : (
               <img src={houseImage} alt="house" />
             )}
