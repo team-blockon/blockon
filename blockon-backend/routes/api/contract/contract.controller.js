@@ -80,7 +80,7 @@ exports.photo = (req, res) => {
       fileType === 'jpg' ||
       fileType === 'jpeg' ||
       fileType === 'png' ||
-      fileType === 'svg'
+      fileType === 'svg+xml'
     );
   };
 
