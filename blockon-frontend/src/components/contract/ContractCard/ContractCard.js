@@ -9,7 +9,8 @@ import './ContractCard.scss';
 const {
   getStepWord,
   getColorByStepWord,
-  getKoreanBuildingType
+  getKoreanBuildingType,
+  getPriceField
 } = ContractUtils;
 
 const BuildingTypeBadge = ({ children }) => {
@@ -42,9 +43,11 @@ const getCards = (contractInfoList, currentPage, activeTab) => {
   const subList = filteredContractInfoList.slice(startIndex, endIndex);
   return subList.map((contractInfo, index) => {
     const {
+      type,
       building,
       state: contractState,
-      index: contractIndex
+      index: contractIndex,
+      price
     } = contractInfo;
 
     console.log(building);
@@ -78,6 +81,7 @@ const getCards = (contractInfoList, currentPage, activeTab) => {
               <span>위치</span>
               {building.address}
             </p>
+            {getPriceField(type, price)}
             <p className="view">
               <Link
                 to={{

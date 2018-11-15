@@ -72,7 +72,11 @@ class ContractTemplate extends Component {
     if (!res || !res.data || !res.data.building) {
       return;
     }
-    const { people, building } = res.data;
+    const {
+      people,
+      building,
+      contract: { deposit, wolse, maemaePrice }
+    } = res.data;
 
     // 최신 데이터를 가장 위로 추가
     this.setState(
@@ -83,7 +87,8 @@ class ContractTemplate extends Component {
           state: contractStep,
           confirmInfo,
           people,
-          building
+          building,
+          price: { deposit, wolse, maemaePrice }
         });
       })
     );

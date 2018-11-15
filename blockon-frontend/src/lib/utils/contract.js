@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 // 계약종류(Contract Type) 상수
 export const ct = Object.freeze({
@@ -119,4 +119,37 @@ export const getKoreanBuildingType = eng => {
   };
 
   return map[eng];
+};
+
+export const getPriceField = (contractType, priceObj) => {
+  switch (contractType) {
+  case ct.WOLSE:
+    return (
+      <Fragment>
+        <p className="info">
+          <span>보증금</span>
+          {priceObj.deposit}만원
+        </p>
+        <p className="info">
+          <span>월세</span>
+          {priceObj.wolse}만원
+        </p>
+      </Fragment>
+    );
+  case ct.JEONSE:
+    return (
+      <p className="info">
+        <span>보증금</span>
+        {priceObj.deposit}만원
+      </p>
+    );
+  case ct.TRADE:
+    return (
+      <p className="info">
+        <span>매매가</span>
+        {priceObj.maemaePrice}만원
+      </p>
+    );
+  default:
+  }
 };

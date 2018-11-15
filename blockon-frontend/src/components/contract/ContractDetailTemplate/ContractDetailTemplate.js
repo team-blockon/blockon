@@ -27,7 +27,8 @@ const {
   getColorByStepWord,
   getNextStep,
   getAgreementWord,
-  getKoreanBuildingType
+  getKoreanBuildingType,
+  getPriceField
 } = ContractUtils;
 
 const BuildingTypeBadge = ({ children }) => {
@@ -63,23 +64,12 @@ class ContractDetailTemplate extends Component {
 
   getCard = () => {
     const { contractInfo } = this.state;
-    const { type, state, confirmInfo, building } = contractInfo;
+    const { type, state, confirmInfo, building, price } = contractInfo;
     const {
       isAgentConfirmed,
       isSellerConfirmed,
       isBuyerConfirmed
     } = confirmInfo;
-
-    let contractData;
-    if (type === ct.WOLSE) {
-      contractData = <p>월세 1,000/45</p>;
-    }
-    if (type === ct.JEONSE) {
-      contractData = <p>전세 5,000</p>;
-    }
-    if (type === ct.TRADE) {
-      contractData = <p>매매 10억</p>;
-    }
 
     const nextStep = getNextStep(type, state);
 
@@ -119,7 +109,7 @@ class ContractDetailTemplate extends Component {
               <span>위치</span>
               {building.address}
             </p>
-            {contractData}
+            {getPriceField(type, price)}
           </div>
         </div>
 
@@ -327,7 +317,12 @@ class ContractDetailTemplate extends Component {
     if (!res || !res.data || !res.data.building) {
       return;
     }
-    const { _id, people, building } = res.data;
+    const {
+      _id,
+      people,
+      building,
+      contract: { deposit, wolse, maemaePrice }
+    } = res.data;
 
     this.setState({
       contractInfo: {
@@ -337,7 +332,8 @@ class ContractDetailTemplate extends Component {
         state: contractStep,
         confirmInfo,
         people,
-        building
+        building,
+        price: { deposit, wolse, maemaePrice }
       }
     });
   }

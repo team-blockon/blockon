@@ -17,7 +17,10 @@ const Building = new Schema({
 const ContractDetail = new Schema({
   index: Number,
   date: Date,
-  type: Number
+  type: Number,
+  deposit: String,
+  wolse: String,
+  maemaePrice: String
 });
 
 const Contract = new Schema({
