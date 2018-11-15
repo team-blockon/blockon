@@ -74,9 +74,14 @@ exports.photo = (req, res) => {
   // 이미지인지 확장자와 MIME 타입 체크
   const checkImage = profile => {
     const mimeType = profile.mimetype.split('/');
-    const fileType = mimeType[1];
+    const fileType = mimeType[1].toLowerCase();
 
-    return fileType === 'jpg' || fileType === 'jpeg' || fileType === 'png';
+    return (
+      fileType === 'jpg' ||
+      fileType === 'jpeg' ||
+      fileType === 'png' ||
+      fileType === 'svg'
+    );
   };
 
   const photoUpload = new Promise((resolve, reject) => {
