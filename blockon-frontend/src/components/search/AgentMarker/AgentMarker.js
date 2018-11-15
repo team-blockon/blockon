@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import marker from 'static/images/icon/marker.png';
+import s_marker from 'static/images/icon/special_marker.png'
 import { Popover, Button } from 'antd';
 import './AgentMarker.scss';
 
@@ -15,11 +16,11 @@ const getContent = agent => {
   );
 };
 
-const AgentMarker = ({ agent }) => {
+const AgentMarker = ({ agent, idx }) => {
   return (
     <div className="AgentMarker">
       <Popover content={getContent(agent)} title={agent.place_name}>
-        <img src={marker} alt="marker" />
+        {(idx === 1 || idx === 3) ? <img src={s_marker} alt="special marker"/>:<img src={marker} alt="marker"/>}
       </Popover>
     </div>
   );
