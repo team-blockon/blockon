@@ -1,15 +1,20 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
+
 import Loading from 'components/common/Loading';
 import Chat from '../Chat';
+
 import * as ContractAPI from 'lib/api/contract';
 import * as ContractUtils from 'lib/utils/contract';
 import * as CaverUser from 'lib/caver/user';
 import * as CaverContract from 'lib/caver/contract';
+
 import houseImage from 'static/images/house-1.svg';
 import agreeIcon from 'static/images/icon/agree.svg';
 import disagreeIcon from 'static/images/icon/disagree.svg';
+
+import { message } from 'antd';
 import './ContractDetailTemplate.scss';
 
 const {
@@ -228,6 +233,8 @@ class ContractDetailTemplate extends Component {
       contractIndex,
       newContractState: getNextStep(contractType, currentState)
     });
+
+    message.success('동의 요청이 완료되었습니다.');
   };
 
   watchConfirmChangeContractStateEvent = () => {

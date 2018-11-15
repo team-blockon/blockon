@@ -1,3 +1,5 @@
+import React from 'react';
+
 // 계약종류(Contract Type) 상수
 export const ct = Object.freeze({
   WOLSE: 1,
@@ -81,7 +83,11 @@ export const getNextStep = (contractType, currentStep) => {
 };
 
 export const getAgreementWord = agreement => {
-  return agreement ? '동의' : '미동의';
+  return agreement ? (
+    <span className="agree">동의</span>
+  ) : (
+    <span className="disagree">미동의</span>
+  );
 };
 
 export const getKoreanBuildingType = eng => {
