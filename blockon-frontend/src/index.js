@@ -11,6 +11,7 @@ import * as serviceWorker from './serviceWorker';
 // import 'antd/dist/antd.css';
 import 'antd/lib/button/style/css';
 import 'antd/lib/date-picker/style/css';
+import 'antd/lib/message/style/css';
 import 'antd/lib/modal/style/css';
 import 'antd/lib/popover/style/css';
 import 'antd/lib/radio/style/css';
