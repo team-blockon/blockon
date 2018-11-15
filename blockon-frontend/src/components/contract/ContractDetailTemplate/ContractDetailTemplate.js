@@ -6,6 +6,7 @@ import StepBadge from '../StepBadge';
 import Loading from 'components/common/Loading';
 import Chat from '../Chat';
 
+import { getImageUrl } from 'lib/utils/common';
 import * as ContractAPI from 'lib/api/contract';
 import * as ContractUtils from 'lib/utils/contract';
 import * as CaverUser from 'lib/caver/user';
@@ -94,7 +95,10 @@ class ContractDetailTemplate extends Component {
         <div className="content">
           <div className="image">
             {building.photo ? (
-              <img src={`uploads/contracts/${building.photo}`} alt="house" />
+              <img
+                src={getImageUrl(`contracts/${building.photo}`)}
+                alt="house"
+              />
             ) : (
               <img src={houseImage} alt="house" />
             )}
