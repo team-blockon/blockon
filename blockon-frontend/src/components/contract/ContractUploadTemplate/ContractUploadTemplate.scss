@@ -48,6 +48,25 @@
     }
   }
 
+  .form-group.currency {
+    position: relative;
+    display: inline-flex;
+
+    input {
+      width: 250px;
+      padding-right: 55px;
+    }
+
+    &::after {
+      content: "만원";
+      position: absolute;
+      right: 16px;
+      font-size: 15px;
+      font-weight: 300;
+      color: #222;
+    }
+  }
+
   .action {
     text-align: center;
 

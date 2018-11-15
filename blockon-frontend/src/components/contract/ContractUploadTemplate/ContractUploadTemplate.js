@@ -3,13 +3,14 @@ import { withRouter } from 'react-router-dom';
 import produce from 'immer';
 import axios from 'axios';
 
+import Autocomplete from './Autocomplete';
+import NumberFormat from 'react-number-format';
+
 import * as UserAPI from 'lib/api/user';
 import * as ContractAPI from 'lib/api/contract';
 import * as CaverUser from 'lib/caver/user';
 import * as CaverContract from 'lib/caver/contract';
 import * as ContractUtils from 'lib/utils/contract';
-
-import Autocomplete from './Autocomplete';
 
 import { Radio, Upload, Icon, DatePicker, Modal } from 'antd';
 import './ContractUploadTemplate.scss';
@@ -63,7 +64,8 @@ class ContractUploadTemplate extends Component {
       contract: {
         index: null, // 계약 생성 후 해당 계약의 인덱스를 받아옴
         date: null, // 거래일자
-        type: null // 계약종류
+        type: null, // 계약종류
+        deposit: ''
       }
     }
   };
@@ -189,33 +191,68 @@ class ContractUploadTemplate extends Component {
     );
   };
 
+  handlePriceChange = event => {
+    const { name, value } = event.target;
+    this.setState(
+      produce(draft => {
+        draft.formData.contract[name] = value;
+      })
+    );
+  };
+
   getPriceField = () => {
-    switch (this.state.formData.contract.type) {
+    const { type, deposit, wolse, maemaePrice } = this.state.formData.contract;
+
+    switch (type) {
     case ct.WOLSE:
       return (
         <div className="form-inline">
-          <div className="form-group">
+          <div className="form-group currency">
             <label className="form-label">보증금</label>
-            <input placeholder="보증금" />
+            <NumberFormat
+              name="deposit"
+              value={deposit}
+              placeholder="보증금"
+              thousandSeparator={true}
+              onChange={this.handlePriceChange}
+            />
           </div>
-          <div className="form-group">
+          <div className="form-group currency">
             <label className="form-label">월세</label>
-            <input placeholder="월세" />
+            <NumberFormat
+              name="wolse"
+              value={wolse}
+              placeholder="월세"
+              thousandSeparator={true}
+              onChange={this.handlePriceChange}
+            />
           </div>
         </div>
       );
     case ct.JEONSE:
       return (
-        <div className="form-group">
+        <div className="form-group currency">
           <label className="form-label">보증금</label>
-          <input placeholder="보증금" />
+          <NumberFormat
+            name="deposit"
+            value={deposit}
+            placeholder="보증금"
+            thousandSeparator={true}
+            onChange={this.handlePriceChange}
+          />
         </div>
       );
     case ct.TRADE:
       return (
-        <div className="form-group">
+        <div className="form-group currency">
           <label className="form-label">매매가</label>
-          <input placeholder="매매가" />
+          <NumberFormat
+            name="maemaePrice"
+            value={maemaePrice}
+            placeholder="매매가"
+            thousandSeparator={true}
+            onChange={this.handlePriceChange}
+          />
         </div>
       );
     default:
@@ -292,6 +329,20 @@ class ContractUploadTemplate extends Component {
         draft.formData.people.agentAddress = accountAddress;
       })
     );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { type: currentType } = this.state.formData.contract;
+    const { type: prevType } = prevState.formData.contract;
+    if (currentType !== prevType) {
+      this.setState(
+        produce(draft => {
+          draft.formData.contract.deposit = '';
+          draft.formData.contract.wolse = '';
+          draft.formData.contract.maemaePrice = '';
+        })
+      );
+    }
   }
 
   render() {

@@ -51,6 +51,7 @@
     "react-chat-elements": "^10.1.1",
     "react-dev-utils": "^6.1.1",
     "react-dom": "^16.6.1",
+    "react-number-format": "^4.0.4",
     "react-redux": "^5.1.0",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",

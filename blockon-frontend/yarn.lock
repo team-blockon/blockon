@@ -9174,6 +9174,13 @@ react-native-vector-icons@^4.4.2:
     prop-types "^15.5.10"
     yargs "^8.0.2"
 
+react-number-format@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.0.4.tgz#0a9fffdcc0f43031eb8587aa22d616dca0852239"
+  integrity sha512-dWoen/2/RVAFT8+WF+ekgRvQugeINJqtQVzHcHag79bL5tJct9nFS52gMSbxREkPxDD5kbG09JjXNxLCYWUkqA==
+  dependencies:
+    prop-types "^15.6.0"
+
 react-progress-bar.js@^0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/react-progress-bar.js/-/react-progress-bar.js-0.2.3.tgz#7e80091f60834041def87f125a6803d9427e0719"
