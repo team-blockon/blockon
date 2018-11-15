@@ -68,7 +68,7 @@ exports.getEmailList = async (req, res) => {
 };
 
 /*
-    GET /api/user/:ethAddress
+    PUT /api/user/:ethAddress
     {
       profile,
       email
@@ -90,4 +90,33 @@ exports.updateAccountByEthAddress = (req, res) => {
       res.json({ message: 'account updated' });
     }
   );
+};
+
+/*
+    POST /api/user/names
+    {
+      agentAddress,
+      buyerAddress,
+      sellerAddress
+    }
+*/
+
+exports.getNamesByAccountAddress = async (req, res) => {
+  const { agentAddress, buyerAddress, sellerAddress } = req.body;
+
+  const agent = await Account.findOne({
+    accountAddress: agentAddress
+  });
+  const buyer = await Account.findOne({
+    accountAddress: buyerAddress
+  });
+  const seller = await Account.findOne({
+    accountAddress: sellerAddress
+  });
+
+  const agentName = agent.profile.username;
+  const buyerName = buyer.profile.username;
+  const sellerName = seller.profile.username;
+
+  res.json({ agentName, buyerName, sellerName });
 };

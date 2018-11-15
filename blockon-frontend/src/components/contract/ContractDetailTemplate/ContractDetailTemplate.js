@@ -8,6 +8,7 @@ import Chat from '../Chat';
 
 import { getImageUrl } from 'lib/utils/common';
 import * as ContractAPI from 'lib/api/contract';
+import * as UserAPI from 'lib/api/user';
 import * as ContractUtils from 'lib/utils/contract';
 import * as CaverUser from 'lib/caver/user';
 import * as CaverContract from 'lib/caver/contract';
@@ -64,7 +65,7 @@ class ContractDetailTemplate extends Component {
 
   getCard = () => {
     const { contractInfo } = this.state;
-    const { type, state, confirmInfo, building, price } = contractInfo;
+    const { type, state, confirmInfo, names, building, price } = contractInfo;
     const {
       isAgentConfirmed,
       isSellerConfirmed,
@@ -129,15 +130,15 @@ class ContractDetailTemplate extends Component {
               <div className="tbody">
                 <div className="tr">
                   <div className="td">중개인</div>
-                  <div className="td">김수연</div>
+                  <div className="td">{names.agentName}</div>
                 </div>
                 <div className="tr">
                   <div className="td">매수인</div>
-                  <div className="td">최세은</div>
+                  <div className="td">{names.buyerName}</div>
                 </div>
                 <div className="tr">
                   <div className="td">매도인</div>
-                  <div className="td">강민구</div>
+                  <div className="td">{names.sellerName}</div>
                 </div>
               </div>
             </div>
@@ -168,21 +169,21 @@ class ContractDetailTemplate extends Component {
                 <div className="tbody">
                   <div className="tr">
                     <div className="td">중개인</div>
-                    <div className="td">김수연</div>
+                    <div className="td">{names.agentName}</div>
                     <div className="td">
                       {getAgreementWord(isAgentConfirmed)}
                     </div>
                   </div>
                   <div className="tr">
                     <div className="td">매수인</div>
-                    <div className="td">최세은</div>
+                    <div className="td">{names.buyerName}</div>
                     <div className="td">
                       {getAgreementWord(isSellerConfirmed)}
                     </div>
                   </div>
                   <div className="tr">
                     <div className="td">매도인</div>
-                    <div className="td">강민구</div>
+                    <div className="td">{names.sellerName}</div>
                     <div className="td">
                       {getAgreementWord(isBuyerConfirmed)}
                     </div>
@@ -312,9 +313,12 @@ class ContractDetailTemplate extends Component {
     );
 
     // 오프체인 데이터 가져오기
-    const res = await ContractAPI.get(accountInstance._address, contractIndex);
+    const contractRes = await ContractAPI.get(
+      accountInstance._address,
+      contractIndex
+    );
 
-    if (!res || !res.data || !res.data.building) {
+    if (!contractRes || !contractRes.data || !contractRes.data.building) {
       return;
     }
     const {
@@ -322,7 +326,9 @@ class ContractDetailTemplate extends Component {
       people,
       building,
       contract: { deposit, wolse, maemaePrice }
-    } = res.data;
+    } = contractRes.data;
+
+    const namesRes = await UserAPI.getNamesByAccountAddress(people);
 
     this.setState({
       contractInfo: {
@@ -332,6 +338,7 @@ class ContractDetailTemplate extends Component {
         state: contractStep,
         confirmInfo,
         people,
+        names: namesRes.data,
         building,
         price: { deposit, wolse, maemaePrice }
       }
@@ -352,6 +359,7 @@ class ContractDetailTemplate extends Component {
     if (!!this.state.contractInfo) {
       const { contractInfo } = this.state;
       const { people } = contractInfo;
+      console.log(people);
 
       return (
         <div className="ContractDetailTemplate">

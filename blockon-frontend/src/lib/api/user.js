@@ -37,3 +37,15 @@ export const updateAccountByKlaytnAddress = ({
     email
   });
 };
+
+export const getNamesByAccountAddress = ({
+  agentAddress,
+  buyerAddress,
+  sellerAddress
+}) => {
+  return defaultClient.post('/api/user/names', {
+    agentAddress,
+    buyerAddress,
+    sellerAddress
+  });
+};
