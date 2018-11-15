@@ -10,6 +10,7 @@ const AgentList = ({ agents }) => {
           <div>
             <p>{agent.place_name}</p>
             <p>{agent.road_address_name}</p>
+            { index === 1 || index === 3 ? <p> BLOCKON 인증 </p> : null }
           </div>
         </div>
       ))}

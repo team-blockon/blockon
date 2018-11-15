@@ -35,6 +35,9 @@ export class SearchTemplate extends Component {
 
     MapAPI.getAgents(lat, lng, 1000).then(res => {
       const agents = res.data.documents;
+      agents.sort((a,b) => {
+        return a.distance - b.distance;
+      });
       this.setState({ agents });
     });
   };
@@ -111,6 +114,7 @@ export class SearchTemplate extends Component {
                     lng={agent.x}
                     agent={agent}
                     key={index}
+                    idx={index}
                   />
                 );
               })}
