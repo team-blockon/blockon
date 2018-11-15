@@ -61,6 +61,26 @@ export const getStepWord = step => {
   }
 };
 
+export const getColorByStepWord = step => {
+  switch (step) {
+  case cs.START_TRADE:
+    return 'indigo';
+  case cs.DOWN_PAYMENT:
+    return 'blue';
+  case cs.MIDDLE_PAYMENT:
+    return 'orange';
+  case cs.FINAL_PAYMENT:
+    return 'red';
+  case cs.REGISTRATION:
+    return 'green';
+  case cs.FIXED_DATE:
+    return 'green';
+  case cs.COMPLETED_CONTRACT:
+    return 'indigo';
+  default:
+  }
+};
+
 export const getNextStep = (contractType, currentStep) => {
   switch (contractType) {
   case ct.TRADE:

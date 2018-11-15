@@ -1,5 +1,3 @@
-@import "~open-color/open-color";
-
 .card-wrapper,
 .list-wrapper {
   display: flex;
@@ -95,18 +93,6 @@
     content: "";
     flex-basis: 270px;
   }
-}
-
-.StepBadge {
-  display: inline-block;
-  text-align: center;
-  width: 102px;
-  height: 29px;
-  line-height: 29px;
-  border-radius: 15px;
-  background-color: #1864ab;
-  font-size: 14px;
-  color: #fff;
 }
 
 .BuildingTypeBadge {

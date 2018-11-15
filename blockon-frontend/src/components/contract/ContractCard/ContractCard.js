@@ -1,14 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import StepBadge from '../StepBadge';
 import * as ContractUtils from 'lib/utils/contract';
 import houseImage from 'static/images/house-1.svg';
 import './ContractCard.scss';
 
-const { getStepWord, getKoreanBuildingType } = ContractUtils;
-
-const StepBadge = ({ children }) => {
-  return <span className="StepBadge">{children}</span>;
-};
+const {
+  getStepWord,
+  getColorByStepWord,
+  getKoreanBuildingType
+} = ContractUtils;
 
 const BuildingTypeBadge = ({ children }) => {
   return <span className="BuildingTypeBadge">{children}</span>;
@@ -56,7 +57,9 @@ const getCards = (contractInfoList, currentPage, activeTab) => {
             ) : (
               <img src={houseImage} alt="house" />
             )}
-            <StepBadge>{getStepWord(contractState)}</StepBadge>
+            <StepBadge className={getColorByStepWord(contractState)}>
+              {getStepWord(contractState)}
+            </StepBadge>
           </div>
           <div className="detail">
             <BuildingTypeBadge>

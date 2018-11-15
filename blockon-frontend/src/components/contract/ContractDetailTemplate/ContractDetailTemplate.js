@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 
+import StepBadge from '../StepBadge';
 import Loading from 'components/common/Loading';
 import Chat from '../Chat';
 
@@ -22,14 +23,11 @@ const {
   tradeStep,
   rentStep,
   getStepWord,
+  getColorByStepWord,
   getNextStep,
   getAgreementWord,
   getKoreanBuildingType
 } = ContractUtils;
-
-const StepBadge = ({ children }) => {
-  return <span className="StepBadge">{children}</span>;
-};
 
 const BuildingTypeBadge = ({ children }) => {
   return <span className="BuildingTypeBadge">{children}</span>;
@@ -82,6 +80,8 @@ class ContractDetailTemplate extends Component {
       contractData = <p>매매 10억</p>;
     }
 
+    const nextStep = getNextStep(type, state);
+
     const card = (
       <div className="card">
         <div className="progressbar-wrapper">
@@ -98,7 +98,9 @@ class ContractDetailTemplate extends Component {
             ) : (
               <img src={houseImage} alt="house" />
             )}
-            <StepBadge>{getStepWord(state)}</StepBadge>
+            <StepBadge className={getColorByStepWord(state)}>
+              {getStepWord(state)}
+            </StepBadge>
           </div>
           <div className="detail">
             <BuildingTypeBadge>
@@ -151,7 +153,9 @@ class ContractDetailTemplate extends Component {
             <div className="agreement">
               <p className="title">
                 다음 단계는
-                <StepBadge>{getStepWord(getNextStep(type, state))}</StepBadge>
+                <StepBadge className={getColorByStepWord(nextStep)}>
+                  {getStepWord(nextStep)}
+                </StepBadge>
                 단계입니다.
               </p>
               <div className="notice">
