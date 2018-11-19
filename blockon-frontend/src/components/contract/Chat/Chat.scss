@@ -15,4 +15,8 @@
   .message-list {
     flex: 1;
   }
+
+  .rce-input {
+    width: 0; /* input 너비를 먼저 잡는 브라우저가 있는 듯 */
+  }
 }
