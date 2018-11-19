@@ -1,5 +1,4 @@
 import { openNotification } from 'lib/utils/common';
-import * as CaverUser from 'lib/caver/user';
 
 /**
  * Account 생성

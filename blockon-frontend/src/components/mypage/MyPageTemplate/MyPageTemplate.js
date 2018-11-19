@@ -14,8 +14,9 @@ class MyPageTemplate extends Component {
     activeTab: 'user_info',
     defaultAccount: null,
     profile: null,
-    username: '',
-    email: ''
+    email: '',
+    password: '',
+    username: ''
   };
 
   handleTabSelect = activeTab => {
@@ -35,7 +36,8 @@ class MyPageTemplate extends Component {
     }
   };
 
-  deleteProfile = () => {
+  deleteProfile = event => {
+    event.stopPropagation();
     this.setState({
       ...this.state,
       profile: null
@@ -67,12 +69,14 @@ class MyPageTemplate extends Component {
   };
 
   handleSubmit = () => {
-    const { defaultAccount, profile, email } = this.state;
+    const { defaultAccount, profile, email, password } = this.state;
+    console.log(defaultAccount, profile, email);
 
     UserAPI.updateAccountByKlaytnAddress({
       klaytnAddress: defaultAccount,
       profile,
-      email
+      email,
+      password
     }).then(res => {
       message.success('회원정보가 수정되었습니다.');
     });
@@ -99,7 +103,14 @@ class MyPageTemplate extends Component {
   }
 
   render() {
-    const { activeTab, accountInstance, profile, username, email } = this.state;
+    const {
+      activeTab,
+      accountInstance,
+      profile,
+      email,
+      password,
+      username
+    } = this.state;
 
     return (
       <div className="MyPageTemplate">
@@ -111,10 +122,14 @@ class MyPageTemplate extends Component {
           {activeTab === 'user_info' && (
             <UserInfo
               profile={profile}
-              username={username}
               email={email}
+              password={password}
+              username={username}
               handleChange={this.handleChange}
+              handleProfileChange={this.handleProfileChange}
+              deleteProfile={this.deleteProfile}
               sendAuthEmail={this.sendAuthEmail}
+              handleSubmit={this.handleSubmit}
             />
           )}
           {activeTab === 'auth_agent' && (

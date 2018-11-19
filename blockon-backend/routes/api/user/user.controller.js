@@ -68,7 +68,7 @@ exports.getEmailList = async (req, res) => {
 };
 
 /*
-    PUT /api/user/:ethAddress
+    PUT /api/user/:klaytnAddress
     {
       profile,
       email
@@ -76,10 +76,13 @@ exports.getEmailList = async (req, res) => {
 */
 
 exports.updateAccountByEthAddress = (req, res) => {
-  const { profile, email } = req.body;
+  const { profile, email, password } = req.body;
+  const klaytnAddress = req.params.klaytnAddress.slice(2).toLowerCase();
+
+  /* 비밀번호 비교 로직 필요 */
 
   Account.update(
-    { ethAddress: req.params.ethAddress },
+    { 'keyStore.address': klaytnAddress },
     {
       $set: {
         'profile.thumbnail': profile,
