@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import InputWithLabel from 'components/common/InputWithLabel';
 import InputEmail from 'components/common/InputEmail';
+import { getImageUrl } from 'lib/utils/common';
 import profileImage from 'static/images/profile.svg';
 import { Upload } from 'antd';
 import './UserInfo.scss';
-
-const getProfileUrl = thumbnail => {
-  if (!thumbnail) return null;
-  return `http://localhost:8000/uploads/${thumbnail}`;
-};
 
 class UserInfo extends Component {
   render() {
@@ -35,7 +31,7 @@ class UserInfo extends Component {
           >
             <div className="icon-with-text">
               {!profile && <img src={profileImage} alt="profile" />}
-              {profile && <img src={getProfileUrl(profile)} alt="profile" />}
+              {profile && <img src={getImageUrl(profile)} alt="profile" />}
               <div>
                 <span>프로필 사진 변경</span> |{' '}
                 <span onClick={deleteProfile}>삭제</span>
