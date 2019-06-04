@@ -4,6 +4,12 @@
 
 Blockon is real estate contract management platform based on Klaytn.
 
+## Demo
+
+<a href="https://youtu.be/2CNuBcWMpg4">
+  <img src="https://user-images.githubusercontent.com/16279779/58855176-5d6e1a00-86da-11e9-94ed-b78486d83248.png" width="500" />
+</a>
+
 ## CI/CD architecture
 
 CI/CD with Travis CI, docker-compose, S3 and CodeDeploy.
